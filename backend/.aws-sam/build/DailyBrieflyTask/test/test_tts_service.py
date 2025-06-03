@@ -6,8 +6,9 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 테스트용 환경변수 설정
-os.environ['ELEVENLABS_API_KEY'] = 'sk_9aec564dd6ea4d9fbc70a0c3532b3e8ab96a9b38d2721b80'
+# .env 파일에서 환경변수 로드
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
 # TTS 서비스는 시뮬레이션 테스트만 수행하므로 실제 함수 임포트 불필요
 

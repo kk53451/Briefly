@@ -6,8 +6,9 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 테스트용 환경변수 설정
-os.environ['DEEPSEARCH_API_KEY'] = '68a6b087430941b2a171fc071855bc4e'
+# .env 파일에서 환경변수 로드
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
 from app.services.deepsearch_service import (
     is_korean_text, 

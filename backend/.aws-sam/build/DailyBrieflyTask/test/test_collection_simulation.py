@@ -6,6 +6,10 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# .env 파일에서 환경변수 로드
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
+
 def simulate_news_collection():
     """실제 뉴스 수집 로직 시뮬레이션"""
     

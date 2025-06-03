@@ -6,6 +6,8 @@ import numpy as np   # 임베딩 계산용
 import logging
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")  # 🔧 환경변수로 모델 설정 가능
+
 logger = logging.getLogger(__name__)
 
 def get_embedding(text: str) -> list:
@@ -113,7 +115,7 @@ def summarize_group(texts: list, category: str) -> str:
     
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model=MODEL_NAME,  # 🔧 환경변수 모델 사용
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
             max_tokens=700  # 🔧 토큰 제한: 900 → 700
@@ -203,14 +205,14 @@ def summarize_articles(texts: list[str], category: str) -> str:
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model=MODEL_NAME,  # 🔧 환경변수 모델 사용
             messages=[{"role": "user", "content": context}],
             temperature=0.7,
             max_tokens=2000  # 🔧 토큰 제한: 2200 → 2000
         )
         
         result = response.choices[0].message.content.strip()
-        logger.info(f"📏 생성된 대본 길이: {len(result)}자")
+        logger.info(f"📏 생성된 대본 길이: {len(result)}자 (모델: {MODEL_NAME})")  # 🔧 사용 모델 로그 추가
         return result
         
     except openai.RateLimitError as e:

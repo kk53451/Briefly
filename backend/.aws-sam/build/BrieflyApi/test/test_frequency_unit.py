@@ -6,10 +6,9 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 테스트용 환경변수 설정
-os.environ['OPENAI_API_KEY'] = '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'
-os.environ['ELEVENLABS_API_KEY'] = 'sk_9aec564dd6ea4d9fbc70a0c3532b3e8ab96a9b38d2721b80'
-os.environ['DEEPSEARCH_API_KEY'] = '68a6b087430941b2a171fc071855bc4e'
+# .env 파일에서 환경변수 로드
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
 from app.constants.category_map import CATEGORY_MAP, CATEGORY_KO_LIST
 from app.utils.date import get_today_kst

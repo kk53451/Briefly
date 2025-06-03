@@ -7,16 +7,25 @@ import sys
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 테스트용 환경변수 설정 (다른 테스트 파일과 일관성 유지)
-os.environ['OPENAI_API_KEY'] = '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'
-os.environ['ELEVENLABS_API_KEY'] = 'sk_9aec564dd6ea4d9fbc70a0c3532b3e8ab96a9b38d2721b80'
-os.environ['DEEPSEARCH_API_KEY'] = '68a6b087430941b2a171fc071855bc4e'
-os.environ['KAKAO_CLIENT_ID'] = 'test_kakao_client_id'
-os.environ['S3_BUCKET'] = 'briefly-news-audio'
-os.environ['DDB_NEWS_TABLE'] = 'NewsCards'
-os.environ['DDB_FREQ_TABLE'] = 'Frequencies'
-os.environ['DDB_USER_TABLE'] = 'Users'
-os.environ['DDB_BOOKMARK_TABLE'] = 'Bookmarks'
+# .env 파일에서 환경변수 로드
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
+
+# 기본값이 필요한 환경변수들 설정 (테스트용)
+if not os.getenv('DDB_NEWS_TABLE'):
+    os.environ['DDB_NEWS_TABLE'] = 'NewsCards'
+if not os.getenv('DDB_FREQ_TABLE'):
+    os.environ['DDB_FREQ_TABLE'] = 'Frequencies'
+if not os.getenv('DDB_USER_TABLE'):
+    os.environ['DDB_USER_TABLE'] = 'Users'
+if not os.getenv('DDB_USERS_TABLE'):
+    os.environ['DDB_USERS_TABLE'] = 'Users'
+if not os.getenv('DDB_BOOKMARK_TABLE'):
+    os.environ['DDB_BOOKMARK_TABLE'] = 'Bookmarks'
+if not os.getenv('DDB_BOOKMARKS_TABLE'):
+    os.environ['DDB_BOOKMARKS_TABLE'] = 'Bookmarks'
+if not os.getenv('S3_BUCKET'):
+    os.environ['S3_BUCKET'] = 'briefly-news-audio'
 
 from app.utils.date import get_today_kst
 from app.constants.category_map import CATEGORY_MAP, CATEGORY_KO_LIST, REVERSE_CATEGORY_MAP
