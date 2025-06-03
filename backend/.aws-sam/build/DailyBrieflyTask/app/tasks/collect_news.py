@@ -5,7 +5,7 @@ from datetime import datetime
 import pytz
 
 from app.services.deepsearch_service import fetch_valid_articles_by_category
-from app.utils.dynamo import save_news_card, get_news_card_by_id
+from app.utils.dynamo import save_news_card, get_news_card_by_id, get_news_card_by_content_url
 from app.constants.category_map import CATEGORY_MAP
 
 # 로그 설정
@@ -63,7 +63,10 @@ def collect_today_news():
 
             # 중복 확인
             if get_news_card_by_id(news_id):
-                logger.info(f"🚫 중복 뉴스 스킵: {news_id}")
+                logger.info(f"🚫 [ID중복] 뉴스 스킵: {news_id}")
+                continue
+            if get_news_card_by_content_url(article.get("content_url")):
+                logger.info(f"🚫 [URL중복] 뉴스 스킵: {article.get('content_url')}")
                 continue
 
             content = article.get("content", "")

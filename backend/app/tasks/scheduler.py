@@ -33,8 +33,14 @@ def lambda_handler(event, context):
         collect_today_news()
         result_summary["news"] = "✅ 완료"
         logger.info("✅ 뉴스 수집 완료")
+    except ImportError as e:
+        logger.error(f"[뉴스 수집 모듈 오류] {e}")
+        logger.error(traceback.format_exc())
+    except MemoryError as e:
+        logger.error(f"[뉴스 수집 메모리 부족] {e}")
+        logger.error(traceback.format_exc())
     except Exception as e:
-        logger.error(f"[뉴스 수집 실패] {e}")
+        logger.error(f"[뉴스 수집 예상치 못한 오류] {e}")
         logger.error(traceback.format_exc())
 
     # ✅ 2단계: 주파수 요약(TTS 포함) 생성
@@ -44,8 +50,14 @@ def lambda_handler(event, context):
         generate_all_frequencies()
         result_summary["frequency"] = "✅ 완료"
         logger.info("✅ 주파수 요약 생성 완료")
+    except ImportError as e:
+        logger.error(f"[주파수 생성 모듈 오류] {e}")
+        logger.error(traceback.format_exc())
+    except MemoryError as e:
+        logger.error(f"[주파수 생성 메모리 부족] {e}")
+        logger.error(traceback.format_exc())
     except Exception as e:
-        logger.error(f"[주파수 생성 실패] {e}")
+        logger.error(f"[주파수 생성 예상치 못한 오류] {e}")
         logger.error(traceback.format_exc())
 
     logger.info(f"📦 작업 결과 요약: {result_summary}")

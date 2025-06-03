@@ -10,3 +10,5 @@ pyJWT
 pytz
 python-jose
 bs4
+numpy
+trafilatura

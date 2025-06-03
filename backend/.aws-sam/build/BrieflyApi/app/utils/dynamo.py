@@ -92,6 +92,20 @@ def get_news_card_by_id(news_id: str):
     except ClientError as e:
         raise Exception(f"[뉴스 상세 조회 실패] {e.response['Error']['Message']}")
 
+def get_news_card_by_content_url(content_url: str):
+    """
+    content_url 기준으로 뉴스 조회 (중복 확인용)
+    """
+    try:
+        response = news_table.scan(
+            FilterExpression="content_url = :url",
+            ExpressionAttributeValues={":url": content_url}
+        )
+        items = response.get("Items", [])
+        return items[0] if items else None
+    except ClientError as e:
+        raise Exception(f"[URL로 뉴스 조회 실패] {e.response['Error']['Message']}")
+
 def get_today_news_grouped():
     """
     오늘 날짜 기준으로 카테고리별 뉴스 6건씩 묶어서 반환
@@ -192,6 +206,10 @@ def get_frequency_history_by_categories(categories: list, limit: int = 30):
 # ============================================
 
 def save_user(user: dict):
+    """
+    사용자 정보 저장 (신규 또는 업데이트)
+    - created_at, profile_image 기본값 자동 설정
+    """
     if "created_at" not in user:
         user["created_at"] = datetime.utcnow().isoformat()
     if "profile_image" not in user:
@@ -203,12 +221,17 @@ def save_user(user: dict):
         raise Exception(f"[Users 저장 실패] {e.response['Error']['Message']}")
 
 def get_user(user_id: str):
+    """
+    user_id 기준 사용자 정보 조회
+    - 기본값 자동 설정 (nickname, profile_image, interests 등)
+    """
     try:
         response = users_table.get_item(Key={"user_id": user_id})
         item = response.get("Item")
         if not item:
             return None
 
+        # 기본값 설정
         item.setdefault("nickname", "")
         item.setdefault("profile_image", "")
         item.setdefault("created_at", "")

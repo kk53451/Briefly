@@ -18,6 +18,9 @@ from app.routes import (
     user
 )
 
+# ✅ 카테고리 맵 임포트
+from app.constants.category_map import CATEGORY_KO_LIST
+
 # ✅ FastAPI 인스턴스 생성
 app = FastAPI(
     title="Briefly API",
@@ -58,7 +61,5 @@ def get_onboarding_info():
     """
     return {
         "message": "온보딩 페이지입니다",
-        "available_categories": [
-            "국내", "해외", "경제", "IT과학", "사회", "생활문화"
-        ]
+        "available_categories": CATEGORY_KO_LIST
     }
