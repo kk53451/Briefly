@@ -104,7 +104,7 @@ def generate_all_frequencies():
                     user_id="shared",
                     category=category_en,
                     date=date,
-                    expires_in_seconds=86400  # Presigned URL 24시간 유효
+                    expires_in_seconds=604800  # 🔧 Presigned URL 7일 유효 (24시간 → 7일)
                 )
                 logger.info(f"🔊 TTS Presigned URL 생성 완료")
             except Exception as e:

@@ -33,6 +33,7 @@ Resources:
           DDB_FREQ_TABLE: Frequencies
           DDB_USERS_TABLE: Users
           DDB_BOOKMARKS_TABLE: Bookmarks
+          S3_BUCKET: briefly-news-audio
       Policies:
         - AmazonDynamoDBFullAccess
         - AmazonS3FullAccess
@@ -65,6 +66,7 @@ Resources:
           DDB_FREQ_TABLE: Frequencies
           DDB_USERS_TABLE: Users
           DDB_BOOKMARKS_TABLE: Bookmarks
+          S3_BUCKET: briefly-news-audio
       Policies:
         - AmazonDynamoDBFullAccess
         - AmazonS3FullAccess
@@ -133,4 +135,4 @@ Resources:
         - AttributeName: user_id
           KeyType: HASH
         - AttributeName: news_id
-          KeyType: RANGE
+          KeyType: RANGE 

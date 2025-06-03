@@ -21,8 +21,9 @@ router = APIRouter(prefix="/api/news", tags=["News"])
 class BookmarkRequest(BaseModel):
     news_id: str
 
-# ✅ [GET] /api/news?category=xxx
+# ✅ [GET] /api/news?category=xxx (trailing slash 유무 모두 지원)
 @router.get("/")
+@router.get("")  # 🔧 trailing slash 없는 경로 추가
 def get_news(category: str = Query(..., description="뉴스 카테고리")):
     """
     특정 카테고리의 오늘 뉴스 목록 조회 (최대 10개)

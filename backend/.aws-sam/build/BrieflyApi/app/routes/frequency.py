@@ -1,8 +1,90 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from app.utils.jwt_service import get_current_user
-from app.utils.dynamo import get_frequency_by_category_and_date, get_frequency_history_by_categories
+from app.utils.dynamo import get_frequency_by_category_and_date, get_frequency_history_by_categories, save_frequency_summary
 from app.utils.date import get_today_kst
 from app.constants.category_map import CATEGORY_MAP
+import requests
+import boto3
+import os
+from urllib.parse import urlparse
+
+# S3 클라이언트 초기화
+s3 = boto3.client("s3")
+BUCKET_NAME = os.getenv("S3_BUCKET", "briefly-news-audio")
+
+def regenerate_presigned_url(audio_url: str, expires_in_seconds: int = 604800) -> str:
+    """
+    기존 S3 오브젝트에 대한 새로운 presigned URL 생성
+    """
+    try:
+        # URL에서 S3 객체 키 추출
+        parsed_url = urlparse(audio_url)
+        if "amazonaws.com" in parsed_url.netloc:
+            # https://bucket.s3.amazonaws.com/path 또는 https://s3.amazonaws.com/bucket/path 형식
+            if parsed_url.netloc.startswith(BUCKET_NAME):
+                object_key = parsed_url.path.lstrip('/')
+            else:
+                # s3.amazonaws.com/bucket/path 형식
+                path_parts = parsed_url.path.lstrip('/').split('/', 1)
+                if len(path_parts) > 1:
+                    object_key = path_parts[1]
+                else:
+                    return audio_url
+        else:
+            return audio_url
+            
+        # 새로운 presigned URL 생성
+        new_url = s3.generate_presigned_url(
+            ClientMethod="get_object",
+            Params={"Bucket": BUCKET_NAME, "Key": object_key},
+            ExpiresIn=expires_in_seconds
+        )
+        
+        return new_url
+        
+    except Exception as e:
+        print(f"⚠️ Presigned URL 재생성 실패: {str(e)}")
+        return audio_url
+
+def validate_and_refresh_audio_urls(frequencies: list) -> list:
+    """
+    주파수 목록의 오디오 URL들을 검증하고 필요시 새로운 presigned URL로 교체
+    """
+    updated_frequencies = []
+    
+    for freq in frequencies:
+        if not freq.get("audio_url"):
+            updated_frequencies.append(freq)
+            continue
+            
+        # URL 유효성 빠른 체크 (HEAD 요청)
+        try:
+            response = requests.head(freq["audio_url"], timeout=3)
+            if response.status_code == 200:
+                # URL이 유효함
+                updated_frequencies.append(freq)
+            else:
+                # URL이 만료됨, 새로운 presigned URL 생성
+                print(f"🔄 만료된 오디오 URL 재생성: {freq.get('frequency_id')}")
+                new_audio_url = regenerate_presigned_url(freq["audio_url"])
+                
+                # 업데이트된 정보로 주파수 데이터 수정
+                freq_copy = freq.copy()
+                freq_copy["audio_url"] = new_audio_url
+                
+                # DynamoDB 업데이트
+                save_frequency_summary(freq_copy)
+                updated_frequencies.append(freq_copy)
+                
+        except Exception as e:
+            # 네트워크 오류 등으로 검증 실패시 새로운 URL 생성 시도
+            print(f"⚠️ URL 검증 실패, 재생성 시도: {str(e)}")
+            new_audio_url = regenerate_presigned_url(freq["audio_url"])
+            freq_copy = freq.copy()
+            freq_copy["audio_url"] = new_audio_url
+            updated_frequencies.append(freq_copy)
+    
+    return updated_frequencies
 
 # ✅ /api/frequencies 엔드포인트 그룹
 router = APIRouter(prefix="/api/frequencies", tags=["Frequency"])
@@ -28,7 +110,10 @@ def get_frequencies(user: dict = Depends(get_current_user)):
             if item:
                 results.append(item)
 
-    return results
+    # 🔧 오디오 URL 유효성 검증 및 재생성
+    validated_results = validate_and_refresh_audio_urls(results)
+    
+    return validated_results
 
 # ✅ [GET] /api/frequencies/history
 @router.get("/history")
@@ -64,7 +149,12 @@ def get_frequency_history(
     past_history = [item for item in all_history if item.get("date") != today]
     
     # 제한 개수만 반환
-    return past_history[:limit]
+    limited_history = past_history[:limit]
+    
+    # 🔧 오디오 URL 유효성 검증 및 재생성
+    validated_history = validate_and_refresh_audio_urls(limited_history)
+    
+    return validated_history
 
 # ✅ [GET] /api/frequencies/{category}
 @router.get("/{category}")
