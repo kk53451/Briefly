@@ -158,6 +158,35 @@ def get_frequency_by_category_and_date(category: str, date: str):
     except ClientError as e:
         raise Exception(f"[Frequencies 조회 실패] {e.response['Error']['Message']}")
 
+def get_frequency_history_by_categories(categories: list, limit: int = 30):
+    """
+    사용자 관심 카테고리별 주파수 히스토리 조회 (최근 N일)
+    """
+    try:
+        all_frequencies = []
+        
+        # 각 카테고리별로 데이터 수집
+        for category in categories:
+            # category로 시작하는 모든 frequency_id를 조회 (category#YYYY-MM-DD 형태)
+            response = freq_table.scan(
+                FilterExpression="begins_with(frequency_id, :category)",
+                ExpressionAttributeValues={
+                    ":category": f"{category}#"
+                }
+            )
+            
+            items = response.get("Items", [])
+            all_frequencies.extend(items)
+        
+        # 날짜별로 정렬 (최신순)
+        all_frequencies.sort(key=lambda x: x.get("date", ""), reverse=True)
+        
+        # 제한 개수만 반환
+        return all_frequencies[:limit]
+        
+    except ClientError as e:
+        raise Exception(f"[Frequency History 조회 실패] {e.response['Error']['Message']}")
+
 # ============================================
 # 3. Users 관련 함수
 # ============================================
@@ -210,15 +239,35 @@ def add_bookmark(user_id: str, news_id: str):
 
 def get_user_bookmarks(user_id: str):
     """
-    user_id 기준으로 북마크 목록 조회
+    user_id 기준으로 북마크 목록 조회 및 뉴스 상세 정보 포함
     """
     try:
+        # 북마크 목록 조회
         response = bookmark_table.query(
             KeyConditionExpression="user_id = :uid",
             ExpressionAttributeValues={":uid": user_id},
             ScanIndexForward=False  # 최신 순 정렬
         )
-        return response.get("Items", [])
+        bookmark_items = response.get("Items", [])
+        
+        # 각 북마크에 대해 뉴스 상세 정보 조회
+        bookmarked_news = []
+        for bookmark in bookmark_items:
+            news_id = bookmark.get("news_id")
+            if news_id:
+                try:
+                    # 뉴스 상세 정보 조회
+                    news_response = news_table.get_item(Key={"news_id": news_id})
+                    news_item = news_response.get("Item")
+                    if news_item:
+                        # 북마크 시간 추가
+                        news_item["bookmarked_at"] = bookmark.get("bookmarked_at")
+                        bookmarked_news.append(news_item)
+                except ClientError as e:
+                    print(f"뉴스 상세 조회 실패 (news_id: {news_id}): {e}")
+                    continue
+        
+        return bookmarked_news
     except ClientError as e:
         raise Exception(f"[Bookmark 조회 실패] {e.response['Error']['Message']}")
 

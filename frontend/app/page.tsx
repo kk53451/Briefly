@@ -1,25 +1,63 @@
-"use client";
+import { Suspense } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TodayNews } from "@/components/today-news"
+import { MyFrequency } from "@/components/my-frequency"
+import { BookmarkedNews } from "@/components/bookmarked-news"
+import { History } from "@/components/history"
+import { UserProfile } from "@/components/user-profile"
+import { PageHeader } from "@/components/page-header"
+import { Loading } from "@/components/loading"
+import { RankingNews } from "@/components/ranking-news"
+import { redirect } from "next/navigation"
 
-export default function Home() {
-  const handleLogin = () => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (!baseUrl) {
-      alert("API URL이 설정되지 않았습니다.");
-      return;
-    }
-
-    const loginUrl = `${baseUrl}/api/auth/kakao/login`;
-    window.location.href = loginUrl;
-  };
+export default function HomePage() {
+  // 기본 페이지는 랭킹 페이지로 리다이렉트
+  redirect("/ranking")
 
   return (
-    <main className="flex h-screen items-center justify-center">
-      <button
-        onClick={handleLogin}
-        className="px-4 py-2 bg-yellow-400 rounded text-black font-semibold"
-      >
-        카카오 로그인
-      </button>
-    </main>
-  );
+    <div className="flex flex-col min-h-screen bg-background">
+      <PageHeader />
+      <main className="flex-1 container max-w-5xl mx-auto px-4 py-6">
+        <Tabs defaultValue="ranking" className="w-full">
+          <TabsList className="grid grid-cols-5 mb-8">
+            <TabsTrigger value="ranking">랭킹</TabsTrigger>
+            <TabsTrigger value="today">오늘의 뉴스</TabsTrigger>
+            <TabsTrigger value="frequency">내 주파수</TabsTrigger>
+            <TabsTrigger value="bookmarks">북마크</TabsTrigger>
+            <TabsTrigger value="profile">프로필</TabsTrigger>
+          </TabsList>
+          <TabsContent value="ranking">
+            <Suspense fallback={<Loading />}>
+              <RankingNews />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="today">
+            <Suspense fallback={<Loading />}>
+              <TodayNews />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="frequency">
+            <Suspense fallback={<Loading />}>
+              <MyFrequency />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="bookmarks">
+            <Suspense fallback={<Loading />}>
+              <BookmarkedNews />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="history">
+            <Suspense fallback={<Loading />}>
+              <History />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="profile">
+            <Suspense fallback={<Loading />}>
+              <UserProfile />
+            </Suspense>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  )
 }

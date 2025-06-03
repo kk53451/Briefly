@@ -1,14 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.utils.jwt_service import get_current_user
 from app.utils.dynamo import get_user, save_user
+from app.constants.category_map import CATEGORY_KO_LIST
 
 # ✅ 카테고리 관련 라우터 설정 (prefix: /api)
 router = APIRouter(prefix="/api", tags=["Categories"])
-
-# ✅ 프론트에 제공할 전체 카테고리 고정 리스트
-ALL_CATEGORIES = [
-    "정치", "경제", "사회", "생활/문화", "IT/과학", "세계", "스포츠", "연예"
-]
 
 # ✅ [GET] /api/categories
 @router.get("/categories")
@@ -17,7 +13,7 @@ def get_all_categories():
     전체 카테고리 목록을 반환합니다.
     - 프론트 온보딩/프로필 설정 페이지에서 사용
     """
-    return {"categories": ALL_CATEGORIES}
+    return {"categories": CATEGORY_KO_LIST}
 
 # ✅ [GET] /api/user/categories
 @router.get("/user/categories")
@@ -41,6 +37,14 @@ def update_user_categories(data: dict, user: dict = Depends(get_current_user)):
     selected = data.get("interests", [])
     if not isinstance(selected, list):
         raise HTTPException(status_code=400, detail="interests는 리스트여야 합니다")
+    
+    # 유효한 카테고리인지 검증
+    invalid_categories = [cat for cat in selected if cat not in CATEGORY_KO_LIST]
+    if invalid_categories:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"지원하지 않는 카테고리입니다: {invalid_categories}"
+        )
 
     user["interests"] = selected
     save_user(user)

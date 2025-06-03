@@ -22421,6 +22421,7 @@
           "ap-southeast-3" : { },
           "ap-southeast-4" : { },
           "ca-central-1" : { },
+          "ca-west-1" : { },
           "eu-central-1" : { },
           "eu-central-2" : { },
           "eu-north-1" : { },
@@ -37789,6 +37790,11 @@
           "us-isob-east-1" : { }
         }
       },
+      "athena" : {
+        "endpoints" : {
+          "us-isob-east-1" : { }
+        }
+      },
       "autoscaling" : {
         "defaults" : {
           "protocols" : [ "http", "https" ]
@@ -38134,6 +38140,11 @@
             "deprecated" : true,
             "hostname" : "kms-fips.us-isob-east-1.sc2s.sgov.gov"
           }
+        }
+      },
+      "lakeformation" : {
+        "endpoints" : {
+          "us-isob-east-1" : { }
         }
       },
       "lambda" : {
@@ -38880,6 +38891,11 @@
               "tags" : [ "dualstack" ]
             } ]
           }
+        }
+      },
+      "license-manager" : {
+        "endpoints" : {
+          "eu-isoe-west-1" : { }
         }
       },
       "logs" : {

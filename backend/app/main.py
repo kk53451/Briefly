@@ -44,3 +44,18 @@ handler = Mangum(app)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Briefly API"}
+
+# ✅ 온보딩 페이지 엔드포인트 (프론트엔드 요청 대응)
+@app.get("/onboarding")
+def get_onboarding_info():
+    """
+    온보딩 페이지 정보 제공 (인증 불필요)
+    
+    - 프론트엔드에서 /onboarding 경로 요청 시 응답
+    """
+    return {
+        "message": "온보딩 페이지입니다",
+        "available_categories": [
+            "국내", "해외", "경제", "IT과학", "사회", "생활문화"
+        ]
+    }

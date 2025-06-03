@@ -123,6 +123,22 @@ def onboarding_status(user: dict = Depends(get_current_user)):
     """
     return {"onboarded": user.get("onboarding_completed", False)}
 
+# ✅ [GET] /onboarding - 프론트엔드 요청 대응
+@router.get("/onboarding")
+def get_onboarding_page(user: dict = Depends(get_current_user)):
+    """
+    온보딩 페이지 정보 제공
+
+    - 온보딩 완료 여부와 사용자 기본 정보 반환
+    - 사용 예시: 프론트엔드에서 /onboarding 페이지 진입 시
+    """
+    return {
+        "user_id": user["user_id"],
+        "nickname": user.get("nickname", ""),
+        "onboarding_completed": user.get("onboarding_completed", False),
+        "interests": user.get("interests", [])
+    }
+
 # 🔒 [GET] /api/user/news
 @router.get("/news")
 def get_my_news(user: dict = Depends(get_current_user)):
