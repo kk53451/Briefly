@@ -142,7 +142,7 @@ def collect_today_news():
 
     # 🚀 병렬 처리: ThreadPoolExecutor 사용
     results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=7) as executor:  # 7개 카테고리 모두 동시 처리
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:  # 6개 카테고리 모두 동시 처리
         # 각 카테고리를 병렬로 처리하는 Future 객체 생성
         future_to_category = {
             executor.submit(collect_category_news, category_ko, config, start_time, end_time, date_str): category_ko 

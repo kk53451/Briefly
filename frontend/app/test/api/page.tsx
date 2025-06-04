@@ -33,55 +33,174 @@ export default function ApiTestPage() {
 
   const publicEndpoints = [
     {
-      name: "카테고리 목록",
+      name: "루트 헬스체크",
+      path: "/",
+      method: "GET",
+      description: "API 서버 상태 확인",
+    },
+    {
+      name: "온보딩 페이지 정보",
+      path: "/onboarding",
+      method: "GET",
+      description: "온보딩 페이지 정보 제공 (인증 불필요)",
+    },
+    {
+      name: "전체 카테고리 목록",
       path: "/api/categories",
       method: "GET",
       description: "사용 가능한 뉴스 카테고리 목록 조회",
     },
-    { name: "오늘의 뉴스", path: "/api/news/today", method: "GET", description: "모든 카테고리의 오늘 뉴스 조회" },
+    { 
+      name: "오늘의 뉴스 그룹핑", 
+      path: "/api/news/today", 
+      method: "GET", 
+      description: "오늘의 뉴스를 카테고리별로 그룹핑하여 반환" 
+    },
     {
-      name: "카테고리별 뉴스",
+      name: "카테고리별 뉴스 조회",
       path: "/api/news?category=경제",
       method: "GET",
-      description: "특정 카테고리의 뉴스 조회",
+      description: "특정 카테고리의 뉴스 조회 (정치, 경제, 사회, 생활/문화, IT/과학, 연예, 전체)",
     },
-    { name: "뉴스 상세", path: "/api/news/news-id-example", method: "GET", description: "특정 뉴스의 상세 정보 조회" },
+    {
+      name: "전체 뉴스 조회",
+      path: "/api/news?category=전체",
+      method: "GET",
+      description: "모든 카테고리 뉴스를 균등하게 섞어서 반환",
+    },
+    { 
+      name: "뉴스 상세 조회", 
+      path: "/api/news/news-id-example", 
+      method: "GET", 
+      description: "개별 뉴스 카드 상세 내용 조회" 
+    },
   ]
 
   const authEndpoints = [
-    { name: "현재 사용자", path: "/api/auth/me", method: "GET", description: "현재 로그인한 사용자 정보 조회" },
-    { name: "사용자 프로필", path: "/api/user/profile", method: "GET", description: "사용자 프로필 정보 조회" },
-    { name: "사용자 카테고리", path: "/api/user/categories", method: "GET", description: "사용자 관심 카테고리 조회" },
+    // 인증 API
+    { 
+      name: "카카오 로그인 시작", 
+      path: "/api/auth/kakao/login", 
+      method: "GET", 
+      description: "카카오 OAuth 로그인 페이지로 리다이렉트" 
+    },
+    { 
+      name: "내 정보 조회", 
+      path: "/api/auth/me", 
+      method: "GET", 
+      description: "현재 로그인한 사용자 정보 조회" 
+    },
+    { 
+      name: "로그아웃", 
+      path: "/api/auth/logout", 
+      method: "POST", 
+      description: "로그아웃 처리" 
+    },
+    
+    // 사용자 API
+    { 
+      name: "프로필 조회", 
+      path: "/api/user/profile", 
+      method: "GET", 
+      description: "로그인한 사용자의 프로필 정보 조회" 
+    },
     {
-      name: "카테고리 업데이트",
+      name: "프로필 수정",
+      path: "/api/user/profile",
+      method: "PUT",
+      description: "사용자 프로필 정보 수정 (nickname, default_length, profile_image)",
+      body: '{"nickname": "새닉네임", "default_length": 5}',
+    },
+    { 
+      name: "북마크 목록 조회", 
+      path: "/api/user/bookmarks", 
+      method: "GET", 
+      description: "사용자가 북마크한 뉴스 목록 조회" 
+    },
+    { 
+      name: "내 주파수 조회", 
+      path: "/api/user/frequencies", 
+      method: "GET", 
+      description: "사용자의 관심 카테고리별 공유 주파수 요약 조회 (오늘 날짜 기준)" 
+    },
+    { 
+      name: "관심 카테고리 조회", 
+      path: "/api/user/categories", 
+      method: "GET", 
+      description: "사용자의 관심 카테고리 목록 조회" 
+    },
+    {
+      name: "관심 카테고리 수정",
       path: "/api/user/categories",
       method: "PUT",
-      description: "사용자 관심 카테고리 업데이트",
-      body: '{"interests": ["정치", "경제"]}',
+      description: "사용자의 관심 카테고리 목록 수정",
+      body: '{"interests": ["정치", "경제", "IT/과학"]}',
     },
-    { name: "사용자 주파수", path: "/api/frequencies", method: "GET", description: "사용자 오늘 주파수 목록 조회" },
-    { name: "주파수 히스토리", path: "/api/frequencies/history", method: "GET", description: "사용자 주파수 히스토리 조회" },
-    { name: "북마크 목록", path: "/api/user/bookmarks", method: "GET", description: "사용자 북마크 목록 조회" },
+    { 
+      name: "온보딩 완료", 
+      path: "/api/user/onboarding", 
+      method: "POST", 
+      description: "온보딩 완료 처리" 
+    },
     {
-      name: "뉴스 북마크",
+      name: "온보딩 상태 확인",
+      path: "/api/user/onboarding/status",
+      method: "GET",
+      description: "온보딩 완료 여부 확인",
+    },
+    { 
+      name: "온보딩 페이지 정보 (인증)", 
+      path: "/api/user/onboarding", 
+      method: "GET", 
+      description: "온보딩 페이지 정보 제공 (인증 필요)" 
+    },
+    { 
+      name: "내 뉴스 (미구현)", 
+      path: "/api/user/news", 
+      method: "GET", 
+      description: "사용자가 읽은 뉴스 기록 (현재 미구현)" 
+    },
+
+    // 뉴스 API
+    {
+      name: "뉴스 북마크 추가",
       path: "/api/news/bookmark",
       method: "POST",
       description: "뉴스 북마크 추가",
       body: '{"news_id": "news-id-example"}',
     },
     {
-      name: "북마크 삭제",
+      name: "뉴스 북마크 삭제",
       path: "/api/news/bookmark/news-id-example",
       method: "DELETE",
       description: "뉴스 북마크 삭제",
     },
-    {
-      name: "온보딩 상태",
-      path: "/api/user/onboarding/status",
-      method: "GET",
-      description: "사용자 온보딩 완료 상태 조회",
+
+    // 주파수 API
+    { 
+      name: "내 주파수 목록", 
+      path: "/api/frequencies", 
+      method: "GET", 
+      description: "사용자의 관심 카테고리별 공유 주파수 목록 (오늘 날짜 기준)" 
     },
-    { name: "온보딩 완료", path: "/api/user/onboarding", method: "POST", description: "사용자 온보딩 완료 처리" },
+    { 
+      name: "주파수 히스토리", 
+      path: "/api/frequencies/history", 
+      method: "GET", 
+      description: "사용자의 관심 카테고리별 주파수 히스토리 (과거 데이터)" 
+    },
+    {
+      name: "주파수 히스토리 (제한)",
+      path: "/api/frequencies/history?limit=10",
+      method: "GET",
+      description: "주파수 히스토리 조회 (개수 제한)",
+    },
+    { 
+      name: "카테고리별 주파수 상세", 
+      path: "/api/frequencies/정치", 
+      method: "GET", 
+      description: "특정 카테고리의 주파수 상세 정보 조회" 
+    },
   ]
 
   const handleEndpointSelect = (path: string, selectedMethod = "GET", body?: string) => {
@@ -163,7 +282,9 @@ export default function ApiTestPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Briefly API 테스트</h1>
-          <p className="text-muted-foreground mt-2">팀원들을 위한 API 엔드포인트 테스트 도구</p>
+          <p className="text-muted-foreground mt-2">
+            총 26개 엔드포인트 | 실제 구현된 API만 포함 | 최신 업데이트: 2025-01-27
+          </p>
         </div>
         <Button variant="outline" onClick={() => window.open("/", "_blank")}>
           <ExternalLink className="h-4 w-4 mr-2" />
@@ -282,7 +403,7 @@ export default function ApiTestPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>공개 엔드포인트 (인증 불필요)</CardTitle>
+                <CardTitle>공개 엔드포인트 ({publicEndpoints.length}개) - 인증 불필요</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-3">
@@ -306,13 +427,13 @@ export default function ApiTestPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>인증 필요 엔드포인트</CardTitle>
+                <CardTitle>인증 필요 엔드포인트 ({authEndpoints.length}개) - JWT 토큰 필수</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-3">
-                  {authEndpoints.map((ep) => (
+                  {authEndpoints.map((ep, index) => (
                     <div
-                      key={`${ep.method}-${ep.path}`}
+                      key={`${ep.method}-${ep.path}-${index}`}
                       className="flex items-center justify-between p-3 border rounded-md"
                     >
                       <div className="flex-1">

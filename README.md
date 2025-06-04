@@ -310,42 +310,36 @@ flowchart LR
 | `GET` | `/api/user/categories` | 관심 카테고리 조회 | ✅ | Category List |
 | `PUT` | `/api/user/categories` | 관심 카테고리 수정 | ✅ | Success Message |
 | `POST` | `/api/user/onboarding` | 온보딩 완료 | ✅ | Success Message |
+| `GET` | `/api/user/onboarding/status` | 온보딩 상태 확인 | ✅ | Onboarding Status |
 | `GET` | `/api/user/bookmarks` | 내 북마크 목록 | ✅ | Bookmarked News |
+| `GET` | `/api/user/frequencies` | 내 주파수 목록 | ✅ | User Frequencies |
 
 ### 📰 **뉴스 (News)**
 | HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
 |------|------------|------|------|------|
-| `GET` | `/api/news?category={category}&date={date}` | 카테고리별 뉴스 | ❌ | News List |
+| `GET` | `/api/news?category={category}` | 카테고리별 뉴스 | ❌ | News List |
 | `GET` | `/api/news/{news_id}` | 뉴스 상세 조회 | ❌ | News Detail |
-| `GET` | `/api/news/today/grouped` | 오늘의 카테고리별 뉴스 | ❌ | Grouped News |
-| `GET` | `/api/news/trending` | 인기 뉴스 | ❌ | Popular News |
-| `GET` | `/api/news/search?q={query}` | 뉴스 검색 | ❌ | Search Results |
-| `POST` | `/api/news/{news_id}/bookmark` | 북마크 추가 | ✅ | Success Message |
-| `DELETE` | `/api/news/{news_id}/bookmark` | 북마크 제거 | ✅ | Success Message |
+| `GET` | `/api/news/today` | 오늘의 카테고리별 뉴스 | ❌ | Grouped News |
+| `POST` | `/api/news/bookmark` | 북마크 추가 | ✅ | Success Message |
+| `DELETE` | `/api/news/bookmark/{news_id}` | 북마크 제거 | ✅ | Success Message |
 
 ### 🎙️ **주파수/팟캐스트 (Frequency)**
 | HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
 |------|------------|------|------|------|
-| `GET` | `/api/frequency/today` | 오늘의 주파수 (전체) | ❌ | All Frequencies |
-| `GET` | `/api/frequency/my` | 내 관심 주파수 | ✅ | Personal Frequencies |
-| `GET` | `/api/frequency/{frequency_id}` | 주파수 상세 정보 | ❌ | Frequency Detail |
-| `GET` | `/api/frequency/{frequency_id}/audio` | 음성 파일 URL | ❌ | Audio Stream URL |
-| `GET` | `/api/frequency/history` | 주파수 히스토리 | ✅ | History List |
-| `POST` | `/api/frequency/{frequency_id}/play` | 재생 기록 | ✅ | Play Record |
+| `GET` | `/api/frequencies` | 내 관심 주파수 | ✅ | Personal Frequencies |
+| `GET` | `/api/frequencies/history` | 주파수 히스토리 | ✅ | History List |
+| `GET` | `/api/frequencies/{category}` | 특정 카테고리 주파수 | ✅ | Frequency Detail |
 
 ### 🏷️ **카테고리 (Category)**
 | HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
 |------|------------|------|------|------|
 | `GET` | `/api/categories` | 전체 카테고리 목록 | ❌ | Category List |
-| `GET` | `/onboarding` | 온보딩 카테고리 정보 | ❌ | Available Categories |
 
-### 🔧 **관리자 (Admin)**
+### 🌐 **기본 엔드포인트**
 | HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
 |------|------------|------|------|------|
-| `POST` | `/api/admin/news/collect` | 수동 뉴스 수집 | 🔑 | Collection Status |
-| `POST` | `/api/admin/frequency/generate` | 주파수 수동 생성 | 🔑 | Generation Status |
-| `GET` | `/api/admin/stats` | 시스템 통계 | 🔑 | System Metrics |
-| `GET` | `/api/admin/health` | 헬스체크 | ❌ | Health Status |
+| `GET` | `/` | API 루트 헬스체크 | ❌ | Welcome Message |
+| `GET` | `/onboarding` | 온보딩 페이지 정보 | ❌ | Available Categories |
 
 ---
 
@@ -432,7 +426,7 @@ def optimize_script_length(content):
 ✅ test_clustering.py          - 이중 클러스터링 알고리즘  
 ✅ test_content_extraction.py  - 본문 추출 및 노이즈 제거
 ✅ test_collection_simulation.py - 뉴스 수집 시뮬레이션
-✅ test_utils.py              - 유틸리티 함수 (해외 섹션 제거)
+✅ test_utils.py              - 유틸리티 함수
 ✅ test_tts_service.py        - TTS 음성 변환 서비스
 
 📊 성공률: 100% (6/6)
@@ -499,7 +493,7 @@ npm install
 # AI 서비스
 OPENAI_API_KEY=sk-proj-your-openai-key
 ELEVENLABS_API_KEY=sk_your-elevenlabs-key
-ELEVENLABS_VOICE_ID=TX3LPaxmHKxFdv7VOQHJ
+ELEVENLABS_VOICE_ID=your_elevenlabs-voice-id
 
 # 뉴스 수집
 DEEPSEARCH_API_KEY=your-deepsearch-key
@@ -663,34 +657,6 @@ aws events list-rules --name-prefix daily-briefly
 
 ---
 
-## 🤝 기여하기
-
-### 📝 **기여 가이드라인**
-
-1. **Fork** the Project
-2. **Create** your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. **Commit** your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** to the Branch (`git push origin feature/AmazingFeature`)
-5. **Open** a Pull Request
-
-### 🔍 **코드 리뷰 기준**
-
-- ✅ **코드 품질**: ESLint, Prettier, mypy 통과
-- ✅ **테스트 커버리지**: 신규 기능 테스트 코드 포함
-- ✅ **문서화**: README 및 API 문서 업데이트
-- ✅ **성능**: 응답시간 및 리소스 사용량 최적화
-
-### 🐛 **버그 리포트**
-
-GitHub Issues를 통해 버그 리포트를 제출해주세요:
-- **환경 정보**: OS, 브라우저, 버전
-- **재현 단계**: 단계별 상세 설명
-- **예상 결과**: 기대했던 동작
-- **실제 결과**: 실제 발생한 현상
-- **스크린샷**: 가능한 경우 첨부
-
----
-
 ## 📞 문의 및 지원
 
 ### 👥 **개발팀**
@@ -700,9 +666,7 @@ GitHub Issues를 통해 버그 리포트를 제출해주세요:
 - **DevOps**: AWS 인프라 관리
 
 ### 📧 **연락처**
-- **이메일**: tech@briefly.com
-- **GitHub Issues**: [프로젝트 이슈 페이지](https://github.com/your-repo/Briefly/issues)
-- **Discord**: [개발자 커뮤니티](https://discord.gg/briefly)
+- **이메일**: gnb0804@gmail.com
 
 ### 🔗 **관련 링크**
 - **라이브 데모**: [https://briefly.app](https://briefly.app)
@@ -728,15 +692,5 @@ Briefly 프로젝트는 다음 오픈소스 프로젝트들의 도움으로 개�
 - **AWS**: 안정적인 클라우드 인프라
 - **shadcn/ui**: 아름다운 UI 컴포넌트 라이브러리
 
-**Built with ❤️ by Briefly Team**
 
 ---
-
-<div align="center">
-
-### 🎉 **Briefly와 함께 스마트한 뉴스 소비를 시작하세요!**
-
-[![Try Briefly](https://img.shields.io/badge/Try%20Briefly-Live%20Demo-blue?style=for-the-badge)](https://briefly.app)
-[![Documentation](https://img.shields.io/badge/Read%20Docs-API%20Guide-green?style=for-the-badge)](https://api.briefly.app/docs)
-
-</div> 

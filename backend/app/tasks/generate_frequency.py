@@ -189,7 +189,7 @@ def generate_all_frequencies():
 
     # 🚀 병렬 처리: ThreadPoolExecutor 사용
     results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:  # 5개 동시 처리
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:  # 6개 카테고리 동시 처리
         # 각 카테고리를 병렬로 처리하는 Future 객체 생성
         future_to_category = {
             executor.submit(process_single_category, category_ko, date): category_ko 
