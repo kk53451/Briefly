@@ -6,7 +6,7 @@ import numpy as np   # 임베딩 계산용
 import logging
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")  # 🔧 환경변수로 모델 설정 가능
+MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")  # 환경변수로 모델 설정 가능
 
 logger = logging.getLogger(__name__)
 
@@ -56,13 +56,13 @@ def cluster_similar_texts(texts, threshold=0.75):
         return [texts]
     
     try:
-        logger.info(f"🔄 {len(texts)}개 텍스트 클러스터링 시작...")
+        logger.info(f"{len(texts)}개 텍스트 클러스터링 시작...")
         embeddings = []
         
         # 임베딩 생성 (실패한 것들은 제외)
         valid_texts = []
         for i, text in enumerate(texts):
-            emb = get_embedding(text[:1000])  # 🔧 토큰 제한: 1500자 → 1000자
+            emb = get_embedding(text[:1000])  # 토큰 제한: 1500자에서 1000자로 단축
             if emb:
                 embeddings.append(emb)
                 valid_texts.append(text)
@@ -83,7 +83,7 @@ def cluster_similar_texts(texts, threshold=0.75):
         
         # 클러스터별로 텍스트 그룹화
         grouped = [[valid_texts[i] for i in c['indices']] for c in clusters]
-        logger.info(f"✅ {len(texts)}개 → {len(grouped)}개 클러스터로 그룹화")
+        logger.info(f"{len(texts)}개 텍스트를 {len(grouped)}개 클러스터로 그룹화 완료")
         return grouped
         
     except MemoryError as e:
@@ -103,7 +103,7 @@ def summarize_group(texts: list, category: str) -> str:
     if len(texts) == 1:
         return texts[0]
     
-    # 🔧 토큰 최적화: 각 텍스트 길이 제한
+    # 토큰 최적화를 위해 각 텍스트 길이 제한
     limited_texts = [text[:800] for text in texts]  # 각 기사 800자로 제한
         
     prompt = (
@@ -115,10 +115,10 @@ def summarize_group(texts: list, category: str) -> str:
     
     try:
         response = openai.chat.completions.create(
-            model=MODEL_NAME,  # 🔧 환경변수 모델 사용
+            model=MODEL_NAME,  # 환경변수 모델 사용
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
-            max_tokens=700  # 🔧 토큰 제한: 900 → 700
+            max_tokens=700  # 토큰 제한: 900에서 700으로 단축
         )
         return response.choices[0].message.content.strip()
     except openai.RateLimitError as e:
@@ -140,10 +140,10 @@ def summarize_articles(texts: list[str], category: str) -> str:
     하나의 흐름을 가진 팟캐스트 대본을 생성합니다.
     """
     
-    # 🔄 [2차 클러스터링] GPT 요약문 기반 의미적 중복 제거
+    # 2차 클러스터링: GPT 요약문 기반 의미적 중복 제거
     try:
         if len(texts) > 5:  # 5개 이상일 때만 클러스터링 적용
-            logger.info(f"🔄 2차 클러스터링 시작: {len(texts)}개 요약문")
+            logger.info(f"2차 클러스터링 시작: {len(texts)}개 요약문")
             clustered_groups = cluster_similar_texts(texts, threshold=0.75)
             
             # 각 클러스터를 하나의 요약으로 통합
@@ -154,27 +154,27 @@ def summarize_articles(texts: list[str], category: str) -> str:
                     try:
                         summary = summarize_group(group, category)
                         consolidated_texts.append(summary)
-                        logger.info(f"📊 2차 그룹 #{group_idx+1}: {len(group)}개 요약 → 통합 ({len(summary)}자)")
+                        logger.info(f"2차 그룹 #{group_idx+1}: {len(group)}개 요약을 통합 ({len(summary)}자)")
                     except Exception as e:
                         logger.warning(f"⚠️ 2차 그룹 #{group_idx+1} 요약 실패, 첫 번째 사용: {e}")
-                        consolidated_texts.append(group[0][:1000])  # 🔧 길이 제한
+                        consolidated_texts.append(group[0][:1000])  # 길이 제한
                 else:
                     # 단일 요약은 그대로 사용 (길이 제한)
-                    consolidated_texts.append(group[0][:1000])  # 🔧 단일 기사도 1000자로 제한
-                    logger.info(f"📄 2차 그룹 #{group_idx+1}: 단일 요약 ({len(group[0][:1000])}자)")
+                    consolidated_texts.append(group[0][:1000])  # 단일 기사도 1000자로 제한
+                    logger.info(f"2차 그룹 #{group_idx+1}: 단일 요약 ({len(group[0][:1000])}자)")
             
             final_texts = consolidated_texts
-            logger.info(f"✅ 2차 클러스터링 완료: {len(texts)}개 → {len(final_texts)}개 그룹")
+            logger.info(f"2차 클러스터링 완료: {len(texts)}개를 {len(final_texts)}개 그룹으로 축소")
         else:
-            # 🔧 클러스터링 안할 때도 길이 제한
+            # 클러스터링 안할 때도 길이 제한
             final_texts = [text[:1000] for text in texts]
-            logger.info(f"📝 2차 클러스터링 생략, 원본 요약 수: {len(final_texts)}")
+            logger.info(f"2차 클러스터링 생략, 원본 요약 수: {len(final_texts)}")
             
     except Exception as e:
         logger.warning(f"⚠️ 2차 클러스터링 과정 실패, 원본 사용: {e}")
-        final_texts = [text[:1000] for text in texts]  # 🔧 실패시에도 길이 제한
+        final_texts = [text[:1000] for text in texts]  # 실패시에도 길이 제한
 
-    # 🎙️ 최종 팟캐스트 대본 생성
+    # 최종 팟캐스트 대본 생성
     prompt = (
         f"당신은 지적이면서도 친근한 말투로 정보를 전달하는 프로 팟캐스트 진행자입니다. "
         f"청취자는 '{category}' 분야에 관심은 있지만 전문가는 아닌 일반 대중입니다.\n\n"
@@ -205,14 +205,14 @@ def summarize_articles(texts: list[str], category: str) -> str:
 
     try:
         response = openai.chat.completions.create(
-            model=MODEL_NAME,  # 🔧 환경변수 모델 사용
+            model=MODEL_NAME,  # 환경변수 모델 사용
             messages=[{"role": "user", "content": context}],
             temperature=0.7,
-            max_tokens=2000  # 🔧 토큰 제한: 2200 → 2000
+            max_tokens=2000  # 토큰 제한: 2200에서 2000으로 단축
         )
         
         result = response.choices[0].message.content.strip()
-        logger.info(f"📏 생성된 대본 길이: {len(result)}자 (모델: {MODEL_NAME})")  # 🔧 사용 모델 로그 추가
+        logger.info(f"생성된 대본 길이: {len(result)}자 (모델: {MODEL_NAME})")  # 사용 모델 로그 추가
         return result
         
     except openai.RateLimitError as e:

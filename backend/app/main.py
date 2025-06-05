@@ -24,7 +24,7 @@ from app.constants.category_map import CATEGORY_KO_LIST
 # ✅ FastAPI 인스턴스 생성
 app = FastAPI(
     title="Briefly API",
-    redirect_slashes=False  # 🔧 trailing slash 자동 리다이렉트 방지
+    redirect_slashes=False  # trailing slash 자동 리다이렉트 방지
 )
 
 # ✅ 라우터 등록

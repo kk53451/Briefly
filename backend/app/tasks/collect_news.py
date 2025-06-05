@@ -140,7 +140,7 @@ def collect_today_news():
     logger.info(f"📅 수집 범위: {start_time} ~ {end_time}")
     logger.info(f"📋 카테고리 목록: {list(CATEGORY_MAP.keys())}")
 
-    # 🚀 병렬 처리: ThreadPoolExecutor 사용
+    # 병렬 처리: ThreadPoolExecutor 사용
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:  # 6개 카테고리 모두 동시 처리
         # 각 카테고리를 병렬로 처리하는 Future 객체 생성
@@ -170,7 +170,7 @@ def collect_today_news():
                     "saved_count": 0
                 })
 
-    # 📊 전체 결과 요약
+    # 전체 결과 요약
     total_elapsed_time = time.time() - total_start_time
     success_count = sum(1 for r in results if r["status"] == "success")
     failed_count = sum(1 for r in results if r["status"] == "failed")

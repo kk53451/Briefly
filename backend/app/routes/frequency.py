@@ -110,7 +110,7 @@ def get_frequencies(user: dict = Depends(get_current_user)):
             if item:
                 results.append(item)
 
-    # 🔧 오디오 URL 유효성 검증 및 재생성
+    # 오디오 URL 유효성 검증 및 재생성
     validated_results = validate_and_refresh_audio_urls(results)
     
     return validated_results
@@ -151,7 +151,7 @@ def get_frequency_history(
     # 제한 개수만 반환
     limited_history = past_history[:limit]
     
-    # 🔧 오디오 URL 유효성 검증 및 재생성
+    # 오디오 URL 유효성 검증 및 재생성
     validated_history = validate_and_refresh_audio_urls(limited_history)
     
     return validated_history

@@ -48,7 +48,7 @@ def simulate_news_collection():
             print(f"⚠️ #{processed_count} 본문 길이 부족 → 스킵")
             continue
 
-        # 🔧 토큰 최적화: 1500자로 단축
+        # 토큰 최적화: 1500자로 단축
         trimmed = content[:1500]
         full_contents.append(trimmed)
         print(f"✅ #{len(full_contents)} 본문 사용 완료 ({len(trimmed)}자)")
