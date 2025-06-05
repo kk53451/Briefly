@@ -1,6 +1,5 @@
 import { Suspense } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { TodayNews } from "@/components/today-news"
 import { MyFrequency } from "@/components/my-frequency"
 import { BookmarkedNews } from "@/components/bookmarked-news"
 import { History } from "@/components/history"
@@ -33,7 +32,7 @@ export default function HomePage() {
           </TabsContent>
           <TabsContent value="today">
             <Suspense fallback={<Loading />}>
-              <TodayNews />
+              <div>오늘의 뉴스는 /today 페이지를 이용해주세요.</div>
             </Suspense>
           </TabsContent>
           <TabsContent value="frequency">
