@@ -139,12 +139,4 @@ def get_onboarding_page(user: dict = Depends(get_current_user)):
         "interests": user.get("interests", [])
     }
 
-# 🔒 [GET] /api/user/news
-@router.get("/news")
-def get_my_news(user: dict = Depends(get_current_user)):
-    """
-    (확장 예정) 사용자가 읽은 뉴스 기록 반환
 
-    - 현재는 미구현
-    """
-    return {"message": "조회한 뉴스 기록 API (예정)"}

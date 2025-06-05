@@ -154,12 +154,7 @@ export default function ApiTestPage() {
       method: "GET", 
       description: "온보딩 페이지 정보 제공 (인증 필요)" 
     },
-    { 
-      name: "내 뉴스 (미구현)", 
-      path: "/api/user/news", 
-      method: "GET", 
-      description: "사용자가 읽은 뉴스 기록 (현재 미구현)" 
-    },
+
 
     // 뉴스 API
     {

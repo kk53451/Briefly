@@ -208,23 +208,25 @@ voice_settings = {
 | `GET` | `/categories` | 관심 카테고리 조회 |
 | `PUT` | `/categories` | 관심 카테고리 수정 |
 | `POST` | `/onboarding` | 온보딩 완료 |
+| `GET` | `/onboarding/status` | 온보딩 상태 확인 |
 | `GET` | `/bookmarks` | 북마크 목록 |
+| `GET` | `/frequencies` | 내 주파수 목록 |
 
 ### 뉴스 `/api/news`
 | 메서드 | 엔드포인트 | 설명 |
 |--------|------------|------|
 | `GET` | `/?category={category}` | 카테고리별 뉴스 |
 | `GET` | `/{news_id}` | 뉴스 상세 |
-| `GET` | `/today/grouped` | 오늘의 카테고리별 뉴스 |
-| `POST` | `/{news_id}/bookmark` | 북마크 추가 |
-| `DELETE` | `/{news_id}/bookmark` | 북마크 제거 |
+| `GET` | `/today` | 오늘의 카테고리별 뉴스 |
+| `POST` | `/bookmark` | 북마크 추가 |
+| `DELETE` | `/bookmark/{news_id}` | 북마크 제거 |
 
-### 주파수 `/api/frequency`
+### 주파수 `/api/frequencies`
 | 메서드 | 엔드포인트 | 설명 |
 |--------|------------|------|
-| `GET` | `/today` | 오늘의 주파수 |
-| `GET` | `/my` | 내 관심 카테고리 주파수 |
+| `GET` | `/` | 내 관심 카테고리 주파수 |
 | `GET` | `/history` | 주파수 히스토리 |
+| `GET` | `/{category}` | 특정 카테고리 주파수 상세 |
 
 ### 카테고리 `/api/categories`
 | 메서드 | 엔드포인트 | 설명 |

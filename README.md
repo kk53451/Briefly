@@ -573,10 +573,10 @@ AWS 인프라:
 
 | API 엔드포인트 | 평균 응답시간 | 최적화 기법 |
 |----------------|---------------|-------------|
-| `GET /api/news` | 300ms | DynamoDB GSI 활용 |
+| `GET /api/news` | 300ms | DynamoDB 인덱싱 활용 |
 | `GET /api/news/{id}` | 150ms | 단일 키 조회 |
-| `GET /api/frequency/my` | 200ms | 사용자별 캐싱 |
-| `GET /api/frequency/{id}/audio` | <100ms | S3 Presigned URL |
+| `GET /api/frequencies` | 200ms | 사용자별 캐싱 |
+| `GET /api/frequencies/{category}` | <100ms | S3 Presigned URL |
 
 ---
 
