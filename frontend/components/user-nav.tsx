@@ -43,7 +43,6 @@ export function UserNav({ user, onLogout }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => router.push("/profile")}>프로필</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push("/profile/categories")}>카테고리 설정</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onLogout}>로그아웃</DropdownMenuItem>
       </DropdownMenuContent>

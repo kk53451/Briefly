@@ -2,14 +2,21 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
+import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import { apiClient } from "@/lib/api"
 import { toast } from "sonner"
+
+const transitionProps = {
+  type: "spring",
+  stiffness: 500,
+  damping: 30,
+  mass: 0.5,
+}
 
 export function CategoryEdit() {
   const router = useRouter()
@@ -50,7 +57,7 @@ export function CategoryEdit() {
     }
   }
 
-  const handleCategoryChange = (category: string) => {
+  const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
     )
@@ -84,7 +91,12 @@ export function CategoryEdit() {
   if (loading) {
     return (
       <div className="space-y-8">
-        <h1 className="text-2xl font-bold">카테고리 설정</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">카테고리 설정</h1>
+          <Button variant="outline" onClick={() => router.push("/profile")}>
+            취소
+          </Button>
+        </div>
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
@@ -95,25 +107,16 @@ export function CategoryEdit() {
   if (error) {
     return (
       <div className="space-y-8">
-        <h1 className="text-2xl font-bold">카테고리 설정</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">카테고리 설정</h1>
+          <Button variant="outline" onClick={() => router.push("/profile")}>
+            취소
+          </Button>
+        </div>
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button onClick={() => router.push("/profile")}>프로필로 돌아가기</Button>
-      </div>
-    )
-  }
-
-  if (!categories || categories.length === 0) {
-    return (
-      <div className="space-y-8">
-        <h1 className="text-2xl font-bold">카테고리 설정</h1>
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>사용 가능한 카테고리가 없습니다.</AlertDescription>
-        </Alert>
-        <Button onClick={() => router.push("/profile")}>프로필로 돌아가기</Button>
       </div>
     )
   }
@@ -133,24 +136,95 @@ export function CategoryEdit() {
           <CardDescription>매일 아침 선택한 카테고리의 뉴스 요약을 받아보세요.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">
-            {categories.map((category) => (
-              <div key={category} className="flex items-center space-x-2">
-                <Checkbox
-                  id={category}
-                  checked={selectedCategories.includes(category)}
-                  onCheckedChange={() => handleCategoryChange(category)}
-                />
-                <Label htmlFor={category}>{category}</Label>
-              </div>
-            ))}
-          </div>
+          <motion.div 
+            className="flex flex-wrap gap-3 overflow-visible" 
+            layout 
+            transition={transitionProps}
+          >
+            {categories.map((category) => {
+              const isSelected = selectedCategories.includes(category)
+              return (
+                <motion.button
+                  key={category}
+                  onClick={() => toggleCategory(category)}
+                  layout
+                  initial={false}
+                  animate={{
+                    backgroundColor: isSelected ? "hsl(var(--primary))" : "transparent",
+                  }}
+                  whileHover={{
+                    backgroundColor: isSelected ? "hsl(var(--primary))" : "hsl(var(--muted))",
+                  }}
+                  whileTap={{
+                    scale: 0.95,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30,
+                    mass: 0.5,
+                    backgroundColor: { duration: 0.1 },
+                  }}
+                  className={`
+                    inline-flex items-center px-4 py-2 rounded-full text-base font-medium
+                    whitespace-nowrap overflow-hidden border
+                    ${
+                      isSelected
+                        ? "text-primary-foreground border-primary"
+                        : "text-foreground/60 border-border hover:text-foreground"
+                    }
+                  `}
+                >
+                  <motion.div
+                    className="relative flex items-center"
+                    animate={{
+                      width: isSelected ? "auto" : "100%",
+                      paddingRight: isSelected ? "1.5rem" : "0",
+                    }}
+                    transition={{
+                      ease: [0.175, 0.885, 0.32, 1.275],
+                      duration: 0.3,
+                    }}
+                  >
+                    <span>{category}</span>
+                    <AnimatePresence>
+                      {isSelected && (
+                        <motion.span
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 30,
+                            mass: 0.5,
+                          }}
+                          className="absolute right-0"
+                        >
+                          <div className="w-4 h-4 rounded-full bg-primary-foreground flex items-center justify-center">
+                            <Check className="w-3 h-3 text-primary" strokeWidth={1.5} />
+                          </div>
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                </motion.button>
+              )
+            })}
+          </motion.div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={() => router.push("/profile")}>
+        <CardFooter className="flex justify-end gap-3">
+          <Button
+            variant="outline"
+            onClick={() => router.push("/profile")}
+            disabled={submitting}
+          >
             취소
           </Button>
-          <Button onClick={handleSave} disabled={!selectedCategories || selectedCategories.length === 0 || submitting}>
+          <Button
+            onClick={handleSave}
+            disabled={selectedCategories.length === 0 || submitting}
+          >
             {submitting ? "저장 중..." : "저장"}
           </Button>
         </CardFooter>

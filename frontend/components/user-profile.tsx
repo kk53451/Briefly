@@ -109,39 +109,32 @@ export function UserProfile() {
             />
             <AvatarFallback>{user.nickname?.[0] || "U"}</AvatarFallback>
           </Avatar>
-          <div>
+          <div className="space-y-1">
             <CardTitle>{user.nickname || "익명 사용자"}</CardTitle>
             <CardDescription>{user.user_id || ""}</CardDescription>
             <CardDescription>가입일: {formatDate(user.created_at || "")}</CardDescription>
           </div>
         </CardHeader>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={handleCategoryEdit}>
-            카테고리 설정
-          </Button>
-        </CardFooter>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>관심 카테고리</CardTitle>
-          <CardDescription>선택한 카테고리의 뉴스를 받아볼 수 있습니다.</CardDescription>
-        </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {(user.interests || []).map((category) => (
-              <div key={category} className="bg-muted px-3 py-1 rounded-full text-sm">
-                {category}
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-sm font-medium mb-2">관심 카테고리</h3>
+              <div className="flex flex-wrap gap-2">
+                {(user.interests || []).map((category) => (
+                  <div key={category} className="bg-muted px-3 py-1 rounded-full text-sm">
+                    {category}
+                  </div>
+                ))}
+                {(!user.interests || user.interests.length === 0) && (
+                  <div className="text-muted-foreground text-sm">설정된 관심 카테고리가 없습니다.</div>
+                )}
               </div>
-            ))}
-            {(!user.interests || user.interests.length === 0) && (
-              <div className="text-muted-foreground text-sm">설정된 관심 카테고리가 없습니다.</div>
-            )}
+            </div>
           </div>
         </CardContent>
         <CardFooter>
           <Button variant="outline" onClick={handleCategoryEdit}>
-            카테고리 변경
+            카테고리 설정
           </Button>
         </CardFooter>
       </Card>

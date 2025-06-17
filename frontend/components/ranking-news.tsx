@@ -10,6 +10,7 @@ import type { NewsItem } from "@/types/api"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import { showError, showSuccess } from "@/lib/toast"
+import { Button } from "@/components/ui/button"
 
 export function RankingNews() {
   const router = useRouter()
@@ -21,6 +22,7 @@ export function RankingNews() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [bookmarks, setBookmarks] = useState<string[]>([])
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
     checkAuthStatus()
@@ -137,6 +139,8 @@ export function RankingNews() {
   // CategoryFilter 컴포넌트에서 자동으로 "전체"를 추가하므로 별도로 추가하지 않음
   const availableCategories = AVAILABLE_CATEGORIES
 
+  const displayedNews = showAll ? news : news.slice(0, 10)
+
   return (
     <div className="space-y-3">
       <h1 className="text-2xl font-bold text-center">오늘의 Top 10 뉴스랭킹</h1>
@@ -188,30 +192,43 @@ export function RankingNews() {
           <AlertDescription>선택한 카테고리에 뉴스가 없습니다.</AlertDescription>
         </Alert>
       ) : (
-        <div 
-          className={`grid grid-cols-1 md:grid-cols-2 gap-3 transition-opacity duration-300 ease-in-out ${
-            isTransitioning ? 'opacity-60' : 'opacity-100'
-          }`}
-        >
-          {news.map((item) => (
-            <NewsCard
-              key={item.news_id}
-              id={item.news_id}
-              title={item.title}
-              title_ko={item.title_ko}
-              summary={item.summary}
-              summary_ko={item.summary_ko}
-              category={item.category}
-              imageUrl={item.thumbnail_url || item.image_url}
-              publisher={item.publisher}
-              author={item.author}
-              publishedAt={item.published_at}
-              onBookmark={() => handleBookmark(item.news_id)}
-              onRemoveBookmark={() => handleRemoveBookmark(item.news_id)}
-              onClick={() => handleCardClick(item.news_id)}
-              isBookmarked={bookmarks.includes(item.news_id)}
-            />
-          ))}
+        <div className="space-y-4">
+          <div 
+            className={`grid grid-cols-1 md:grid-cols-2 gap-3 transition-opacity duration-300 ease-in-out ${
+              isTransitioning ? 'opacity-60' : 'opacity-100'
+            }`}
+          >
+            {displayedNews.map((item) => (
+              <NewsCard
+                key={item.news_id}
+                id={item.news_id}
+                title={item.title}
+                title_ko={item.title_ko}
+                summary={item.summary}
+                summary_ko={item.summary_ko}
+                category={item.category}
+                imageUrl={item.thumbnail_url || item.image_url}
+                publisher={item.publisher}
+                author={item.author}
+                publishedAt={item.published_at}
+                onBookmark={() => handleBookmark(item.news_id)}
+                onRemoveBookmark={() => handleRemoveBookmark(item.news_id)}
+                onClick={() => handleCardClick(item.news_id)}
+                isBookmarked={bookmarks.includes(item.news_id)}
+              />
+            ))}
+          </div>
+          {news.length > 10 && (
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={() => setShowAll(!showAll)}
+                className="w-full max-w-xs"
+              >
+                {showAll ? "접기" : "더 보기"}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>
