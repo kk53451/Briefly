@@ -1,6 +1,6 @@
 # Briefly - AI 뉴스 팟캐스트 플랫폼
 
-**매일 업데이트되는 AI 뉴스 팟캐스트 서비스**
+**매일 업데이트되는 개인화 AI 뉴스 팟캐스트 서비스**
 
 [![AWS](https://img.shields.io/badge/AWS-Lambda%20%7C%20DynamoDB%20%7C%20S3-orange)](https://aws.amazon.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green)](https://openai.com/)
@@ -10,27 +10,29 @@
 
 ---
 
-## 프로젝트 개요
+## 1. 개발목표
 
-**Briefly**는 매일 최신 뉴스를 AI가 수집하고 분석하여 개인화된 팟캐스트로 제작해주는 뉴스 플랫폼입니다. 수집한 뉴스를 바탕으로 6개 카테고리의 뉴스 요약을 제공하며, 고품질 TTS로 음성 콘텐츠를 생성 및 제공합니다.
+### 1.1 프로젝트 비전
+Briefly는 현대인의 정보 소비 패턴 변화에 대응하여, AI 기술을 활용한 개인화된 뉴스 팟캐스트 플랫폼을 구축하는 것을 목표로 합니다. 사용자가 바쁜 일상 속에서도 효율적으로 핵심 뉴스를 청취할 수 있도록 지원하며, 개인의 관심사에 맞춤화된 고품질 오디오 콘텐츠를 제공합니다.
 
-### 코어 기능
-- **AI 기반**: GPT-4o-mini로 고품질 요약 및 이중 클러스터링
-- **AI 기반**: GPT-4o-mini로 고품질 요약 및 2차 클러스터링
-- **고품질 음성**: ElevenLabs TTS로 자연스러운 한국어 팟캐스트
-- **완전 자동화**: 매일 오전 6시 자동 업데이트
-- **접근성**: 웹과 모바일에서 언제든 이용 가능
+### 1.2 핵심 목표
+- **완전 자동화**: 뉴스 수집부터 음성 생성까지 무인 자동화 시스템 구축
+- **개인화 서비스**: 사용자 관심 카테고리 기반 맞춤형 콘텐츠 제공
+- **고품질 음성**: ElevenLabs TTS를 활용한 자연스러운 한국어 팟캐스트 생성
+- **효율적 요약**: GPT-4o-mini와 이중 클러스터링을 통한 중복 제거 및 핵심 정보 추출
+- **접근성**: 웹과 모바일에서 언제든 이용 가능한 사용자 친화적 인터페이스
 
-### 유즈케이스
-- **UC-001~003**: 사용자 인증 및 온보딩 (3개)
-- **UC-004~006**: 뉴스 조회 및 탐색 (3개)
-- **UC-007~008**: 팟캐스트 및 음성 서비스 (2개)  
-- **UC-009~011**: 개인화 및 설정 (3개)
-- **UC-012~013**: 자동화 시스템 (2개)
+### 1.3 타겟 사용자
+- 바쁜 일상으로 인해 뉴스 읽기 시간이 부족한 직장인
+- 출퇴근 시간을 활용해 정보를 습득하고자 하는 사용자
+- 특정 분야에 대한 지속적인 정보 업데이트가 필요한 전문가
+- 시각적 콘텐츠보다 청각적 콘텐츠를 선호하는 사용자
 
 ---
 
-## 시스템 아키텍처
+## 2. 아키텍처 설계
+
+### 2.1 전체 시스템 아키텍처
 
 ```mermaid
 graph TB
@@ -76,29 +78,211 @@ graph TB
     O --> E
 ```
 
+### 2.2 데이터베이스 설계
+
+#### DynamoDB 테이블 구조
+- **NewsCards**: 수집된 뉴스 기사 저장 (PK: news_id, GSI: category-date)
+- **Frequencies**: 생성된 팟캐스트 대본 및 오디오 정보 (PK: frequency_id, GSI: category-date)
+- **Users**: 사용자 프로필 및 설정 정보 (PK: user_id)
+- **Bookmarks**: 사용자 북마크 관리 (PK: user_id-news_id)
+
+#### S3 버킷 구조
+```
+briefly-news-audio/
+├── frequencies/
+│   ├── politics/
+│   │   └── 2025-01-01.mp3
+│   ├── economy/
+│   │   └── 2025-01-01.mp3
+│   └── ...
+└── temp/
+    └── processing/
+```
+
+### 2.3 서비스 계층 아키텍처
+
+#### 백엔드 서비스 구조
+- **OpenAI Service**: GPT-4o-mini를 활용한 뉴스 요약 및 이중 클러스터링
+- **TTS Service**: ElevenLabs API를 통한 한국어 음성 합성
+- **DeepSearch Service**: 뉴스 수집 및 본문 추출
+- **Auth Service**: 카카오 소셜 로그인 및 JWT 토큰 관리
+
+#### 프론트엔드 컴포넌트 구조
+- **페이지 컴포넌트**: 각 라우트별 메인 페이지 구성
+- **UI 컴포넌트**: shadcn/ui 기반 재사용 가능한 컴포넌트
+- **비즈니스 컴포넌트**: 뉴스 카드, 오디오 플레이어 등 도메인 특화 컴포넌트
+
 ---
 
-## 주요 기능
+## 3. 개발 세부 내용
 
-### 스마트 뉴스 큐레이션
-- **30개 엄선된 뉴스**: 매일 6개 카테고리에서 최신 뉴스 수집
-- **이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거
-- **개인화 필터링**: 사용자 관심 카테고리 기반 맞춤 제공
+### 3.1 AI 기반 뉴스 처리 시스템
 
-### AI 기반 요약 시스템
-- **GPT-4o-mini**: 고품질 뉴스 요약 및 팟캐스트 대본 생성
-- **최적화된 길이**: 1800-2500자 범위의 완벽한 청취 시간
-- **토큰 효율성**: 50% 비용 절약 (90,000자 → 45,000자)
+#### 이중 클러스터링 알고리즘
+1. **1차 클러스터링**: 원본 기사의 물리적 중복 제거 (80% 유사도 기준)
+2. **2차 클러스터링**: GPT 요약문의 의미적 중복 제거 (75% 유사도 기준)
+3. **토큰 최적화**: 90,000자 → 45,000자로 50% 비용 절약
 
-### 음성 변환
-- **ElevenLabs TTS**: 한국어 최적화 고품질 음성 합성
-- **스트리밍 지원**: Presigned URL을 이용한 실시간 재생
-- **다양한 음성**: 상황에 맞는 음성 선택 가능
+#### GPT-4o-mini 활용 최적화
+- **프롬프트 엔지니어링**: 1800-2500자 범위의 팟캐스트 대본 생성
+- **컨텍스트 관리**: 카테고리별 맞춤형 톤앤매너 적용
+- **에러 핸들링**: Rate Limit 및 API 오류에 대한 견고한 예외 처리
 
-### 직관적인 사용자 경험
-- **반응형 디자인**: PC/모바일 에서 최적화된 UI/UX
-- **카카오 로그인**: 간편한 소셜 로그인
-- **북마크 기능**: 관심 뉴스 저장 및 관리
+### 3.2 음성 생성 및 스트리밍
+
+#### ElevenLabs TTS 통합
+- **한국어 최적화**: eleven_multilingual_v2 모델 활용
+- **음성 품질 설정**: Stability 0.4, Similarity Boost 0.75
+- **스트리밍 지원**: S3 Presigned URL을 통한 실시간 재생
+
+#### 오디오 파일 관리
+- **자동 업로드**: TTS 생성 즉시 S3 저장
+- **URL 관리**: 7일 유효 Presigned URL 자동 갱신
+- **압축 최적화**: MP3 형식으로 파일 크기 최소화
+
+### 3.3 자동화 파이프라인
+
+#### 매일 오전 6시 자동 실행
+```python
+# EventBridge 스케줄러 설정
+Events:
+  DailyNewsSchedule:
+    Type: Schedule
+    Properties:
+      Schedule: "cron(0 21 * * ? *)"  # UTC 기준 (KST 06:00)
+      Target:
+        Arn: !GetAtt NewsCollectionFunction.Arn
+```
+
+#### 병렬 처리 최적화
+- **카테고리별 병렬 수집**: 6개 카테고리 동시 처리
+- **배치 크기 최적화**: 카테고리당 30개 기사 수집
+- **실패 처리**: 자동 재시도 및 로깅 시스템
+
+### 3.4 사용자 인터페이스
+
+#### 반응형 디자인
+- **모바일 퍼스트**: 터치 친화적 인터페이스 설계
+- **다크 테마**: 눈의 피로를 줄이는 다크 모드 적용
+- **애니메이션**: Framer Motion을 활용한 부드러운 전환 효과
+
+#### 사용자 경험 최적화
+- **원클릭 로그인**: 카카오 소셜 로그인 간편 연동
+- **개인화 온보딩**: 관심 카테고리 선택을 통한 맞춤 설정
+- **직관적 네비게이션**: 하단 탭 기반 주요 기능 접근
+
+---
+
+## 4. 구현 결과
+
+### 4.1 완성된 기능 목록
+
+#### 사용자 인증 및 관리 (3개 유즈케이스)
+- **UC-001**: 카카오 소셜 로그인 완전 구현
+- **UC-002**: 사용자 프로필 관리 시스템
+- **UC-003**: 관심 카테고리 설정 및 개인화
+
+#### 뉴스 조회 및 탐색 (3개 유즈케이스)
+- **UC-004**: 카테고리별 뉴스 목록 조회 (Top 10 + 더보기)
+- **UC-005**: 뉴스 상세 보기 및 북마크 기능
+- **UC-006**: 개인 북마크 관리 시스템
+
+#### 팟캐스트 서비스 (2개 유즈케이스)
+- **UC-007**: 개인 맞춤 주파수 재생 (관심 카테고리 기반)
+- **UC-008**: 카테고리별 주파수 청취 및 히스토리
+
+#### 개인화 및 설정 (3개 유즈케이스)
+- **UC-009**: 사용자 프로필 통합 관리
+- **UC-010**: 관심 카테고리 실시간 수정
+- **UC-011**: 온보딩 프로세스 완성
+
+#### 자동화 시스템 (2개 유즈케이스)
+- **UC-012**: 매일 자동 뉴스 수집 (6개 카테고리 × 30개 기사)
+- **UC-013**: 자동 팟캐스트 생성 및 TTS 변환
+
+### 4.2 성능 지표
+
+#### 시스템 처리 성능
+- **뉴스 수집**: 180개 기사/일 (6 카테고리 × 30개)
+- **중복 제거율**: 물리적 80% + 의미적 75% 이중 필터링
+- **팟캐스트 생성**: 6개 오디오 파일/일 (카테고리별)
+- **응답 시간**: API 평균 응답 시간 < 2초
+
+#### 비용 최적화
+- **토큰 사용량**: 50% 절감 (90,000자 → 45,000자)
+- **TTS 비용**: 카테고리별 일일 1회 생성으로 최적화
+- **S3 스토리지**: 압축된 MP3 파일로 저장 공간 효율화
+
+### 4.3 기술 스택 완성도
+
+#### 프론트엔드 (100% 완성)
+- **Next.js 14**: App Router 기반 모던 웹 애플리케이션
+- **TypeScript**: 타입 안전성 보장
+- **Tailwind CSS + shadcn/ui**: 일관된 디자인 시스템
+- **Framer Motion**: 부드러운 애니메이션 효과
+
+#### 백엔드 (100% 완성)
+- **FastAPI**: 고성능 REST API 서버
+- **AWS Lambda**: 서버리스 아키텍처
+- **DynamoDB**: NoSQL 데이터베이스
+- **S3**: 오디오 파일 스토리지
+
+#### AI 서비스 통합 (100% 완성)
+- **OpenAI GPT-4o-mini**: 뉴스 요약 및 대본 생성
+- **ElevenLabs TTS**: 한국어 음성 합성
+- **DeepSearch API**: 뉴스 수집 및 본문 추출
+
+---
+
+## 5. 기대 효과
+
+### 5.1 사용자 가치 제공
+
+#### 시간 효율성
+- **정보 소비 시간 단축**: 30분 뉴스 읽기 → 5분 팟캐스트 청취
+- **멀티태스킹 지원**: 운동, 출퇴근 중 정보 습득 가능
+- **핵심 정보 집중**: AI 요약을 통한 중요 내용만 선별 제공
+
+#### 개인화 경험
+- **맞춤형 콘텐츠**: 관심 분야 중심의 개인화된 뉴스 큐레이션
+- **적응형 서비스**: 사용자 패턴 학습을 통한 지속적 개선
+- **접근성 향상**: 시각 장애인 등 다양한 사용자층 지원
+
+### 5.2 기술적 혁신 효과
+
+#### AI 기술 활용
+- **이중 클러스터링**: 기존 단순 중복 제거 대비 정확도 향상
+- **비용 최적화**: 토큰 사용량 50% 절감으로 운영 효율성 증대
+- **품질 향상**: GPT-4o-mini 활용으로 자연스러운 요약문 생성
+
+#### 자동화 시스템
+- **무인 운영**: 인력 투입 없이 24/7 자동 콘텐츠 생성
+- **확장성**: 카테고리 및 언어 확장 용이한 모듈형 구조
+- **안정성**: 에러 핸들링 및 재시도 로직으로 서비스 연속성 보장
+
+### 5.3 비즈니스 임팩트
+
+#### 시장 차별화
+- **독창적 서비스**: AI 기반 개인화 뉴스 팟캐스트 선도 모델
+- **기술 경쟁력**: 최신 AI 기술 통합으로 높은 진입 장벽 구축
+- **사용자 경험**: 직관적 UI/UX로 높은 사용자 만족도 달성
+
+#### 확장 가능성
+- **다국어 지원**: 다양한 언어로 서비스 확장 가능
+- **콘텐츠 다양화**: 뉴스 외 다른 정보 콘텐츠로 확장 가능
+- **플랫폼 연계**: 다양한 플랫폼과의 연동 가능성
+
+### 5.4 사회적 가치
+
+#### 정보 접근성 개선
+- **디지털 격차 해소**: 음성 기반 서비스로 다양한 사용자층 포용
+- **정보 민주화**: AI 요약을 통한 공평한 정보 접근 기회 제공
+- **미디어 리터러시**: 핵심 정보 중심의 효율적 정보 소비 문화 조성
+
+#### 기술 발전 기여
+- **AI 실용화**: 실제 서비스에서의 AI 기술 활용 사례 제시
+- **오픈소스 기여**: 개발 과정에서 얻은 인사이트 커뮤니티 공유
+- **혁신 촉진**: 새로운 형태의 미디어 서비스 모델 제시
 
 ---
 
@@ -203,365 +387,85 @@ backend/
 
 ---
 
-## 데이터 파이프라인
+## 주요 기능
 
-### 매일 자동 뉴스 처리 파이프라인
+### 스마트 뉴스 큐레이션
+- **30개 엄선된 뉴스**: 매일 6개 카테고리에서 최신 뉴스 수집
+- **이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거
+- **개인화 필터링**: 사용자 관심 카테고리 기반 맞춤 제공
 
-```mermaid
-flowchart TD
-    A[06:00 KST<br/>EventBridge Trigger] --> B[뉴스 수집 시작]
-    
-    B --> C[DeepSearch API<br/>최신 뉴스 30개 수집]
-    C --> D[본문 추출 및<br/>노이즈 제거]
-    
-    D --> E[1차 클러스터링<br/>물리적 중복 제거<br/>임계값: 0.80]
-    E --> F[2차 클러스터링<br/>의미적 중복 제거<br/>임계값: 0.75]
-    
-    F --> G[카테고리별 그룹화<br/>정치, 경제, 사회, 생활/문화,<br/>IT/과학, 연예]
-    
-    G --> H[GPT-4o-mini<br/>팟캐스트 대본 생성<br/>1800-2500자]
-    
-    H --> I[ElevenLabs TTS<br/>한국어 음성 변환<br/>고품질 MP3]
-    
-    I --> J[S3 업로드<br/>음성 파일 저장]
-    J --> K[DynamoDB 저장<br/>메타데이터 및<br/>URL 정보]
-    
-    K --> L[사용자 알림<br/>새로운 팟캐스트<br/>업데이트 완료]
-    
-    style A fill:#e1f5fe
-    style H fill:#f3e5f5
-    style I fill:#e8f5e8
-    style K fill:#fff3e0
-```
+### AI 기반 요약 시스템
+- **GPT-4o-mini**: 고품질 뉴스 요약 및 팟캐스트 대본 생성
+- **최적화된 길이**: 1800-2500자 범위의 완벽한 청취 시간
+- **토큰 효율성**: 50% 비용 절약 (90,000자 → 45,000자)
+
+### 음성 변환
+- **ElevenLabs TTS**: 한국어 최적화 고품질 음성 합성
+- **스트리밍 지원**: Presigned URL을 이용한 실시간 재생
+- **다양한 음성**: 상황에 맞는 음성 선택 가능
+
+### 직관적인 사용자 경험
+- **반응형 디자인**: PC/모바일에서 최적화된 UI/UX
+- **카카오 로그인**: 간편한 소셜 로그인
+- **북마크 기능**: 관심 뉴스 저장 및 관리
 
 ---
 
-## 기술 스택
+## 시작하기
 
-### Frontend
-| 분야 | 기술 | 버전 | 용도 |
-|------|------|------|------|
-| **Framework** | Next.js | 14 | App Router, SSR/SSG |
-| **언어** | TypeScript | 5.x | 타입 안정성 |
-| **스타일링** | Tailwind CSS | 3.x | 유틸리티 CSS |
-| **UI 컴포넌트** | shadcn/ui | Latest | 디자인 시스템 |
-| **상태관리** | React Hooks | - | 클라이언트 상태 |
-| **HTTP 클라이언트** | Fetch API | - | REST API 통신 |
-| **인증** | JWT + Kakao | - | 사용자 인증 |
-| **배포** | Vercel | - | 자동 배포 |
+### 환경 요구사항
+- Node.js 18+
+- Python 3.12+
+- AWS CLI 설정
+- Docker (선택사항)
 
-### Backend
-| 분야 | 기술 | 버전 | 용도 |
-|------|------|------|------|
-| **Framework** | FastAPI | 0.104+ | REST API 서버 |
-| **언어** | Python | 3.12 | 백엔드 로직 |
-| **AI/ML** | OpenAI GPT-4o-mini | Latest | 뉴스 요약 및 분석 |
-| **TTS** | ElevenLabs | v1 | 음성 합성 |
-| **임베딩** | sentence-transformers | Latest | 텍스트 벡터화 |
-| **클러스터링** | scikit-learn | Latest | 유사도 계산 |
-| **인프라** | AWS Lambda | Python 3.12 | 서버리스 실행 |
-| **데이터베이스** | DynamoDB | - | NoSQL 데이터 저장 |
-| **스토리지** | S3 | - | 음성 파일 저장 |
-| **스케줄러** | EventBridge | - | 크론 작업 |
+### 로컬 개발 환경 설정
 
-### 외부 API
-| 서비스 | 용도 | 특징 |
-|--------|------|------|
-| **DeepSearch API** | 뉴스 수집 | 실시간 뉴스 데이터 |
-| **OpenAI GPT-4o-mini** | AI 요약 | 고품질 텍스트 생성 |
-| **ElevenLabs TTS** | 음성 합성 | 한국어 최적화 음성 |
-| **Kakao Login** | 소셜 로그인 | 간편 인증 |
-
----
-
-## API 명세서
-
-### 인증 (Authentication)
-| HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
-|------|------------|------|------|------|
-| `GET` | `/api/auth/kakao/login` | 카카오 로그인 시작 | 비인증 | Redirect URL |
-| `GET` | `/api/auth/kakao/callback` | 로그인 콜백 처리 | 비인증 | JWT Token |
-| `GET` | `/api/auth/me` | 내 정보 조회 | 인증필요 | User Object |
-| `POST` | `/api/auth/logout` | 로그아웃 | 인증필요 | Success Message |
-
-### 사용자 관리 (User Management)
-| HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
-|------|------------|------|------|------|
-| `GET` | `/api/user/profile` | 프로필 조회 | 인증필요 | Profile Data |
-| `GET` | `/api/user/categories` | 관심 카테고리 조회 | 인증필요 | Category List |
-| `PUT` | `/api/user/categories` | 관심 카테고리 수정 | 인증필요 | Success Message |
-| `POST` | `/api/user/onboarding` | 온보딩 완료 | 인증필요 | Success Message |
-| `GET` | `/api/user/onboarding/status` | 온보딩 상태 확인 | 인증필요 | Onboarding Status |
-| `GET` | `/api/user/bookmarks` | 내 북마크 목록 | 인증필요 | Bookmarked News |
-| `GET` | `/api/user/frequencies` | 내 주파수 목록 | 인증필요 | User Frequencies |
-
-### 뉴스 (News)
-| HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
-|------|------------|------|------|------|
-| `GET` | `/api/news?category={category}` | 카테고리별 뉴스 | 비인증 | News List |
-| `GET` | `/api/news/{news_id}` | 뉴스 상세 조회 | 비인증 | News Detail |
-| `GET` | `/api/news/today` | 오늘의 카테고리별 뉴스 | 비인증 | Grouped News |
-| `POST` | `/api/news/bookmark` | 북마크 추가 | 인증필요 | Success Message |
-| `DELETE` | `/api/news/bookmark/{news_id}` | 북마크 제거 | 인증필요 | Success Message |
-
-### 주파수/팟캐스트 (Frequency)
-| HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
-|------|------------|------|------|------|
-| `GET` | `/api/frequencies` | 내 관심 주파수 | 인증필요 | Personal Frequencies |
-| `GET` | `/api/frequencies/history` | 주파수 히스토리 | 인증필요 | History List |
-| `GET` | `/api/frequencies/{category}` | 특정 카테고리 주파수 | 인증필요 | Frequency Detail |
-
-### 카테고리 (Category)
-| HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
-|------|------------|------|------|------|
-| `GET` | `/api/categories` | 전체 카테고리 목록 | 비인증 | Category List |
-
-### 기본 엔드포인트
-| HTTP | 엔드포인트 | 설명 | 인증 | 응답 |
-|------|------------|------|------|------|
-| `GET` | `/` | API 루트 헬스체크 | 비인증 | Welcome Message |
-| `GET` | `/onboarding` | 온보딩 페이지 정보 | 비인증 | Available Categories |
-
----
-
-## 핵심 알고리즘
-
-### 이중 클러스터링 시스템
-
-**1차 클러스터링 (물리적 중복 제거)**
-```python
-# 원본 기사 본문 기반 유사도 분석
-def first_clustering(articles, threshold=0.80):
-    embeddings = get_embeddings([article.content for article in articles])
-    similarity_matrix = cosine_similarity(embeddings)
-    
-    clusters = []
-    for i, similarities in enumerate(similarity_matrix):
-        # 임계값 이상의 유사 기사 그룹화
-        similar_articles = [j for j, sim in enumerate(similarities) if sim > threshold]
-        clusters.append(similar_articles)
-    
-    return merge_overlapping_clusters(clusters)
-```
-
-**2차 클러스터링 (의미적 중복 제거)**
-```python
-# GPT 요약문 기반 의미적 유사도 분석
-def second_clustering(summaries, threshold=0.75):
-    summary_embeddings = get_embeddings(summaries)
-    similarity_matrix = cosine_similarity(summary_embeddings)
-    
-    # 더 엄격한 임계값으로 의미적 중복 제거
-    final_clusters = []
-    for i, similarities in enumerate(similarity_matrix):
-        semantic_similar = [j for j, sim in enumerate(similarities) if sim > threshold]
-        final_clusters.append(semantic_similar)
-    
-    return deduplicate_by_meaning(final_clusters)
-```
-
-### 토큰 최적화 전략
-
-```python
-# 토큰 제한으로 비용 절감
-OPTIMIZATION_CONFIG = {
-    "article_content": 1500,      # 기사 본문: 3000자 → 1500자
-    "clustering_input": 1000,     # 클러스터링: 1500자 → 1000자  
-    "group_summary_input": 800,   # 그룹 요약: 각 기사 800자 제한
-    "final_text_limit": 1000,     # 최종 텍스트: 1000자 제한
-    "gpt_max_tokens": 2000,       # GPT 출력: 2200 → 2000
-}
-
-# 결과: 총 토큰 사용량 90,000자 → 45,000자 (50% 절약)
-```
-
-### TTS 음성 최적화
-
-```python
-# ElevenLabs 최적 설정
-TTS_CONFIG = {
-    "model": "eleven_multilingual_v2",
-    "voice_id": "TX3LPaxmHKxFdv7VOQHJ",  # 한국어 최적화
-    "stability": 0.5,                    # 안정성
-    "similarity_boost": 0.8,             # 유사성 강화
-    "output_format": "mp3_44100_128",    # MP3 확장자 사용
-}
-
-# 대본 길이: 1800-2500자 (목표 청취 시간 4-5분)
-def optimize_script_length(content):
-    target_length = randint(1800, 2500)
-    if len(content) > target_length:
-        return smart_truncate(content, target_length)
-    return content
-```
-
----
-
-## 테스트 시스템
-
-### 100% 테스트 통과 현황
-
+#### 프론트엔드 실행
 ```bash
-# 테스트 실행 결과
-test_frequency_unit.py      - 주파수 생성 로직
-test_clustering.py          - 이중 클러스터링 알고리즘
-test_content_extraction.py  - 본문 추출 및 노이즈 제거
-test_collection_simulation.py - 뉴스 수집 시뮬레이션
-test_utils.py              - 유틸리티 함수
-test_tts_service.py        - TTS 음성 변환 서비스
-
-성공률: 100% (6/6)
-총 소요시간: 30초
-```
-
-### 테스트 커버리지
-
-| 영역 | 커버리지 | 테스트 항목 |
-|------|----------|-------------|
-| **뉴스 수집** | 100% | 카테고리별 30개 수집 확인 |
-| **클러스터링** | 100% | 이중 클러스터링 알고리즘 |
-| **GPT 요약** | 100% | 대본 길이 (1800-2500자) |
-| **TTS 변환** | 100% | 음성 파일 생성 |
-| **카테고리** | 100% | 6개 카테고리 정확성 |
-| **API 엔드포인트** | 100% | 22개 API 응답 검증 |
-
-### 테스트 실행 방법
-
-```bash
-# 전체 테스트 실행
-cd backend/test
-python run_all_tests.py
-
-# 개별 테스트 실행 (Windows)
-$env:PYTHONIOENCODING='utf-8'
-python test_frequency_unit.py
-
-# 개별 테스트 실행 (Linux/Mac)
-PYTHONIOENCODING='utf-8' python test_frequency_unit.py
-```
-
----
-
-## 빠른 시작 가이드
-
-### 1. 환경 설정
-
-```bash
-# 저장소 클론
-git clone https://github.com/your-repo/Briefly.git
-cd Briefly
-
-# 백엔드 환경 설정
-cd backend
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-# Linux/Mac  
-source venv/bin/activate
-
-pip install -r requirements.txt
-
-# 프론트엔드 환경 설정
-cd ../frontend
-npm install
-```
-
-### 2. 환경변수 설정
-
-**백엔드 환경변수** (`backend/.env`)
-```env
-# AI 서비스
-OPENAI_API_KEY=sk-proj-your-openai-key
-ELEVENLABS_API_KEY=sk_your-elevenlabs-key
-ELEVENLABS_VOICE_ID=your_elevenlabs-voice-id
-
-# 뉴스 수집
-DEEPSEARCH_API_KEY=your-deepsearch-key
-
-# 소셜 로그인
-KAKAO_CLIENT_ID=your-kakao-client-id
-
-# AWS 리소스 (로컬 개발시)
-DDB_NEWS_TABLE=NewsCards
-DDB_FREQ_TABLE=Frequencies  
-DDB_USERS_TABLE=Users
-DDB_BOOKMARKS_TABLE=Bookmarks
-S3_BUCKET=briefly-news-audio
-```
-
-**프론트엔드 환경변수** (`frontend/.env.local`)
-```env
-# API 서버
-NEXT_PUBLIC_API_URL=http://localhost:8000
-
-# 카카오 로그인
-NEXT_PUBLIC_KAKAO_CLIENT_ID=your-kakao-client-id
-NEXT_PUBLIC_KAKAO_REDIRECT_URI=http://localhost:3000/auth/callback
-```
-
-### 3. 개발 서버 실행
-
-```bash
-# 백엔드 서버 실행 (터미널 1)
-cd backend
-uvicorn app.main:app --reload --port 8000
-
-# 프론트엔드 서버 실행 (터미널 2) 
 cd frontend
+npm install
 npm run dev
 ```
 
-### 4. 접속 확인
+#### 백엔드 실행
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
 
-- **웹 애플리케이션**: http://localhost:3000
-- **API 문서**: http://localhost:8000/docs
-- **API 관리**: http://localhost:8000/redoc
+### 배포
+
+#### AWS SAM을 이용한 배포
+```bash
+cd backend
+sam build
+sam deploy --guided
+```
 
 ---
 
-## 성능 지표 및 최적화
+## 기여하기
 
-### 시스템 성능 현황
+프로젝트에 기여하고 싶으시다면 다음 절차를 따라주세요:
 
-| 메트릭 | 목표 | 현재 성능 | 상태 |
-|--------|------|-----------|------|
-| **뉴스 수집 정확도** | 30개 | 30개 고정 | 100% |
-| **클러스터링 효율성** | 15-20개 그룹 | 평균 18개 | 최적 |
-| **대본 길이 일관성** | 1800-2500자 | 평균 2020자 | 완벽 |
-| **토큰 사용량** | <50,000자 | 45,000자 | 50% 절약 |
-| **API 응답시간** | <500ms | 평균 300ms | 고성능 |
-| **TTS 변환속도** | <60초/카테고리 | 평균 45초 | 빠름 |
-
-### 비용 최적화 결과
-
-**월간 운영 비용 분석**
-```
-AWS 인프라:
-  ├── Lambda 실행: $5-10 (10,000회 요청)
-  ├── DynamoDB: $2-5 (100K 읽기, 10K 쓰기)  
-  └── S3 저장: $3-7 (10GB 저장, 100GB 전송)
-
-외부 API:
-  ├── OpenAI GPT: $20-30 (50% 절약 적용)
-  ├── ElevenLabs TTS: $10-15 (최적 길이)
-  └── DeepSearch: $5-10 (뉴스 수집)
-
-총 예상 비용: $45-82/월 (기존 대비 30% 절약)
-```
-
-### 응답 시간 최적화
-
-| API 엔드포인트 | 평균 응답시간 | 최적화 기법 |
-|----------------|---------------|-------------|
-| `GET /api/news` | 300ms | DynamoDB 인덱싱 활용 |
-| `GET /api/news/{id}` | 150ms | 단일 키 조회 |
-| `GET /api/frequencies` | 200ms | 사용자별 캐싱 |
-| `GET /api/frequencies/{category}` | <100ms | S3 Presigned URL |
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-### 연락처
-- **이메일**: gnb0804@gmail.com
+## 라이센스
 
-이 프로젝트는 **MIT License** 하에 배포됩니다.
+이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+---
+
+## 연락처
+
+프로젝트에 대한 문의사항이 있으시면 언제든 연락주세요.
+
+**Project Link**: [https://github.com/your-username/briefly](https://github.com/your-username/briefly)
