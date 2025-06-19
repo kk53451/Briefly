@@ -3,10 +3,10 @@ from app.utils.jwt_service import get_current_user
 from app.utils.dynamo import get_user, save_user
 from app.constants.category_map import CATEGORY_KO_LIST
 
-# ✅ 카테고리 관련 라우터 설정 (prefix: /api)
+#  카테고리 관련 라우터 설정 (prefix: /api)
 router = APIRouter(prefix="/api", tags=["Categories"])
 
-# ✅ [GET] /api/categories
+#  [GET] /api/categories
 @router.get("/categories")
 def get_all_categories():
     """
@@ -15,7 +15,7 @@ def get_all_categories():
     """
     return {"categories": CATEGORY_KO_LIST}
 
-# ✅ [GET] /api/user/categories
+#  [GET] /api/user/categories
 @router.get("/user/categories")
 def get_user_categories(user: dict = Depends(get_current_user)):
     """
@@ -26,7 +26,7 @@ def get_user_categories(user: dict = Depends(get_current_user)):
     interests = user.get("interests", [])
     return {"user_id": user["user_id"], "interests": interests}
 
-# ✅ [PUT] /api/user/categories
+#  [PUT] /api/user/categories
 @router.put("/user/categories")
 def update_user_categories(data: dict, user: dict = Depends(get_current_user)):
     """

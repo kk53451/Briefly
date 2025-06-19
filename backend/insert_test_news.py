@@ -36,10 +36,10 @@ def insert_test_news_data():
     """
     테스트용 뉴스 데이터를 DynamoDB에 삽입
     """
-    print("🚀 테스트용 뉴스 데이터 삽입 시작\n")
+    print("테스트용 뉴스 데이터 삽입 시작\n")
     
     today = get_today_kst()
-    print(f"📅 수집 날짜: {today}")
+    print(f"수집 날짜: {today}")
     
     # 시간 범위 설정 (전체 하루)
     start_time = f"{today}T00:00:00"
@@ -52,7 +52,7 @@ def insert_test_news_data():
         category_en = config["api_name"]
         section = config["section"]
         
-        print(f"\n📰 [{category_ko}] 뉴스 수집 시작")
+        print(f"\n[{category_ko}] 뉴스 수집 시작")
         
         try:
             # 뉴스 수집 (30개 목표)
@@ -67,7 +67,7 @@ def insert_test_news_data():
                 limit=30               # 최종 30개
             )
             
-            print(f"📥 수집된 기사 수: {len(articles)}개")
+            print(f"수집된 기사 수: {len(articles)}개")
             
             saved_count = 0
             
@@ -77,11 +77,11 @@ def insert_test_news_data():
                 content = article.get("content", "")
                 
                 if not news_id:
-                    print(f"⚠️ #{rank} ID 없음 → 스킵")
+                    print(f"#{rank} ID 없음 → 스킵")
                     continue
                     
                 if not content or len(content) < 300:
-                    print(f"⚠️ #{rank} 본문 부족 → 스킵")
+                    print(f"#{rank} 본문 부족 → 스킵")
                     continue
                 
                 # 뉴스 아이템 구성
@@ -108,21 +108,21 @@ def insert_test_news_data():
                     # DynamoDB에 저장
                     save_news_card(category_en, news_item, today)
                     saved_count += 1
-                    print(f"✅ #{rank} 저장 완료: {news_item['title'][:50]}...")
+                    print(f"#{rank} 저장 완료: {news_item['title'][:50]}...")
                     
                 except Exception as e:
-                    print(f"❌ #{rank} 저장 실패: {e}")
+                    print(f"#{rank} 저장 실패: {e}")
             
-            print(f"📊 [{category_ko}] 최종 저장: {saved_count}개")
+            print(f"[{category_ko}] 최종 저장: {saved_count}개")
             total_saved += saved_count
             
         except Exception as e:
-            print(f"❌ [{category_ko}] 수집 실패: {e}")
+            print(f"[{category_ko}] 수집 실패: {e}")
             continue
     
-    print(f"\n🎉 전체 뉴스 데이터 삽입 완료!")
-    print(f"📊 총 저장된 기사: {total_saved}개")
-    print(f"📊 평균 카테고리별: {total_saved / len(CATEGORY_MAP):.1f}개")
+    print(f"\n전체 뉴스 데이터 삽입 완료!")
+    print(f"총 저장된 기사: {total_saved}개")
+    print(f"평균 카테고리별: {total_saved / len(CATEGORY_MAP):.1f}개")
     
     return total_saved
 

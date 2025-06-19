@@ -23,7 +23,8 @@ class ApiClient {
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`
-    console.log(`[API] ${options.method || "GET"} ${url}`)
+    // API 로깅은 필요시 활성화
+    // console.log(`[API] ${options.method || "GET"} ${url}`)
 
     const response = await fetch(url, {
       ...options,

@@ -17,22 +17,22 @@ from app.services.openai_service import summarize_articles
 
 def test_category_count():
     """1. 카테고리 개수 테스트"""
-    print("🧪 [테스트 1] 카테고리 개수 확인")
-    print(f"📊 전체 카테고리 수: {len(CATEGORY_MAP)}개")
-    print(f"📋 카테고리 목록: {list(CATEGORY_MAP.keys())}")
-    print(f"📋 한글 카테고리: {CATEGORY_KO_LIST}")
+    print(" [테스트 1] 카테고리 개수 확인")
+    print(f" 전체 카테고리 수: {len(CATEGORY_MAP)}개")
+    print(f" 카테고리 목록: {list(CATEGORY_MAP.keys())}")
+    print(f" 한글 카테고리: {CATEGORY_KO_LIST}")
     
     if len(CATEGORY_MAP) == 6:
-        print("✅ 카테고리 개수 테스트 통과 (6개)")
+        print(" 카테고리 개수 테스트 통과 (6개)")
     else:
-        print(f"❌ 카테고리 개수 오류: {len(CATEGORY_MAP)}개 (예상: 6개)")
+        print(f" 카테고리 개수 오류: {len(CATEGORY_MAP)}개 (예상: 6개)")
     print()
 
 def test_news_collection():
     """2. 뉴스 수집 개수 테스트"""
-    print("🧪 [테스트 2] 뉴스 수집 개수 확인")
+    print(" [테스트 2] 뉴스 수집 개수 확인")
     date = get_today_kst()
-    print(f"📅 기준 날짜: {date}")
+    print(f" 기준 날짜: {date}")
     
     for category_ko in CATEGORY_MAP.keys():
         category_en = CATEGORY_MAP[category_ko]["api_name"]
@@ -62,19 +62,19 @@ def test_news_collection():
             trimmed = content[:1500]
             full_contents.append(trimmed)
         
-        print(f"📈 {category_ko}({category_en}): {len(full_contents)}개 수집 (목표: {target_count}개)")
+        print(f" {category_ko}({category_en}): {len(full_contents)}개 수집 (목표: {target_count}개)")
         
         if len(full_contents) > target_count:
-            print(f"⚠️ {category_ko}: 목표 초과 ({len(full_contents)}개)")
+            print(f" {category_ko}: 목표 초과 ({len(full_contents)}개)")
         elif len(full_contents) == target_count:
-            print(f"✅ {category_ko}: 목표 달성 ({len(full_contents)}개)")
+            print(f" {category_ko}: 목표 달성 ({len(full_contents)}개)")
         else:
-            print(f"📝 {category_ko}: 수집 부족 ({len(full_contents)}개) - DB 데이터 부족")
+            print(f" {category_ko}: 수집 부족 ({len(full_contents)}개) - DB 데이터 부족")
     print()
 
 def test_script_generation():
     """3. 대본 생성 및 토큰 테스트"""
-    print("🧪 [테스트 3] 대본 생성 토큰 테스트")
+    print(" [테스트 3] 대본 생성 토큰 테스트")
     
     # 더 현실적이고 긴 샘플 기사 텍스트 생성
     sample_texts = [
@@ -86,57 +86,57 @@ def test_script_generation():
         "국제 정세에 대한 분석을 전해드립니다. 주요국들 간의 외교적 협력과 경쟁이 복잡하게 얽혀있는 가운데, 글로벌 공급망 재편과 기후변화 대응이 국제사회의 주요 화두로 떠오르고 있습니다. 각국은 자국의 이익을 보호하면서도 국제적인 협력을 강화하기 위한 균형점을 찾고 있습니다. " * 8,  # 약 1200자
     ]
     
-    print(f"📊 샘플 텍스트 수: {len(sample_texts)}개")
-    print(f"📏 각 텍스트 길이: {[len(text) for text in sample_texts]}자")
+    print(f" 샘플 텍스트 수: {len(sample_texts)}개")
+    print(f" 각 텍스트 길이: {[len(text) for text in sample_texts]}자")
     
     # 토큰 제한 테스트 - 더 넉넉한 길이로 설정
     limited_texts = [text[:1000] for text in sample_texts]  # 1000자로 제한
-    print(f"🔧 제한된 텍스트 길이: {[len(text) for text in limited_texts]}자")
+    print(f" 제한된 텍스트 길이: {[len(text) for text in limited_texts]}자")
     
     total_input_length = sum(len(text) for text in limited_texts)
-    print(f"📊 총 입력 길이: {total_input_length}자")
+    print(f" 총 입력 길이: {total_input_length}자")
     
     if total_input_length <= 8000:  # 8000자 이하로 제한 (더 넉넉하게)
-        print("✅ 토큰 길이 테스트 통과")
+        print(" 토큰 길이 테스트 통과")
     else:
-        print(f"⚠️ 토큰 길이 초과: {total_input_length}자")
+        print(f" 토큰 길이 초과: {total_input_length}자")
     
     # 실제 대본 생성 테스트 - 더 많은 텍스트 사용
     try:
-        print("🤖 GPT 대본 생성 테스트 시작...")
-        print("💡 더 긴 대본 생성을 위해 모든 샘플 텍스트 사용...")
+        print(" GPT 대본 생성 테스트 시작...")
+        print(" 더 긴 대본 생성을 위해 모든 샘플 텍스트 사용...")
         script = summarize_articles(limited_texts, "politics")  # 6개 모두 사용
-        print(f"📝 생성된 대본 길이: {len(script)}자")
-        print(f"📄 대본 미리보기: {script[:200]}...")
+        print(f" 생성된 대본 길이: {len(script)}자")
+        print(f" 대본 미리보기: {script[:200]}...")
         
         if 1800 <= len(script) <= 2500:  # 범위를 약간 넓게 조정
-            print("✅ 대본 길이 테스트 통과 (1800-2500자)")
+            print(" 대본 길이 테스트 통과 (1800-2500자)")
         elif len(script) < 1800:
-            print(f"📝 대본 길이 부족: {len(script)}자 (목표: 1800자 이상)")
-            print("💡 개선 방안:")
+            print(f" 대본 길이 부족: {len(script)}자 (목표: 1800자 이상)")
+            print(" 개선 방안:")
             print("  - 입력 텍스트 양 증가")
             print("  - GPT 프롬프트에서 더 상세한 설명 요청")
             print("  - max_tokens 값 증가 고려")
         else:
-            print(f"📏 대본 길이 초과: {len(script)}자 (권장: 2500자 이하)")
+            print(f" 대본 길이 초과: {len(script)}자 (권장: 2500자 이하)")
             
     except Exception as e:
-        print(f"❌ 대본 생성 테스트 실패: {e}")
-        print("🔧 시뮬레이션 모드로 대체...")
+        print(f" 대본 생성 테스트 실패: {e}")
+        print(" 시뮬레이션 모드로 대체...")
         simulated_script = "안녕하세요, 오늘의 정치 뉴스를 전해드립니다. " * 80  # 약 2000자
-        print(f"📄 시뮬레이션 대본 길이: {len(simulated_script)}자")
+        print(f" 시뮬레이션 대본 길이: {len(simulated_script)}자")
     
     print()
 
 def main():
     """메인 테스트 실행"""
-    print("🚀 Briefly 유닛 테스트 시작\n")
+    print(" Briefly 유닛 테스트 시작\n")
     
     test_category_count()
     test_news_collection() 
     test_script_generation()
     
-    print("🏁 유닛 테스트 완료")
+    print(" 유닛 테스트 완료")
 
 if __name__ == "__main__":
     main() 

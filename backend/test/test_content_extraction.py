@@ -19,7 +19,7 @@ from app.services.deepsearch_service import (
 
 def test_korean_text_detection():
     """한글 텍스트 감지 테스트"""
-    print("🧪 [테스트 1] 한글 텍스트 감지")
+    print(" [테스트 1] 한글 텍스트 감지")
     
     test_cases = [
         ("안녕하세요. 한국어 뉴스 기사입니다.", True, "순수 한글"),
@@ -33,7 +33,7 @@ def test_korean_text_detection():
     
     for text, expected, description in test_cases:
         result = is_korean_text(text, threshold=0.7)
-        status = "✅" if result == expected else "❌"
+        status = "" if result == expected else ""
         print(f"  {status} {description}: {result} (예상: {expected})")
         if text:
             korean_ratio = len([c for c in text if '가' <= c <= '힣']) / len([c for c in text if c.isalpha() or '가' <= c <= '힣']) if any(c.isalpha() or '가' <= c <= '힣' for c in text) else 0
@@ -42,7 +42,7 @@ def test_korean_text_detection():
 
 def test_text_noise_cleaning():
     """텍스트 노이즈 제거 테스트"""
-    print("🧪 [테스트 2] 텍스트 노이즈 제거")
+    print(" [테스트 2] 텍스트 노이즈 제거")
     
     noisy_text = """
 이것은 실제 뉴스 기사 본문입니다.
@@ -79,14 +79,14 @@ Copyright 2024 News Corp. All rights reserved.
     remaining_noise = [kw for kw in noise_keywords if kw in cleaned]
     
     if remaining_noise:
-        print(f"⚠️ 남은 노이즈: {remaining_noise}")
+        print(f" 남은 노이즈: {remaining_noise}")
     else:
-        print("✅ 노이즈 제거 완료")
+        print(" 노이즈 제거 완료")
     print()
 
 def test_content_extraction_simulation():
     """본문 추출 시뮬레이션 테스트"""
-    print("🧪 [테스트 3] 본문 추출 시뮬레이션")
+    print(" [테스트 3] 본문 추출 시뮬레이션")
     
     # 실제 URL 테스트는 외부 의존성이 있으므로 시뮬레이션
     test_urls = [
@@ -96,33 +96,33 @@ def test_content_extraction_simulation():
         "https://unknown-site.com/article/999"
     ]
     
-    print("📋 테스트 URL 목록:")
+    print(" 테스트 URL 목록:")
     for i, url in enumerate(test_urls, 1):
         domain = url.split('/')[2].replace('www.', '')
         print(f"  {i}. {domain} ({url})")
     
-    print(f"\n📊 selector 지원 도메인 확인:")
+    print(f"\n selector 지원 도메인 확인:")
     from app.services.deepsearch_service import ARTICLE_SELECTORS
     
     supported_count = 0
     for url in test_urls:
         domain = url.split('/')[2].replace('www.', '')
         has_selector = domain in ARTICLE_SELECTORS
-        status = "✅" if has_selector else "📝"
+        status = "" if has_selector else ""
         print(f"  {status} {domain}: {'지원됨' if has_selector else '일반 추출'}")
         if has_selector:
             supported_count += 1
     
-    print(f"\n✅ selector 지원률: {supported_count}/{len(test_urls)} ({supported_count/len(test_urls)*100:.0f}%)")
+    print(f"\n selector 지원률: {supported_count}/{len(test_urls)} ({supported_count/len(test_urls)*100:.0f}%)")
     print()
 
 def test_article_selectors():
     """기사 selector 정의 테스트"""
-    print("🧪 [테스트 4] 기사 selector 정의")
+    print(" [테스트 4] 기사 selector 정의")
     
     from app.services.deepsearch_service import ARTICLE_SELECTORS
     
-    print(f"📊 총 지원 도메인: {len(ARTICLE_SELECTORS)}개")
+    print(f" 총 지원 도메인: {len(ARTICLE_SELECTORS)}개")
     print("\n지원 도메인 목록:")
     
     major_domains = ["newsis.com", "yna.co.kr", "kbs.co.kr", "donga.com", "joongang.co.kr"]
@@ -131,12 +131,12 @@ def test_article_selectors():
         is_major = "⭐" if domain in major_domains else "  "
         print(f"{is_major} {i:2d}. {domain:<20} → {selector}")
     
-    print(f"\n✅ 주요 언론사 지원: {sum(1 for d in major_domains if d in ARTICLE_SELECTORS)}/{len(major_domains)}개")
+    print(f"\n 주요 언론사 지원: {sum(1 for d in major_domains if d in ARTICLE_SELECTORS)}/{len(major_domains)}개")
     print()
 
 def test_unwanted_keywords():
     """불필요 키워드 패턴 테스트"""
-    print("🧪 [테스트 5] 불필요 키워드 패턴")
+    print(" [테스트 5] 불필요 키워드 패턴")
     
     from app.services.deepsearch_service import UNWANTED_KEYWORDS
     
@@ -149,12 +149,12 @@ def test_unwanted_keywords():
         "정치 분야의 중요한 소식입니다"
     ]
     
-    print(f"📊 총 불필요 키워드: {len(UNWANTED_KEYWORDS)}개")
+    print(f" 총 불필요 키워드: {len(UNWANTED_KEYWORDS)}개")
     print("\n테스트 문장 필터링:")
     
     for sentence in test_sentences:
         is_unwanted = any(kw in sentence for kw in UNWANTED_KEYWORDS)
-        status = "🚫" if is_unwanted else "✅"
+        status = "🚫" if is_unwanted else ""
         action = "제거됨" if is_unwanted else "유지됨"
         print(f"  {status} {sentence} → {action}")
     
@@ -162,7 +162,7 @@ def test_unwanted_keywords():
 
 def main():
     """본문 추출 테스트 실행"""
-    print("🚀 본문 추출 서비스 테스트 시작\n")
+    print(" 본문 추출 서비스 테스트 시작\n")
     
     test_korean_text_detection()
     test_text_noise_cleaning()
@@ -170,13 +170,13 @@ def main():
     test_article_selectors()
     test_unwanted_keywords()
     
-    print("🎯 테스트 요약:")
-    print("✅ 한글 텍스트 감지: 다양한 케이스 검증")
-    print("✅ 노이즈 제거: 기자정보, 저작권, 광고 텍스트 필터링")
-    print("✅ Selector 지원: 주요 언론사 도메인 대응")
-    print("✅ 키워드 필터: 불필요한 안내문구 제거")
+    print(" 테스트 요약:")
+    print(" 한글 텍스트 감지: 다양한 케이스 검증")
+    print(" 노이즈 제거: 기자정보, 저작권, 광고 텍스트 필터링")
+    print(" Selector 지원: 주요 언론사 도메인 대응")
+    print(" 키워드 필터: 불필요한 안내문구 제거")
     
-    print("\n🏁 본문 추출 테스트 완료!")
+    print("\n 본문 추출 테스트 완료!")
 
 if __name__ == "__main__":
     main() 

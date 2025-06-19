@@ -35,7 +35,7 @@ export function NewsDetailCard({
 
   return (
     <Card className="overflow-hidden border-0 shadow-lg h-full">
-      <div className="relative w-full h-36 overflow-hidden bg-muted">
+      <div className="relative w-full h-48 overflow-hidden bg-muted">
         <Image
           src={news.image_url || "/placeholder.svg?height=400&width=600&query=news"}
           alt={news.title}

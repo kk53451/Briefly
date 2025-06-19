@@ -17,13 +17,11 @@ const mockBookmarkedNews = [
 
 export function BookmarkedNews() {
   const handleBookmark = (id: string) => {
-    // 북마크 처리 로직 구현
-    console.log(`북마크 취소: ${id}`)
+    // 북마크 처리 로직 구현 예정
   }
 
   const handleShare = (id: string) => {
-    // 공유 처리 로직 구현
-    console.log(`공유: ${id}`)
+    // 공유 처리 로직 구현 예정
   }
 
   return (

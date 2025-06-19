@@ -4,14 +4,14 @@ from app.utils.dynamo import (
     get_user,
     save_user,
     get_user_bookmarks,
-    get_frequency_by_category_and_date  # ✅ 공유 스크립트 기반
+    get_frequency_by_category_and_date  #  공유 스크립트 기반
 )
 from app.utils.date import get_today_kst
 
-# ✅ /api/user 하위 엔드포인트 그룹
+#  /api/user 하위 엔드포인트 그룹
 router = APIRouter(prefix="/api/user", tags=["User"])
 
-# ✅ [GET] /api/user/profile
+#  [GET] /api/user/profile
 @router.get("/profile")
 def get_profile(user: dict = Depends(get_current_user)):
     """
@@ -22,7 +22,7 @@ def get_profile(user: dict = Depends(get_current_user)):
     """
     return user
 
-# ✅ [PUT] /api/user/profile
+#  [PUT] /api/user/profile
 @router.put("/profile")
 def update_profile(
     nickname: str = None,
@@ -47,7 +47,7 @@ def update_profile(
     save_user(user)
     return {"message": "프로필이 업데이트되었습니다."}
 
-# ✅ [GET] /api/user/bookmarks
+#  [GET] /api/user/bookmarks
 @router.get("/bookmarks")
 def get_bookmarks(user: dict = Depends(get_current_user)):
     """
@@ -58,7 +58,7 @@ def get_bookmarks(user: dict = Depends(get_current_user)):
     """
     return get_user_bookmarks(user["user_id"])
 
-# ✅ [GET] /api/user/frequencies
+#  [GET] /api/user/frequencies
 @router.get("/frequencies")
 def get_my_frequencies(user: dict = Depends(get_current_user)):
     """
@@ -77,7 +77,7 @@ def get_my_frequencies(user: dict = Depends(get_current_user)):
 
     return results
 
-# ✅ [GET] /api/user/categories
+#  [GET] /api/user/categories
 @router.get("/categories")
 def get_my_categories(user: dict = Depends(get_current_user)):
     """
@@ -87,7 +87,7 @@ def get_my_categories(user: dict = Depends(get_current_user)):
     """
     return {"interests": user.get("interests", [])}
 
-# ✅ [PUT] /api/user/categories
+#  [PUT] /api/user/categories
 @router.put("/categories")
 def update_my_categories(interests: list[str], user: dict = Depends(get_current_user)):
     """
@@ -100,7 +100,7 @@ def update_my_categories(interests: list[str], user: dict = Depends(get_current_
     save_user(user)
     return {"message": "관심 카테고리가 업데이트되었습니다."}
 
-# ✅ [POST] /api/user/onboarding
+#  [POST] /api/user/onboarding
 @router.post("/onboarding")
 def complete_onboarding(user: dict = Depends(get_current_user)):
     """
@@ -112,7 +112,7 @@ def complete_onboarding(user: dict = Depends(get_current_user)):
     save_user(user)
     return {"message": "온보딩 완료"}
 
-# ✅ [GET] /api/user/onboarding/status
+#  [GET] /api/user/onboarding/status
 @router.get("/onboarding/status")
 def onboarding_status(user: dict = Depends(get_current_user)):
     """
@@ -123,7 +123,7 @@ def onboarding_status(user: dict = Depends(get_current_user)):
     """
     return {"onboarded": user.get("onboarding_completed", False)}
 
-# ✅ [GET] /onboarding - 프론트엔드 요청 대응
+#  [GET] /onboarding - 프론트엔드 요청 대응
 @router.get("/onboarding")
 def get_onboarding_page(user: dict = Depends(get_current_user)):
     """

@@ -1,26 +1,26 @@
-# 🎙️ Briefly Backend
+#  Briefly Backend
 
 **FastAPI 기반 AI 뉴스 팟캐스트 백엔드 시스템**
 
 ---
 
-## 📋 개요
+##  개요
 
 Briefly 백엔드는 매일 뉴스를 수집하여 AI로 요약하고 TTS로 음성을 생성하는 자동화 시스템입니다.
 
-### ✨ 핵심 기능
-- 🤖 **AI 뉴스 요약**: GPT-4o-mini + 이중 클러스터링
-- 🎵 **TTS 변환**: ElevenLabs 고품질 음성 생성
-- ⏰ **스케줄링**: 매일 6시 자동 실행
-- 🔐 **인증**: 카카오 로그인 + JWT
-- 📊 **데이터**: DynamoDB + S3
+###  핵심 기능
+-  **AI 뉴스 요약**: GPT-4o-mini + 이중 클러스터링
+-  **TTS 변환**: ElevenLabs 고품질 음성 생성
+-  **스케줄링**: 매일 6시 자동 실행
+-  **인증**: 카카오 로그인 + JWT
+-  **데이터**: DynamoDB + S3
 
 ---
 
-## 🏗️ 시스템 아키텍처
+##  시스템 아키텍처
 
 ```
-🌐 External APIs          ⚙️ Backend Services         🗄️ Data Storage
+ External APIs           Backend Services          Data Storage
 ┌─────────────────┐     ┌─────────────────────┐     ┌─────────────────┐
 │ • OpenAI GPT    │────▶│   FastAPI Lambda    │────▶│   DynamoDB      │
 │ • ElevenLabs    │     │                     │     │   - NewsCards   │
@@ -42,41 +42,41 @@ Briefly 백엔드는 매일 뉴스를 수집하여 AI로 요약하고 TTS로 음
 ```
 backend/
 ├── app/
-│   ├── main.py                     # 🎯 FastAPI 메인 애플리케이션
+│   ├── main.py                     #  FastAPI 메인 애플리케이션
 │   ├── constants/
-│   │   └── category_map.py         # 📋 카테고리 매핑 (한글↔영어)
-│   ├── services/                   # 🔧 핵심 서비스
-│   │   ├── openai_service.py       # 🤖 GPT 요약 + 이중 클러스터링
+│   │   └── category_map.py         #  카테고리 매핑 (한글↔영어)
+│   ├── services/                   #  핵심 서비스
+│   │   ├── openai_service.py       #  GPT 요약 + 이중 클러스터링
 │   │   ├── deepsearch_service.py   # 📰 뉴스 수집 + 본문 추출
-│   │   └── tts_service.py          # 🎵 ElevenLabs TTS 변환
+│   │   └── tts_service.py          #  ElevenLabs TTS 변환
 │   ├── utils/                      # 🛠️ 유틸리티
-│   │   ├── dynamo.py              # 🗄️ DynamoDB 연결
+│   │   ├── dynamo.py              #  DynamoDB 연결
 │   │   ├── s3.py                  # 💾 S3 파일 업로드
-│   │   ├── jwt_service.py         # 🔐 JWT 토큰 관리
-│   │   └── date.py                # 📅 날짜 처리 (KST)
+│   │   ├── jwt_service.py         #  JWT 토큰 관리
+│   │   └── date.py                #  날짜 처리 (KST)
 │   ├── routes/                     # 🛣️ API 라우터
-│   │   ├── auth.py               # 🔐 카카오 로그인
+│   │   ├── auth.py               #  카카오 로그인
 │   │   ├── user.py               # 👤 사용자 관리
 │   │   ├── news.py               # 📰 뉴스 조회
-│   │   ├── frequency.py          # 🎙️ 주파수 관리
+│   │   ├── frequency.py          #  주파수 관리
 │   │   └── category.py           # 🏷️ 카테고리 조회
-│   └── tasks/                     # ⏰ 배치 작업
-│       ├── scheduler.py          # 📅 매일 6시 스케줄러
+│   └── tasks/                     #  배치 작업
+│       ├── scheduler.py          #  매일 6시 스케줄러
 │       ├── collect_news.py       # 📥 뉴스 수집
-│       └── generate_frequency.py # 🎙️ 음성 생성
-├── test/                          # 🧪 유닛 테스트 (100% 통과)
+│       └── generate_frequency.py #  음성 생성
+├── test/                          #  유닛 테스트 (100% 통과)
 │   ├── run_all_tests.py          # 🏃 통합 테스트 실행기
-│   ├── test_frequency_unit.py    # 📊 핵심 기능 테스트
-│   ├── test_clustering.py        # 🔄 클러스터링 테스트
-│   └── ...                       # 📝 기타 테스트 파일
-├── template.yaml                  # 🏗️ AWS SAM 배포 설정
+│   ├── test_frequency_unit.py    #  핵심 기능 테스트
+│   ├── test_clustering.py        #  클러스터링 테스트
+│   └── ...                       #  기타 테스트 파일
+├── template.yaml                  #  AWS SAM 배포 설정
 ├── requirements.txt               # 📦 Python 의존성
 └── README.md                      # 📖 이 파일
 ```
 
 ---
 
-## 🚀 시작하기
+##  시작하기
 
 ### 1. 환경 설정
 
@@ -124,7 +124,7 @@ uvicorn app.main:app --reload --port 8000
 
 ---
 
-## 🧪 테스트 실행
+##  테스트 실행
 
 ### 전체 테스트
 ```bash
@@ -140,15 +140,15 @@ $env:PYTHONIOENCODING='utf-8'; python test_clustering.py
 ```
 
 ### 테스트 현황
-- ✅ **성공률**: 100% (6/6)
-- 📊 **커버리지**: 핵심 비즈니스 로직 100%
-- ⏱️ **실행시간**: 약 30초
+-  **성공률**: 100% (6/6)
+-  **커버리지**: 핵심 비즈니스 로직 100%
+-  **실행시간**: 약 30초
 
 ---
 
-## 🔧 주요 기능
+##  주요 기능
 
-### 🤖 AI 뉴스 요약 시스템
+###  AI 뉴스 요약 시스템
 
 **이중 클러스터링 전략**
 ```python
@@ -165,7 +165,7 @@ final_groups = cluster_similar_texts(summaries, threshold=0.75)
 - 그룹 요약: 각 기사 800자 제한
 - 최종 대본: 1800-2500자
 
-### 🎵 TTS 변환
+###  TTS 변환
 
 **ElevenLabs 설정**
 ```python
@@ -177,7 +177,7 @@ voice_settings = {
 }
 ```
 
-### ⏰ 자동화 스케줄러
+###  자동화 스케줄러
 
 **매일 오전 6시 (KST) 실행**
 1. 뉴스 수집 (카테고리별 30개)
@@ -190,7 +190,7 @@ voice_settings = {
 
 ---
 
-## 📊 API 엔드포인트
+##  API 엔드포인트
 
 ### 인증 `/api/auth`
 | 메서드 | 엔드포인트 | 설명 |
@@ -235,7 +235,7 @@ voice_settings = {
 
 ---
 
-## 🗄️ 데이터베이스 구조
+##  데이터베이스 구조
 
 ### NewsCards
 ```json
@@ -275,12 +275,12 @@ voice_settings = {
 
 ---
 
-## 🔐 보안 고려사항
+##  보안 고려사항
 
 ### API 키 관리
-- ✅ 환경변수로 관리
-- ✅ AWS Parameter Store 연동 준비
-- ⚠️ 현재 하드코딩 (개발 편의성)
+-  환경변수로 관리
+-  AWS Parameter Store 연동 준비
+-  현재 하드코딩 (개발 편의성)
 
 ### JWT 토큰
 ```python
@@ -304,7 +304,7 @@ app.add_middleware(
 
 ---
 
-## 🚀 배포
+##  배포
 
 ### AWS SAM 배포
 ```bash
@@ -330,7 +330,7 @@ sam deploy
 
 ---
 
-## 📊 성능 최적화
+##  성능 최적화
 
 ### 토큰 사용량 50% 절약
 - **기존**: 90,000자 → **현재**: 45,000자
@@ -352,7 +352,7 @@ logger.error("에러 로그")
 
 ---
 
-## 🔧 문제 해결
+##  문제 해결
 
 ### 자주 발생하는 이슈
 
@@ -385,7 +385,7 @@ tail -f logs/app.log
 
 ---
 
-## 📈 모니터링
+##  모니터링
 
 ### 주요 지표
 - **API 응답시간**: 평균 200ms 이하
@@ -401,7 +401,7 @@ tail -f logs/app.log
 
 ---
 
-## 📝 개발 가이드
+##  개발 가이드
 
 ### 새로운 API 추가
 1. `routes/` 폴더에 라우터 파일 생성
@@ -442,4 +442,82 @@ tail -f logs/app.log
 
 ---
 
-**Built with ❤️ using FastAPI, OpenAI, and AWS**
+# Backend API Server
+
+## 환경 변수 설정
+
+### TTS 서비스 최적화 (NEW)
+
+자연스러운 팟캐스트를 위한 ElevenLabs 설정:
+
+```bash
+# ElevenLabs TTS 설정
+ELEVENLABS_API_KEY=your_api_key_here
+ELEVENLABS_VOICE_ID=your_voice_id_here
+
+# 권장 음성 ID (한국어 최적화):
+# - kdmDKE6EkgrWrrykO9Qt (Alexandra - 자연스러운 여성 음성)
+# - L0Dsvb3SLTyegXwtm47J (Archer - 친근한 남성 음성)
+# - g6xIsTj2HwM6VR4iXFCw (Jessica - 표현력 풍부한 여성 음성)
+```
+
+### TTS 품질 개선 사항
+
+1. **음성 설정 최적화 (v2 모델)**:
+   - Stability: 0.65 (안정성 대폭 향상)
+   - Similarity Boost: 0.8 (음성 특성 강화)
+   - Style: 0.15 (자연스러운 변화 허용)
+   - Speaker Boost: 활성화
+   - 고품질 출력: MP3 44.1kHz 128kbps
+
+2. **텍스트 전처리 개선**:
+   - 자연스러운 감정 표현 추가
+   - 호흡 패턴과 쉼 최적화
+   - 숫자 읽기 개선
+
+3. **대본 자연스러움 개선**:
+   - 친근한 말투와 자연스러운 연결어
+   - 감정 변화와 호흡 패턴 최적화
+   - 실제 사람처럼 말하는 스타일
+
+## 기존 설정
+
+### OpenAI 설정
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o-mini  # 또는 gpt-4o
+```
+
+### AWS 설정  
+```bash
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=ap-northeast-2
+AWS_DYNAMODB_TABLE_NAME=briefly-news
+AWS_S3_BUCKET_NAME=briefly-audio
+```
+
+### DeepSearch API
+```bash
+DEEPSEARCH_API_KEY=your_deepsearch_api_key
+```
+
+## 실행 방법
+
+```bash
+# 가상환경 활성화
+source venv/Scripts/activate  # Windows
+source venv/bin/activate      # Mac/Linux
+
+# 의존성 설치
+pip install -r requirements.txt
+
+# 서버 실행
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+## API 문서
+
+서버 실행 후 다음 URL에서 API 문서 확인:
+- http://localhost:8000/docs (Swagger UI)
+- http://localhost:8000/redoc (ReDoc)

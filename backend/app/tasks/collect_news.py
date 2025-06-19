@@ -23,7 +23,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
     collection_start_time = time.time()
     
     try:
-        logger.info(f"📰 [{category_ko}] 뉴스 수집 시작 ({section})")
+        logger.info(f"[{category_ko}] 뉴스 수집 시작 ({section})")
 
         # 뉴스 API 호출
         try:
@@ -37,9 +37,9 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 min_content_length=300,
                 limit=30               # 최종 저장 수
             )
-            logger.info(f"📥 [{category_ko}] 유효 기사 수: {len(articles)}")
+            logger.info(f"[{category_ko}] 유효 기사 수: {len(articles)}")
         except Exception as e:
-            logger.error(f"❌ [{category_ko}] API 호출 실패: {e}")
+            logger.error(f" [{category_ko}] API 호출 실패: {e}")
             return {
                 "category": category_ko,
                 "status": "failed",
@@ -54,7 +54,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
         for rank, article in enumerate(articles, start=1):
             news_id = article.get("id")
             if not news_id:
-                logger.warning(f"⚠️ [{category_ko}] ID 누락 → 스킵")
+                logger.warning(f" [{category_ko}] ID 누락 → 스킵")
                 continue
 
             # 중복 확인
@@ -67,7 +67,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
 
             content = article.get("content", "")
             if not content or len(content) < 300:
-                logger.warning(f"⚠️ [{category_ko}] 본문 누락/부족 → 스킵: {news_id}")
+                logger.warning(f" [{category_ko}] 본문 누락/부족 → 스킵: {news_id}")
                 continue
 
             # 뉴스 저장 아이템 구성
@@ -87,19 +87,19 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 "published_at": article.get("published_at"),
                 "companies": article.get("companies", []),
                 "esg": article.get("esg", []),
-                "content": content  # ✅ 본문 포함 (selector 기반)
+                "content": content  #  본문 포함 (selector 기반)
             }
 
             # DynamoDB 저장
             try:
                 save_news_card(category_en, news_item, date_str)
                 saved_count += 1
-                logger.info(f"✅ [{category_ko}] 저장 완료 #{rank} - {news_item['title']}")
+                logger.info(f" [{category_ko}] 저장 완료 #{rank} - {news_item['title']}")
             except Exception as e:
-                logger.error(f"❌ [{category_ko}] 저장 실패 #{rank}: {e}")
+                logger.error(f" [{category_ko}] 저장 실패 #{rank}: {e}")
 
         elapsed_time = time.time() - collection_start_time
-        logger.info(f"📊 [{category_ko}] 최종 저장 수: {saved_count} (소요시간: {elapsed_time:.1f}초)")
+        logger.info(f" [{category_ko}] 최종 저장 수: {saved_count} (소요시간: {elapsed_time:.1f}초)")
         
         return {
             "category": category_ko,
@@ -110,7 +110,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
         
     except Exception as e:
         elapsed_time = time.time() - collection_start_time
-        logger.exception(f"❌ [{category_ko}] 예상치 못한 오류 (소요시간: {elapsed_time:.1f}초): {str(e)}")
+        logger.exception(f" [{category_ko}] 예상치 못한 오류 (소요시간: {elapsed_time:.1f}초): {str(e)}")
         return {
             "category": category_ko,
             "status": "failed",
@@ -121,7 +121,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
 
 def collect_today_news():
     """
-    ✅ 매일 오전 6시 자동 실행: 자정~06시 사이의 뉴스 수집 및 저장 (병렬 처리)
+     매일 오전 6시 자동 실행: 자정~06시 사이의 뉴스 수집 및 저장 (병렬 처리)
     - CATEGORY_MAP에 정의된 카테고리별로 인기 뉴스 호출
     - 본문 길이 300자 이상인 기사만 저장
     - 본문은 selector 기반 추출 (fallback 포함)
@@ -136,9 +136,9 @@ def collect_today_news():
     start_time = f"{date_str}T00:00:00"
     end_time = f"{date_str}T06:00:00"
 
-    logger.info(f"🚀 병렬 뉴스 수집 시작: {len(CATEGORY_MAP)}개 카테고리 동시 처리")
-    logger.info(f"📅 수집 범위: {start_time} ~ {end_time}")
-    logger.info(f"📋 카테고리 목록: {list(CATEGORY_MAP.keys())}")
+    logger.info(f" 병렬 뉴스 수집 시작: {len(CATEGORY_MAP)}개 카테고리 동시 처리")
+    logger.info(f" 수집 범위: {start_time} ~ {end_time}")
+    logger.info(f" 카테고리 목록: {list(CATEGORY_MAP.keys())}")
 
     # 병렬 처리: ThreadPoolExecutor 사용
     results = []
@@ -157,12 +157,12 @@ def collect_today_news():
                 results.append(result)
                 
                 if result["status"] == "success":
-                    logger.info(f"🎉 [{result['category']}] 뉴스 수집 완료 - 저장: {result['saved_count']}개, 소요시간: {result['elapsed_time']:.1f}초")
+                    logger.info(f" [{result['category']}] 뉴스 수집 완료 - 저장: {result['saved_count']}개, 소요시간: {result['elapsed_time']:.1f}초")
                 else:
-                    logger.warning(f"⚠️ [{result['category']}] 뉴스 수집 실패 - 사유: {result['reason']}")
+                    logger.warning(f" [{result['category']}] 뉴스 수집 실패 - 사유: {result['reason']}")
                     
             except Exception as exc:
-                logger.exception(f"❌ [{category_ko}] 예상치 못한 오류: {exc}")
+                logger.exception(f" [{category_ko}] 예상치 못한 오류: {exc}")
                 results.append({
                     "category": category_ko, 
                     "status": "failed", 
@@ -176,14 +176,14 @@ def collect_today_news():
     failed_count = sum(1 for r in results if r["status"] == "failed")
     total_saved = sum(r["saved_count"] for r in results)
     
-    logger.info(f"🏁 병렬 뉴스 수집 완료!")
-    logger.info(f"⏱️ 총 소요시간: {total_elapsed_time:.1f}초")
-    logger.info(f"📊 결과 요약: 성공 {success_count}개, 실패 {failed_count}개")
+    logger.info(f" 병렬 뉴스 수집 완료!")
+    logger.info(f" 총 소요시간: {total_elapsed_time:.1f}초")
+    logger.info(f" 결과 요약: 성공 {success_count}개, 실패 {failed_count}개")
     logger.info(f"💾 총 저장된 뉴스: {total_saved}개")
     
     # 각 카테고리별 상세 결과 로그
     for result in results:
-        status_emoji = {"success": "✅", "failed": "❌"}.get(result["status"], "❓") 
+        status_emoji = {"success": "", "failed": ""}.get(result["status"], "❓") 
         logger.info(f"{status_emoji} {result['category']}: {result['saved_count']}개 저장")
         if "reason" in result:
             logger.info(f"   └─ 사유: {result['reason']}")

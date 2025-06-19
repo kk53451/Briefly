@@ -80,7 +80,6 @@ export function RankingNews() {
       setLoading(true)
       setError(null)
       
-      console.log(`뉴스 조회 요청: ${category}`)
       const data = await apiClient.getNewsByCategory(category)
       
       setTimeout(() => {

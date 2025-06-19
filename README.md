@@ -414,10 +414,9 @@ backend/
 ## 시작하기
 
 ### 환경 요구사항
-- Node.js 18+
+- Node.js 14+
 - Python 3.12+
 - AWS CLI 설정
-- Docker (선택사항)
 
 ### 로컬 개발 환경 설정
 
@@ -446,26 +445,8 @@ sam deploy --guided
 
 ---
 
-## 기여하기
-
-프로젝트에 기여하고 싶으시다면 다음 절차를 따라주세요:
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
 ## 라이센스
 
 이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
 
 ---
-
-## 연락처
-
-프로젝트에 대한 문의사항이 있으시면 언제든 연락주세요.
-
-**Project Link**: [https://github.com/your-username/briefly](https://github.com/your-username/briefly)

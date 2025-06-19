@@ -29,7 +29,6 @@ export function UserProfile() {
   const fetchUserProfile = async () => {
     try {
       const userData = await apiClient.getUserProfile()
-      console.log("사용자 정보:", userData)
       setUser(userData)
     } catch (error) {
       console.error("사용자 정보 조회 실패:", error)
@@ -42,7 +41,6 @@ export function UserProfile() {
   const fetchUserBookmarks = async () => {
     try {
       const bookmarkData = await apiClient.getUserBookmarks()
-      console.log("북마크 데이터:", bookmarkData)
       setBookmarks(bookmarkData)
     } catch (error) {
       console.error("북마크 조회 실패:", error)

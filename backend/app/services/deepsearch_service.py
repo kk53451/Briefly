@@ -9,7 +9,7 @@ import re
 from app.utils.dynamo import get_news_by_category_and_date, get_news_card_by_id, get_news_card_by_content_url
 from app.constants.category_map import CATEGORY_MAP
 
-# ✅ 환경 변수에서 API 키 및 기본 설정 로드
+#  환경 변수에서 API 키 및 기본 설정 로드
 DEEPSEARCH_API_KEY = os.getenv("DEEPSEARCH_API_KEY")
 DEEPSEARCH_BASE_URL = "https://api-v2.deepsearch.com/v1"
 USER_AGENT = os.getenv(
@@ -22,7 +22,7 @@ HEADERS = {
     "User-Agent": USER_AGENT
 }
 
-# ✅ 주요 언론사별 도메인/본문 selector 지정
+#  주요 언론사별 도메인/본문 selector 지정
 ARTICLE_SELECTORS = {
     "newsis.com": "div.view_text",
     "news1.kr": "div#articleBody",
@@ -46,7 +46,7 @@ ARTICLE_SELECTORS = {
     "busan.com": "div#news_body_area",
 }
 
-# ✅ 본문 내 "한글 비율" 체크 함수 (70% 이상만 유효 본문 인정)
+#  본문 내 "한글 비율" 체크 함수 (70% 이상만 유효 본문 인정)
 def is_korean_text(text: str, threshold: float = 0.7) -> bool:
     """
     텍스트 내 한글 비율 검사 (한국 뉴스 여부 판별)
@@ -57,7 +57,7 @@ def is_korean_text(text: str, threshold: float = 0.7) -> bool:
         return False
     return kor_count / total_count >= threshold
 
-# ✅ 불필요한 안내/광고/추천/앱 영역 selector (BS4 제거용)
+#  불필요한 안내/광고/추천/앱 영역 selector (BS4 제거용)
 KNOWN_TRASH_SELECTORS = [
     ".txt-copyright", ".adrs", ".sns-box", ".relate_news", ".copy",
     ".recommend", ".app-down", ".guide", ".comment", ".news_app_banner",
@@ -75,7 +75,7 @@ UNWANTED_KEYWORDS = [
     "인용된 모든 콘텐츠는", "당신의 의견을 남겨주세요", "클릭! 기사는 어떠셨나요?"
 ]
 
-# ✅ 본문 내 반복적으로 등장하는 안내/광고/제보/저작권 텍스트 정규식 패턴
+#  본문 내 반복적으로 등장하는 안내/광고/제보/저작권 텍스트 정규식 패턴
 REMOVE_TEXT_PATTERNS = [
     # 기자 이름 + 이메일
     r"^[가-힣]{2,4}\s?기자\s?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
@@ -122,7 +122,7 @@ def clean_text_noise(text: str) -> str:
 
     return "\n".join(cleaned_lines)
 
-# ✅ [방법1] selector + BS4 방식 본문 추출 (실패 시 전체 텍스트 fallback)
+#  [방법1] selector + BS4 방식 본문 추출 (실패 시 전체 텍스트 fallback)
 def extract_content_with_bs4(url: str, timeout: float = 10.0) -> str:
     """
     [1] BeautifulSoup 기반 기사 본문 추출
@@ -160,7 +160,7 @@ def extract_content_with_bs4(url: str, timeout: float = 10.0) -> str:
             if article_tag:
                 text = article_tag.get_text(separator="\n")
             else:
-                print(f"⚠️ selector 존재하나 해당 요소 없음: {domain} → {selector}")                
+                print(f" selector 존재하나 해당 요소 없음: {domain} → {selector}")                
                 text = soup.get_text(separator="\n")
         else:
             text = soup.get_text(separator="\n")
@@ -170,22 +170,22 @@ def extract_content_with_bs4(url: str, timeout: float = 10.0) -> str:
         return text.strip()
 
     except httpx.TimeoutException as e:
-        print(f"❌ [타임아웃] {url} - {e}")
+        print(f" [타임아웃] {url} - {e}")
         return ""
     except httpx.RequestError as e:
-        print(f"❌ [요청오류] {url} - {e}")
+        print(f" [요청오류] {url} - {e}")
         return ""
     except httpx.HTTPStatusError as e:
-        print(f"❌ [HTTP오류] {url} - {e.response.status_code}")
+        print(f" [HTTP오류] {url} - {e.response.status_code}")
         return ""
     except ValueError as e:
-        print(f"❌ [URL파싱오류] {url} - {e}")
+        print(f" [URL파싱오류] {url} - {e}")
         return ""
     except Exception as e:
-        print(f"❌ [본문추출 예상치 못한 오류] {url} - {e}")
+        print(f" [본문추출 예상치 못한 오류] {url} - {e}")
         return ""
 
-# ✅ [방법2] Trafilatura + BS4 혼합 방식 (최우선 방식)
+#  [방법2] Trafilatura + BS4 혼합 방식 (최우선 방식)
 def extract_content_flexibly(url: str, timeout: float = 10.0) -> str:
     """
     [2] Trafilatura 기반 본문 추출 우선
@@ -215,13 +215,13 @@ def extract_content_flexibly(url: str, timeout: float = 10.0) -> str:
                 return text
         return ""
     except ImportError as e:
-        print(f"❌ [라이브러리 누락] trafilatura 설치 필요: {e}")
+        print(f" [라이브러리 누락] trafilatura 설치 필요: {e}")
         return extract_content_with_bs4(url)
     except MemoryError as e:
-        print(f"❌ [메모리 부족] {url} - {e}")
+        print(f" [메모리 부족] {url} - {e}")
         return ""
     except Exception as e:
-        print(f"❌ [혼합본문추출 예상치 못한 오류] {url} - {e}")
+        print(f" [혼합본문추출 예상치 못한 오류] {url} - {e}")
         return ""
 
 async def fetch_top_articles(
@@ -265,7 +265,7 @@ def fetch_valid_articles_by_category(
     max_try: int = 5
 ) -> List[dict]:
     """
-    ✅ [뉴스 수집용] 카테고리별 뉴스 중 본문이 유효한 기사만 필터링하여 반환
+     [뉴스 수집용] 카테고리별 뉴스 중 본문이 유효한 기사만 필터링하여 반환
     - 딥서치 API로 기사 리스트 조회 후 각 기사에 대해 extract_content_flexibly로 본문 추출
     - 메모리 + DB 기반 중복 필터링 
     - 한글 뉴스만 선별

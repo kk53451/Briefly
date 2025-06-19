@@ -28,13 +28,11 @@ const mockHistoryNews = [
 
 export function History() {
   const handleBookmark = (id: string) => {
-    // 북마크 처리 로직 구현
-    console.log(`북마크: ${id}`)
+    // 북마크 처리 로직 구현 예정
   }
 
   const handleShare = (id: string) => {
-    // 공유 처리 로직 구현
-    console.log(`공유: ${id}`)
+    // 공유 처리 로직 구현 예정
   }
 
   // 날짜별로 그룹화

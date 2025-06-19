@@ -13,7 +13,7 @@ os.environ['PYTHONIOENCODING'] = 'utf-8'
 
 def run_test_file(test_file):
     """개별 테스트 파일 실행"""
-    print(f"🔄 {test_file} 실행중...")
+    print(f"{test_file} 실행중...")
     start_time = time.time()
     
     try:
@@ -29,28 +29,28 @@ def run_test_file(test_file):
         duration = end_time - start_time
         
         if result.returncode == 0:
-            print(f"✅ {test_file} 완료 ({duration:.1f}초)")
+            print(f" {test_file} 완료 ({duration:.1f}초)")
             # 디버깅: 출력 길이 정보 추가
             stdout_len = len(result.stdout) if result.stdout else 0
             stderr_len = len(result.stderr) if result.stderr else 0
             if test_file == "test_collection_simulation.py":
-                print(f"  🔍 stdout 길이: {stdout_len}자, stderr 길이: {stderr_len}자")
+                print(f"   stdout 길이: {stdout_len}자, stderr 길이: {stderr_len}자")
                 if result.stdout:
-                    print(f"  📝 출력 미리보기: {result.stdout[:100]}...")
+                    print(f"   출력 미리보기: {result.stdout[:100]}...")
             return True, result.stdout, ""
         else:
-            print(f"❌ {test_file} 실패 ({duration:.1f}초)")
+            print(f" {test_file} 실패 ({duration:.1f}초)")
             return False, result.stdout, result.stderr
             
     except Exception as e:
-        print(f"🚨 {test_file} 실행 오류: {e}")
+        print(f" {test_file} 실행 오류: {e}")
         return False, "", str(e)
 
 def main():
     """전체 테스트 실행"""
-    print("🚀 Briefly 전체 유닛테스트 실행")
+    print(" Briefly 전체 유닛테스트 실행")
     print("=" * 50)
-    print(f"📅 실행 시간: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f" 실행 시간: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
     
     # 실행할 테스트 파일 목록
@@ -73,12 +73,12 @@ def main():
         else:
             missing_files.append(test_file)
     
-    print(f"📊 테스트 파일 현황:")
+    print(f" 테스트 파일 현황:")
     print(f"  - 존재: {len(existing_files)}개")
     print(f"  - 누락: {len(missing_files)}개")
     
     if missing_files:
-        print(f"⚠️ 누락된 파일: {missing_files}")
+        print(f" 누락된 파일: {missing_files}")
     print()
     
     # 개별 테스트 실행
@@ -99,22 +99,22 @@ def main():
     
     # 결과 요약
     print("=" * 50)
-    print("📊 테스트 결과 요약")
+    print(" 테스트 결과 요약")
     print("=" * 50)
     
     success_count = sum(1 for r in results.values() if r["success"])
     total_count = len(results)
     
-    print(f"✅ 성공: {success_count}개")
-    print(f"❌ 실패: {total_count - success_count}개")
-    print(f"📊 성공률: {success_count/total_count*100:.1f}%")
-    print(f"⏱️ 총 소요시간: {total_duration:.1f}초")
+    print(f" 성공: {success_count}개")
+    print(f" 실패: {total_count - success_count}개")
+    print(f" 성공률: {success_count/total_count*100:.1f}%")
+    print(f" 총 소요시간: {total_duration:.1f}초")
     print()
     
     # 개별 결과 상세
-    print("📋 개별 테스트 결과:")
+    print(" 개별 테스트 결과:")
     for test_file, result in results.items():
-        status = "✅" if result["success"] else "❌"
+        status = "" if result["success"] else ""
         test_name = test_file.replace("test_", "").replace(".py", "")
         print(f"  {status} {test_name}")
         
@@ -126,10 +126,10 @@ def main():
     # 실패한 테스트 상세 정보
     failed_tests = [name for name, result in results.items() if not result["success"]]
     if failed_tests:
-        print("🚨 실패한 테스트 상세:")
+        print(" 실패한 테스트 상세:")
         for test_file in failed_tests:
             result = results[test_file]
-            print(f"\n📋 {test_file}:")
+            print(f"\n {test_file}:")
             if result["stderr"]:
                 print("에러 메시지:")
                 print(result["stderr"])
@@ -138,7 +138,7 @@ def main():
                 print(result["stdout"][-500:])  # 마지막 500자만
     
     # 테스트 범위 확인
-    print("\n🎯 테스트 범위:")
+    print("\n 테스트 범위:")
     test_coverage = {
         "test_frequency_unit.py": "카테고리, 뉴스수집, 대본생성",
         "test_collection_simulation.py": "뉴스수집 로직 시뮬레이션",
@@ -149,22 +149,22 @@ def main():
     }
     
     for test_file, description in test_coverage.items():
-        status = "✅" if test_file in existing_files else "❌"
+        status = "" if test_file in existing_files else ""
         print(f"  {status} {description}")
     
     # 권장사항
-    print(f"\n💡 권장사항:")
+    print(f"\n 권장사항:")
     if success_count == total_count:
-        print("🎉 모든 테스트가 통과했습니다!")
+        print(" 모든 테스트가 통과했습니다!")
         print("  - 운영환경 배포 준비 완료")
         print("  - CI/CD 파이프라인 연동 권장")
     else:
-        print("⚠️ 실패한 테스트를 수정해주세요:")
+        print(" 실패한 테스트를 수정해주세요:")
         print("  - 실패 원인 분석 및 코드 수정")
         print("  - 환경변수 설정 확인")
         print("  - 외부 API 의존성 확인")
     
-    print(f"\n🏁 전체 테스트 완료!")
+    print(f"\n 전체 테스트 완료!")
     
     # 종료 코드 반환
     return 0 if success_count == total_count else 1

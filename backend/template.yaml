@@ -9,7 +9,7 @@ Globals:
     MemorySize: 1024  # 클러스터링 작업을 위해 512MB → 1024MB 증가
 
 Resources:
-  ## ✅ FastAPI 메인 API
+  ##  FastAPI 메인 API
   BrieflyApi:
     Type: AWS::Serverless::Function
     Properties:
@@ -39,7 +39,7 @@ Resources:
         - AmazonS3FullAccess
         - AWSLambdaBasicExecutionRole
 
-  ## ✅ 매일 06시 실행 Lambda
+  ##  매일 06시 실행 Lambda
   DailyBrieflyTask:
     Type: AWS::Serverless::Function
     Properties:
@@ -72,7 +72,7 @@ Resources:
         - AmazonS3FullAccess
         - AWSLambdaBasicExecutionRole
 
-  ## ✅ NewsCards 테이블
+  ##  NewsCards 테이블
   NewsCardsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -94,7 +94,7 @@ Resources:
           Projection:
             ProjectionType: ALL
 
-  ## ✅ Frequencies 테이블 (공유 구조)
+  ##  Frequencies 테이블 (공유 구조)
   FrequenciesTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -107,7 +107,7 @@ Resources:
         - AttributeName: frequency_id
           KeyType: HASH
 
-  ## ✅ Users 테이블 (profile_image, created_at 추가)
+  ##  Users 테이블 (profile_image, created_at 추가)
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -120,7 +120,7 @@ Resources:
         - AttributeName: user_id
           KeyType: HASH
 
-  ## ✅ Bookmarks 테이블
+  ##  Bookmarks 테이블
   BookmarksTable:
     Type: AWS::DynamoDB::Table
     Properties:

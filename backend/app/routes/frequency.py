@@ -43,7 +43,7 @@ def regenerate_presigned_url(audio_url: str, expires_in_seconds: int = 604800) -
         return new_url
         
     except Exception as e:
-        print(f"⚠️ Presigned URL 재생성 실패: {str(e)}")
+        print(f" Presigned URL 재생성 실패: {str(e)}")
         return audio_url
 
 def validate_and_refresh_audio_urls(frequencies: list) -> list:
@@ -65,7 +65,7 @@ def validate_and_refresh_audio_urls(frequencies: list) -> list:
                 updated_frequencies.append(freq)
             else:
                 # URL이 만료됨, 새로운 presigned URL 생성
-                print(f"🔄 만료된 오디오 URL 재생성: {freq.get('frequency_id')}")
+                print(f"만료된 오디오 URL 재생성: {freq.get('frequency_id')}")
                 new_audio_url = regenerate_presigned_url(freq["audio_url"])
                 
                 # 업데이트된 정보로 주파수 데이터 수정
@@ -78,7 +78,7 @@ def validate_and_refresh_audio_urls(frequencies: list) -> list:
                 
         except Exception as e:
             # 네트워크 오류 등으로 검증 실패시 새로운 URL 생성 시도
-            print(f"⚠️ URL 검증 실패, 재생성 시도: {str(e)}")
+            print(f" URL 검증 실패, 재생성 시도: {str(e)}")
             new_audio_url = regenerate_presigned_url(freq["audio_url"])
             freq_copy = freq.copy()
             freq_copy["audio_url"] = new_audio_url
@@ -86,10 +86,10 @@ def validate_and_refresh_audio_urls(frequencies: list) -> list:
     
     return updated_frequencies
 
-# ✅ /api/frequencies 엔드포인트 그룹
+#  /api/frequencies 엔드포인트 그룹
 router = APIRouter(prefix="/api/frequencies", tags=["Frequency"])
 
-# ✅ [GET] /api/frequencies
+#  [GET] /api/frequencies
 @router.get("")
 def get_frequencies(user: dict = Depends(get_current_user)):
     """
@@ -115,7 +115,7 @@ def get_frequencies(user: dict = Depends(get_current_user)):
     
     return validated_results
 
-# ✅ [GET] /api/frequencies/history
+#  [GET] /api/frequencies/history
 @router.get("/history")
 def get_frequency_history(
     user: dict = Depends(get_current_user),
@@ -156,7 +156,7 @@ def get_frequency_history(
     
     return validated_history
 
-# ✅ [GET] /api/frequencies/{category}
+#  [GET] /api/frequencies/{category}
 @router.get("/{category}")
 def get_frequency_detail(category: str, user: dict = Depends(get_current_user)):
     """

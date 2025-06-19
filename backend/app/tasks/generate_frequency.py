@@ -40,7 +40,7 @@ def process_single_category(category_ko: str, date: str) -> dict:
 
         # 해당 카테고리의 오늘 기사 불러오기
         articles = get_news_by_category_and_date(category_en, date)
-        logger.info(f"📥 [{category_en}] 수집된 기사 수: {len(articles)}")
+        logger.info(f"[{category_en}] 수집된 기사 수: {len(articles)}")
 
         full_contents = []
         processed_count = 0
@@ -97,7 +97,7 @@ def process_single_category(category_ko: str, date: str) -> dict:
                 if len(group) == 1:
                     # 단일 기사는 그대로 사용
                     group_summaries.append(group[0])
-                    logger.info(f"📄 [{category_en}] 그룹 #{group_idx+1}: 단일 기사 ({len(group[0])}자)")
+                    logger.info(f"[{category_en}] 그룹 #{group_idx+1}: 단일 기사 ({len(group[0])}자)")
                 else:
                     # 여러 유사 기사 → 대표 요약문 생성
                     try:
