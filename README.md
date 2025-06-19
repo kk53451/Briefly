@@ -2,6 +2,8 @@
 
 **매일 업데이트되는 개인화 AI 뉴스 팟캐스트 서비스**
 
+📽️ [유튜브 시연 영상 보기](https://youtu.be/fDMx_1knq70)
+
 [![AWS](https://img.shields.io/badge/AWS-Lambda%20%7C%20DynamoDB%20%7C%20S3-orange)](https://aws.amazon.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green)](https://openai.com/)
 [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-TTS-blue)](https://elevenlabs.io/)
@@ -121,10 +123,10 @@ briefly-news-audio/
 #### 이중 클러스터링 알고리즘
 1. **1차 클러스터링**: 원본 기사의 물리적 중복 제거 (80% 유사도 기준)
 2. **2차 클러스터링**: GPT 요약문의 의미적 중복 제거 (75% 유사도 기준)
-3. **토큰 최적화**: 90,000자 → 45,000자로 50% 비용 절약
+3. **토큰 최적화**: 본문 1,500자 제한으로 API 비용 50% 절감
 
 #### GPT-4o-mini 활용 최적화
-- **프롬프트 엔지니어링**: 1800-2500자 범위의 팟캐스트 대본 생성
+- **Few-shot Learning**: 카테고리별 예시 기반 일관된 품질의 대본 생성
 - **컨텍스트 관리**: 카테고리별 맞춤형 톤앤매너 적용
 - **에러 핸들링**: Rate Limit 및 API 오류에 대한 견고한 예외 처리
 
@@ -209,7 +211,7 @@ Events:
 - **응답 시간**: API 평균 응답 시간 < 2초
 
 #### 비용 최적화
-- **토큰 사용량**: 50% 절감 (90,000자 → 45,000자)
+- **토큰 사용량**: 본문 1,500자 제한으로 50% 절감
 - **TTS 비용**: 카테고리별 일일 1회 생성으로 최적화
 - **S3 스토리지**: 압축된 MP3 파일로 저장 공간 효율화
 
@@ -252,7 +254,7 @@ Events:
 
 #### AI 기술 활용
 - **이중 클러스터링**: 기존 단순 중복 제거 대비 정확도 향상
-- **비용 최적화**: 토큰 사용량 50% 절감으로 운영 효율성 증대
+- **비용 최적화**: 본문 1,500자 제한으로 운영 효율성 증대
 - **품질 향상**: GPT-4o-mini 활용으로 자연스러운 요약문 생성
 
 #### 자동화 시스템
@@ -308,7 +310,7 @@ frontend/
 │   │   └── page.tsx            # 개별 뉴스 상세 보기
 │   ├── onboarding/             # 온보딩
 │   │   └── page.tsx            # 초기 설정 및 카테고리 선택
-│   └── auth/callback/          # 인증
+│   └── login/kakao/callback/   # 인증
 │       └── page.tsx            # 카카오 로그인 콜백 처리
 │
 ├── components/                   # 재사용 컴포넌트
@@ -346,17 +348,15 @@ backend/
 │   │   └── category_map.py     # 카테고리 매핑 (한글 ↔ 영어)
 │   │
 │   ├── services/               # 핵심 비즈니스 로직
-│   │   ├── openai_service.py   # GPT 요약 + 이중 클러스터링
+│   │   ├── openai_service.py   # GPT 요약 + Few-shot learning
 │   │   ├── deepsearch_service.py # 뉴스 수집 + 본문 추출
-│   │   ├── tts_service.py      # ElevenLabs TTS 음성 변환
-│   │   └── clustering_service.py # 뉴스 클러스터링 알고리즘
+│   │   └── tts_service.py      # ElevenLabs TTS 음성 변환
 │   │
 │   ├── utils/                  # 유틸리티 모듈
 │   │   ├── dynamo.py          # DynamoDB 연결 및 쿼리
-│   │   ├── s3.py              # S3 파일 업로드/다운로드
 │   │   ├── jwt_service.py     # JWT 토큰 생성/검증
 │   │   ├── date.py            # 날짜 처리 (KST 기준)
-│   │   └── logger.py          # 로깅 시스템
+│   │   └── s3_utils.py        # S3 파일 업로드/다운로드
 │   │
 │   ├── routes/                # REST API 라우터
 │   │   ├── auth.py           # 카카오 로그인/로그아웃
@@ -390,19 +390,19 @@ backend/
 ## 주요 기능
 
 ### 스마트 뉴스 큐레이션
-- **30개 엄선된 뉴스**: 매일 6개 카테고리에서 최신 뉴스 수집
-- **이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거
+- **카테고리별 뉴스 수집**: 매일 6개 카테고리에서 최대 30개씩 총 180개 뉴스 수집
+- **이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거로 5-10개 핵심 그룹 생성
 - **개인화 필터링**: 사용자 관심 카테고리 기반 맞춤 제공
 
 ### AI 기반 요약 시스템
-- **GPT-4o-mini**: 고품질 뉴스 요약 및 팟캐스트 대본 생성
-- **최적화된 길이**: 1800-2500자 범위의 완벽한 청취 시간
-- **토큰 효율성**: 50% 비용 절약 (90,000자 → 45,000자)
+- **GPT-4o-mini**: Few-shot learning 기반 고품질 뉴스 요약 및 팟캐스트 대본 생성
+- **Temperature 자동 조정**: 0.3→0.5→0.7 점진적 조정으로 최적 결과 선택
+- **최적화된 길이**: 1,800-2,200자 범위의 완벽한 청취 시간 (4-5분)
 
 ### 음성 변환
-- **ElevenLabs TTS**: 한국어 최적화 고품질 음성 합성
-- **스트리밍 지원**: Presigned URL을 이용한 실시간 재생
-- **다양한 음성**: 상황에 맞는 음성 선택 가능
+- **ElevenLabs TTS**: eleven_multilingual_v2 모델 기반 한국어 최적화 음성 합성
+- **스트리밍 지원**: S3 Presigned URL을 통한 실시간 재생
+- **품질 최적화**: stability와 similarity_boost 파라미터 조정으로 일관된 음성 톤 유지
 
 ### 직관적인 사용자 경험
 - **반응형 디자인**: PC/모바일에서 최적화된 UI/UX
