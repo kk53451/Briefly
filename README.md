@@ -7,7 +7,7 @@
 [![AWS](https://img.shields.io/badge/AWS-Lambda%20%7C%20DynamoDB%20%7C%20S3-orange)](https://aws.amazon.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green)](https://openai.com/)
 [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-TTS-blue)](https://elevenlabs.io/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![React Native](https://img.shields.io/badge/React_Native-Expo-blue)](https://reactnative.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python-red)](https://fastapi.tiangolo.com/)
 
 ---
@@ -38,36 +38,36 @@ Briefly는 현대인의 정보 소비 패턴 변화에 대응하여, AI 기술�
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        A[Next.js 14 App]
-        B[React Components]
-        C[Tailwind CSS + shadcn/ui]
+    subgraph "Mobile App Layer"
+        A[React Native App]
+        B[Expo Framework]
+        C[Background Audio Player]
     end
-    
+
     subgraph "Backend Layer"
         D[FastAPI Server]
         E[AWS Lambda Functions]
         F[API Gateway]
     end
-    
+
     subgraph "Data Layer"
         G[DynamoDB Tables]
         H[S3 Audio Storage]
         I[CloudWatch Logs]
     end
-    
+
     subgraph "External APIs"
         J[OpenAI GPT-4o-mini]
         K[ElevenLabs TTS]
         L[DeepSearch News API]
         M[Kakao Login API]
     end
-    
+
     subgraph "Automation"
         N[EventBridge Scheduler]
         O[Daily News Pipeline]
     end
-    
+
     A -->|REST API| F
     F --> E
     E --> G
@@ -76,6 +76,7 @@ graph TB
     E --> K
     E --> L
     A --> M
+    C -->|Stream Audio| H
     N -->|Daily 06:00 KST| O
     O --> E
 ```
@@ -217,11 +218,13 @@ Events:
 
 ### 4.3 기술 스택 완성도
 
-#### 프론트엔드 (100% 완성)
-- **Next.js 14**: App Router 기반 모던 웹 애플리케이션
+#### 모바일 앱 (100% 완성)
+- **React Native + Expo**: 크로스 플랫폼 모바일 앱
 - **TypeScript**: 타입 안전성 보장
-- **Tailwind CSS + shadcn/ui**: 일관된 디자인 시스템
-- **Framer Motion**: 부드러운 애니메이션 효과
+- **React Navigation**: Stack + Bottom Tabs 네비게이션
+- **Expo AV**: 백그라운드 오디오 재생
+- **다크 테마**: 모던하고 눈이 편한 UI/UX
+- **뮤직 플레이어 스타일**: 직관적인 팟캐스트 플레이어
 
 #### 백엔드 (100% 완성)
 - **FastAPI**: 고성능 REST API 서버
@@ -290,51 +293,53 @@ Events:
 
 ## 프로젝트 구조
 
-### Frontend (Next.js 14 + TypeScript)
+### Mobile (React Native + Expo + TypeScript)
 
 ```
-frontend/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx               # 루트 레이아웃
-│   ├── page.tsx                 # 홈페이지 (랭킹으로 리다이렉트)
-│   ├── ranking/                 # 랭킹 시스템
-│   │   └── page.tsx            # 인기 뉴스 랭킹 페이지
-│   ├── today/                   # 오늘의 뉴스
-│   │   └── page.tsx            # 카테고리별 뉴스 목록
-│   ├── frequency/               # 내 주파수 (팟캐스트)
-│   │   └── page.tsx            # 개인화된 팟캐스트 리스트
-│   ├── profile/                 # 사용자 프로필
-│   │   ├── page.tsx            # 프로필 페이지
-│   │   └── categories/page.tsx  # 관심 카테고리 설정
-│   ├── news/[id]/              # 뉴스 상세
-│   │   └── page.tsx            # 개별 뉴스 상세 보기
-│   ├── onboarding/             # 온보딩
-│   │   └── page.tsx            # 초기 설정 및 카테고리 선택
-│   └── login/kakao/callback/   # 인증
-│       └── page.tsx            # 카카오 로그인 콜백 처리
+mobile/
+├── src/
+│   ├── components/              # UI 컴포넌트
+│   │   ├── Button.tsx          # 버튼 컴포넌트
+│   │   ├── Card.tsx            # 카드 컴포넌트
+│   │   ├── NewsCard.tsx        # 뉴스 카드
+│   │   └── MusicPlayer.tsx     # 뮤직 플레이어 스타일 팟캐스트 플레이어
+│   │
+│   ├── screens/                # 화면 컴포넌트
+│   │   ├── LoginScreen.tsx     # 카카오 로그인
+│   │   ├── OnboardingScreen.tsx # 온보딩 (카테고리 선택)
+│   │   ├── TodayScreen.tsx     # 오늘의 뉴스
+│   │   ├── RankingScreen.tsx   # 인기 뉴스 랭킹
+│   │   ├── PodcastScreen.tsx   # 팟캐스트 (내 주파수)
+│   │   ├── ProfileScreen.tsx   # 사용자 프로필
+│   │   ├── NewsDetailScreen.tsx # 뉴스 상세
+│   │   └── CategoriesScreen.tsx # 관심 카테고리 설정
+│   │
+│   ├── navigation/             # 네비게이션 설정
+│   │   ├── RootNavigator.tsx   # 루트 네비게이터
+│   │   ├── AuthNavigator.tsx   # 인증 네비게이터
+│   │   ├── MainNavigator.tsx   # 메인 탭 네비게이터
+│   │   └── types.ts           # 네비게이션 타입
+│   │
+│   ├── contexts/               # React Context
+│   │   ├── AuthContext.tsx     # 인증 상태 관리
+│   │   └── AudioPlayerContext.tsx # 오디오 플레이어 상태
+│   │
+│   ├── services/               # API 및 서비스
+│   │   ├── api.ts             # REST API 클라이언트
+│   │   ├── storage.ts         # AsyncStorage 래퍼
+│   │   └── audioPlayer.ts     # 백그라운드 오디오 플레이어
+│   │
+│   ├── types/                  # TypeScript 타입 정의
+│   │   └── api.ts             # API 관련 타입
+│   │
+│   └── constants/              # 상수 및 테마
+│       ├── categories.ts       # 카테고리 매핑
+│       └── theme.ts           # 다크 테마 색상/간격/폰트
 │
-├── components/                   # 재사용 컴포넌트
-│   ├── ui/                      # shadcn/ui 기본 컴포넌트 라이브러리
-│   ├── page-header.tsx          # 페이지 상단 헤더
-│   ├── navigation-tabs.tsx      # 하단 탭 네비게이션
-│   ├── category-filter.tsx      # 카테고리 필터링
-│   ├── news-card.tsx           # 뉴스 카드 컴포넌트
-│   ├── news-carousel.tsx       # 뉴스 캐러셀 슬라이더
-│   ├── audio-player.tsx        # 음성 재생 플레이어
-│   ├── frequency-card.tsx      # 주파수 카드 컴포넌트
-│   └── bookmark-button.tsx     # 북마크 토글 버튼
-│
-├── lib/                         # 유틸리티 및 설정
-│   ├── api.ts                  # REST API 클라이언트
-│   ├── utils.ts                # 공통 유틸리티 함수
-│   ├── constants.ts            # 상수 정의 (카테고리, URL 등)
-│   ├── auth.ts                 # 인증 관련 유틸리티
-│   └── mock-data.ts            # 개발용 목업 데이터
-│
-└── types/                       # TypeScript 타입 정의
-    ├── api.ts                  # API 관련 타입
-    ├── user.ts                 # 사용자 관련 타입
-    └── news.ts                 # 뉴스 관련 타입
+├── App.tsx                     # 앱 엔트리 포인트
+├── app.json                    # Expo 설정 (백그라운드 오디오 포함)
+├── package.json                # 의존성 관리
+└── README.md                   # 모바일 앱 문서
 ```
 
 ### Backend (FastAPI + AWS Serverless)
@@ -414,18 +419,25 @@ backend/
 ## 시작하기
 
 ### 환경 요구사항
-- Node.js 14+
+- Node.js 18+
 - Python 3.12+
 - AWS CLI 설정
+- Expo CLI (모바일 앱)
 
 ### 로컬 개발 환경 설정
 
-#### 프론트엔드 실행
+#### 모바일 앱 실행
 ```bash
-cd frontend
+cd mobile
 npm install
-npm run dev
+npm start           # Expo 개발 서버
+npm run ios         # iOS 시뮬레이터
+npm run android     # Android 에뮬레이터
 ```
+
+**중요**: `mobile/src/services/api.ts` 파일에서 백엔드 API URL을 설정하세요.
+
+자세한 내용은 [MOBILE_SETUP.md](MOBILE_SETUP.md) 또는 [mobile/README.md](mobile/README.md)를 참조하세요.
 
 #### 백엔드 실행
 ```bash
@@ -436,11 +448,19 @@ uvicorn app.main:app --reload
 
 ### 배포
 
-#### AWS SAM을 이용한 배포
+#### AWS SAM을 이용한 백엔드 배포
 ```bash
 cd backend
 sam build
 sam deploy --guided
+```
+
+#### Expo를 이용한 모바일 앱 배포
+```bash
+cd mobile
+npm install -g eas-cli
+eas build --platform ios     # iOS 빌드
+eas build --platform android # Android 빌드
 ```
 
 ---
