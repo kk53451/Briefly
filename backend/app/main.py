@@ -15,7 +15,8 @@ from app.routes import (
     category,
     frequency,
     news,
-    user
+    user,
+    test
 )
 
 #  카테고리 맵 임포트
@@ -33,6 +34,7 @@ app.include_router(category.router)
 app.include_router(frequency.router)
 app.include_router(news.router)
 app.include_router(user.router)
+app.include_router(test.router)  # 테스트용 (운영 환경에서는 제거 권장)
 
 #  CORS 미들웨어 설정
 app.add_middleware(

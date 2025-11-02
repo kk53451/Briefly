@@ -16,7 +16,7 @@ from app.services.openai_service import summarize_articles, cluster_similar_text
 from app.services.tts_service import text_to_speech
 from app.utils.s3 import upload_audio_to_s3_presigned
 from app.constants.category_map import CATEGORY_MAP
-from app.services.deepsearch_service import extract_content_flexibly
+from app.services.content_scraper import extract_content_flexibly
 
 # 로그 설정
 logger = logging.getLogger()
@@ -51,10 +51,10 @@ def process_single_category(category_ko: str, date: str) -> dict:
             if len(full_contents) >= target_count:
                 logger.info(f"[{category_en}] 목표 달성: {target_count}개 수집 완료")
                 break
-                
+
             processed_count += 1
             news_id = article.get("news_id")
-            url = article.get("content_url")
+            url = article.get("provider_link_page")
             content = article.get("content", "").strip()
 
             if not news_id or not url:
@@ -92,39 +92,40 @@ def process_single_category(category_ko: str, date: str) -> dict:
         try:
             groups = cluster_similar_texts(full_contents, threshold=0.80)
             group_summaries = []
-            
+            merged_groups = 0
+
             for group_idx, group in enumerate(groups):
                 if len(group) == 1:
                     # 단일 기사는 그대로 사용
                     group_summaries.append(group[0])
-                    logger.info(f"[{category_en}] 그룹 #{group_idx+1}: 단일 기사 ({len(group[0])}자)")
                 else:
                     # 여러 유사 기사 → 대표 요약문 생성
                     try:
                         summary = summarize_group(group, category_en)
                         group_summaries.append(summary)
-                        logger.info(f"[{category_en}] 그룹 #{group_idx+1}: {len(group)}개 기사 → 통합 요약 ({len(summary)}자)")
+                        merged_groups += 1
                     except Exception as e:
                         logger.warning(f"[{category_en}] 그룹 #{group_idx+1} 요약 실패, 첫 번째 기사 사용: {e}")
                         group_summaries.append(group[0])
-            
-            logger.info(f"[{category_en}] 1차 클러스터링 완료: {len(full_contents)}개 → {len(group_summaries)}개 그룹")
+
+            logger.info(f"  └─ 1차 클러스터링 완료: {len(full_contents)}개 → {len(group_summaries)}개 그룹 ({merged_groups}개 통합)")
             final_contents = group_summaries
-            
+
         except Exception as e:
             logger.warning(f"[{category_en}] 1차 클러스터링 실패, 원본 기사 사용: {e}")
             final_contents = full_contents
 
         # GPT로 종합 스크립트 생성 (2차 클러스터링 포함)
-        logger.info(f"[{category_en}] 대본 생성 시작: {len(final_contents)}개 기사")
+        logger.info(f"[{category_en}] GPT 대본 생성 시작: {len(final_contents)}개 요약 → 최종 스크립트")
         script = summarize_articles(final_contents, category_en)
         if not script or len(script) < 500:
-            logger.warning(f"[{category_en}] 요약 길이 부족 → 스킵")
+            logger.warning(f"[{category_en}] 대본 길이 부족 ({len(script) if script else 0}자) → 스킵")
             return {"category": category_en, "status": "failed", "reason": "summary_too_short"}
 
-        logger.info(f"[{category_en}] 요약 완료: {len(script)}자")
+        logger.info(f"  └─ GPT 대본 생성 완료: {len(script)}자")
 
         # ElevenLabs로 TTS 변환 → S3 Presigned URL 생성
+        logger.info(f"[{category_en}] TTS 음성 생성 시작...")
         try:
             audio_bytes = text_to_speech(script)
             audio_url = upload_audio_to_s3_presigned(
@@ -134,9 +135,9 @@ def process_single_category(category_ko: str, date: str) -> dict:
                 date=date,
                 expires_in_seconds=604800  # Presigned URL 7일 유효 (24시간에서 7일로 연장)
             )
-            logger.info(f"[{category_en}] TTS Presigned URL 생성 완료")
+            logger.info(f"  └─ TTS 음성 생성 완료 → S3 업로드")
         except Exception as e:
-            logger.warning(f"[{category_en}] TTS 업로드 실패: {str(e)}")
+            logger.warning(f"❌ [{category_en}] TTS 실패: {str(e)}")
             return {"category": category_en, "status": "failed", "reason": f"tts_failed: {str(e)}"}
 
         # 결과 DynamoDB에 저장
@@ -150,9 +151,9 @@ def process_single_category(category_ko: str, date: str) -> dict:
         }
 
         save_frequency_summary(item)
-        
+
         elapsed_time = time.time() - start_time
-        logger.info(f"[{category_en}] DynamoDB 저장 완료 (소요시간: {elapsed_time:.1f}초)")
+        logger.info(f"✅ [{category_en}] 완료 → 대본: {len(script)}자, TTS 생성, DynamoDB 저장 (소요시간: {elapsed_time:.1f}초)")
         
         return {
             "category": category_en, 

@@ -6,7 +6,7 @@ import pytz
 import concurrent.futures
 import time
 
-from app.services.deepsearch_service import fetch_valid_articles_by_category
+from app.services.bigkinds_service import fetch_valid_articles_by_category
 from app.utils.dynamo import save_news_card, get_news_card_by_id, get_news_card_by_content_url
 from app.constants.category_map import CATEGORY_MAP
 
@@ -19,11 +19,10 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
     단일 카테고리 뉴스 수집 함수 (병렬 처리용)
     """
     category_en = config["api_name"]
-    section = config["section"]
     collection_start_time = time.time()
-    
+
     try:
-        logger.info(f"[{category_ko}] 뉴스 수집 시작 ({section})")
+        logger.info(f"[{category_ko}] 뉴스 수집 시작")
 
         # 뉴스 API 호출
         try:
@@ -33,7 +32,6 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 end_time=end_time,
                 size=60,                # 오버페치 후 필터링
                 sort="popular",
-                section=section,
                 min_content_length=300,
                 limit=30               # 최종 저장 수
             )
@@ -49,57 +47,56 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
             }
 
         saved_count = 0
+        skipped_count = 0
 
         # 기사 순회하며 저장
         for rank, article in enumerate(articles, start=1):
             news_id = article.get("id")
             if not news_id:
-                logger.warning(f" [{category_ko}] ID 누락 → 스킵")
+                skipped_count += 1
                 continue
 
             # 중복 확인
             if get_news_card_by_id(news_id):
-                logger.info(f"🚫 [{category_ko}] [ID중복] 뉴스 스킵: {news_id}")
+                skipped_count += 1
                 continue
-            if get_news_card_by_content_url(article.get("content_url")):
-                logger.info(f"🚫 [{category_ko}] [URL중복] 뉴스 스킵: {article.get('content_url')}")
+            if get_news_card_by_content_url(article.get("provider_link_page")):
+                skipped_count += 1
                 continue
 
             content = article.get("content", "")
             if not content or len(content) < 300:
-                logger.warning(f" [{category_ko}] 본문 누락/부족 → 스킵: {news_id}")
+                skipped_count += 1
                 continue
 
-            # 뉴스 저장 아이템 구성
+            # 뉴스 저장 아이템 구성 (BigKinds 필드명 기준)
             news_item = {
                 "id": news_id,
-                "sections": article.get("sections", []),
                 "rank": rank,
                 "title": article.get("title"),
-                "title_ko": None,
                 "summary": article.get("summary"),
-                "summary_ko": None,
-                "image_url": article.get("image_url"),
-                "thumbnail_url": article.get("thumbnail_url") or article.get("thumbnail"),
-                "content_url": article.get("content_url"),
-                "publisher": article.get("publisher"),
-                "author": article.get("author"),
+                "image": article.get("image"),
+                "provider_link_page": article.get("provider_link_page"),
+                "provider": article.get("provider"),
+                "byline": article.get("byline"),
                 "published_at": article.get("published_at"),
-                "companies": article.get("companies", []),
-                "esg": article.get("esg", []),
-                "content": content  #  본문 포함 (selector 기반)
+                "hilight": article.get("hilight"),
+                "content": content  # 본문 포함 (selector 기반)
             }
 
             # DynamoDB 저장
             try:
                 save_news_card(category_en, news_item, date_str)
                 saved_count += 1
-                logger.info(f" [{category_ko}] 저장 완료 #{rank} - {news_item['title']}")
+
+                # 10개마다 진행 상황 표시
+                if saved_count % 10 == 0:
+                    logger.info(f"  └─ [{category_ko}] {saved_count}개 저장 중...")
             except Exception as e:
                 logger.error(f" [{category_ko}] 저장 실패 #{rank}: {e}")
 
         elapsed_time = time.time() - collection_start_time
-        logger.info(f" [{category_ko}] 최종 저장 수: {saved_count} (소요시간: {elapsed_time:.1f}초)")
+        logger.info(f"✅ [{category_ko}] 수집 완료 → 저장: {saved_count}개, 스킵: {skipped_count}개 (소요시간: {elapsed_time:.1f}초)")
         
         return {
             "category": category_ko,

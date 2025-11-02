@@ -1,17 +1,50 @@
 # app/constants/category_map.py
 
-# 사용자에게 보여지는 한글 카테고리명과 API 연동을 위한 영문 카테고리명 + 섹션 정보를 매핑
-# - 'api_name': API 요청 시 사용되는 영문 카테고리명
-# - 'section': 딥서치 API의 섹션 구분 ('domestic' 또는 'international')
+# BigKinds API 8개 카테고리 기준 매핑
+# - 'api_name': API 요청 시 사용되는 영문 카테고리명 (내부 식별용)
+# - 'bigkinds_code': BigKinds API 카테고리 9자리 코드
+# - 'bigkinds_name': BigKinds API 카테고리 한글명 (요청 시 사용)
 CATEGORY_MAP = {
-    "정치": {"api_name": "politics", "section": "domestic"},
-    "경제": {"api_name": "economy", "section": "domestic"},
-    "사회": {"api_name": "society", "section": "domestic"},
-    "생활/문화": {"api_name": "culture", "section": "domestic"},
-    "IT/과학": {"api_name": "tech", "section": "domestic"},
-    "연예": {"api_name": "entertainment", "section": "domestic"},
-    # "세계": {"api_name": "world", "section": "international"},  ← 제거됨
-    # "스포츠": {"api_name": "sports", "section": "international"},  ← 제거됨
+    "정치": {
+        "api_name": "politics",
+        "bigkinds_code": "001000000",
+        "bigkinds_name": "정치"
+    },
+    "경제": {
+        "api_name": "economy",
+        "bigkinds_code": "002000000",
+        "bigkinds_name": "경제"
+    },
+    "사회": {
+        "api_name": "society",
+        "bigkinds_code": "003000000",
+        "bigkinds_name": "사회"
+    },
+    "문화": {
+        "api_name": "culture",
+        "bigkinds_code": "004000000",
+        "bigkinds_name": "문화"
+    },
+    "국제": {
+        "api_name": "international",
+        "bigkinds_code": "005000000",
+        "bigkinds_name": "국제"
+    },
+    "지역": {
+        "api_name": "local",
+        "bigkinds_code": "006000000",
+        "bigkinds_name": "지역"
+    },
+    "스포츠": {
+        "api_name": "sports",
+        "bigkinds_code": "007000000",
+        "bigkinds_name": "스포츠"
+    },
+    "IT/과학": {
+        "api_name": "tech",
+        "bigkinds_code": "008000000",
+        "bigkinds_name": "IT_과학"
+    },
 }
 
 # 한글 카테고리명 목록 (예: ["정치", "경제", ...])

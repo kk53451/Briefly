@@ -38,27 +38,22 @@ bookmark_table = dynamodb.Table(os.getenv("DDB_BOOKMARKS_TABLE", "Bookmarks"))
 
 def save_news_card(category: str, article: dict, date_str: str):
     """
-    뉴스 기사 1건을 NewsCards 테이블에 저장
+    뉴스 기사 1건을 NewsCards 테이블에 저장 (BigKinds 기준)
     """
     item = {
         "news_id": article["id"],
         "category_date": f"{category}#{date_str}",  # GSI용 복합 키
         "category": category,
-        "section": article.get("sections", [])[0] if article.get("sections") else "domestic",
         "rank": article.get("rank"),
         "title": article.get("title"),
-        "title_ko": article.get("title_ko"),
         "summary": article.get("summary"),
-        "summary_ko": article.get("summary_ko"),
-        "image_url": article.get("image_url"),
-        "thumbnail_url": article.get("thumbnail_url") or article.get("thumbnail"),
-        "content_url": article.get("content_url"),
-        "publisher": article.get("publisher"),
-        "author": article.get("author"),
+        "image": article.get("image"),
+        "provider_link_page": article.get("provider_link_page"),
+        "provider": article.get("provider"),
+        "byline": article.get("byline"),
         "published_at": article.get("published_at"),
+        "hilight": article.get("hilight"),
         "collected_at": datetime.utcnow().isoformat(),
-        "companies": article.get("companies", []),
-        "esg": article.get("esg", []),
         "content": article.get("content", "")
     }
 
@@ -94,11 +89,11 @@ def get_news_card_by_id(news_id: str):
 
 def get_news_card_by_content_url(content_url: str):
     """
-    content_url 기준으로 뉴스 조회 (중복 확인용)
+    provider_link_page 기준으로 뉴스 조회 (중복 확인용)
     """
     try:
         response = news_table.scan(
-            FilterExpression="content_url = :url",
+            FilterExpression="provider_link_page = :url",
             ExpressionAttributeValues={":url": content_url}
         )
         items = response.get("Items", [])
@@ -132,12 +127,12 @@ def update_news_card_content(news_id: str, content: str):
 
 def update_news_card_content_by_url(content_url: str, content: str):
     """
-    content_url 기준으로 뉴스 찾아서 본문 업데이트
+    provider_link_page 기준으로 뉴스 찾아서 본문 업데이트
     (뉴스 ID를 모를 때 사용)
     """
     try:
         response = news_table.scan(
-            FilterExpression="content_url = :url",
+            FilterExpression="provider_link_page = :url",
             ExpressionAttributeValues={":url": content_url}
         )
         items = response.get("Items", [])

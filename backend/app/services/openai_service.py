@@ -307,26 +307,27 @@ def summarize_articles(texts: list[str], category: str) -> str:
         if len(texts) > 5:  # 5개 이상일 때만 클러스터링 적용
             logger.info(f"2차 클러스터링 시작: {len(texts)}개 요약문")
             clustered_groups = cluster_similar_texts(texts, threshold=0.75)
-            
+
             # 각 클러스터를 하나의 요약으로 통합
             consolidated_texts = []
+            merged_count = 0
+
             for group_idx, group in enumerate(clustered_groups):
                 if len(group) > 1:
                     # 여러 유사 요약문을 하나로 통합
                     try:
                         summary = summarize_group(group, category)
                         consolidated_texts.append(summary)
-                        logger.info(f"2차 그룹 #{group_idx+1}: {len(group)}개 요약을 통합 ({len(summary)}자)")
+                        merged_count += 1
                     except Exception as e:
                         logger.warning(f" 2차 그룹 #{group_idx+1} 요약 실패, 첫 번째 사용: {e}")
                         consolidated_texts.append(group[0][:1000])  # 길이 제한
                 else:
                     # 단일 요약은 그대로 사용 (길이 제한)
                     consolidated_texts.append(group[0][:1000])  # 단일 기사도 1000자로 제한
-                    logger.info(f"2차 그룹 #{group_idx+1}: 단일 요약 ({len(group[0][:1000])}자)")
-            
+
             final_texts = consolidated_texts
-            logger.info(f"2차 클러스터링 완료: {len(texts)}개를 {len(final_texts)}개 그룹으로 축소")
+            logger.info(f"  └─ 2차 클러스터링 완료: {len(texts)}개 → {len(final_texts)}개 그룹 ({merged_count}개 통합)")
         else:
             # 클러스터링 안할 때도 길이 제한
             final_texts = [text[:1000] for text in texts]

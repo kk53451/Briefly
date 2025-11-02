@@ -8,6 +8,10 @@ from app.utils.date import get_today_kst
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+# httpx, httpcore 로깅 비활성화 (과도한 HTTP Request 로그 방지)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+
 def lambda_handler(event, context):
     """
      AWS EventBridge → Lambda 트리거 함수 (매일 오전 6시 자동 실행)
