@@ -74,7 +74,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 "id": news_id,
                 "rank": rank,
                 "title": article.get("title"),
-                "images": article.get("images", []),  # 배열로 저장
+                "images": article.get("images", []),  # save_news_card()가 첫 번째 이미지 URL로 변환하여 저장
                 "provider_link_page": article.get("provider_link_page"),
                 "provider": article.get("provider"),
                 "byline": article.get("byline"),
