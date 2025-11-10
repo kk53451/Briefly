@@ -283,8 +283,8 @@ def lambda_handler(event, context):
 ```
 
 **병렬 처리**:
-- 뉴스 수집: 8개 카테고리 동시 처리 (ThreadPoolExecutor, max_workers=6)
-- 주파수 생성: 8개 카테고리 동시 처리 (ThreadPoolExecutor, max_workers=6)
+- 뉴스 수집: 8개 카테고리 동시 처리 (ThreadPoolExecutor, max_workers=5)
+- 주파수 생성: 8개 카테고리 동시 처리 (ThreadPoolExecutor, max_workers=5)
 
 ---
 
@@ -331,7 +331,7 @@ def lambda_handler(event, context):
     {
       "news_id": "news_12345",
       "title": "뉴스 제목",
-      "images": ["https://..."],
+      "images": "https://www.bigkinds.or.kr/resources/images/...",
       "published_at": "2025-01-08T10:00:00",
       "provider": "연합뉴스"
     }
@@ -390,7 +390,7 @@ def lambda_handler(event, context):
   "category": "politics",
   "rank": 1,
   "title": "뉴스 제목",
-  "images": ["https://image1.jpg", "https://image2.jpg"],
+  "images": "https://www.bigkinds.or.kr/resources/images/path.jpg",
   "provider_link_page": "https://...",
   "provider": "연합뉴스",
   "byline": "홍길동 기자",
@@ -502,7 +502,7 @@ sam logs -n DailyBrieflyTask --stack-name briefly-backend --tail
 
 - Lambda 메모리: 512MB → 1024MB 증가 (클러스터링 작업)
 - 배치 처리: 단계별 메모리 효율화
-- ThreadPoolExecutor: max_workers=6 (동시 처리 최적화)
+- ThreadPoolExecutor: max_workers=5 (ElevenLabs concurrency 제한에 맞춤)
 
 ### 로깅 시스템
 

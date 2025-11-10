@@ -32,6 +32,67 @@ freq_table = dynamodb.Table(os.getenv("DDB_FREQ_TABLE", "Frequencies"))
 users_table = dynamodb.Table(os.getenv("DDB_USERS_TABLE", "Users"))
 bookmark_table = dynamodb.Table(os.getenv("DDB_BOOKMARKS_TABLE", "Bookmarks"))
 
+# ================================
+# 이미지 URL 변환 유틸 함수
+# ================================
+BIGKINDS_IMAGE_BASE_URL = "https://www.bigkinds.or.kr/resources/images"
+
+def parse_image_urls(images: Any) -> list:
+    """
+    DynamoDB 이미지 데이터를 BigKinds 전체 URL로 변환
+
+    입력 형식:
+      - 단일: [{"S": "/path/to/image.jpg"}]
+      - 여러: [{"S": "/path1.jpg\n/path2.jpg\n/path3.jpg"}]
+    출력 형식: ["https://www.bigkinds.or.kr/resources/images/path1.jpg", ...]
+    """
+    if not images:
+        return []
+
+    urls = []
+    try:
+        if isinstance(images, list):
+            for img in images:
+                # DynamoDB JSON 형식: {"S": "/path"} 또는 {"S": "/path1\n/path2"}
+                if isinstance(img, dict) and "S" in img:
+                    paths_str = img["S"]
+                    # \n으로 구분된 여러 경로 처리
+                    paths = paths_str.split("\n") if "\n" in paths_str else [paths_str]
+
+                    for path in paths:
+                        path = path.strip()
+                        if not path:
+                            continue
+                        # 경로가 /로 시작하면 그대로, 아니면 / 추가
+                        if path.startswith("/"):
+                            full_url = f"{BIGKINDS_IMAGE_BASE_URL}{path}"
+                        else:
+                            full_url = f"{BIGKINDS_IMAGE_BASE_URL}/{path}"
+                        urls.append(full_url)
+
+                # 이미 문자열인 경우 (Python SDK 자동 변환)
+                elif isinstance(img, str):
+                    if img.startswith("http"):
+                        urls.append(img)
+                    else:
+                        # \n으로 구분된 여러 경로 처리
+                        paths = img.split("\n") if "\n" in img else [img]
+                        for path in paths:
+                            path = path.strip()
+                            if not path:
+                                continue
+                            if path.startswith("/"):
+                                full_url = f"{BIGKINDS_IMAGE_BASE_URL}{path}"
+                            else:
+                                full_url = f"{BIGKINDS_IMAGE_BASE_URL}/{path}"
+                            urls.append(full_url)
+    except Exception as e:
+        print(f"⚠️ 이미지 URL 파싱 오류: {e}")
+        return []
+
+    return urls
+
+
 # ============================================
 # 1. NewsCards 관련 함수
 # ============================================
@@ -39,14 +100,20 @@ bookmark_table = dynamodb.Table(os.getenv("DDB_BOOKMARKS_TABLE", "Bookmarks"))
 def save_news_card(category: str, article: dict, date_str: str):
     """
     뉴스 기사 1건을 NewsCards 테이블에 저장 (BigKinds 기준)
+    - 이미지는 첫 번째만 URL로 변환하여 저장
     """
+    # 이미지 URL 변환: 첫 번째만 사용
+    raw_images = article.get("images", [])
+    parsed_urls = parse_image_urls(raw_images)
+    image_url = parsed_urls[0] if parsed_urls else ""
+
     item = {
         "news_id": article["id"],
         "category_date": f"{category}#{date_str}",  # GSI용 복합 키
         "category": category,
         "rank": article.get("rank"),
         "title": article.get("title"),
-        "images": article.get("images", []),  # 배열로 저장
+        "images": image_url,  # 첫 번째 이미지 URL만 문자열로 저장
         "provider_link_page": article.get("provider_link_page"),
         "provider": article.get("provider"),
         "byline": article.get("byline"),
@@ -109,10 +176,10 @@ def get_today_news_grouped():
     result = {}
     for ko_category, en_category in CATEGORY_MAP.items():
         items = get_news_by_category_and_date(en_category["api_name"], today)
-        # 이미지가 있는 기사만 필터링 (빈 배열 제외)
+        # 이미지가 있는 기사만 필터링 (빈 문자열 제외)
         items_with_image = [
             item for item in items
-            if item.get("images") and len(item.get("images", [])) > 0
+            if item.get("images")  # 문자열이므로 빈 문자열은 자동으로 False
         ]
         result[ko_category] = items_with_image[:6]
     return result
@@ -165,11 +232,11 @@ def get_news_grouped_by_provider(date: str = None, limit_per_provider: int = 6):
         # 이미지 있는 기사와 없는 기사 분리
         news_with_image = [
             item for item in sorted_news
-            if item.get("images") and len(item.get("images", [])) > 0
+            if item.get("images")  # 문자열이므로 빈 문자열은 자동으로 False
         ]
         news_without_image = [
             item for item in sorted_news
-            if not item.get("images") or len(item.get("images", [])) == 0
+            if not item.get("images")  # 빈 문자열 또는 None
         ]
 
         # 첫 번째는 이미지 있는 것 우선, 나머지는 최신순

@@ -53,7 +53,7 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
 1. **News Collection** (`app/tasks/collect_news.py`)
    - BigKinds API: 60 articles requested → 30 selected per category
    - Total: 8 categories × 30 articles = 240 articles/day
-   - Parallel processing using `ThreadPoolExecutor` (max_workers=6)
+   - Parallel processing using `ThreadPoolExecutor` (max_workers=5)
    - Content scraping: 300+ chars, 70%+ Korean text validation
    - Deduplication: ID, URL, title (memory + DB check)
 
@@ -79,7 +79,7 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
 **NewsCards Table**
 - PK: `news_id`
 - GSI: `category_date` (for querying by category+date)
-- Stores: title, content, images (array), provider, byline, published_at, hilight, rank, etc.
+- Stores: title, content, images (string URL), provider, byline, published_at, hilight, rank, etc.
 
 **Frequencies Table**
 - PK: `frequency_id` (format: `{category}#{date}`)
@@ -305,7 +305,7 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
 ## Performance Considerations
 
 **Optimization Strategies in Use:**
-- Parallel news collection across 8 categories (ThreadPoolExecutor with max_workers=6)
+- Parallel news collection across 8 categories (ThreadPoolExecutor with max_workers=5)
 - Overfetching strategy: Request 60 articles, select best 30 per category
 - Clustering threshold tuning (80% for physical, 75% for semantic)
 - Token limits on all GPT inputs to minimize costs

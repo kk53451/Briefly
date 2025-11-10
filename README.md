@@ -86,7 +86,7 @@ graph TB
 - **NewsCards**: 수집된 뉴스 기사 저장
   - PK: news_id
   - GSI: category_date (category#YYYY-MM-DD)
-  - 주요 필드: title, content, images (배열), provider, byline, published_at, hilight, rank
+  - 주요 필드: title, content, images (문자열 URL), provider, byline, published_at, hilight, rank
 - **Frequencies**: 생성된 팟캐스트 대본 및 오디오 정보
   - PK: frequency_id (category#YYYY-MM-DD)
   - 주요 필드: script, audio_url, category, date
@@ -189,10 +189,10 @@ Events:
 ```
 
 #### 병렬 처리 최적화
-- **카테고리별 병렬 수집**: ThreadPoolExecutor로 8개 카테고리 동시 처리 (max_workers=6)
+- **카테고리별 병렬 수집**: ThreadPoolExecutor로 8개 카테고리 동시 처리 (max_workers=5)
 - **오버페칭 전략**: 카테고리당 60개 요청 → 중복/본문 검증 → 30개 선별
 - **본문 검증**: 최소 300자, 한글 비율 70% 이상, 중복 URL/ID 제거
-- **이미지 필터링**: 빅카인즈 images 배열 → "/" 제거 및 유효성 검증
+- **이미지 필터링**: 빅카인즈 images 배열 → 첫 번째 이미지만 BigKinds URL로 변환
 - **실패 처리**: 자동 재시도 및 로깅 시스템
 
 ### 3.4 사용자 인터페이스
