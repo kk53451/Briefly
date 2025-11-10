@@ -26,7 +26,7 @@
 ┌─────────────────┐     ┌─────────────────────┐     ┌─────────────────┐
 │ • OpenAI GPT    │────▶│   FastAPI Lambda    │────▶│   DynamoDB      │
 │ • ElevenLabs    │     │                     │     │   - NewsCards   │
-│ • DeepSearch    │     │ • API Routes        │     │   - Frequencies │
+│ • BigKinds      │     │ • API Routes        │     │   - Frequencies │
 │ • 카카오 로그인  │     │ • Services          │     │   - Users       │
 └─────────────────┘     │ • Tasks             │     │   - Bookmarks   │
                         └─────────────────────┘     └─────────────────┘
@@ -210,15 +210,26 @@ Authorization: Bearer {token}
 ```
 
 **설명**: 사용자가 북마크한 뉴스 목록 조회
+- 전체 뉴스 객체에 `bookmarked_at` 필드가 추가되어 반환됨
 
 **응답** (200):
 ```json
 [
   {
-    "news_id": "news_123",
+    "news_id": "news_12345",
+    "category_date": "politics#2025-01-08",
+    "category": "politics",
+    "rank": 1,
     "title": "뉴스 제목",
-    "summary": "뉴스 요약",
-    "bookmark_date": "2025-01-27T10:00:00"
+    "images": ["https://image1.jpg"],
+    "provider_link_page": "https://news.com/article",
+    "provider": "연합뉴스",
+    "byline": "홍길동 기자",
+    "published_at": "2025-01-08T10:00:00",
+    "hilight": "기사 하이라이트...",
+    "content": "전체 본문...",
+    "collected_at": "2025-01-08T06:00:00Z",
+    "bookmarked_at": "2025-01-08T12:00:00Z"
   }
 ]
 ```
@@ -361,21 +372,25 @@ GET /api/news?category={category}
 
 **매개변수**:
 - `category` (query, required): 뉴스 카테고리
-  - 지원 카테고리: `정치`, `경제`, `사회`, `생활/문화`, `IT/과학`, `연예`, `전체`
+  - 지원 카테고리: `정치`, `경제`, `사회`, `문화`, `국제`, `지역`, `스포츠`, `IT/과학`, `전체`
 
 **응답** (200):
 ```json
 [
   {
-    "news_id": "news_123",
+    "news_id": "news_12345",
+    "category_date": "politics#2025-01-08",
+    "category": "politics",
+    "rank": 1,
     "title": "뉴스 제목",
-    "summary": "뉴스 요약",
-    "image_url": "https://example.com/image.jpg",
-    "content_url": "https://example.com/news",
-    "publisher": "언론사",
-    "published_at": "2025-01-27T09:00:00",
-    "sections": ["politics"],
-    "rank": 1
+    "images": ["https://image1.jpg", "https://image2.jpg"],
+    "provider_link_page": "https://news.com/article",
+    "provider": "연합뉴스",
+    "byline": "홍길동 기자",
+    "published_at": "2025-01-08T10:00:00",
+    "hilight": "기사 하이라이트 200자...",
+    "content": "전체 본문...",
+    "collected_at": "2025-01-08T06:00:00Z"
   }
 ]
 ```
@@ -384,35 +399,58 @@ GET /api/news?category={category}
 - `400`: 지원하지 않는 카테고리
   ```json
   {
-    "detail": "지원하지 않는 카테고리입니다: 스포츠"
+    "detail": "지원하지 않는 카테고리입니다: 세계"
   }
   ```
 
 ---
 
-#### 3-2. 오늘의 뉴스 그룹핑
+#### 3-2. 홈 탭 - 언론사별 뉴스
 
 ```http
-GET /api/news/today
+GET /api/news/home?date={date}
 ```
 
-**설명**: 오늘의 뉴스를 카테고리별로 그룹핑하여 반환
+**설명**: 언론사별로 최신 뉴스를 그룹핑하여 반환 (Home 탭용)
+
+**매개변수**:
+- `date` (query, optional): 조회 날짜 (YYYY-MM-DD), 기본값은 오늘
 
 **응답** (200):
 ```json
 {
-  "정치": [
+  "연합뉴스": [
     {
       "news_id": "news_123",
-      "title": "정치 뉴스 제목",
-      "summary": "정치 뉴스 요약"
+      "category_date": "politics#2025-01-08",
+      "category": "politics",
+      "rank": 1,
+      "title": "뉴스 제목",
+      "images": ["https://example.com/image.jpg"],
+      "provider_link_page": "https://news.com/article",
+      "provider": "연합뉴스",
+      "byline": "홍길동 기자",
+      "published_at": "2025-01-08T15:30:00",
+      "hilight": "기사 하이라이트...",
+      "content": "전체 본문...",
+      "collected_at": "2025-01-08T06:00:00Z"
     }
   ],
-  "경제": [
+  "조선일보": [
     {
       "news_id": "news_456",
-      "title": "경제 뉴스 제목",
-      "summary": "경제 뉴스 요약"
+      "category_date": "economy#2025-01-08",
+      "category": "economy",
+      "rank": 2,
+      "title": "뉴스 제목 2",
+      "images": [],
+      "provider_link_page": "https://news2.com/article",
+      "provider": "조선일보",
+      "byline": "김철수 기자",
+      "published_at": "2025-01-08T14:20:00",
+      "hilight": "경제 기사 하이라이트...",
+      "content": "전체 경제 본문...",
+      "collected_at": "2025-01-08T06:00:00Z"
     }
   ]
 }
@@ -420,7 +458,58 @@ GET /api/news/today
 
 ---
 
-#### 3-3. 뉴스 상세 조회
+#### 3-3. 오늘의 뉴스 그룹핑
+
+```http
+GET /api/news/today
+```
+
+**설명**: 오늘의 뉴스를 카테고리별로 그룹핑하여 반환 (Today 탭용)
+- 각 카테고리별로 이미지가 있는 기사 6개씩 반환
+
+**응답** (200):
+```json
+{
+  "정치": [
+    {
+      "news_id": "news_12345",
+      "category_date": "politics#2025-01-08",
+      "category": "politics",
+      "rank": 1,
+      "title": "정치 뉴스 제목",
+      "images": ["https://image1.jpg"],
+      "provider_link_page": "https://news.com/article",
+      "provider": "연합뉴스",
+      "byline": "홍길동 기자",
+      "published_at": "2025-01-08T10:00:00",
+      "hilight": "기사 하이라이트...",
+      "content": "전체 본문...",
+      "collected_at": "2025-01-08T06:00:00Z"
+    }
+  ],
+  "경제": [
+    {
+      "news_id": "news_67890",
+      "category_date": "economy#2025-01-08",
+      "category": "economy",
+      "rank": 2,
+      "title": "경제 뉴스 제목",
+      "images": ["https://image2.jpg"],
+      "provider_link_page": "https://news.com/article2",
+      "provider": "조선일보",
+      "byline": "김철수 기자",
+      "published_at": "2025-01-08T09:30:00",
+      "hilight": "경제 뉴스 하이라이트...",
+      "content": "전체 본문...",
+      "collected_at": "2025-01-08T06:00:00Z"
+    }
+  ]
+}
+```
+
+---
+
+#### 3-4. 뉴스 상세 조회
 
 ```http
 GET /api/news/{news_id}
@@ -431,17 +520,19 @@ GET /api/news/{news_id}
 **응답** (200):
 ```json
 {
-  "news_id": "news_123",
+  "news_id": "news_12345",
+  "category_date": "politics#2025-01-08",
+  "category": "politics",
+  "rank": 1,
   "title": "뉴스 제목",
-  "summary": "뉴스 요약",
+  "images": ["https://image1.jpg", "https://image2.jpg"],
+  "provider_link_page": "https://news.com/article",
+  "provider": "연합뉴스",
+  "byline": "홍길동 기자",
+  "published_at": "2025-01-08T10:00:00",
+  "hilight": "기사 하이라이트 200자...",
   "content": "뉴스 본문 전체...",
-  "image_url": "https://example.com/image.jpg",
-  "content_url": "https://example.com/news",
-  "publisher": "언론사",
-  "author": "기자명",
-  "published_at": "2025-01-27T09:00:00",
-  "companies": ["삼성", "LG"],
-  "esg": []
+  "collected_at": "2025-01-08T06:00:00Z"
 }
 ```
 
@@ -455,7 +546,7 @@ GET /api/news/{news_id}
 
 ---
 
-#### 3-4. 뉴스 북마크 추가
+#### 3-5. 뉴스 북마크 추가
 
 ```http
 POST /api/news/bookmark
@@ -480,7 +571,7 @@ Authorization: Bearer {token}
 
 ---
 
-#### 3-5. 뉴스 북마크 삭제
+#### 3-6. 뉴스 북마크 삭제
 
 ```http
 DELETE /api/news/bookmark/{news_id}
@@ -597,7 +688,7 @@ GET /api/categories
 **응답** (200):
 ```json
 {
-  "categories": ["정치", "경제", "사회", "생활/문화", "IT/과학", "연예"]
+  "categories": ["정치", "경제", "사회", "문화", "국제", "지역", "스포츠", "IT/과학"]
 }
 ```
 
@@ -650,7 +741,7 @@ Authorization: Bearer {token}
 - `400`: 잘못된 카테고리
   ```json
   {
-    "detail": "지원하지 않는 카테고리입니다: ['스포츠']"
+    "detail": "지원하지 않는 카테고리입니다: ['세계']"
   }
   ```
 
@@ -687,7 +778,7 @@ GET /onboarding
 ```json
 {
   "message": "온보딩 페이지입니다",
-  "available_categories": ["정치", "경제", "사회", "생활/문화", "IT/과학", "연예"]
+  "available_categories": ["정치", "경제", "사회", "문화", "국제", "지역", "스포츠", "IT/과학"]
 }
 ```
 
@@ -765,8 +856,8 @@ OPENAI_API_KEY=your_openai_key
 ELEVENLABS_API_KEY=your_elevenlabs_key
 ELEVENLABS_VOICE_ID=your_voice_id
 
-# 뉴스 API
-DEEPSEARCH_API_KEY=your_deepsearch_key
+# 뉴스 API (BigKinds)
+BIGKINDS_ACCESS_KEY=your_bigkinds_key
 
 # AWS 리소스
 DDB_NEWS_TABLE=NewsCards

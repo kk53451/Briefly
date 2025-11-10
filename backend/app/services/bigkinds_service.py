@@ -136,9 +136,10 @@ def map_bigkinds_to_article(bk_doc: dict, category_en: str, rank: int = 1) -> di
     Returns:
         dict: BigKinds 필드명을 사용하는 article 형식
     """
-    # 이미지 처리: images 배열의 첫 번째 요소만 사용
+    # 이미지 처리: 배열 그대로 저장 (유효한 이미지만 필터링)
     images = bk_doc.get("images", [])
-    image = images[0] if images else None
+    # "/" 및 빈 문자열 제거
+    valid_images = [img for img in images if img and img.strip() and img != "/"]
 
     return {
         "id": bk_doc.get("news_id"),
@@ -147,9 +148,8 @@ def map_bigkinds_to_article(bk_doc: dict, category_en: str, rank: int = 1) -> di
         "provider": bk_doc.get("provider"),
         "byline": bk_doc.get("byline", ""),
         "published_at": bk_doc.get("published_at"),
-        "image": image,
+        "images": valid_images,  # 배열로 저장
         "hilight": bk_doc.get("hilight"),
-        "summary": None,  # GPT가 나중에 생성
         "rank": rank,
     }
 

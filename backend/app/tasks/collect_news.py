@@ -74,8 +74,7 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 "id": news_id,
                 "rank": rank,
                 "title": article.get("title"),
-                "summary": article.get("summary"),
-                "image": article.get("image"),
+                "images": article.get("images", []),  # 배열로 저장
                 "provider_link_page": article.get("provider_link_page"),
                 "provider": article.get("provider"),
                 "byline": article.get("byline"),

@@ -46,8 +46,7 @@ def save_news_card(category: str, article: dict, date_str: str):
         "category": category,
         "rank": article.get("rank"),
         "title": article.get("title"),
-        "summary": article.get("summary"),
-        "image": article.get("image"),
+        "images": article.get("images", []),  # 배열로 저장
         "provider_link_page": article.get("provider_link_page"),
         "provider": article.get("provider"),
         "byline": article.get("byline"),
@@ -104,12 +103,88 @@ def get_news_card_by_content_url(content_url: str):
 def get_today_news_grouped():
     """
     오늘 날짜 기준으로 카테고리별 뉴스 6건씩 묶어서 반환
+    - 이미지가 있는 기사만 선별
     """
     today = datetime.now().strftime("%Y-%m-%d")
     result = {}
     for ko_category, en_category in CATEGORY_MAP.items():
         items = get_news_by_category_and_date(en_category["api_name"], today)
-        result[ko_category] = items[:6]
+        # 이미지가 있는 기사만 필터링 (빈 배열 제외)
+        items_with_image = [
+            item for item in items
+            if item.get("images") and len(item.get("images", [])) > 0
+        ]
+        result[ko_category] = items_with_image[:6]
+    return result
+
+def get_news_grouped_by_provider(date: str = None, limit_per_provider: int = 6):
+    """
+    언론사별로 뉴스를 그룹핑하여 반환 (Home 탭용)
+
+    - 각 언론사별 첫 번째 기사는 이미지 있는 것으로 우선 배치
+    - 나머지 기사는 이미지 유무 상관없이 최신순
+
+    Args:
+        date (str): 조회할 날짜 (YYYY-MM-DD), 기본값은 오늘
+        limit_per_provider (int): 언론사별 최대 뉴스 개수 (기본 6개)
+
+    Returns:
+        dict: {"연합뉴스": [...], "조선일보": [...], ...}
+    """
+    if not date:
+        date = datetime.now().strftime("%Y-%m-%d")
+
+    # 모든 카테고리에서 해당 날짜의 뉴스 수집
+    all_news = []
+    for ko_category, en_category in CATEGORY_MAP.items():
+        items = get_news_by_category_and_date(en_category["api_name"], date)
+        all_news.extend(items)
+
+    # 언론사별로 그룹화
+    provider_groups = {}
+    for news in all_news:
+        provider = news.get("provider")
+        if not provider:
+            continue
+
+        if provider not in provider_groups:
+            provider_groups[provider] = []
+
+        provider_groups[provider].append(news)
+
+    # 각 언론사 그룹 내에서 정렬 및 선별
+    result = {}
+    for provider, news_list in provider_groups.items():
+        # 발행 시간 기준 최신순 정렬
+        sorted_news = sorted(
+            news_list,
+            key=lambda x: x.get("published_at", ""),
+            reverse=True
+        )
+
+        # 이미지 있는 기사와 없는 기사 분리
+        news_with_image = [
+            item for item in sorted_news
+            if item.get("images") and len(item.get("images", [])) > 0
+        ]
+        news_without_image = [
+            item for item in sorted_news
+            if not item.get("images") or len(item.get("images", [])) == 0
+        ]
+
+        # 첫 번째는 이미지 있는 것 우선, 나머지는 최신순
+        final_list = []
+        if news_with_image:
+            final_list.append(news_with_image[0])  # 첫 번째는 이미지 있는 기사
+            # 나머지는 전체에서 최신순으로 (첫 번째 제외)
+            remaining = [n for n in sorted_news if n != news_with_image[0]]
+            final_list.extend(remaining[:limit_per_provider - 1])
+        else:
+            # 이미지 있는 기사가 하나도 없으면 그냥 최신순
+            final_list = sorted_news[:limit_per_provider]
+
+        result[provider] = final_list[:limit_per_provider]
+
     return result
 
 def update_news_card_content(news_id: str, content: str):

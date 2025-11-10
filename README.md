@@ -59,7 +59,7 @@ graph TB
     subgraph "External APIs"
         J[OpenAI GPT-4o-mini]
         K[ElevenLabs TTS]
-        L[DeepSearch News API]
+        L[BigKinds News API]
         M[Kakao Login API]
     end
     
@@ -83,20 +83,33 @@ graph TB
 ### 2.2 데이터베이스 설계
 
 #### DynamoDB 테이블 구조
-- **NewsCards**: 수집된 뉴스 기사 저장 (PK: news_id, GSI: category-date)
-- **Frequencies**: 생성된 팟캐스트 대본 및 오디오 정보 (PK: frequency_id, GSI: category-date)
-- **Users**: 사용자 프로필 및 설정 정보 (PK: user_id)
-- **Bookmarks**: 사용자 북마크 관리 (PK: user_id-news_id)
+- **NewsCards**: 수집된 뉴스 기사 저장
+  - PK: news_id
+  - GSI: category_date (category#YYYY-MM-DD)
+  - 주요 필드: title, content, images (배열), provider, byline, published_at, hilight, rank
+- **Frequencies**: 생성된 팟캐스트 대본 및 오디오 정보
+  - PK: frequency_id (category#YYYY-MM-DD)
+  - 주요 필드: script, audio_url, category, date
+- **Users**: 사용자 프로필 및 설정 정보
+  - PK: user_id (kakao_{id})
+  - 주요 필드: nickname, profile_image, interests (배열), onboarding_completed
+- **Bookmarks**: 사용자 북마크 관리
+  - PK: user_id (HASH), news_id (RANGE)
+  - 주요 필드: bookmarked_at
 
 #### S3 버킷 구조
 ```
 briefly-news-audio/
 ├── frequencies/
-│   ├── politics/
-│   │   └── 2025-01-01.mp3
-│   ├── economy/
-│   │   └── 2025-01-01.mp3
-│   └── ...
+│   ├── politics/       # 정치
+│   ├── economy/        # 경제
+│   ├── society/        # 사회
+│   ├── culture/        # 문화
+│   ├── international/  # 국제
+│   ├── local/          # 지역
+│   ├── sports/         # 스포츠
+│   └── tech/           # IT/과학
+│       └── 2025-01-01.mp3
 └── temp/
     └── processing/
 ```
@@ -106,7 +119,8 @@ briefly-news-audio/
 #### 백엔드 서비스 구조
 - **OpenAI Service**: GPT-4o-mini를 활용한 뉴스 요약 및 이중 클러스터링
 - **TTS Service**: ElevenLabs API를 통한 한국어 음성 합성
-- **DeepSearch Service**: 뉴스 수집 및 본문 추출
+- **BigKinds Service**: 빅카인즈 API 뉴스 수집 및 본문 스크래핑
+- **Content Scraper**: 원문 URL 기반 본문 추출 (Selector 기반 + Fallback)
 - **Auth Service**: 카카오 소셜 로그인 및 JWT 토큰 관리
 
 #### 프론트엔드 컴포넌트 구조
@@ -118,7 +132,25 @@ briefly-news-audio/
 
 ## 3. 개발 세부 내용
 
-### 3.1 AI 기반 뉴스 처리 시스템
+### 3.1 뉴스 수집 및 검증 시스템
+
+#### BigKinds API 연동
+- **공식 데이터 소스**: 한국언론진흥재단 빅카인즈 공식 API 활용
+- **정확도순 정렬**: relation 기준 desc로 카테고리 내 대표 기사 우선 수집
+- **메타데이터 수집**: news_id, title, images, provider, byline, published_at 등
+- **본문 제한 대응**: API에서 200자만 제공하므로 별도 스크래핑 필요
+
+#### 본문 추출 시스템 (content_scraper.py)
+- **Selector 기반 추출**: 언론사별 본문 태그 패턴 인식
+- **Fallback 처리**: 메인 Selector 실패 시 대체 방법 자동 시도
+- **품질 검증**: 최소 300자, 한글 비율 70% 이상 확인
+- **에러 핸들링**: HTTP 오류, 타임아웃, 인코딩 문제 대응
+
+#### 중복 제거 및 필터링
+- **메모리 기반 중복 체크**: Set을 활용한 ID/URL/제목 중복 제거
+- **DB 기반 중복 체크**: DynamoDB 조회로 이미 저장된 기사 필터링
+- **이미지 유효성 검증**: "/" 및 빈 값 제거, 유효한 URL만 저장
+- **본문 검증**: 한글 비율, 최소 길이 등 품질 기준 충족 확인
 
 #### 이중 클러스터링 알고리즘
 1. **1차 클러스터링**: 원본 기사의 물리적 중복 제거 (80% 유사도 기준)
@@ -157,8 +189,10 @@ Events:
 ```
 
 #### 병렬 처리 최적화
-- **카테고리별 병렬 수집**: 6개 카테고리 동시 처리
-- **배치 크기 최적화**: 카테고리당 30개 기사 수집
+- **카테고리별 병렬 수집**: ThreadPoolExecutor로 8개 카테고리 동시 처리 (max_workers=6)
+- **오버페칭 전략**: 카테고리당 60개 요청 → 중복/본문 검증 → 30개 선별
+- **본문 검증**: 최소 300자, 한글 비율 70% 이상, 중복 URL/ID 제거
+- **이미지 필터링**: 빅카인즈 images 배열 → "/" 제거 및 유효성 검증
 - **실패 처리**: 자동 재시도 및 로깅 시스템
 
 ### 3.4 사용자 인터페이스
@@ -199,15 +233,17 @@ Events:
 - **UC-011**: 온보딩 프로세스 완성
 
 #### 자동화 시스템 (2개 유즈케이스)
-- **UC-012**: 매일 자동 뉴스 수집 (6개 카테고리 × 30개 기사)
+- **UC-012**: 매일 자동 뉴스 수집 (8개 카테고리 × 30개 기사)
+  - 카테고리: 정치, 경제, 사회, 문화, 국제, 지역, 스포츠, IT/과학
 - **UC-013**: 자동 팟캐스트 생성 및 TTS 변환
 
 ### 4.2 성능 지표
 
 #### 시스템 처리 성능
-- **뉴스 수집**: 180개 기사/일 (6 카테고리 × 30개)
+- **뉴스 수집**: 240개 기사/일 (8 카테고리 × 30개, 60개 요청 후 필터링)
+- **본문 추출**: Selector 기반 스크래핑 + 최소 300자 검증
 - **중복 제거율**: 물리적 80% + 의미적 75% 이중 필터링
-- **팟캐스트 생성**: 6개 오디오 파일/일 (카테고리별)
+- **팟캐스트 생성**: 8개 오디오 파일/일 (카테고리별)
 - **응답 시간**: API 평균 응답 시간 < 2초
 
 #### 비용 최적화
@@ -232,7 +268,8 @@ Events:
 #### AI 서비스 통합 (100% 완성)
 - **OpenAI GPT-4o-mini**: 뉴스 요약 및 대본 생성
 - **ElevenLabs TTS**: 한국어 음성 합성
-- **DeepSearch API**: 뉴스 수집 및 본문 추출
+- **BigKinds API**: 한국언론진흥재단 뉴스 수집 (정확도순 정렬)
+- **Content Scraper**: Selector 기반 원문 본문 추출 시스템
 
 ---
 
@@ -296,11 +333,11 @@ Events:
 frontend/
 ├── app/                          # Next.js App Router
 │   ├── layout.tsx               # 루트 레이아웃
-│   ├── page.tsx                 # 홈페이지 (랭킹으로 리다이렉트)
-│   ├── ranking/                 # 랭킹 시스템
-│   │   └── page.tsx            # 인기 뉴스 랭킹 페이지
-│   ├── today/                   # 오늘의 뉴스
-│   │   └── page.tsx            # 카테고리별 뉴스 목록
+│   ├── page.tsx                 # 홈페이지 (Home 탭으로 리다이렉트)
+│   ├── home/                    # 홈 탭
+│   │   └── page.tsx            # 언론사별 최신 뉴스 (API: /api/news/home)
+│   ├── today/                   # 오늘의 뉴스 탭
+│   │   └── page.tsx            # 카테고리별 뉴스 목록 (API: /api/news/today)
 │   ├── frequency/               # 내 주파수 (팟캐스트)
 │   │   └── page.tsx            # 개인화된 팟캐스트 리스트
 │   ├── profile/                 # 사용자 프로필
@@ -349,7 +386,8 @@ backend/
 │   │
 │   ├── services/               # 핵심 비즈니스 로직
 │   │   ├── openai_service.py   # GPT 요약 + Few-shot learning
-│   │   ├── deepsearch_service.py # 뉴스 수집 + 본문 추출
+│   │   ├── bigkinds_service.py # 빅카인즈 API 뉴스 수집
+│   │   ├── content_scraper.py  # 원문 본문 추출 (Selector 기반)
 │   │   └── tts_service.py      # ElevenLabs TTS 음성 변환
 │   │
 │   ├── utils/                  # 유틸리티 모듈
@@ -390,7 +428,9 @@ backend/
 ## 주요 기능
 
 ### 스마트 뉴스 큐레이션
-- **카테고리별 뉴스 수집**: 매일 6개 카테고리에서 최대 30개씩 총 180개 뉴스 수집
+- **빅카인즈 API 연동**: 한국언론진흥재단 공식 뉴스 DB 활용
+- **카테고리별 뉴스 수집**: 매일 8개 카테고리에서 60개 요청 → 30개 선별 (총 240개)
+- **본문 스크래핑**: 원문 URL 기반 Selector 추출 + Fallback 처리로 고품질 본문 확보
 - **이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거로 5-10개 핵심 그룹 생성
 - **개인화 필터링**: 사용자 관심 카테고리 기반 맞춤 제공
 

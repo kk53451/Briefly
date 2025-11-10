@@ -10,5 +10,5 @@ pyJWT
 pytz
 python-jose
 bs4
-numpy
+numpy<2.0.0
 trafilatura

@@ -1,10 +1,10 @@
 briefly-frontend/
 ├── app/                          # Next.js App Router
 │   ├── layout.tsx               # 루트 레이아웃
-│   ├── page.tsx                 # 홈페이지 (랭킹으로 리다이렉트)
+│   ├── page.tsx                 # 홈페이지 (Home 탭으로 리다이렉트)
 │   ├── globals.css              # 글로벌 스타일
-│   ├── ranking/page.tsx         # 랭킹 페이지
-│   ├── today/page.tsx           # 오늘의 뉴스 페이지
+│   ├── home/page.tsx            # 홈 탭 - 언론사별 최신 뉴스 (API: GET /api/news/home)
+│   ├── today/page.tsx           # 오늘의 뉴스 탭 - 카테고리별 뉴스 (API: GET /api/news/today)
 │   ├── frequency/page.tsx       # 내 주파수 페이지
 │   ├── profile/
 │   │   ├── page.tsx            # 프로필 페이지
@@ -22,7 +22,7 @@ briefly-frontend/
 │   ├── news-carousel.tsx       # 뉴스 캐러셀
 │   ├── audio-player.tsx        # 오디오 플레이어
 │   ├── frequency-card.tsx      # 주파수 카드
-│   ├── ranking-news.tsx        # 랭킹 뉴스 컴포넌트
+│   ├── home-news.tsx           # 홈 탭 뉴스 컴포넌트 (언론사별)
 │   ├── today-news-redesigned.tsx # 오늘의 뉴스 (리디자인)
 │   ├── my-frequency.tsx        # 내 주파수 컴포넌트
 │   ├── user-profile.tsx        # 사용자 프로필

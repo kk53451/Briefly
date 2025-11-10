@@ -20,6 +20,7 @@ ENV/
 # AWS SAM
 .aws-sam/
 samconfig.toml
+backend/template.yaml
 
 # Logs
 *.log

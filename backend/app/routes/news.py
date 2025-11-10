@@ -4,6 +4,7 @@ from app.utils.dynamo import (
     get_news_by_category_and_date,
     get_news_card_by_id,
     get_today_news_grouped,
+    get_news_grouped_by_provider,
     add_bookmark,
     remove_bookmark
 )
@@ -117,6 +118,33 @@ def get_today_news():
     - 리턴 예시: { "정치": [...6개], "경제": [...6개], ... }
     """
     return get_today_news_grouped()
+
+#  [GET] /api/news/home
+@router.get("/home")
+def get_home_news(date: str = Query(None, description="조회 날짜 (YYYY-MM-DD)")):
+    """
+    홈 탭: 언론사별 최신 뉴스 그룹핑하여 반환
+
+    - 언론사별로 최신 뉴스 6개씩 그룹화
+    - 각 언론사의 첫 번째 기사는 이미지 있는 것 우선
+    - 나머지 기사는 이미지 유무 상관없이 최신순 정렬
+    - 사용 예시: 'Home' 탭에서 언론사별 뉴스 섹션 출력
+    - 리턴 예시: { "연합뉴스": [...6개], "조선일보": [...6개], ... }
+
+    Args:
+        date (str, optional): 조회할 날짜 (YYYY-MM-DD). 기본값은 오늘 날짜 (KST)
+    """
+    kst = pytz.timezone("Asia/Seoul")
+    if not date:
+        date = datetime.now(kst).strftime("%Y-%m-%d")
+
+    print(f"📰 [Home] 언론사별 뉴스 조회 - 날짜: {date}")
+
+    result = get_news_grouped_by_provider(date=date, limit_per_provider=6)
+
+    print(f"✅ [Home] 총 {len(result)}개 언론사 반환")
+
+    return result
 
 #  [GET] /api/news/{news_id}
 @router.get("/{news_id}")
