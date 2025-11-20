@@ -39,6 +39,9 @@ samconfig.toml
 .env.local
 ENV_SETUP.md
 
+# Template with secrets
+template.yaml
+
 # Logs
 *.log
 

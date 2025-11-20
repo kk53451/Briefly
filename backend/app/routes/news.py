@@ -153,7 +153,7 @@ def get_news_detail(news_id: str):
     개별 뉴스 카드 상세 내용 조회
 
     - 뉴스 ID를 기준으로 뉴스 상세 데이터 반환
-    - content, publisher, summary 등 포함
+    - content, publisher, title, images 등 포함
     - 예외 처리: 존재하지 않으면 404 반환
     """
     item =  get_news_card_by_id(news_id)

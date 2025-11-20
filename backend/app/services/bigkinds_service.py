@@ -138,6 +138,13 @@ def map_bigkinds_to_article(bk_doc: dict, category_en: str, rank: int = 1) -> di
     """
     # 이미지 처리: 배열 그대로 저장 (유효한 이미지만 필터링)
     images = bk_doc.get("images", [])
+
+    # 타입 안전성: BigKinds API가 문자열로 반환하는 경우 배열로 변환
+    if isinstance(images, str):
+        images = [images] if images and images.strip() else []
+    elif not isinstance(images, list):
+        images = []
+
     # "/" 및 빈 문자열 제거
     valid_images = [img for img in images if img and img.strip() and img != "/"]
 
