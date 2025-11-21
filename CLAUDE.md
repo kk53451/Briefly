@@ -7,21 +7,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Briefly** is an AI-powered news podcast platform that automatically collects, summarizes, and converts daily news into personalized audio podcasts. The system runs fully automated with a serverless architecture on AWS.
 
 **Core Technology Stack:**
-- Frontend: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui
-- Backend: FastAPI, Python 3.12, AWS Lambda (SAM)
-- AI Services: OpenAI GPT-4o-mini, ElevenLabs TTS
-- Data: DynamoDB (4 tables), S3 (audio storage)
-- Scheduler: AWS EventBridge (daily 6 AM KST)
+- **Frontend**: React Native Expo (TypeScript, React Navigation, React Native Paper)
+- **Backend**: FastAPI, Python 3.12, AWS Lambda (SAM)
+- **AI Services**: OpenAI GPT-4o-mini, ElevenLabs TTS
+- **Data**: DynamoDB (4 tables), S3 (audio storage)
+- **Scheduler**: AWS EventBridge (daily 6 AM KST)
 
 ## Development Commands
 
-### Frontend (Next.js)
+### Mobile App (React Native Expo)
 ```bash
 cd frontend
-npm install              # Install dependencies
-npm run dev             # Start dev server (http://localhost:3000)
-npm run build           # Production build
-npm run lint            # Run ESLint
+
+# Install dependencies
+npm install
+
+# Start development server
+npx expo start
+
+# Run on specific platforms
+npm run ios           # iOS (requires Mac)
+npm run android       # Android
+npm run web           # Web browser
+
+# Clear cache and restart
+npx expo start -c
+
+# Build for production (EAS Build)
+eas build --platform ios
+eas build --platform android
 ```
 
 ### Backend (FastAPI)
@@ -94,53 +108,76 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
 - Composite PK: `user_id` (HASH) + `news_id` (RANGE)
 - Stores: bookmark_date
 
-### Frontend Architecture
+### Mobile App Architecture (React Native Expo)
 
-**App Router Structure** (`frontend/app/`)
-- `/home` - Provider-grouped latest news (언론사별 최신 뉴스, API: GET /api/news/home)
-- `/today` - Category-grouped news (카테고리별 뉴스, API: GET /api/news/today)
-- `/frequency` - Personalized podcast player
-- `/profile` - User settings & category preferences
-- `/news/[id]` - News detail view
-- `/onboarding` - Initial setup flow
-- `/login/kakao/callback` - OAuth callback handler
+**Navigation Structure** (`frontend/src/navigation/`)
+```
+RootNavigator (Stack)
+├── AuthNavigator (로그인 전)
+│   ├── LoginScreen - Kakao 로그인
+│   ├── OnboardingScreen - 카테고리 선택
+│   └── KakaoCallbackScreen - OAuth 콜백
+└── MainTabNavigator (로그인 후)
+    ├── HomeTab - 언론사별 최신 뉴스
+    ├── TodayTab - 카테고리별 뉴스
+    ├── FrequencyTab - 팟캐스트 플레이어
+    └── ProfileTab - 프로필 및 설정
+```
 
-**Key Components** (`frontend/components/`)
-- `news-card.tsx` - Reusable news card with bookmark toggle
-- `audio-player.tsx` - Custom audio player for podcasts
-- `category-filter.tsx` - Category selection UI
-- `navigation-tabs.tsx` - Bottom tab navigation
+**Screen-to-API Mapping**
 
-**Tab-to-API Mapping**
+| Screen | Component | Backend API | Description |
+|--------|-----------|-------------|-------------|
+| Home | `HomeScreen` | `GET /api/news/home` | 언론사별로 그룹핑된 최신 뉴스 (각 언론사당 6개) |
+| Today | `TodayScreen` | `GET /api/news/today` | 카테고리별로 그룹핑된 뉴스 (각 카테고리당 6개) |
+| Frequency | `FrequencyScreen` | `GET /api/frequencies` | 오늘의 팟캐스트 목록 |
+| Profile | `ProfileScreen` | `GET /api/user/profile` | 사용자 프로필 및 북마크 정보 |
+| NewsDetail | `NewsDetailScreen` | `GET /api/news/{news_id}` | 뉴스 상세 내용 |
+| Onboarding | `OnboardingScreen` | `POST /api/user/onboarding` | 초기 카테고리 설정 |
 
-| Tab | Route | Backend API | Description |
-|-----|-------|-------------|-------------|
-| Home | `/home` | `GET /api/news/home` | 언론사별로 그룹핑된 최신 뉴스 (각 언론사당 6개, 첫 번째는 이미지 보장) |
-| Today | `/today` | `GET /api/news/today` | 카테고리별로 그룹핑된 뉴스 (각 카테고리당 6개, 이미지 있는 것만) |
-| Frequency | `/frequency` | `GET /api/frequency?category={category}&date={date}` | 카테고리별 팟캐스트 스크립트 및 오디오 |
-| Profile | `/profile` | `GET /api/user/profile` | 사용자 프로필 및 북마크 정보 |
+**Key Components** (To be implemented)
+- `NewsCard` - Reusable news card with bookmark toggle
+- `AudioPlayer` - Custom audio player (expo-av)
+- `CategoryFilter` - Category selection UI
+- `BookmarkButton` - Bookmark toggle with API integration
 
-**API Client** (`frontend/lib/api.ts`)
-- Centralized REST API calls to backend
-- JWT token management via localStorage
-- Base URL configuration for different environments
+**Technology Stack**
+- **State Management**: Zustand (auth), React Query (server state)
+- **Storage**: expo-secure-store (JWT), AsyncStorage (cache)
+- **Navigation**: React Navigation v7 (Stack + Bottom Tabs)
+- **UI Framework**: React Native Paper
+- **Styling**: StyleSheet with custom theme system
+- **Audio**: expo-av
+- **Fonts**: Custom premium fonts (Outfit, Plus Jakarta Sans, Pretendard)
 
-### Authentication Flow
+**API Client** (`frontend/src/lib/api/client.ts`)
+- Axios-based HTTP client
+- JWT token management via expo-secure-store
+- Auto token injection via request interceptor
+- Automatic logout on 401 responses
 
-1. User clicks "Login with Kakao"
-2. Frontend redirects to `/api/auth/kakao/login`
-3. Backend redirects to Kakao OAuth page
-4. User authorizes → Kakao redirects to `/api/auth/kakao/callback?code=...`
-5. Backend exchanges code for Kakao access token
-6. Backend fetches user info from Kakao API
-7. Backend creates/updates user in DynamoDB
-8. Backend generates JWT token with `user_id`
-9. Frontend stores JWT in localStorage, redirects to app
+### Authentication Flow (Mobile)
+
+1. User clicks "카카오로 시작하기" button
+2. App opens in-app browser via `expo-web-browser`
+3. Backend OAuth URL: `GET /api/auth/kakao/login?redirect_uri=briefly://auth/callback`
+4. Kakao OAuth page shown in browser
+5. User authorizes → Kakao redirects to `briefly://auth/callback?code=...`
+6. App captures redirect via deep linking
+7. Exchange code for JWT: `GET /api/auth/kakao/callback?code={code}`
+8. Store JWT in expo-secure-store
+9. Navigate to OnboardingScreen or MainTabNavigator
+
+**Deep Linking Configuration:**
+- App Scheme: `briefly://`
+- OAuth Callback: `briefly://auth/callback`
+- Configured in `app.json`
 
 **Token Usage:**
 - All protected endpoints require `Authorization: Bearer {token}` header
 - Token validation via `get_current_user()` dependency in FastAPI
 - Token contains: `{"sub": "kakao_{id}", "exp": timestamp}`
+- Auto-refresh on app launch via `authStore.loadAuth()`
 
 ## Important Implementation Details
 
@@ -193,9 +230,68 @@ Lambda functions have 1024MB memory for clustering operations:
 - Embeddings are generated one-by-one, not in bulk
 - If adding new features, monitor CloudWatch memory metrics
 
+## Project File Structure
+
+```
+Briefly/
+├── backend/                    # FastAPI Lambda backend
+│   ├── app/
+│   │   ├── main.py            # FastAPI app entry point
+│   │   ├── routes/            # API endpoints
+│   │   ├── services/          # Business logic (OpenAI, TTS, BigKinds)
+│   │   ├── tasks/             # Scheduled tasks (news collection)
+│   │   ├── utils/             # Utilities (DynamoDB, date, etc.)
+│   │   └── constants/         # Category mapping, prompts
+│   ├── template.yaml.example  # SAM template
+│   ├── requirements.txt       # Python dependencies
+│   └── test/                  # Unit tests
+│
+└── frontend/                  # React Native Expo app
+    ├── App.tsx               # Main app entry point
+    ├── app.json              # Expo configuration
+    ├── package.json          # Dependencies
+    ├── src/
+    │   ├── navigation/       # Navigation structure
+    │   │   ├── RootNavigator.tsx
+    │   │   ├── AuthNavigator.tsx
+    │   │   └── MainTabNavigator.tsx
+    │   ├── screens/          # Screen components
+    │   │   ├── auth/         # Login, Onboarding, Callback
+    │   │   ├── home/         # Home screen
+    │   │   ├── today/        # Today screen
+    │   │   ├── frequency/    # Frequency (podcast) screen
+    │   │   └── profile/      # Profile screen
+    │   ├── components/       # Reusable components
+    │   │   ├── ui/           # Basic UI components
+    │   │   ├── cards/        # News cards, etc.
+    │   │   └── audio/        # Audio player components
+    │   ├── lib/
+    │   │   ├── api/          # API client & services
+    │   │   ├── theme/        # Theme system (colors, typography)
+    │   │   └── constants/    # Category mapping
+    │   ├── types/            # TypeScript type definitions
+    │   ├── store/            # Zustand stores (auth, etc.)
+    │   └── hooks/            # Custom React hooks
+    └── assets/
+        └── fonts/            # Premium fonts (9 files, 8.4 MB)
+```
+
 ## Environment Variables
 
-**Backend** (`.env` or `template.yaml`):
+**Mobile App** (`frontend/.env`):
+```bash
+# Backend API URL
+API_BASE_URL=http://localhost:8000  # Local development
+# API_BASE_URL=https://xxxxx.execute-api.ap-northeast-2.amazonaws.com  # Production
+
+# Kakao OAuth
+KAKAO_CLIENT_ID=your_kakao_rest_api_key
+
+# App Configuration
+APP_SCHEME=briefly
+```
+
+**Backend** (`backend/template.yaml`):
 ```bash
 OPENAI_API_KEY=sk-proj-...
 OPENAI_MODEL=gpt-4o-mini
@@ -203,7 +299,7 @@ ELEVENLABS_API_KEY=sk_...
 ELEVENLABS_VOICE_ID=TX3LPaxmHKxFdv7VOQHJ
 BIGKINDS_ACCESS_KEY=...
 KAKAO_CLIENT_ID=...
-KAKAO_REDIRECT_URI=https://your-domain.com/api/auth/kakao/callback
+KAKAO_REDIRECT_URI=briefly://auth/callback  # Mobile deep link
 DDB_NEWS_TABLE=NewsCards
 DDB_FREQ_TABLE=Frequencies
 DDB_USERS_TABLE=Users
@@ -211,38 +307,69 @@ DDB_BOOKMARKS_TABLE=Bookmarks
 S3_BUCKET=briefly-news-audio
 ```
 
-**Frontend** (`.env.local`):
-```bash
-NEXT_PUBLIC_API_URL=https://your-api-gateway-url
-NEXT_PUBLIC_KAKAO_CLIENT_ID=...
-```
-
-⚠️ **SECURITY WARNING:** The `template.yaml` currently has hardcoded API keys. Before deploying to production:
+⚠️ **SECURITY WARNING:** The `template.yaml` should not have hardcoded API keys. Before deploying to production:
 1. Move all secrets to AWS Secrets Manager or Parameter Store
 2. Update Lambda environment variables to reference secrets
 3. Rotate all exposed keys immediately
 
 ## Common Development Patterns
 
-### Adding a New API Route
+### Adding a New Backend API Route
 1. Create route file in `backend/app/routes/{name}.py`
 2. Define router: `router = APIRouter(prefix="/api/{name}", tags=["{Name}"])`
 3. Add authentication with `Depends(get_current_user)` for protected routes
 4. Register in `backend/app/main.py`: `app.include_router({name}.router)`
-5. Update frontend API client in `frontend/lib/api.ts`
+5. Update mobile API service in `frontend/src/lib/api/services/`
+
+### Adding a New Mobile Screen
+1. Create screen file in `frontend/src/screens/{feature}/{Name}Screen.tsx`
+2. Define navigation types in `src/navigation/types.ts`
+3. Add route to appropriate navigator (AuthNavigator or MainTabNavigator)
+4. Import types from `src/types/`
+5. Use API services from `src/lib/api/services/`
+6. Use theme from `src/lib/theme/`
+
+**Example Screen Structure:**
+```typescript
+// frontend/src/screens/example/ExampleScreen.tsx
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MainTabScreenProps } from '../../navigation/types';
+import { Typography, Spacing } from '../../lib/theme';
+
+export default function ExampleScreen({ navigation }: MainTabScreenProps<'Example'>) {
+  const theme = useTheme();
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text style={[Typography.h1, { color: theme.colors.textPrimary }]}>
+        Example Screen
+      </Text>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: Spacing.lg,
+  },
+});
+```
+
+### Adding a New Reusable Component
+1. Create component in `frontend/src/components/{category}/{Name}.tsx`
+2. Use TypeScript for prop types
+3. Apply theme colors and typography
+4. Export from category index file if needed
 
 ### Adding a New DynamoDB Table
 1. Define in `backend/template.yaml` under `Resources`
 2. Add environment variable for table name
 3. Create utility functions in `backend/app/utils/dynamo.py`
 4. Update IAM policies if needed (`Policies` section)
-
-### Adding a New Frontend Page
-1. Create `frontend/app/{route}/page.tsx`
-2. Use server components by default, add `'use client'` only when needed
-3. Import types from `frontend/types/`
-4. Use API client from `frontend/lib/api.ts`
-5. Add navigation link in `frontend/components/navigation-tabs.tsx` if needed
 
 ### Modifying GPT Prompts
 When updating prompts in `openai_service.py`:
@@ -332,7 +459,10 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
   - `content_scraper.py` - 원문 본문 추출 (Selector 기반)
   - `openai_service.py` - GPT 요약 및 클러스터링
   - `tts_service.py` - ElevenLabs TTS 음성 변환
-- Frontend components: Separate UI primitives from business logic
+- Mobile app: Feature-based organization
+  - `screens/{feature}/` - One feature per folder
+  - `components/{category}/` - Grouped by UI purpose
+  - `lib/api/services/` - One service per API domain
 - Types: Shared types in `types/` directory, mirror backend models
 
 **Logging:**
@@ -341,6 +471,24 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
 - Log entry/exit of major operations with elapsed time
 
 **Git Workflow:**
-- Current branch: `master` (main branch)
+- Current branch: `backend_v1` (development)
+- Main branch: `master`
 - Commit messages: Use Korean for consistency with README
 - No force pushes to master
+
+## Premium Fonts
+
+The mobile app uses custom premium fonts for a polished UI:
+
+**English Fonts:**
+- Outfit (Bold, ExtraBold) - Headlines
+- Plus Jakarta Sans (Regular, Medium, SemiBold) - Body text
+- JetBrains Mono - Numbers and time display
+
+**Korean Fonts:**
+- Pretendard (Regular, Medium, Bold) - All Korean text
+
+**Total Size:** 8.4 MB (9 font files)
+**License:** SIL Open Font License 1.1 (commercial use allowed)
+
+All fonts are loaded via `App.tsx` and managed through the theme system in `src/lib/theme/`.

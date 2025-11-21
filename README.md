@@ -7,7 +7,7 @@
 [![AWS](https://img.shields.io/badge/AWS-Lambda%20%7C%20DynamoDB%20%7C%20S3-orange)](https://aws.amazon.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green)](https://openai.com/)
 [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-TTS-blue)](https://elevenlabs.io/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![React Native](https://img.shields.io/badge/React%20Native-Expo-blue)](https://expo.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python-red)](https://fastapi.tiangolo.com/)
 
 ---
@@ -22,7 +22,7 @@ Briefly는 현대인의 정보 소비 패턴 변화에 대응하여, AI 기술�
 - **개인화 서비스**: 사용자 관심 카테고리 기반 맞춤형 콘텐츠 제공
 - **고품질 음성**: ElevenLabs TTS를 활용한 자연스러운 한국어 팟캐스트 생성
 - **효율적 요약**: GPT-4o-mini와 이중 클러스터링을 통한 중복 제거 및 핵심 정보 추출
-- **접근성**: 웹과 모바일에서 언제든 이용 가능한 사용자 친화적 인터페이스
+- **접근성**: iOS/Android 네이티브 앱으로 언제 어디서나 이용 가능한 사용자 친화적 인터페이스
 
 ### 1.3 타겟 사용자
 - 바쁜 일상으로 인해 뉴스 읽기 시간이 부족한 직장인
@@ -38,10 +38,10 @@ Briefly는 현대인의 정보 소비 패턴 변화에 대응하여, AI 기술�
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        A[Next.js 14 App]
-        B[React Components]
-        C[Tailwind CSS + shadcn/ui]
+    subgraph "Mobile App Layer"
+        A[React Native Expo]
+        B[React Navigation]
+        C[React Native Paper]
     end
     
     subgraph "Backend Layer"
@@ -123,10 +123,11 @@ briefly-news-audio/
 - **Content Scraper**: 원문 URL 기반 본문 추출 (Selector 기반 + Fallback)
 - **Auth Service**: 카카오 소셜 로그인 및 JWT 토큰 관리
 
-#### 프론트엔드 컴포넌트 구조
-- **페이지 컴포넌트**: 각 라우트별 메인 페이지 구성
-- **UI 컴포넌트**: shadcn/ui 기반 재사용 가능한 컴포넌트
-- **비즈니스 컴포넌트**: 뉴스 카드, 오디오 플레이어 등 도메인 특화 컴포넌트
+#### 모바일 앱 컴포넌트 구조
+- **스크린 컴포넌트**: 각 화면별 메인 UI 구성
+- **UI 컴포넌트**: React Native Paper 기반 재사용 가능한 컴포넌트
+- **네비게이션**: React Navigation v7 (Stack + Bottom Tabs)
+- **상태 관리**: Zustand + React Query
 
 ---
 
@@ -197,15 +198,16 @@ Events:
 
 ### 3.4 사용자 인터페이스
 
-#### 반응형 디자인
-- **모바일 퍼스트**: 터치 친화적 인터페이스 설계
+#### 네이티브 앱 디자인
+- **Premium Audio Journal meets Modern News Reader**: 프리미엄 오디오 저널과 모던 뉴스 리더의 조화
+- **프리미엄 폰트**: Outfit, Plus Jakarta Sans, JetBrains Mono, Pretendard (한글)
 - **다크 테마**: 눈의 피로를 줄이는 다크 모드 적용
-- **애니메이션**: Framer Motion을 활용한 부드러운 전환 효과
+- **네이티브 애니메이션**: React Native Reanimated 기반 부드러운 전환 효과
 
 #### 사용자 경험 최적화
-- **원클릭 로그인**: 카카오 소셜 로그인 간편 연동
+- **Deep Linking**: 카카오 OAuth를 통한 간편한 소셜 로그인 (expo-auth-session)
 - **개인화 온보딩**: 관심 카테고리 선택을 통한 맞춤 설정
-- **직관적 네비게이션**: 하단 탭 기반 주요 기능 접근
+- **직관적 네비게이션**: 하단 탭 기반 주요 기능 접근 (Home, Today, Frequency, Profile)
 
 ---
 
@@ -253,11 +255,13 @@ Events:
 
 ### 4.3 기술 스택 완성도
 
-#### 프론트엔드 (100% 완성)
-- **Next.js 14**: App Router 기반 모던 웹 애플리케이션
+#### 모바일 앱 (React Native Expo)
+- **React Native Expo SDK 52+**: 크로스플랫폼 네이티브 앱
 - **TypeScript**: 타입 안전성 보장
-- **Tailwind CSS + shadcn/ui**: 일관된 디자인 시스템
-- **Framer Motion**: 부드러운 애니메이션 효과
+- **React Navigation v7**: Stack + Bottom Tabs 네비게이션
+- **React Native Paper**: Material Design 기반 UI 컴포넌트
+- **Zustand + React Query**: 클라이언트/서버 상태 관리
+- **expo-auth-session**: OAuth 인증 처리
 
 #### 백엔드 (100% 완성)
 - **FastAPI**: 고성능 REST API 서버
@@ -327,51 +331,65 @@ Events:
 
 ## 프로젝트 구조
 
-### Frontend (Next.js 14 + TypeScript)
+### Mobile App (React Native Expo + TypeScript)
 
 ```
 frontend/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx               # 루트 레이아웃
-│   ├── page.tsx                 # 홈페이지 (Home 탭으로 리다이렉트)
-│   ├── home/                    # 홈 탭
-│   │   └── page.tsx            # 언론사별 최신 뉴스 (API: /api/news/home)
-│   ├── today/                   # 오늘의 뉴스 탭
-│   │   └── page.tsx            # 카테고리별 뉴스 목록 (API: /api/news/today)
-│   ├── frequency/               # 내 주파수 (팟캐스트)
-│   │   └── page.tsx            # 개인화된 팟캐스트 리스트
-│   ├── profile/                 # 사용자 프로필
-│   │   ├── page.tsx            # 프로필 페이지
-│   │   └── categories/page.tsx  # 관심 카테고리 설정
-│   ├── news/[id]/              # 뉴스 상세
-│   │   └── page.tsx            # 개별 뉴스 상세 보기
-│   ├── onboarding/             # 온보딩
-│   │   └── page.tsx            # 초기 설정 및 카테고리 선택
-│   └── login/kakao/callback/   # 인증
-│       └── page.tsx            # 카카오 로그인 콜백 처리
+├── src/
+│   ├── screens/                 # 화면 컴포넌트
+│   │   ├── auth/               # 인증 관련 화면
+│   │   │   ├── LoginScreen.tsx
+│   │   │   ├── OnboardingScreen.tsx
+│   │   │   └── KakaoCallbackScreen.tsx
+│   │   ├── home/               # 홈 탭
+│   │   │   └── HomeScreen.tsx
+│   │   ├── today/              # 오늘의 뉴스 탭
+│   │   │   └── TodayScreen.tsx
+│   │   ├── frequency/          # 주파수 탭
+│   │   │   └── FrequencyScreen.tsx
+│   │   └── profile/            # 프로필 탭
+│   │       └── ProfileScreen.tsx
+│   │
+│   ├── navigation/             # 네비게이션 설정
+│   │   ├── RootNavigator.tsx
+│   │   ├── MainTabNavigator.tsx
+│   │   ├── AuthNavigator.tsx
+│   │   └── types.ts
+│   │
+│   ├── lib/                    # 라이브러리 및 설정
+│   │   ├── api/               # API 클라이언트
+│   │   │   ├── client.ts
+│   │   │   ├── auth.ts
+│   │   │   ├── news.ts
+│   │   │   ├── frequency.ts
+│   │   │   └── user.ts
+│   │   ├── theme/             # 테마 시스템
+│   │   │   ├── colors.ts
+│   │   │   ├── typography.ts
+│   │   │   ├── spacing.ts
+│   │   │   └── index.ts
+│   │   └── constants/         # 상수 정의
+│   │       └── categories.ts
+│   │
+│   ├── store/                  # 상태 관리
+│   │   └── authStore.ts       # Zustand 스토어
+│   │
+│   └── types/                  # TypeScript 타입
+│       ├── user.ts
+│       ├── news.ts
+│       ├── frequency.ts
+│       └── api.ts
 │
-├── components/                   # 재사용 컴포넌트
-│   ├── ui/                      # shadcn/ui 기본 컴포넌트 라이브러리
-│   ├── page-header.tsx          # 페이지 상단 헤더
-│   ├── navigation-tabs.tsx      # 하단 탭 네비게이션
-│   ├── category-filter.tsx      # 카테고리 필터링
-│   ├── news-card.tsx           # 뉴스 카드 컴포넌트
-│   ├── news-carousel.tsx       # 뉴스 캐러셀 슬라이더
-│   ├── audio-player.tsx        # 음성 재생 플레이어
-│   ├── frequency-card.tsx      # 주파수 카드 컴포넌트
-│   └── bookmark-button.tsx     # 북마크 토글 버튼
+├── assets/                     # 정적 리소스
+│   └── fonts/                 # 프리미엄 폰트
+│       ├── Outfit-Bold.ttf
+│       ├── PlusJakartaSans-Regular.ttf
+│       ├── JetBrainsMono-Regular.ttf
+│       └── Pretendard-*.ttf
 │
-├── lib/                         # 유틸리티 및 설정
-│   ├── api.ts                  # REST API 클라이언트
-│   ├── utils.ts                # 공통 유틸리티 함수
-│   ├── constants.ts            # 상수 정의 (카테고리, URL 등)
-│   ├── auth.ts                 # 인증 관련 유틸리티
-│   └── mock-data.ts            # 개발용 목업 데이터
-│
-└── types/                       # TypeScript 타입 정의
-    ├── api.ts                  # API 관련 타입
-    ├── user.ts                 # 사용자 관련 타입
-    └── news.ts                 # 뉴스 관련 타입
+├── App.tsx                    # 앱 엔트리 포인트
+├── app.json                   # Expo 설정
+└── package.json
 ```
 
 ### Backend (FastAPI + AWS Serverless)
@@ -444,27 +462,35 @@ backend/
 - **스트리밍 지원**: S3 Presigned URL을 통한 실시간 재생
 - **품질 최적화**: stability와 similarity_boost 파라미터 조정으로 일관된 음성 톤 유지
 
-### 직관적인 사용자 경험
-- **반응형 디자인**: PC/모바일에서 최적화된 UI/UX
-- **카카오 로그인**: 간편한 소셜 로그인
+### 네이티브 모바일 경험
+- **크로스플랫폼**: iOS/Android 네이티브 앱
+- **Deep Linking**: 카카오 OAuth 간편 로그인
 - **북마크 기능**: 관심 뉴스 저장 및 관리
+- **프리미엄 폰트**: 한글/영문 최적화 타이포그래피
 
 ---
 
 ## 시작하기
 
 ### 환경 요구사항
-- Node.js 14+
+- Node.js 18+
 - Python 3.12+
 - AWS CLI 설정
+- Expo CLI (`npm install -g expo-cli`)
 
 ### 로컬 개발 환경 설정
 
-#### 프론트엔드 실행
+#### 모바일 앱 실행
 ```bash
 cd frontend
 npm install
-npm run dev
+npx expo start
+
+# iOS 시뮬레이터에서 실행
+npm run ios
+
+# Android 에뮬레이터에서 실행
+npm run android
 ```
 
 #### 백엔드 실행
