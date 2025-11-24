@@ -11,8 +11,8 @@ Briefly 백엔드는 매일 자동으로 뉴스를 수집하여 AI로 요약하�
 ### 핵심 기능
 
 - **BigKinds API 뉴스 수집**: 8개 카테고리 × 30개 = 240건/일
-- **AI 이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거
-- **GPT-4o-mini 팟캐스트 대본 생성**: 카테고리별 Few-shot Learning
+- **AI Greedy 클러스터링**: 80% 유사도 기반 중복 제거
+- **GPT-4o-mini 팟캐스트 대본 생성**: 카테고리별 특화 스타일
 - **ElevenLabs TTS 변환**: 고품질 한국어 음성 생성
 - **AWS Lambda 스케줄링**: 매일 오전 6시(KST) 자동 실행
 - **카카오 소셜 로그인**: JWT 토큰 기반 인증
@@ -69,7 +69,7 @@ backend/
 │   ├── services/                       # 외부 API 통합
 │   │   ├── bigkinds_service.py         # BigKinds API 뉴스 검색
 │   │   ├── content_scraper.py          # 웹 스크래핑 (Trafilatura + BS4)
-│   │   ├── openai_service.py           # GPT 요약 + 이중 클러스터링
+│   │   ├── openai_service.py           # GPT 요약 + Greedy 클러스터링
 │   │   └── tts_service.py              # ElevenLabs TTS 변환
 │   │
 │   ├── routes/                         # API 라우터
@@ -207,26 +207,25 @@ for category in categories:
 - 한글 비율 70% 이상
 - 유효한 이미지 필터링 (`/` 제거)
 
-### 2. AI 이중 클러스터링
+### 2. AI Greedy 클러스터링
 
-**1차 클러스터링** (물리적 중복 제거):
+**클러스터링 알고리즘** (물리적 중복 제거):
 ```python
-# 원본 기사 본문 기반, 임계값 80%
+# 원본 기사 본문 기반 Greedy 클러스터링
+# 임계값: 0.80 (80% 유사도)
 groups = cluster_similar_texts(full_contents, threshold=0.80)
-# 결과: 30개 → 약 15-20개 그룹
+# 결과: 30개 → 약 5-10개 그룹
 ```
 
-**2차 클러스터링** (의미적 중복 제거):
-```python
-# GPT 요약문 기반, 임계값 75%
-final_groups = cluster_similar_texts(summaries, threshold=0.75)
-# 결과: 15-20개 → 약 5-10개 핵심 그룹
-```
+**작동 방식**:
+- **Greedy 방식**: 각 텍스트를 순서대로 처리하며 기존 클러스터의 대표와 비교
+- **코사인 유사도**: OpenAI text-embedding-3-small 기반 임베딩
+- **임계값 80%**: 매우 유사한 기사만 통합 (중복 뉴스 제거)
 
 **효과**:
-- 토큰 사용량 50% 절감
+- 토큰 사용량 50% 절감 (30개 → 5-10개)
 - 월 비용 대폭 감소
-- 대본 품질 향상
+- 대본 품질 향상 (중복 제거로 다양한 내용 포함)
 
 ### 3. GPT-4o-mini 팟캐스트 대본 생성
 

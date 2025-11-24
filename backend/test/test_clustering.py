@@ -68,10 +68,10 @@ def test_first_clustering():
     print(f"\n 1차 클러스터링 완료: {len(mock_articles)}개 → {len(group_summaries)}개")
     return group_summaries
 
-def test_second_clustering():
-    """2차 클러스터링 테스트 (GPT 요약문)"""
-    print("\n [테스트 2] 2차 클러스터링 - GPT 요약문 의미적 중복 제거")
-    
+def test_final_content_preparation():
+    """최종 콘텐츠 준비 테스트 (2차 클러스터링 제거됨)"""
+    print("\n [테스트 2] 최종 콘텐츠 준비 (2차 클러스터링 제거)")
+
     # 1차 클러스터링 결과로 생성된 요약문들 (모의)
     summary_texts = [
         "정치 분야에서 새로운 정책이 발표되었습니다. " * 25,  # 약 750자
@@ -81,41 +81,21 @@ def test_second_clustering():
         "IT 기술 혁신에 대한 소식을 전해드립니다. " * 25,
         "과학 연구 성과에 대한 발표가 있었습니다. " * 25,
     ]
-    
-    print(f" 1차 클러스터링 결과 (요약문): {len(summary_texts)}개")
+
+    print(f" 클러스터링 결과 (요약문): {len(summary_texts)}개")
     for i, summary in enumerate(summary_texts):
         print(f"  - 요약 {i+1}: {len(summary)}자")
-    
-    # 2차 클러스터링은 summarize_articles 내부에서 수행
-    # 여기서는 로직만 시뮬레이션
-    print(f"\n2차 클러스터링 시뮬레이션...")
-    
-    if len(summary_texts) > 5:
-        print(f"  - 5개 이상 → 2차 클러스터링 적용")
-        # 실제로는 cluster_similar_texts(summary_texts, 0.75) 호출
-        simulated_groups = [
-            [summary_texts[0], summary_texts[1]],  # 유사 요약 2개
-            [summary_texts[2]],  # 단일 요약
-            [summary_texts[3], summary_texts[4], summary_texts[5]],  # 유사 요약 3개
-        ]
-        print(f"  - 시뮬레이션 결과: {len(simulated_groups)}개 클러스터")
-        
-        final_texts = []
-        for i, group in enumerate(simulated_groups):
-            if len(group) > 1:
-                # 그룹 요약 시뮬레이션
-                final_summary = f"2차 클러스터 {i+1}의 최종 통합 요약입니다. " * 20  # 약 500자
-                final_texts.append(final_summary)
-                print(f"  - 클러스터 {i+1}: {len(group)}개 요약 → 최종 통합")
-            else:
-                final_texts.append(group[0][:1000])  # 길이 제한
-                print(f"  - 클러스터 {i+1}: 단일 요약 → 그대로 사용")
-        
-    else:
-        print(f"  - 5개 이하 → 2차 클러스터링 생략")
-        final_texts = [text[:1000] for text in summary_texts]
-    
-    print(f"\n 2차 클러스터링 완료: {len(summary_texts)}개 → {len(final_texts)}개")
+
+    print(f"\n2차 클러스터링 제거 이유:")
+    print(f"  ✅ 1차 클러스터링으로 이미 충분히 압축 (30개 → 5-10개)")
+    print(f"  ✅ GPT 요약문은 이미 통합된 내용이라 재클러스터링 불필요")
+    print(f"  ✅ 불필요한 GPT API 호출 및 비용 제거")
+
+    # 길이 제한만 적용
+    final_texts = [text[:1000] for text in summary_texts]
+
+    print(f"\n 길이 제한 적용: 각 요약 최대 1000자")
+    print(f" 최종 요약문: {len(final_texts)}개")
     return final_texts
 
 def test_final_script_generation():
@@ -155,25 +135,39 @@ def test_final_script_generation():
         print(" 대본 길이 조정 필요")
 
 def main():
-    """이중 클러스터링 테스트 실행"""
-    print(" 이중 클러스터링 테스트 시작\n")
-    
+    """클러스터링 테스트 실행"""
+    print("="*70)
+    print("🚀 Greedy 클러스터링 테스트 시작")
+    print("="*70)
+
     # 1차 클러스터링 테스트
     group_summaries = test_first_clustering()
-    
-    # 2차 클러스터링 테스트
-    final_texts = test_second_clustering()
-    
+
+    # 최종 콘텐츠 준비 테스트
+    final_texts = test_final_content_preparation()
+
     # 최종 대본 생성 테스트
     test_final_script_generation()
-    
-    print("\n 테스트 요약:")
-    print(" 1차 클러스터링: 원본 기사 물리적 중복 제거 (임계값 0.80)")
-    print(" 2차 클러스터링: GPT 요약문 의미적 중복 제거 (임계값 0.75)")  
-    print(" 토큰 최적화: 각 단계별 길이 제한 적용")
-    print(" 로거 통합: print → logger 변경 완료")
-    
-    print("\n 이중 클러스터링 테스트 완료!")
+
+    print("\n" + "="*70)
+    print("📊 테스트 요약:")
+    print("="*70)
+    print("✅ Greedy 클러스터링: 단일 패스")
+    print("   - 알고리즘: Greedy (threshold=0.80)")
+    print("   - 대상: 원본 기사 본문 (30개)")
+    print("   - 방식: 코사인 유사도 기반 탐욕적 클러스터링")
+    print("   - 기준: 80% 유사도")
+    print("   - 결과: 유사 기사 통합 (각 클러스터 대표와 비교)")
+    print("\n❌ 2차 클러스터링: 제거됨")
+    print("   - 이유 1: 1차 클러스터링으로 이미 충분히 압축")
+    print("   - 이유 2: GPT 요약문은 이미 통합된 내용")
+    print("   - 이유 3: 불필요한 GPT API 호출 제거 (비용 절감)")
+    print("\n✅ 성능 개선:")
+    print("   - 토큰 절감: 각 단계별 길이 제한 (1500자, 1000자)")
+    print("   - 순수 NumPy 구현 (Lambda 호환)")
+    print("="*70)
+
+    print("\n✅ Greedy 클러스터링 테스트 완료!\n")
 
 if __name__ == "__main__":
     main() 

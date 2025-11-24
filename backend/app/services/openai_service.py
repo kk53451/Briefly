@@ -102,9 +102,16 @@ def cosine_similarity(vec1, vec2):
         logger.warning(f" 코사인 유사도 예상치 못한 오류: {e}")
         return 0.0
 
-def cluster_similar_texts(texts, threshold=0.75):
+def cluster_similar_texts(texts, threshold=0.80):
     """
-    유사한 텍스트들을 클러스터링하여 중복 내용을 그룹화합니다.
+    Greedy 알고리즘으로 유사한 텍스트들을 클러스터링하여 중복 내용을 그룹화합니다.
+
+    Args:
+        texts: 클러스터링할 텍스트 리스트
+        threshold: 유사도 임계값 (0.80 = 80% 유사도, 기본값)
+
+    Returns:
+        list: 클러스터링된 텍스트 그룹 리스트 [[text1, text2], [text3], ...]
     """
     if len(texts) <= 1:
         return [texts]
@@ -153,7 +160,18 @@ def cluster_similar_texts(texts, threshold=0.75):
 def summarize_group(texts: list, category: str) -> str:
     """
     클러스터된 유사 기사들을 하나의 요약으로 통합합니다.
-    Few-shot learning과 품질 검증을 포함합니다.
+
+    Args:
+        texts: 통합할 텍스트 리스트
+        category: 카테고리 (정치, 경제, 사회 등)
+
+    Returns:
+        str: 통합된 요약문 (500-700자)
+
+    Note:
+        - Few-shot learning 적용
+        - 카테고리별 특화된 요약 스타일
+        - 품질 검증 포함 (재시도 로직)
     """
     if len(texts) == 1:
         return texts[0]
@@ -300,42 +318,24 @@ def summarize_articles(texts: list[str], category: str) -> str:
     """
     GPT-4o-mini를 사용하여 여러 개의 뉴스 요약을 바탕으로
     하나의 흐름을 가진 팟캐스트 대본을 생성합니다.
+
+    Args:
+        texts: 요약할 텍스트 리스트 (클러스터링 결과)
+        category: 카테고리 (정치, 경제, 사회 등)
+
+    Returns:
+        str: 팟캐스트 대본 (1800-2200자, 약 4-5분 분량)
+
+    Note:
+        - 클러스터링으로 이미 중복이 제거된 상태 (30개 → 5-10개)
+        - 카테고리별 특화된 진행 스타일 적용
+        - Few-shot learning 없음 (대본 생성은 일반적인 프롬프트 사용)
+        - TTS 최적화된 자연스러운 대화체
     """
-    
-    # 2차 클러스터링: GPT 요약문 기반 의미적 중복 제거
-    try:
-        if len(texts) > 5:  # 5개 이상일 때만 클러스터링 적용
-            logger.info(f"2차 클러스터링 시작: {len(texts)}개 요약문")
-            clustered_groups = cluster_similar_texts(texts, threshold=0.75)
 
-            # 각 클러스터를 하나의 요약으로 통합
-            consolidated_texts = []
-            merged_count = 0
-
-            for group_idx, group in enumerate(clustered_groups):
-                if len(group) > 1:
-                    # 여러 유사 요약문을 하나로 통합
-                    try:
-                        summary = summarize_group(group, category)
-                        consolidated_texts.append(summary)
-                        merged_count += 1
-                    except Exception as e:
-                        logger.warning(f" 2차 그룹 #{group_idx+1} 요약 실패, 첫 번째 사용: {e}")
-                        consolidated_texts.append(group[0][:1000])  # 길이 제한
-                else:
-                    # 단일 요약은 그대로 사용 (길이 제한)
-                    consolidated_texts.append(group[0][:1000])  # 단일 기사도 1000자로 제한
-
-            final_texts = consolidated_texts
-            logger.info(f"  └─ 2차 클러스터링 완료: {len(texts)}개 → {len(final_texts)}개 그룹 ({merged_count}개 통합)")
-        else:
-            # 클러스터링 안할 때도 길이 제한
-            final_texts = [text[:1000] for text in texts]
-            logger.info(f"2차 클러스터링 생략, 원본 요약 수: {len(final_texts)}")
-            
-    except Exception as e:
-        logger.warning(f" 2차 클러스터링 과정 실패, 원본 사용: {e}")
-        final_texts = [text[:1000] for text in texts]  # 실패시에도 길이 제한
+    # 길이 제한만 적용 (토큰 최적화)
+    final_texts = [text[:1000] for text in texts]
+    logger.info(f"GPT 대본 생성 입력: {len(final_texts)}개 요약문 (각 최대 1000자)")
 
     # 최종 팟캐스트 대본 생성
     category_style = get_category_specific_style(category)

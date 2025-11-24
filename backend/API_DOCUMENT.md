@@ -5,8 +5,8 @@
 **Briefly**는 AI 기반 뉴스 팟캐스트 백엔드 시스템으로, 매일 뉴스를 수집하여 GPT-4o-mini로 요약하고 ElevenLabs TTS로 음성을 생성하는 자동화 서비스입니다.
 
 ###  핵심 기능
--  **AI 뉴스 요약**: GPT-4o-mini + 이중 클러스터링으로 중복 제거
--  **TTS 변환**: ElevenLabs 고품질 음성 생성  
+-  **AI 뉴스 요약**: GPT-4o-mini + Greedy 클러스터링(80% 유사도)으로 중복 제거
+-  **TTS 변환**: ElevenLabs 고품질 음성 생성
 -  **스케줄링**: 매일 오전 6시(KST) 자동 실행
 -  **인증**: 카카오 로그인 + JWT 토큰
 -  **데이터**: AWS DynamoDB + S3 스토리지

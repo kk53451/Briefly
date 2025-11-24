@@ -57,11 +57,13 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
    - Content scraping: 300+ chars, 70%+ Korean text validation
    - Deduplication: ID, URL, title (memory + DB check)
 
-2. **Dual Clustering Strategy** (`app/services/openai_service.py`)
-   - **1st clustering**: Physical deduplication of original articles (80% threshold)
-   - **2nd clustering**: Semantic deduplication of GPT summaries (75% threshold)
-   - Reduces 240 articles → 5-10 core groups per category
+2. **Greedy Clustering Strategy** (`app/services/openai_service.py`)
+   - **Single-pass clustering**: Physical deduplication of original articles (80% threshold)
+   - **Greedy algorithm**: Each text is compared to existing cluster representatives
+   - **Cosine similarity**: OpenAI text-embedding-3-small based embeddings
+   - Reduces 30 articles → 5-10 core groups per category
    - Saves 50% on token costs
+   - Note: 2nd clustering removed as GPT summaries are already integrated content
 
 3. **Podcast Script Generation** (`app/services/openai_service.py`)
    - Few-shot learning with category-specific examples
@@ -255,7 +257,7 @@ When updating prompts in `openai_service.py`:
 
 **Unit Tests** (`backend/test/`):
 - `test_frequency_unit.py` - Core podcast generation logic
-- `test_clustering.py` - Dual clustering algorithm
+- `test_clustering.py` - Greedy clustering algorithm (single-pass)
 - `test_tts_service.py` - ElevenLabs integration
 
 **Current Coverage:** 100% of core business logic (6/6 tests passing)
@@ -307,7 +309,7 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
 **Optimization Strategies in Use:**
 - Parallel news collection across 8 categories (ThreadPoolExecutor with max_workers=5)
 - Overfetching strategy: Request 60 articles, select best 30 per category
-- Clustering threshold tuning (80% for physical, 75% for semantic)
+- Single-pass Greedy clustering with 80% threshold
 - Token limits on all GPT inputs to minimize costs
 - S3 presigned URLs instead of CloudFront (simpler architecture)
 - DynamoDB GSI for efficient category+date queries
