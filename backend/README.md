@@ -10,7 +10,7 @@ Briefly 백엔드는 매일 자동으로 뉴스를 수집하여 AI로 요약하�
 
 ### 핵심 기능
 
-- **BigKinds API 뉴스 수집**: 8개 카테고리 × 30개 = 240건/일
+- **BigKinds API 뉴스 수집**: 8개 카테고리 × 70개 = 560건/일
 - **AI Greedy 클러스터링**: 80% 유사도 기반 중복 제거
 - **GPT-4o-mini 팟캐스트 대본 생성**: 카테고리별 특화 스타일
 - **ElevenLabs TTS 변환**: 고품질 한국어 음성 생성
@@ -194,10 +194,10 @@ $env:PYTHONIOENCODING='utf-8'; python test_clustering.py
 # 8개 카테고리 병렬 처리 (ThreadPoolExecutor)
 categories = ["정치", "경제", "사회", "문화", "국제", "지역", "스포츠", "IT/과학"]
 
-# 카테고리당 60개 요청 → 30개 선별
+# 카테고리당 200개 요청 → 70개 선별
 for category in categories:
-    articles = fetch_bigkinds_news(category, size=60)
-    valid_articles = filter_valid_articles(articles, limit=30)
+    articles = fetch_bigkinds_news(category, size=200)
+    valid_articles = filter_valid_articles(articles, limit=70)
     save_to_dynamodb(valid_articles)
 ```
 
@@ -214,7 +214,7 @@ for category in categories:
 # 원본 기사 본문 기반 Greedy 클러스터링
 # 임계값: 0.80 (80% 유사도)
 groups = cluster_similar_texts(full_contents, threshold=0.80)
-# 결과: 30개 → 약 5-10개 그룹
+# 결과: 70개 → 약 10-20개 그룹
 ```
 
 **작동 방식**:
@@ -223,7 +223,7 @@ groups = cluster_similar_texts(full_contents, threshold=0.80)
 - **임계값 80%**: 매우 유사한 기사만 통합 (중복 뉴스 제거)
 
 **효과**:
-- 토큰 사용량 50% 절감 (30개 → 5-10개)
+- 토큰 사용량 50% 절감 (70개 → 10-20개)
 - 월 비용 대폭 감소
 - 대본 품질 향상 (중복 제거로 다양한 내용 포함)
 
@@ -274,7 +274,7 @@ voice_settings = {
 # EventBridge cron: 0 21 * * ? * (UTC 21시 = KST 6시)
 
 def lambda_handler(event, context):
-    # 1단계: 뉴스 수집 (240건)
+    # 1단계: 뉴스 수집 (560건)
     collect_today_news()
 
     # 2단계: 주파수 생성 (8개 카테고리)
@@ -315,7 +315,7 @@ def lambda_handler(event, context):
 
 | 메서드 | 엔드포인트 | 설명 | 인증 |
 |--------|------------|------|------|
-| `GET` | `/?category={category}` | 카테고리별 뉴스 (최대 30개) | ❌ |
+| `GET` | `/?category={category}` | 카테고리별 뉴스 (최대 70개) | ❌ |
 | `GET` | `/{news_id}` | 뉴스 상세 조회 | ❌ |
 | `GET` | `/today` | 오늘의 카테고리별 뉴스 (6개씩, 이미지 포함) | ❌ |
 | `GET` | `/home` | 홈 탭 언론사별 뉴스 (6개씩, 최신순) | ❌ |
@@ -565,9 +565,9 @@ aws configure get region  # ap-northeast-2
 ### 주요 지표
 
 - **API 응답 시간**: 평균 200ms 이하
-- **일일 처리량**: 8개 카테고리 × 30개 = 240건/일
+- **일일 처리량**: 8개 카테고리 × 70개 = 560건/일
 - **성공률**: 99% 이상
-- **토큰 사용량**: 월 45,000자 (50% 절감 적용)
+- **토큰 사용량**: 월 63,000자 (50% 절감 적용)
 
 ### CloudWatch 메트릭
 

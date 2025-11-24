@@ -66,9 +66,9 @@ def process_single_category(category_ko: str, date: str) -> dict:
         full_contents = []
         articles_metadata = []  # 기사 메타데이터 (제목, 길이 등)
         processed_count = 0
-        target_count = 30  # 정확히 30개로 제한
+        target_count = 70  # 정확히 70개로 제한
 
-        # 기사 본문 정확히 30개까지 수집
+        # 기사 본문 정확히 70개까지 수집
         for i, article in enumerate(articles):
             if len(full_contents) >= target_count:
                 add_log(f"  - 목표 달성: {target_count}개 수집 완료")
@@ -300,7 +300,7 @@ def process_single_category(category_ko: str, date: str) -> dict:
 def generate_all_frequencies():
     """
     매일 오전 6시 자동 실행: 카테고리별 뉴스 본문 기반 공유 대본/음성 생성 (병렬 처리)
-    - 뉴스카드 DB에서 카테고리별 기사 정확히 30개 사용 (토큰 최적화)
+    - 뉴스카드 DB에서 카테고리별 기사 정확히 70개 사용 (토큰 최적화)
     - 부족한 본문은 재추출
     - 클러스터링으로 중복 제거 후 GPT 요약하여 스크립트 생성
     - ElevenLabs TTS로 변환 후 S3 업로드

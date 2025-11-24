@@ -165,8 +165,8 @@ def fetch_valid_articles_by_category(
     category: str,
     start_time: str,
     end_time: str,
-    size: int = 60,
-    limit: int = 30,
+    size: int = 200,
+    limit: int = 70,
     sort: Literal["popular", "traffic"] = "popular",
     min_content_length: int = 300,
     max_try: int = 5
@@ -178,8 +178,8 @@ def fetch_valid_articles_by_category(
         category (str): 영문 카테고리명 (예: "politics")
         start_time (str): 검색 시작 시간 (YYYY-MM-DDTHH:MM:SS)
         end_time (str): 검색 종료 시간 (YYYY-MM-DDTHH:MM:SS)
-        size (int): 오버페치할 기사 수 (기본 60)
-        limit (int): 최종 반환할 기사 수 (기본 30)
+        size (int): 오버페치할 기사 수 (기본 200)
+        limit (int): 최종 반환할 기사 수 (기본 70)
         sort (str): 정렬 기준 (레거시 파라미터, 현재는 무시됨)
         min_content_length (int): 최소 본문 길이 (기본 300자)
         max_try (int): 최대 재시도 횟수 (레거시 파라미터)
