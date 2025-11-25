@@ -138,11 +138,11 @@ def get_home_news(date: str = Query(None, description="조회 날짜 (YYYY-MM-DD
     if not date:
         date = datetime.now(kst).strftime("%Y-%m-%d")
 
-    print(f"📰 [Home] 언론사별 뉴스 조회 - 날짜: {date}")
+    # print(f"[Home] News query - date: {date}")
 
     result = get_news_grouped_by_provider(date=date, limit_per_provider=6)
 
-    print(f"✅ [Home] 총 {len(result)}개 언론사 반환")
+    # print(f"[Home] Returned {len(result)} providers")
 
     return result
 

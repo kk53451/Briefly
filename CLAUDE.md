@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Briefly** is an AI-powered news podcast platform that automatically collects, summarizes, and converts daily news into personalized audio podcasts. The system runs fully automated with a serverless architecture on AWS.
 
 **Core Technology Stack:**
-- **Frontend**: React Native Expo (TypeScript, React Navigation, React Native Paper)
+- **Mobile App**: React Native Expo SDK 54 (TypeScript, React Navigation v7)
 - **Backend**: FastAPI, Python 3.12, AWS Lambda (SAM)
 - **AI Services**: OpenAI GPT-4o-mini, ElevenLabs TTS
 - **Data**: DynamoDB (4 tables), S3 (audio storage)
@@ -15,9 +15,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
-### Mobile App (React Native Expo)
+### Mobile App (React Native Expo SDK 54)
 ```bash
-cd frontend
+cd mobile
 
 # Install dependencies
 npm install
@@ -25,9 +25,9 @@ npm install
 # Start development server
 npx expo start
 
-# Run on specific platforms
-npm run ios           # iOS (requires Mac)
-npm run android       # Android
+# Run on specific platforms (requires native build)
+npx expo run:ios      # iOS (requires Mac + Xcode)
+npx expo run:android  # Android (requires Android Studio)
 npm run web           # Web browser
 
 # Clear cache and restart
@@ -37,6 +37,8 @@ npx expo start -c
 eas build --platform ios
 eas build --platform android
 ```
+
+**Note:** This project uses native Kakao SDK (`@react-native-kakao`), so Expo Go is not supported. You must use development builds (`expo run:android` / `expo run:ios`).
 
 ### Backend (FastAPI)
 ```bash
@@ -108,76 +110,75 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
 - Composite PK: `user_id` (HASH) + `news_id` (RANGE)
 - Stores: bookmark_date
 
-### Mobile App Architecture (React Native Expo)
+### Mobile App Architecture (React Native Expo SDK 54)
 
-**Navigation Structure** (`frontend/src/navigation/`)
+**Navigation Structure** (`mobile/src/navigation/`)
 ```
 RootNavigator (Stack)
-├── AuthNavigator (로그인 전)
-│   ├── LoginScreen - Kakao 로그인
-│   ├── OnboardingScreen - 카테고리 선택
-│   └── KakaoCallbackScreen - OAuth 콜백
-└── MainTabNavigator (로그인 후)
-    ├── HomeTab - 언론사별 최신 뉴스
-    ├── TodayTab - 카테고리별 뉴스
-    ├── FrequencyTab - 팟캐스트 플레이어
-    └── ProfileTab - 프로필 및 설정
+├── Onboarding - 카테고리 선택 (onboarding 미완료 시)
+└── Main (Bottom Tabs) - 메인 앱
+    ├── Home - 언론사별 최신 뉴스
+    ├── Today - 카테고리별 뉴스
+    ├── Podcast - 팟캐스트 플레이어
+    └── Profile - 프로필 및 설정
+    + Login (Stack) - 로그인 화면 (필요시)
 ```
 
 **Screen-to-API Mapping**
 
 | Screen | Component | Backend API | Description |
 |--------|-----------|-------------|-------------|
-| Home | `HomeScreen` | `GET /api/news/home` | 언론사별로 그룹핑된 최신 뉴스 (각 언론사당 6개) |
-| Today | `TodayScreen` | `GET /api/news/today` | 카테고리별로 그룹핑된 뉴스 (각 카테고리당 6개) |
-| Frequency | `FrequencyScreen` | `GET /api/frequencies` | 오늘의 팟캐스트 목록 |
+| Home | `HomeScreen` | `GET /api/news/home` | 언론사별로 그룹핑된 최신 뉴스 |
+| Today | `TodayScreen` | `GET /api/news/today` | 카테고리별로 그룹핑된 뉴스 |
+| Podcast | `PodcastScreen` | `GET /api/frequencies` | 오늘의 팟캐스트 목록 |
 | Profile | `ProfileScreen` | `GET /api/user/profile` | 사용자 프로필 및 북마크 정보 |
-| NewsDetail | `NewsDetailScreen` | `GET /api/news/{news_id}` | 뉴스 상세 내용 |
 | Onboarding | `OnboardingScreen` | `POST /api/user/onboarding` | 초기 카테고리 설정 |
-
-**Key Components** (To be implemented)
-- `NewsCard` - Reusable news card with bookmark toggle
-- `AudioPlayer` - Custom audio player (expo-av)
-- `CategoryFilter` - Category selection UI
-- `BookmarkButton` - Bookmark toggle with API integration
+| Login | `LoginScreen` | `POST /api/auth/kakao/token` | 카카오 네이티브 로그인 |
 
 **Technology Stack**
-- **State Management**: Zustand (auth), React Query (server state)
+- **State Management**: React Context (AuthContext, ThemeContext, AudioPlayerContext)
 - **Storage**: expo-secure-store (JWT), AsyncStorage (cache)
 - **Navigation**: React Navigation v7 (Stack + Bottom Tabs)
-- **UI Framework**: React Native Paper
-- **Styling**: StyleSheet with custom theme system
-- **Audio**: expo-av
-- **Fonts**: Custom premium fonts (Outfit, Plus Jakarta Sans, Pretendard)
+- **UI Framework**: Custom StyleSheet (no external UI library)
+- **Styling**: Custom theme system (`src/constants/theme.ts`)
+- **Audio**: expo-av with AudioPlayerContext
+- **Auth**: `@react-native-kakao/user` (Native Kakao SDK)
 
-**API Client** (`frontend/src/lib/api/client.ts`)
+**API Client** (`mobile/src/services/api.ts`)
 - Axios-based HTTP client
 - JWT token management via expo-secure-store
 - Auto token injection via request interceptor
 - Automatic logout on 401 responses
 
-### Authentication Flow (Mobile)
+### Authentication Flow (Mobile - Native Kakao SDK)
 
-1. User clicks "카카오로 시작하기" button
-2. App opens in-app browser via `expo-web-browser`
-3. Backend OAuth URL: `GET /api/auth/kakao/login?redirect_uri=briefly://auth/callback`
-4. Kakao OAuth page shown in browser
-5. User authorizes → Kakao redirects to `briefly://auth/callback?code=...`
-6. App captures redirect via deep linking
-7. Exchange code for JWT: `GET /api/auth/kakao/callback?code={code}`
-8. Store JWT in expo-secure-store
-9. Navigate to OnboardingScreen or MainTabNavigator
+1. User taps "카카오로 시작하기" button
+2. App calls `@react-native-kakao/user` native SDK
+3. Kakao native login UI appears (or browser if app not installed)
+4. User authorizes → Kakao SDK returns access token
+5. App sends Kakao access token to backend: `POST /api/auth/kakao/token`
+6. Backend validates with Kakao, creates/gets user, returns JWT
+7. Store JWT in expo-secure-store
+8. Navigate to OnboardingScreen (if first login) or MainNavigator
 
-**Deep Linking Configuration:**
-- App Scheme: `briefly://`
-- OAuth Callback: `briefly://auth/callback`
-- Configured in `app.json`
+**Native Kakao SDK Configuration (`app.json`):**
+```json
+{
+  "plugins": [
+    ["@react-native-kakao/core", {
+      "nativeAppKey": "YOUR_KAKAO_NATIVE_APP_KEY",
+      "android": { "redirectUri": "kakao{APP_KEY}://oauth" },
+      "ios": { "redirectUri": "kakao{APP_KEY}://oauth" }
+    }]
+  ]
+}
+```
 
 **Token Usage:**
 - All protected endpoints require `Authorization: Bearer {token}` header
 - Token validation via `get_current_user()` dependency in FastAPI
 - Token contains: `{"sub": "kakao_{id}", "exp": timestamp}`
-- Auto-refresh on app launch via `authStore.loadAuth()`
+- Auto-check on app launch via `AuthContext.checkAuth()`
 
 ## Important Implementation Details
 
@@ -246,49 +247,63 @@ Briefly/
 │   ├── requirements.txt       # Python dependencies
 │   └── test/                  # Unit tests
 │
-└── frontend/                  # React Native Expo app
-    ├── App.tsx               # Main app entry point
+└── mobile/                    # React Native Expo SDK 54 app
+    ├── index.ts              # App entry point
     ├── app.json              # Expo configuration
     ├── package.json          # Dependencies
+    ├── android/              # Native Android project
     ├── src/
     │   ├── navigation/       # Navigation structure
-    │   │   ├── RootNavigator.tsx
-    │   │   ├── AuthNavigator.tsx
-    │   │   └── MainTabNavigator.tsx
+    │   │   ├── RootNavigator.tsx    # Auth flow handling
+    │   │   └── MainNavigator.tsx    # Bottom tab navigation
     │   ├── screens/          # Screen components
-    │   │   ├── auth/         # Login, Onboarding, Callback
-    │   │   ├── home/         # Home screen
-    │   │   ├── today/        # Today screen
-    │   │   ├── frequency/    # Frequency (podcast) screen
-    │   │   └── profile/      # Profile screen
+    │   │   ├── LoginScreen.tsx
+    │   │   ├── OnboardingScreen.tsx
+    │   │   ├── HomeScreen.tsx
+    │   │   ├── TodayScreen.tsx
+    │   │   ├── PodcastScreen.tsx
+    │   │   └── ProfileScreen.tsx
     │   ├── components/       # Reusable components
-    │   │   ├── ui/           # Basic UI components
-    │   │   ├── cards/        # News cards, etc.
-    │   │   └── audio/        # Audio player components
-    │   ├── lib/
-    │   │   ├── api/          # API client & services
-    │   │   ├── theme/        # Theme system (colors, typography)
-    │   │   └── constants/    # Category mapping
+    │   │   ├── ErrorView.tsx
+    │   │   └── NewsImage.tsx
+    │   ├── contexts/         # React Context providers
+    │   │   ├── AuthContext.tsx
+    │   │   ├── ThemeContext.tsx
+    │   │   └── AudioPlayerContext.tsx
+    │   ├── services/
+    │   │   └── api.ts        # API client (Axios)
+    │   ├── constants/        # Theme & categories
+    │   │   ├── theme.ts
+    │   │   ├── categories.ts
+    │   │   └── commonStyles.ts
     │   ├── types/            # TypeScript type definitions
-    │   ├── store/            # Zustand stores (auth, etc.)
-    │   └── hooks/            # Custom React hooks
-    └── assets/
-        └── fonts/            # Premium fonts (9 files, 8.4 MB)
+    │   │   ├── api.ts
+    │   │   └── navigation.ts
+    │   └── utils/
+    │       └── logger.ts
+    └── assets/               # Static assets (icons, splash)
 ```
 
 ## Environment Variables
 
-**Mobile App** (`frontend/.env`):
+**Mobile App** (`.env` or `process.env`):
 ```bash
 # Backend API URL
-API_BASE_URL=http://localhost:8000  # Local development
-# API_BASE_URL=https://xxxxx.execute-api.ap-northeast-2.amazonaws.com  # Production
+EXPO_PUBLIC_API_URL=http://localhost:8000  # Local development
+# EXPO_PUBLIC_API_URL=https://xxxxx.execute-api.ap-northeast-2.amazonaws.com  # Production
 
-# Kakao OAuth
-KAKAO_CLIENT_ID=your_kakao_rest_api_key
+# For Android emulator, use: http://10.0.2.2:8000
+```
 
-# App Configuration
-APP_SCHEME=briefly
+**Kakao SDK Configuration** (`app.json`):
+```json
+{
+  "plugins": [
+    ["@react-native-kakao/core", {
+      "nativeAppKey": "your_kakao_native_app_key"
+    }]
+  ]
+}
 ```
 
 **Backend** (`backend/template.yaml`):
@@ -299,7 +314,6 @@ ELEVENLABS_API_KEY=sk_...
 ELEVENLABS_VOICE_ID=TX3LPaxmHKxFdv7VOQHJ
 BIGKINDS_ACCESS_KEY=...
 KAKAO_CLIENT_ID=...
-KAKAO_REDIRECT_URI=briefly://auth/callback  # Mobile deep link
 DDB_NEWS_TABLE=NewsCards
 DDB_FREQ_TABLE=Frequencies
 DDB_USERS_TABLE=Users
@@ -319,51 +333,53 @@ S3_BUCKET=briefly-news-audio
 2. Define router: `router = APIRouter(prefix="/api/{name}", tags=["{Name}"])`
 3. Add authentication with `Depends(get_current_user)` for protected routes
 4. Register in `backend/app/main.py`: `app.include_router({name}.router)`
-5. Update mobile API service in `frontend/src/lib/api/services/`
+5. Update mobile API service in `mobile/src/services/api.ts`
 
 ### Adding a New Mobile Screen
-1. Create screen file in `frontend/src/screens/{feature}/{Name}Screen.tsx`
-2. Define navigation types in `src/navigation/types.ts`
-3. Add route to appropriate navigator (AuthNavigator or MainTabNavigator)
+1. Create screen file in `mobile/src/screens/{Name}Screen.tsx`
+2. Define navigation types in `src/types/navigation.ts`
+3. Add route to `MainNavigator.tsx` or `RootNavigator.tsx`
 4. Import types from `src/types/`
-5. Use API services from `src/lib/api/services/`
-6. Use theme from `src/lib/theme/`
+5. Use API client from `src/services/api.ts`
+6. Use theme from `src/contexts/ThemeContext.tsx`
 
 **Example Screen Structure:**
 ```typescript
-// frontend/src/screens/example/ExampleScreen.tsx
+// mobile/src/screens/ExampleScreen.tsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MainTabScreenProps } from '../../navigation/types';
-import { Typography, Spacing } from '../../lib/theme';
+import { useTheme } from '../contexts/ThemeContext';
 
-export default function ExampleScreen({ navigation }: MainTabScreenProps<'Example'>) {
-  const theme = useTheme();
+export const ExampleScreen: React.FC = () => {
+  const { colors, spacing } = useTheme();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text style={[Typography.h1, { color: theme.colors.textPrimary }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.text }]}>
         Example Screen
       </Text>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: Spacing.lg,
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
 ```
 
 ### Adding a New Reusable Component
-1. Create component in `frontend/src/components/{category}/{Name}.tsx`
+1. Create component in `mobile/src/components/{Name}.tsx`
 2. Use TypeScript for prop types
-3. Apply theme colors and typography
-4. Export from category index file if needed
+3. Apply theme colors via `useTheme()` hook
+4. Export from component file
 
 ### Adding a New DynamoDB Table
 1. Define in `backend/template.yaml` under `Resources`
@@ -424,10 +440,11 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
    - Verify ElevenLabs API key is valid
    - Review `tts_service.py` error logs
 
-4. **Kakao Login fails with "Invalid redirect_uri"**
-   - Ensure `KAKAO_REDIRECT_URI` exactly matches Kakao Developer Console setting
-   - Check for trailing slashes (should not have one)
-   - Verify client ID matches the configured app
+4. **Kakao Login fails**
+   - Ensure `nativeAppKey` in `app.json` matches Kakao Developer Console
+   - For Android: Check `kakao{APP_KEY}://oauth` is registered in Kakao console
+   - For iOS: Check URL scheme is properly configured
+   - Rebuild the app after changing `app.json` plugins
 
 ## Performance Considerations
 
@@ -459,11 +476,12 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
   - `content_scraper.py` - 원문 본문 추출 (Selector 기반)
   - `openai_service.py` - GPT 요약 및 클러스터링
   - `tts_service.py` - ElevenLabs TTS 음성 변환
-- Mobile app: Feature-based organization
-  - `screens/{feature}/` - One feature per folder
-  - `components/{category}/` - Grouped by UI purpose
-  - `lib/api/services/` - One service per API domain
-- Types: Shared types in `types/` directory, mirror backend models
+- Mobile app: Flat screen organization
+  - `screens/` - All screens in one folder (e.g., `HomeScreen.tsx`)
+  - `components/` - Reusable components
+  - `contexts/` - React Context providers
+  - `services/api.ts` - Single API client
+- Types: Shared types in `types/` directory
 
 **Logging:**
 - Use emoji prefixes for visibility: ✅ (success), ⚠️ (warning), ❌ (error)
@@ -471,24 +489,32 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
 - Log entry/exit of major operations with elapsed time
 
 **Git Workflow:**
-- Current branch: `backend_v1` (development)
+- Current branch: `frontend_v2` (mobile app development)
 - Main branch: `master`
 - Commit messages: Use Korean for consistency with README
 - No force pushes to master
 
-## Premium Fonts
+## Key Dependencies (Mobile)
 
-The mobile app uses custom premium fonts for a polished UI:
+**Core:**
+- `expo` ~54.0.23 - Expo SDK
+- `react-native` 0.81.5 - React Native
+- `react` 19.1.0 - React
 
-**English Fonts:**
-- Outfit (Bold, ExtraBold) - Headlines
-- Plus Jakarta Sans (Regular, Medium, SemiBold) - Body text
-- JetBrains Mono - Numbers and time display
+**Navigation:**
+- `@react-navigation/native` ^7.x - Navigation core
+- `@react-navigation/bottom-tabs` ^7.x - Bottom tabs
+- `@react-navigation/stack` ^7.x - Stack navigator
 
-**Korean Fonts:**
-- Pretendard (Regular, Medium, Bold) - All Korean text
+**Auth:**
+- `@react-native-kakao/core` ^2.x - Kakao SDK core
+- `@react-native-kakao/user` ^2.x - Kakao user login
 
-**Total Size:** 8.4 MB (9 font files)
-**License:** SIL Open Font License 1.1 (commercial use allowed)
+**Audio:**
+- `expo-av` ^16.x - Audio playback
 
-All fonts are loaded via `App.tsx` and managed through the theme system in `src/lib/theme/`.
+**Storage:**
+- `expo-secure-store` ~15.x - Secure token storage
+- `@react-native-async-storage/async-storage` ^2.x - General storage
+
+**Note:** This project requires native builds (Expo Go not supported due to native Kakao SDK).

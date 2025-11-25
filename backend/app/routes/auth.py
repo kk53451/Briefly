@@ -166,12 +166,104 @@ def kakao_callback(code: str):
         "nickname": user["nickname"]
     })
 
-#  3. 사용자 정보 조회
+#  3. 모바일 앱 카카오 토큰 로그인 (Native SDK)
+@router.post("/kakao/token")
+def kakao_token_login(request: dict):
+    """
+    모바일 앱에서 카카오 SDK로 받은 액세스 토큰을 사용한 로그인
+    Native 앱은 카카오 SDK를 통해 직접 액세스 토큰을 받아오므로,
+    이 토큰으로 사용자 정보를 조회하고 JWT를 발급한다.
+    """
+    print(f"[INFO] 모바일 카카오 토큰 로그인 시작")
+
+    access_token = request.get("access_token")
+
+    if not access_token:
+        print(f"[ERROR] 액세스 토큰 누락")
+        raise HTTPException(status_code=400, detail="액세스 토큰이 필요합니다")
+
+    print(f"[INFO] 액세스 토큰 받음: {access_token[:20] if len(access_token) > 20 else access_token}...")
+
+    # 카카오 사용자 정보 조회
+    try:
+        profile_res = requests.get(
+            url="https://kapi.kakao.com/v2/user/me",
+            headers={"Authorization": f"Bearer {access_token}"},
+            timeout=10
+        )
+
+        print(f"[INFO] 카카오 API 응답 상태: {profile_res.status_code}")
+
+        if profile_res.status_code != 200:
+            print(f"[ERROR] 카카오 API 오류: {profile_res.text}")
+            raise HTTPException(
+                status_code=400,
+                detail="카카오 토큰이 유효하지 않거나 만료되었습니다"
+            )
+
+        profile_json = profile_res.json()
+        print(f"[INFO] 사용자 정보 조회 성공")
+
+    except requests.exceptions.RequestException as e:
+        print(f"[ERROR] 네트워크 오류: {str(e)}")
+        raise HTTPException(status_code=500, detail="카카오 서버 연결 실패")
+
+    # 사용자 정보 추출
+    kakao_id = profile_json.get("id")
+    kakao_account = profile_json.get("kakao_account", {})
+    nickname = kakao_account.get("profile", {}).get("nickname")
+    profile_image = kakao_account.get("profile", {}).get("profile_image_url", "")
+
+    if not kakao_id or not nickname:
+        print(f"[ERROR] 필수 사용자 정보 누락")
+        raise HTTPException(status_code=400, detail="카카오 사용자 정보 조회 실패")
+
+    print(f"[INFO] 카카오 ID: {kakao_id}, 닉네임: {nickname}")
+
+    # DB 저장 (기존 callback 로직과 동일)
+    user_id = f"kakao_{kakao_id}"
+    user = get_user(user_id)
+
+    if user is None:
+        print(f"[NEW] 신규 사용자 생성: {user_id}")
+        save_user({
+            "user_id": user_id,
+            "nickname": nickname,
+            "profile_image": profile_image,
+            "created_at": datetime.utcnow().isoformat(),
+            "interests": [],
+            "onboarding_completed": False,
+        })
+        user = get_user(user_id)
+    else:
+        # 기존 사용자의 경우에도 카카오에서 받은 최신 정보로 업데이트
+        print(f"[UPDATE] 기존 사용자 정보 업데이트: {user_id}")
+        user["nickname"] = nickname
+        user["profile_image"] = profile_image
+        save_user(user)
+
+    if not user or "nickname" not in user:
+        raise HTTPException(status_code=500, detail="사용자 저장 실패")
+
+    # JWT 토큰 발급
+    jwt_token = create_access_token(user_id)
+
+    print(f"[SUCCESS] JWT 토큰 발급 완료")
+
+    return JSONResponse({
+        "access_token": jwt_token,
+        "user_id": user_id,
+        "nickname": user["nickname"],
+        "profile_image": user.get("profile_image", ""),
+        "onboarding_completed": user.get("onboarding_completed", False)
+    })
+
+#  4. 사용자 정보 조회
 @router.get("/me")
 def auth_me(user: dict = Depends(get_current_user)):
     return user
 
-#  4. 로그아웃
+#  5. 로그아웃
 @router.post("/logout")
 def logout():
     return {"message": "로그아웃 완료 (클라이언트 토큰 삭제 권장)"}

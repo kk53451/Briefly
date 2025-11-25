@@ -109,18 +109,18 @@ def fetch_bigkinds_news(
         result = response.json()
         documents = result.get("return_object", {}).get("documents", [])
 
-        logger.info(f"✅ [BigKinds API] 응답 성공 - 반환: {len(documents)}건")
+        logger.info(f"[SUCCESS] [BigKinds API] 응답 성공 - 반환: {len(documents)}건")
 
         return documents
 
     except httpx.TimeoutException as e:
-        logger.error(f"❌ [BigKinds API] 타임아웃: {e}")
+        logger.error(f"[ERROR] [BigKinds API] 타임아웃: {e}")
         raise Exception(f"BigKinds API 타임아웃: {e}")
     except httpx.HTTPStatusError as e:
-        logger.error(f"❌ [BigKinds API] HTTP 오류 {e.response.status_code}: {e.response.text}")
+        logger.error(f"[ERROR] [BigKinds API] HTTP 오류 {e.response.status_code}: {e.response.text}")
         raise Exception(f"BigKinds API HTTP 오류: {e.response.status_code}")
     except Exception as e:
-        logger.error(f"❌ [BigKinds API] 예상치 못한 오류: {e}")
+        logger.error(f"[ERROR] [BigKinds API] 예상치 못한 오류: {e}")
         raise Exception(f"BigKinds API 오류: {e}")
 
 
@@ -250,10 +250,10 @@ def fetch_valid_articles_by_category(
             # 3. 본문 추출 및 유효성 필터 (content_scraper.py의 함수 사용)
             content = extract_content_flexibly(article_url)
             if not content or len(content) < min_content_length:
-                logger.warning(f"⚠️ [본문 부족] {news_id} - 길이: {len(content) if content else 0}자")
+                logger.warning(f"[WARN] [본문 부족] {news_id} - 길이: {len(content) if content else 0}자")
                 continue
             if not is_korean_text(content, threshold=0.7):
-                logger.warning(f"⚠️ [한글 비율 미달] {news_id}")
+                logger.warning(f"[WARN] [한글 비율 미달] {news_id}")
                 continue
 
             article["content"] = content
@@ -270,5 +270,5 @@ def fetch_valid_articles_by_category(
         return results[:limit]
 
     except Exception as e:
-        logger.error(f"❌ [fetch_valid_articles_by_category] {category_ko} 오류: {e}")
+        logger.error(f"[ERROR] [fetch_valid_articles_by_category] {category_ko} 오류: {e}")
         raise

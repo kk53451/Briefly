@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npx create-expo-app@latest:*)",
       "Bash(npm install:*)",
-      "Bash(npx expo install:*)"
+      "Bash(npx expo install:*)",
+      "Bash(curl:*)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

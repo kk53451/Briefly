@@ -7,7 +7,7 @@
 [![AWS](https://img.shields.io/badge/AWS-Lambda%20%7C%20DynamoDB%20%7C%20S3-orange)](https://aws.amazon.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green)](https://openai.com/)
 [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-TTS-blue)](https://elevenlabs.io/)
-[![React Native](https://img.shields.io/badge/React%20Native-Expo-blue)](https://expo.dev/)
+[![React Native](https://img.shields.io/badge/React%20Native-Expo%20SDK%2054-blue)](https://expo.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python-red)](https://fastapi.tiangolo.com/)
 
 ---
@@ -125,9 +125,9 @@ briefly-news-audio/
 
 #### 모바일 앱 컴포넌트 구조
 - **스크린 컴포넌트**: 각 화면별 메인 UI 구성
-- **UI 컴포넌트**: React Native Paper 기반 재사용 가능한 컴포넌트
+- **UI 컴포넌트**: Custom StyleSheet 기반 재사용 가능한 컴포넌트
 - **네비게이션**: React Navigation v7 (Stack + Bottom Tabs)
-- **상태 관리**: Zustand + React Query
+- **상태 관리**: React Context (Auth, Theme, AudioPlayer)
 
 ---
 
@@ -205,7 +205,7 @@ Events:
 - **네이티브 애니메이션**: React Native Reanimated 기반 부드러운 전환 효과
 
 #### 사용자 경험 최적화
-- **Deep Linking**: 카카오 OAuth를 통한 간편한 소셜 로그인 (expo-auth-session)
+- **Native Kakao SDK**: `@react-native-kakao/user`를 통한 간편한 소셜 로그인
 - **개인화 온보딩**: 관심 카테고리 선택을 통한 맞춤 설정
 - **직관적 네비게이션**: 하단 탭 기반 주요 기능 접근 (Home, Today, Frequency, Profile)
 
@@ -256,12 +256,12 @@ Events:
 ### 4.3 기술 스택 완성도
 
 #### 모바일 앱 (React Native Expo)
-- **React Native Expo SDK 52+**: 크로스플랫폼 네이티브 앱
+- **React Native Expo SDK 54**: 크로스플랫폼 네이티브 앱
 - **TypeScript**: 타입 안전성 보장
 - **React Navigation v7**: Stack + Bottom Tabs 네비게이션
-- **React Native Paper**: Material Design 기반 UI 컴포넌트
-- **Zustand + React Query**: 클라이언트/서버 상태 관리
-- **expo-auth-session**: OAuth 인증 처리
+- **Custom StyleSheet**: 테마 시스템 기반 UI 컴포넌트
+- **React Context**: 상태 관리 (Auth, Theme, AudioPlayer)
+- **@react-native-kakao**: Native Kakao SDK 인증 처리
 
 #### 백엔드 (100% 완성)
 - **FastAPI**: 고성능 REST API 서버
@@ -331,66 +331,59 @@ Events:
 
 ## 프로젝트 구조
 
-### Mobile App (React Native Expo + TypeScript)
+### Mobile App (React Native Expo SDK 54 + TypeScript)
 
 ```
-frontend/
+mobile/
 ├── src/
-│   ├── screens/                 # 화면 컴포넌트
-│   │   ├── auth/               # 인증 관련 화면
-│   │   │   ├── LoginScreen.tsx
-│   │   │   ├── OnboardingScreen.tsx
-│   │   │   └── KakaoCallbackScreen.tsx
-│   │   ├── home/               # 홈 탭
-│   │   │   └── HomeScreen.tsx
-│   │   ├── today/              # 오늘의 뉴스 탭
-│   │   │   └── TodayScreen.tsx
-│   │   ├── frequency/          # 주파수 탭
-│   │   │   └── FrequencyScreen.tsx
-│   │   └── profile/            # 프로필 탭
-│   │       └── ProfileScreen.tsx
+│   ├── screens/                # 화면 컴포넌트
+│   │   ├── LoginScreen.tsx     # 카카오 로그인
+│   │   ├── OnboardingScreen.tsx # 카테고리 선택
+│   │   ├── HomeScreen.tsx      # 홈 (언론사별 뉴스)
+│   │   ├── TodayScreen.tsx     # 오늘의 뉴스
+│   │   ├── PodcastScreen.tsx   # 팟캐스트 플레이어
+│   │   └── ProfileScreen.tsx   # 프로필
 │   │
 │   ├── navigation/             # 네비게이션 설정
-│   │   ├── RootNavigator.tsx
-│   │   ├── MainTabNavigator.tsx
-│   │   ├── AuthNavigator.tsx
-│   │   └── types.ts
+│   │   ├── RootNavigator.tsx   # 인증 플로우 처리
+│   │   └── MainNavigator.tsx   # 하단 탭 네비게이션
 │   │
-│   ├── lib/                    # 라이브러리 및 설정
-│   │   ├── api/               # API 클라이언트
-│   │   │   ├── client.ts
-│   │   │   ├── auth.ts
-│   │   │   ├── news.ts
-│   │   │   ├── frequency.ts
-│   │   │   └── user.ts
-│   │   ├── theme/             # 테마 시스템
-│   │   │   ├── colors.ts
-│   │   │   ├── typography.ts
-│   │   │   ├── spacing.ts
-│   │   │   └── index.ts
-│   │   └── constants/         # 상수 정의
-│   │       └── categories.ts
+│   ├── contexts/               # React Context
+│   │   ├── AuthContext.tsx     # 인증 상태 관리
+│   │   ├── ThemeContext.tsx    # 테마 (다크/라이트)
+│   │   └── AudioPlayerContext.tsx # 오디오 재생 상태
 │   │
-│   ├── store/                  # 상태 관리
-│   │   └── authStore.ts       # Zustand 스토어
+│   ├── services/
+│   │   └── api.ts              # Axios API 클라이언트
 │   │
-│   └── types/                  # TypeScript 타입
-│       ├── user.ts
-│       ├── news.ts
-│       ├── frequency.ts
-│       └── api.ts
+│   ├── constants/              # 상수 정의
+│   │   ├── theme.ts            # 색상, 타이포그래피
+│   │   ├── categories.ts       # 카테고리 매핑
+│   │   └── commonStyles.ts     # 공통 스타일
+│   │
+│   ├── components/             # 재사용 컴포넌트
+│   │   ├── ErrorView.tsx
+│   │   └── NewsImage.tsx
+│   │
+│   ├── types/                  # TypeScript 타입
+│   │   ├── api.ts
+│   │   └── navigation.ts
+│   │
+│   └── utils/
+│       └── logger.ts
 │
 ├── assets/                     # 정적 리소스
-│   └── fonts/                 # 프리미엄 폰트
-│       ├── Outfit-Bold.ttf
-│       ├── PlusJakartaSans-Regular.ttf
-│       ├── JetBrainsMono-Regular.ttf
-│       └── Pretendard-*.ttf
+│   ├── icon.png
+│   ├── splash-icon.png
+│   └── adaptive-icon.png
 │
-├── App.tsx                    # 앱 엔트리 포인트
-├── app.json                   # Expo 설정
+├── android/                    # 네이티브 Android 프로젝트
+├── index.ts                    # 앱 엔트리 포인트
+├── app.json                    # Expo 설정
 └── package.json
 ```
+
+**참고:** 이 프로젝트는 Native Kakao SDK (`@react-native-kakao`)를 사용하므로 Expo Go가 지원되지 않습니다. 개발 빌드(`expo run:android` / `expo run:ios`)를 사용해야 합니다.
 
 ### Backend (FastAPI + AWS Serverless)
 
@@ -482,16 +475,20 @@ backend/
 
 #### 모바일 앱 실행
 ```bash
-cd frontend
+cd mobile
 npm install
+
+# 개발 서버 시작
 npx expo start
 
-# iOS 시뮬레이터에서 실행
-npm run ios
+# iOS 시뮬레이터에서 실행 (Mac 필요)
+npx expo run:ios
 
 # Android 에뮬레이터에서 실행
-npm run android
+npx expo run:android
 ```
+
+**참고:** Native Kakao SDK를 사용하므로 Expo Go가 아닌 개발 빌드가 필요합니다.
 
 #### 백엔드 실행
 ```bash
