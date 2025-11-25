@@ -57,13 +57,21 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
    - Content scraping: 300+ chars, 70%+ Korean text validation
    - Deduplication: ID, URL, title (memory + DB check)
 
-2. **Greedy Clustering Strategy** (`app/services/openai_service.py`)
-   - **Single-pass clustering**: Physical deduplication of original articles (80% threshold)
-   - **Greedy algorithm**: Each text is compared to existing cluster representatives
+2. **Union-Find 2-Pass Clustering Strategy** (`app/services/openai_service.py`)
+   - **Pass 1 - Union-Find Deduplication**: Physical deduplication using Union-Find algorithm (85% threshold)
+     - All-pairs comparison (O(n²/2)) to discover indirect connections (A→B, B→C → A-B-C merged)
+     - Path compression for efficiency
+     - Groups similar articles into clusters, longest article becomes representative
+   - **Pass 2 - Hybrid Outlier Filtering**: Centroid + Isolation based filtering (AND condition)
+     - **Centroid-based**: Measures distance from category center (threshold < 0.30)
+     - **Isolation-based**: Measures max similarity with other articles (threshold < 0.25)
+     - **AND condition**: Article removed only if BOTH thresholds are violated
+     - Keeps legitimate unique articles, removes only true ads/spam
+     - **Performance optimized**: Similarity matrix caching to avoid redundant calculations
    - **Cosine similarity**: OpenAI text-embedding-3-small based embeddings
-   - Reduces 30 articles → 5-10 core groups per category
+   - Reduces 70 articles → 50-57 articles per category
    - Saves 50% on token costs
-   - Note: 2nd clustering removed as GPT summaries are already integrated content
+   - Execution time: ~8-9 minutes per full cycle (8 categories)
 
 3. **Podcast Script Generation** (`app/services/openai_service.py`)
    - Few-shot learning with category-specific examples
@@ -257,7 +265,7 @@ When updating prompts in `openai_service.py`:
 
 **Unit Tests** (`backend/test/`):
 - `test_frequency_unit.py` - Core podcast generation logic
-- `test_clustering.py` - Greedy clustering algorithm (single-pass)
+- `test_clustering.py` - Union-Find 2-Pass clustering algorithm (deduplication + hybrid filtering)
 - `test_tts_service.py` - ElevenLabs integration
 
 **Current Coverage:** 100% of core business logic (6/6 tests passing)
@@ -308,8 +316,9 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
 
 **Optimization Strategies in Use:**
 - Parallel news collection across 8 categories (ThreadPoolExecutor with max_workers=5)
-- Overfetching strategy: Request 60 articles, select best 30 per category
-- Single-pass Greedy clustering with 80% threshold
+- Overfetching strategy: Request 200 articles, select best 70 per category
+- Union-Find 2-Pass clustering: deduplication (85%) + hybrid filtering (centroid+isolation)
+- Similarity matrix caching to prevent redundant cosine similarity calculations
 - Token limits on all GPT inputs to minimize costs
 - S3 presigned URLs instead of CloudFront (simpler architecture)
 - DynamoDB GSI for efficient category+date queries

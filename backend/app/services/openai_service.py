@@ -92,7 +92,8 @@ def cosine_similarity(vec1, vec2):
     두 벡터 간의 코사인 유사도를 계산합니다.
     """
     try:
-        if not vec1 or not vec2:
+        # NumPy 배열에 대한 올바른 유효성 검사
+        if vec1 is None or vec2 is None or len(vec1) == 0 or len(vec2) == 0:
             return 0.0
         return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
     except (ValueError, ZeroDivisionError, np.linalg.LinAlgError) as e:
@@ -102,51 +103,81 @@ def cosine_similarity(vec1, vec2):
         logger.warning(f" 코사인 유사도 예상치 못한 오류: {e}")
         return 0.0
 
-def cluster_similar_texts(texts, threshold=0.80):
+def cluster_similar_texts(texts, threshold=0.85):
     """
-    Greedy 알고리즘으로 유사한 텍스트들을 클러스터링하여 중복 내용을 그룹화합니다.
+    Union-Find 알고리즘으로 유사한 텍스트들을 클러스터링하여 중복 내용을 그룹화합니다.
+
+    모든 쌍을 비교하여 어느 한 멤버라도 threshold 이상이면 같은 집합으로 통합합니다.
+    간접적으로 연결된 기사들도 하나의 클러스터로 병합됩니다.
 
     Args:
         texts: 클러스터링할 텍스트 리스트
-        threshold: 유사도 임계값 (0.80 = 80% 유사도, 기본값)
+        threshold: 유사도 임계값 (0.85 = 85% 유사도, 기본값)
 
     Returns:
         list: 클러스터링된 텍스트 그룹 리스트 [[text1, text2], [text3], ...]
     """
     if len(texts) <= 1:
         return [texts]
-    
+
     try:
-        logger.info(f"{len(texts)}개 텍스트 클러스터링 시작...")
+        logger.info(f"{len(texts)}개 텍스트 클러스터링 시작 (Union-Find, threshold={threshold})...")
         embeddings = []
-        
+
         # 임베딩 생성 (실패한 것들은 제외)
         valid_texts = []
         for i, text in enumerate(texts):
-            emb = get_embedding(text[:1000])  # 토큰 제한: 1500자에서 1000자로 단축
+            emb = get_embedding(text[:1000])  # 토큰 제한: 1000자
             if emb:
                 embeddings.append(emb)
                 valid_texts.append(text)
-        
+
         if len(embeddings) <= 1:
             return [valid_texts]
-            
-        clusters = []
-        for idx, emb in enumerate(embeddings):
-            added = False
-            for cluster in clusters:
-                if cosine_similarity(emb, cluster['embedding']) > threshold:
-                    cluster['indices'].append(idx)
-                    added = True
-                    break
-            if not added:
-                clusters.append({'embedding': emb, 'indices': [idx]})
-        
+
+        n = len(valid_texts)
+        parent = list(range(n))  # Union-Find 자료구조
+
+        # Union-Find: find 함수 (경로 압축)
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        # Union-Find: union 함수
+        def union(x, y):
+            root_x = find(x)
+            root_y = find(y)
+            if root_x != root_y:
+                parent[root_y] = root_x
+                return True
+            return False
+
+        # 모든 쌍 비교 및 병합
+        merge_count = 0
+        total_comparisons = n * (n - 1) // 2
+        logger.info(f"  총 {total_comparisons}쌍 비교 시작...")
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                sim = cosine_similarity(embeddings[i], embeddings[j])
+                if sim > threshold:
+                    if union(i, j):
+                        merge_count += 1
+
         # 클러스터별로 텍스트 그룹화
-        grouped = [[valid_texts[i] for i in c['indices']] for c in clusters]
-        logger.info(f"{len(texts)}개 텍스트를 {len(grouped)}개 클러스터로 그룹화 완료")
+        clusters_dict = {}
+        for i in range(n):
+            root = find(i)
+            if root not in clusters_dict:
+                clusters_dict[root] = []
+            clusters_dict[root].append(valid_texts[i])
+
+        grouped = list(clusters_dict.values())
+        logger.info(f"  🔗 병합 {merge_count}회 수행")
+        logger.info(f"  ✅ {len(texts)}개 텍스트 → {len(grouped)}개 클러스터")
         return grouped
-        
+
     except MemoryError as e:
         logger.warning(f" 메모리 부족으로 클러스터링 실패: {e}")
         return [texts]
@@ -156,6 +187,98 @@ def cluster_similar_texts(texts, threshold=0.80):
     except Exception as e:
         logger.warning(f" 클러스터링 예상치 못한 오류, 원본 반환: {e}")
         return [texts]
+
+def filter_outliers(texts, titles=None, centroid_threshold=0.30, isolation_threshold=0.25):
+    """
+    Hybrid 방식으로 이상치를 제거합니다.
+
+    Centroid + Isolation 혼합:
+    1. 카테고리 중심(centroid)에서 멀리 떨어진 것
+    2. 다른 모든 기사와도 동떨어진 것
+    → 둘 다 만족해야 제거 (AND 조건)
+
+    Args:
+        texts: 필터링할 텍스트 리스트
+        titles: 로그 출력용 제목 리스트 (선택)
+        centroid_threshold: 중심 유사도 임계값 (기본값 0.30)
+        isolation_threshold: 고립 임계값 (기본값 0.25)
+
+    Returns:
+        tuple: (필터링된 텍스트 리스트, 필터링된 제목 리스트 또는 None, 제거된 항목 리스트)
+    """
+    if len(texts) <= 1:
+        return (texts, titles, [])
+
+    try:
+        logger.info(f"{len(texts)}개 텍스트 이상치 필터링 시작 (Hybrid: centroid<{centroid_threshold}, isolation<{isolation_threshold})...")
+        embeddings = []
+
+        # 임베딩 생성 (실패한 것들은 제외)
+        valid_texts = []
+        valid_titles = []
+        for i, text in enumerate(texts):
+            emb = get_embedding(text[:1000])  # 토큰 제한: 1000자
+            if emb:
+                embeddings.append(emb)
+                valid_texts.append(text)
+                if titles and i < len(titles):
+                    valid_titles.append(titles[i])
+
+        if len(embeddings) <= 1:
+            return (valid_texts, valid_titles if titles else None, [])
+
+        # 카테고리 중심(centroid) 계산
+        centroid = np.mean(embeddings, axis=0)
+
+        # 유사도 행렬을 한 번만 계산 (O(n²) 최적화)
+        n = len(embeddings)
+        similarity_matrix = np.zeros((n, n))
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                sim = cosine_similarity(embeddings[i], embeddings[j])
+                similarity_matrix[i][j] = sim
+                similarity_matrix[j][i] = sim  # 대칭
+
+        # 각 텍스트의 centroid 유사도 + isolation 유사도 계산
+        filtered_texts = []
+        filtered_titles = []
+        removed_items = []  # 제거된 항목 추적
+
+        for i, text in enumerate(valid_texts):
+            # 조건 1: 카테고리 중심과의 유사도
+            centroid_sim = cosine_similarity(embeddings[i], centroid)
+
+            # 조건 2: 다른 모든 텍스트와의 최대 유사도 (이미 계산된 행렬 재사용)
+            max_sim = np.max(similarity_matrix[i]) if n > 1 else 0.0
+
+            # 둘 다 낮으면 제거 (AND 조건)
+            if centroid_sim < centroid_threshold and max_sim < isolation_threshold:
+                # 이상치로 판단 - 제거 (로그는 generate_frequency.py에서 출력)
+                title_display = valid_titles[i] if valid_titles else text[:60]
+                removed_items.append({
+                    "title": title_display,
+                    "centroid_sim": centroid_sim,
+                    "max_sim": max_sim
+                })
+            else:
+                # 정상 기사 - 유지
+                filtered_texts.append(text)
+                if valid_titles:
+                    filtered_titles.append(valid_titles[i])
+
+        logger.info(f"  ✅ {len(valid_texts)}개 → {len(filtered_texts)}개 ({len(removed_items)}개 제거)")
+        return (filtered_texts, filtered_titles if titles else None, removed_items)
+
+    except MemoryError as e:
+        logger.warning(f" 메모리 부족으로 이상치 필터링 실패: {e}")
+        return (texts, titles, [])
+    except (ValueError, TypeError) as e:
+        logger.warning(f" 데이터 형식 오류로 이상치 필터링 실패: {e}")
+        return (texts, titles, [])
+    except Exception as e:
+        logger.warning(f" 이상치 필터링 예상치 못한 오류, 원본 반환: {e}")
+        return (texts, titles, [])
 
 def summarize_group(texts: list, category: str) -> str:
     """

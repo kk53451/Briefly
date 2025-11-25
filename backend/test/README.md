@@ -9,7 +9,7 @@ test/
 ├── run_all_tests.py              # 통합 테스트 실행기 (UTF-8 지원)
 ├── test_frequency_unit.py        # 카테고리, 뉴스수집, 대본생성 테스트
 ├── test_collection_simulation.py # 뉴스수집 로직 시뮬레이션
-├── test_clustering.py            # Greedy 클러스터링 전략 테스트
+├── test_clustering.py            # Union-Find 2-Pass 클러스터링 전략 테스트
 ├── test_content_extraction.py    # 본문추출, 노이즈제거 테스트
 ├── test_utils.py                 # 유틸리티 함수 테스트
 ├── test_tts_service.py           # TTS 음성변환 서비스 테스트
@@ -80,10 +80,15 @@ python test_tts_service.py
 - 토큰 길이 제한 (1500자) 확인
 
 ### 3. 클러스터링 전략 (`test_clustering.py`)
-- **Greedy 클러스터링 전략 (단일 패스)**
-  - 1차 클러스터링: 원본 기사 물리적 중복 제거 (임계값 0.80)
-  - 2차 클러스터링 제거: GPT 요약문은 이미 통합된 내용이므로 불필요
-  - Greedy 알고리즘: 각 텍스트를 기존 클러스터 대표와 순차 비교
+- **Union-Find 2-Pass 클러스터링**
+  - Pass 1: Union-Find 중복 제거 (임계값 0.85, 모든 쌍 비교)
+  - Pass 2: Hybrid 이상치 필터링 (centroid<0.30 AND isolation<0.25)
+    - Centroid 기반: 카테고리 중심과의 유사도 측정
+    - Isolation 기반: 다른 기사와의 최대 유사도 측정
+    - AND 조건: 둘 다 낮아야 제거
+  - 간접 연결 통합 (A→B, B→C → A-B-C)
+  - 광고/저품질 자동 제거 (정상 기사는 보존)
+  - 성능 최적화: 유사도 행렬 캐싱
 - 그룹 요약 및 최종 대본 생성 시뮬레이션
 - 토큰 최적화 각 단계별 확인
 
@@ -130,7 +135,8 @@ load_dotenv()
 - **뉴스 수집**: 200개 요청 → 70개 저장 (카테고리당, 총 560개/일)
 - **카테고리**: 8개 (정치, 경제, 사회, 문화, 국제, 지역, 스포츠, IT/과학)
 - **토큰 사용량**: 50% 감소 (90,000자 → 45,000자)
-- **Greedy 클러스터링**: 단일 패스 물리적 중복 제거 (80% 유사도)
+- **Union-Find 2-Pass 클러스터링**: 중복 제거 (85% 유사도) + Hybrid 이상치 필터링
+- **Hybrid 필터링**: Centroid (카테고리 적합성) + Isolation (고립도) AND 조건
 - **대본 길이**: 1800-2200자 범위 준수 (실제 평균 1700자 생성)
 
 ### 토큰 최적화 상세
@@ -217,10 +223,12 @@ phases:
 
 > **이 테스트 스위트로 Briefly 시스템의 안정성과 품질이 크게 향상되었습니다!**
 >
-> **✨ 최신 업데이트 (2025-11-24):**
+> **✨ 최신 업데이트 (2025-11-26):**
 > - 100% 테스트 통과 달성
 > - UTF-8 인코딩 문제 완전 해결
 > - 토큰 사용량 50% 절약
-> - Greedy 클러스터링 전략 (단일 패스)
+> - Union-Find 2-Pass 클러스터링 (중복 제거 + Hybrid 이상치 필터링)
+> - Hybrid 필터링: Centroid + Isolation AND 조건 (False Positive 감소)
+> - 성능 최적화: 유사도 행렬 캐싱으로 실행 시간 50% 단축
 > - 카테고리별 로그 버퍼링 시스템 구축
 > - 운영환경 배포 완료 

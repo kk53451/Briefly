@@ -12,7 +12,7 @@ from app.utils.dynamo import (
     get_news_by_category_and_date,
     update_news_card_content,
 )
-from app.services.openai_service import summarize_articles, cluster_similar_texts, summarize_group
+from app.services.openai_service import summarize_articles, cluster_similar_texts, summarize_group, filter_outliers
 from app.services.tts_service import text_to_speech
 from app.utils.s3 import upload_audio_to_s3_presigned
 from app.constants.category_map import CATEGORY_MAP
@@ -114,68 +114,80 @@ def process_single_category(category_ko: str, date: str) -> dict:
             flush_logs()
             return {"category": category_en, "status": "failed", "reason": "insufficient_content"}
 
-        # 클러스터링: 원본 기사 본문 기반 물리적 중복 제거
-        add_log(f"\n[2단계] 클러스터링 (Greedy threshold=0.80)")
+        # 2-Pass 클러스터링: Union-Find 중복 제거 + Isolation 이상치 필터링
+        add_log(f"\n[2단계] 2-Pass 클러스터링")
         add_log(f"  - 입력: {len(full_contents)}개 기사")
 
         clustering_start = time.time()
         try:
-            groups = cluster_similar_texts(full_contents, threshold=0.80)
-            clustering_time = time.time() - clustering_start
+            # ===== Pass 1: Union-Find 중복 제거 (threshold=0.85) =====
+            add_log(f"\n  [Pass 1] 중복 제거 (Union-Find, threshold=0.85)")
+            pass1_start = time.time()
+            groups = cluster_similar_texts(full_contents, threshold=0.85)
+            pass1_time = time.time() - pass1_start
 
-            group_summaries = []
+            # 각 클러스터에서 대표 선정 (가장 긴 것)
+            representatives = []
+            representative_titles = []
             merged_groups = 0
             cluster_details = []
 
             for group_idx, group in enumerate(groups):
                 if len(group) == 1:
                     # 단일 기사는 그대로 사용
-                    group_summaries.append(group[0])
+                    representatives.append(group[0])
+                    # 제목 찾기
+                    try:
+                        idx = full_contents.index(group[0])
+                        if idx < len(articles_metadata):
+                            representative_titles.append(articles_metadata[idx]["title"])
+                        else:
+                            representative_titles.append(group[0][:60])
+                    except (ValueError, IndexError):
+                        representative_titles.append(group[0][:60])
+
                     cluster_details.append({
                         "cluster_id": group_idx + 1,
                         "size": 1,
                         "merged": False
                     })
                 else:
-                    # 여러 유사 기사 → 대표 요약문 생성
+                    # 여러 유사 기사 → 가장 긴 것을 대표로 선정
+                    longest = max(group, key=len)
+                    representatives.append(longest)
+                    merged_groups += 1
+
+                    # 클러스터에 속한 기사 제목들 찾기
+                    merged_titles = []
+                    for content in group[:5]:  # 최대 5개까지만 제목 수집
+                        try:
+                            idx = full_contents.index(content)
+                            if idx < len(articles_metadata):
+                                merged_titles.append(articles_metadata[idx]["title"])
+                        except (ValueError, IndexError):
+                            pass
+
+                    # 대표 기사의 제목도 찾기
                     try:
-                        # 클러스터에 속한 기사 제목들 찾기
-                        merged_titles = []
-                        for content in group[:5]:  # 최대 5개까지만 제목 수집
-                            # 원본 인덱스 찾기 (content가 full_contents에서 몇 번째인지)
-                            try:
-                                idx = full_contents.index(content)
-                                if idx < len(articles_metadata):
-                                    merged_titles.append(articles_metadata[idx]["title"])
-                            except (ValueError, IndexError):
-                                pass
+                        idx = full_contents.index(longest)
+                        if idx < len(articles_metadata):
+                            representative_titles.append(articles_metadata[idx]["title"])
+                        else:
+                            representative_titles.append(longest[:60])
+                    except (ValueError, IndexError):
+                        representative_titles.append(longest[:60])
 
-                        summary = summarize_group(group, category_en)
-                        group_summaries.append(summary)
-                        merged_groups += 1
+                    cluster_details.append({
+                        "cluster_id": group_idx + 1,
+                        "size": len(group),
+                        "merged": True,
+                        "titles": merged_titles[:3]  # 로그에는 최대 3개만
+                    })
 
-                        cluster_details.append({
-                            "cluster_id": group_idx + 1,
-                            "size": len(group),
-                            "merged": True,
-                            "titles": merged_titles[:3]  # 로그에는 최대 3개만
-                        })
-                    except Exception as e:
-                        add_log(f"  - 클러스터 #{group_idx+1} 요약 실패, 첫 번째 기사 사용: {e}", "WARNING")
-                        group_summaries.append(group[0])
-                        cluster_details.append({
-                            "cluster_id": group_idx + 1,
-                            "size": len(group),
-                            "merged": False
-                        })
-
-            # 압축률 계산
-            compression_rate = ((len(full_contents) - len(group_summaries)) / len(full_contents)) * 100 if len(full_contents) > 0 else 0
-
-            add_log(f"  - 출력: {len(group_summaries)}개 그룹")
+            pass1_compression = ((len(full_contents) - len(representatives)) / len(full_contents)) * 100 if len(full_contents) > 0 else 0
+            add_log(f"  - Pass 1 결과: {len(full_contents)}개 → {len(representatives)}개 ({pass1_compression:.1f}% 압축)")
             add_log(f"  - 통합된 클러스터: {merged_groups}개")
-            add_log(f"  - 압축률: {compression_rate:.1f}%")
-            add_log(f"  - 처리 시간: {clustering_time:.2f}초")
+            add_log(f"  - 처리 시간: {pass1_time:.2f}초")
 
             # 통합된 클러스터 상세 정보 출력 (최대 3개)
             merged_clusters = [c for c in cluster_details if c["merged"]]
@@ -187,9 +199,39 @@ def process_single_category(category_ko: str, date: str) -> dict:
                         add_log(f"    클러스터 {cluster['cluster_id']}: {cluster['size']}개 통합")
                         for idx, title in enumerate(titles, 1):
                             add_log(f"      {idx}. {title}")
-                    else:
-                        add_log(f"    클러스터 {cluster['cluster_id']}: {cluster['size']}개 통합")
 
+            # ===== Pass 2: Hybrid 이상치 필터링 (Centroid + Isolation) =====
+            add_log(f"\n  [Pass 2] Hybrid 이상치 필터링 (centroid<0.30, isolation<0.25)")
+            pass2_start = time.time()
+            filtered_texts, filtered_titles, removed_items = filter_outliers(
+                representatives,
+                titles=representative_titles,
+                centroid_threshold=0.30,
+                isolation_threshold=0.25
+            )
+            pass2_time = time.time() - pass2_start
+
+            removed_count = len(representatives) - len(filtered_texts)
+            pass2_compression = (removed_count / len(representatives)) * 100 if len(representatives) > 0 else 0
+            add_log(f"  - Pass 2 결과: {len(representatives)}개 → {len(filtered_texts)}개 ({removed_count}개 제거, {pass2_compression:.1f}%)")
+            add_log(f"  - 처리 시간: {pass2_time:.2f}초")
+
+            # 제거된 기사 상세 정보 출력 (최대 5개)
+            if removed_items:
+                add_log(f"  - 제거된 기사 상세:")
+                for item in removed_items[:5]:
+                    add_log(f"    🗑️ (centroid={item['centroid_sim']:.2f}, max={item['max_sim']:.2f}): {item['title']}")
+                if len(removed_items) > 5:
+                    add_log(f"    ... 외 {len(removed_items) - 5}개")
+
+            # 최종 결과
+            clustering_time = time.time() - clustering_start
+            total_compression = ((len(full_contents) - len(filtered_texts)) / len(full_contents)) * 100 if len(full_contents) > 0 else 0
+            add_log(f"\n  ✅ 최종 결과: {len(full_contents)}개 → {len(filtered_texts)}개 ({total_compression:.1f}% 압축)")
+            add_log(f"  ✅ 총 처리 시간: {clustering_time:.2f}초")
+
+            # filtered_texts를 group_summaries로 사용 (기존 코드와 호환)
+            group_summaries = filtered_texts
             final_contents = group_summaries
 
         except Exception as e:
@@ -231,7 +273,7 @@ def process_single_category(category_ko: str, date: str) -> dict:
         add_log(f"{'='*70}")
         add_log(f"  - 총 소요시간: {elapsed_time:.1f}초")
         add_log(f"  - 대본 길이: {len(script)}자")
-        add_log(f"  - 압축률: {compression_rate:.1f}% ({len(full_contents)}개 → {len(group_summaries)}개)")
+        add_log(f"  - 압축률: {total_compression:.1f}% ({len(full_contents)}개 → {len(filtered_texts)}개)")
 
         flush_logs()
 
@@ -240,7 +282,7 @@ def process_single_category(category_ko: str, date: str) -> dict:
             "status": "success",
             "script_length": len(script),
             "elapsed_time": elapsed_time,
-            "compression_rate": compression_rate
+            "compression_rate": total_compression
         }
 
         # # ElevenLabs로 TTS 변환 → S3 Presigned URL 생성 (임시 비활성화)

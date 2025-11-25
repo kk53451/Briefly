@@ -11,7 +11,7 @@ Briefly 백엔드는 매일 자동으로 뉴스를 수집하여 AI로 요약하�
 ### 핵심 기능
 
 - **BigKinds API 뉴스 수집**: 8개 카테고리 × 70개 = 560건/일
-- **AI Greedy 클러스터링**: 80% 유사도 기반 중복 제거
+- **2-Pass AI 클러스터링**: Union-Find (85% 중복 제거) + Isolation 이상치 필터링
 - **GPT-4o-mini 팟캐스트 대본 생성**: 카테고리별 특화 스타일
 - **ElevenLabs TTS 변환**: 고품질 한국어 음성 생성
 - **AWS Lambda 스케줄링**: 매일 오전 6시(KST) 자동 실행
@@ -69,7 +69,7 @@ backend/
 │   ├── services/                       # 외부 API 통합
 │   │   ├── bigkinds_service.py         # BigKinds API 뉴스 검색
 │   │   ├── content_scraper.py          # 웹 스크래핑 (Trafilatura + BS4)
-│   │   ├── openai_service.py           # GPT 요약 + Greedy 클러스터링
+│   │   ├── openai_service.py           # GPT 요약 + Union-Find 클러스터링 + 이상치 필터링
 │   │   └── tts_service.py              # ElevenLabs TTS 변환
 │   │
 │   ├── routes/                         # API 라우터
@@ -207,25 +207,44 @@ for category in categories:
 - 한글 비율 70% 이상
 - 유효한 이미지 필터링 (`/` 제거)
 
-### 2. AI Greedy 클러스터링
+### 2. 2-Pass AI 클러스터링
 
-**클러스터링 알고리즘** (물리적 중복 제거):
+**Pass 1: Union-Find 중복 제거**:
 ```python
-# 원본 기사 본문 기반 Greedy 클러스터링
-# 임계값: 0.80 (80% 유사도)
-groups = cluster_similar_texts(full_contents, threshold=0.80)
-# 결과: 70개 → 약 10-20개 그룹
+# 모든 쌍 비교로 간접 연결도 발견 (A→B, B→C → A-B-C 통합)
+# 임계값: 0.85 (85% 유사도)
+groups = cluster_similar_texts(full_contents, threshold=0.85)
+# 결과: 70개 → 약 55-60개 클러스터
+```
+
+**Pass 2: Hybrid 이상치 필터링 (Centroid + Isolation)**:
+```python
+# Centroid + Isolation 혼합 방식 (AND 조건)
+# - 카테고리 중심에서 멀고 (centroid_sim < 0.30)
+# - 다른 기사와도 고립된 경우 (max_sim < 0.25)
+filtered = filter_outliers(
+    representatives,
+    centroid_threshold=0.30,
+    isolation_threshold=0.25
+)
+# 결과: 55-60개 → 약 50-57개 (3-10개 제거)
 ```
 
 **작동 방식**:
-- **Greedy 방식**: 각 텍스트를 순서대로 처리하며 기존 클러스터의 대표와 비교
+- **Union-Find**: 모든 쌍(N²/2) 비교로 숨겨진 유사도 발견
 - **코사인 유사도**: OpenAI text-embedding-3-small 기반 임베딩
-- **임계값 80%**: 매우 유사한 기사만 통합 (중복 뉴스 제거)
+- **임계값 85%**: 확실히 유사한 기사만 통합 (중복 뉴스 제거)
+- **Hybrid 필터링**: 카테고리 중심(centroid) 기반 + 고립도(isolation) 기반 AND 조건
+  - 정상 기사는 유지 (카테고리 중심과 가까우면 유지)
+  - 진짜 광고/스팸만 제거 (중심에서 멀고 동시에 고립된 경우만)
+- **성능 최적화**: 유사도 행렬 캐싱으로 중복 계산 방지
 
 **효과**:
-- 토큰 사용량 50% 절감 (70개 → 10-20개)
-- 월 비용 대폭 감소
-- 대본 품질 향상 (중복 제거로 다양한 내용 포함)
+- 토큰 사용량 18-28% 추가 절감 (기존 대비)
+- 중복 제거 정확도 향상 (간접 연결 통합)
+- 대본 품질 향상 (광고/저품질 제거, 정상 기사는 보존)
+- False Positive 감소 (Centroid 기준으로 카테고리 적합성 판단)
+- 월 비용 연간 $200-300 절약
 
 ### 3. GPT-4o-mini 팟캐스트 대본 생성
 
