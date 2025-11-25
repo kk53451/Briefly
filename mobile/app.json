@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "Briefly",
+    "slug": "briefly",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "briefly",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3B82F6"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.briefly.app",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#3B82F6"
+      },
+      "package": "com.briefly.app",
+      "permissions": [
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK"
+      ],
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": false
+        }
+      ],
+      "expo-web-browser",
+      [
+        "@react-native-kakao/core",
+        {
+          "nativeAppKey": "2283f292bd65f9faff9289e4abd91920",
+          "android": {
+            "redirectUri": "kakao2283f292bd65f9faff9289e4abd91920://oauth"
+          },
+          "ios": {
+            "redirectUri": "kakao2283f292bd65f9faff9289e4abd91920://oauth"
+          }
+        }
+      ]
+    ]
+  }
+}
