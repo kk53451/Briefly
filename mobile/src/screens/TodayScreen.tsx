@@ -1,34 +1,68 @@
 /**
- * Today Screen - Category-grouped news
- * GET /api/news/today
+ * Today Screen - Daily TOP 10 News with swipeable cards
+ * Redesigned based on 투데이스크린.png reference
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
+  FlatList,
   TouchableOpacity,
-  RefreshControl,
   ActivityIndicator,
+  Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { apiClient } from '../services/api';
-import { TodayNewsResponse, NewsItem } from '../types/api';
-import { NewsImage } from '../components/NewsImage';
+import { TodayNewsResponse, RankedNewsItem } from '../types/api';
+import { TopNewsCard } from '../components/TopNewsCard';
 import { ErrorView } from '../components/ErrorView';
-import { getCategoryById } from '../constants/categories';
-import { Spacing, Typography, BorderRadius, Shadows } from '../constants/theme';
+import { Spacing, Typography, BorderRadius } from '../constants/theme';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// Format date header: "11월 26일 수요일"
+const formatDateHeader = (): string => {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  const weekdays = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+  const weekday = weekdays[now.getDay()];
+  return `${month}월 ${day}일 ${weekday}`;
+};
+
+// Get TOP 10 news from API response (rank 1 from each category)
+const getTop10News = (newsData: TodayNewsResponse): RankedNewsItem[] => {
+  const top10: RankedNewsItem[] = [];
+
+  Object.entries(newsData).forEach(([categoryName, articles]) => {
+    // Get rank 1 article from each category
+    const sortedArticles = [...articles].sort((a, b) => (a.rank || 999) - (b.rank || 999));
+    if (sortedArticles.length > 0) {
+      top10.push({
+        ...sortedArticles[0],
+        categoryName,
+      });
+    }
+  });
+
+  // Sort by rank and limit to 10
+  return top10.sort((a, b) => (a.rank || 999) - (b.rank || 999)).slice(0, 10);
+};
 
 export const TodayScreen: React.FC = () => {
   const { colors } = useTheme();
+  const flatListRef = useRef<FlatList>(null);
+
   const [newsData, setNewsData] = useState<TodayNewsResponse>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     loadNews();
@@ -40,97 +74,141 @@ export const TodayScreen: React.FC = () => {
       setError(null);
       const data = await apiClient.getTodayNews();
       setNewsData(data);
-    } catch (error) {
-      console.error('Failed to load today news:', error);
-      setError('오늘의 뉴스를 불러오는데 실패했습니다. 다시 시도해주세요.');
+    } catch (err) {
+      console.error('Failed to load today news:', err);
+      setError('뉴스를 불러오는데 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await loadNews();
-    setIsRefreshing(false);
-  };
+  const top10News = useMemo(() => getTop10News(newsData), [newsData]);
 
-  const renderNewsItem = (news: NewsItem, isFirst: boolean) => (
-    <TouchableOpacity
-      key={news.news_id}
-      style={[
-        styles.newsCard,
-        isFirst && styles.featuredCard,
-        { backgroundColor: colors.card },
-        Shadows.sm,
-      ]}
-      activeOpacity={0.7}
-    >
-      {isFirst && <NewsImage uri={news.images} style={styles.featuredImage} />}
-      <View style={styles.newsContent}>
-        <Text style={[styles.newsTitle, { color: colors.text }]} numberOfLines={isFirst ? 3 : 2}>
-          {news.title}
-        </Text>
-        <Text style={[styles.newsPublisher, { color: colors.textSecondary }]}>
-          {news.provider}
-        </Text>
-      </View>
-    </TouchableOpacity>
+  const handleScrollEnd = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const offsetX = event.nativeEvent.contentOffset.x;
+      const index = Math.round(offsetX / SCREEN_WIDTH);
+      setCurrentIndex(index);
+    },
+    []
   );
+
+  const scrollToIndex = useCallback((index: number) => {
+    if (flatListRef.current && index >= 0 && index < top10News.length) {
+      flatListRef.current.scrollToOffset({
+        offset: index * SCREEN_WIDTH,
+        animated: true,
+      });
+      setCurrentIndex(index);
+    }
+  }, [top10News.length]);
+
+  const renderCard = useCallback(
+    ({ item, index }: { item: RankedNewsItem; index: number }) => (
+      <TopNewsCard item={item} rank={index + 1} />
+    ),
+    []
+  );
+
+  const keyExtractor = useCallback((item: RankedNewsItem) => item.news_id, []);
 
   if (isLoading) {
     return (
-      <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (error) {
-    return <ErrorView message={error} onRetry={loadNews} />;
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+        <ErrorView message={error} onRetry={loadNews} />
+      </SafeAreaView>
+    );
   }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
-      <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>투데이</Text>
+      <View style={styles.header}>
+        <Text style={[styles.dateText, { color: colors.textSecondary }]}>
+          {formatDateHeader()}
+        </Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>
+          데일리 TOP10
+        </Text>
+        <View style={[styles.infoPill, { backgroundColor: colors.backgroundSecondary }]}>
+          <Ionicons name="information-circle-outline" size={16} color={colors.textSecondary} />
+          <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+            전날 21시 ~ 6시까지 모은 주요뉴스
+          </Text>
+        </View>
       </View>
 
-      {/* Content */}
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            tintColor={colors.primary}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-      >
-        {Object.entries(newsData).map(([categoryId, articles]) => {
-          const category = getCategoryById(categoryId);
-          if (!category || articles.length === 0) return null;
+      {/* Page Indicator */}
+      <View style={styles.indicatorContainer}>
+        {top10News.map((_, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => scrollToIndex(index)}
+            style={styles.indicatorTouchable}
+          >
+            <View
+              style={[
+                styles.indicator,
+                {
+                  backgroundColor:
+                    index === currentIndex ? colors.primary : colors.border,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
 
-          return (
-            <View key={categoryId} style={styles.categorySection}>
-              <View style={styles.categoryHeader}>
-                <View style={styles.categoryTitleContainer}>
-                  <Ionicons name={category.icon} size={24} color={category.color} />
-                  <Text style={[styles.categoryName, { color: colors.text }]}>
-                    {category.name}
-                  </Text>
-                </View>
-                <TouchableOpacity>
-                  <Text style={[styles.seeAll, { color: colors.primary }]}>더보기</Text>
-                </TouchableOpacity>
-              </View>
-
-              {articles.slice(0, 6).map((article, index) => renderNewsItem(article, index === 0))}
+      {/* Card Carousel */}
+      <View style={styles.carouselContainer}>
+        <FlatList
+          ref={flatListRef}
+          data={top10News}
+          renderItem={renderCard}
+          keyExtractor={keyExtractor}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={handleScrollEnd}
+          getItemLayout={(_, index) => ({
+            length: SCREEN_WIDTH,
+            offset: SCREEN_WIDTH * index,
+            index,
+          })}
+          initialNumToRender={3}
+          maxToRenderPerBatch={3}
+          windowSize={5}
+          ListEmptyComponent={
+            <View style={[styles.emptyContainer, { width: SCREEN_WIDTH }]}>
+              <Ionicons name="newspaper-outline" size={64} color={colors.textTertiary} />
+              <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
+                오늘의 뉴스가 없습니다
+              </Text>
             </View>
-          );
-        })}
-      </ScrollView>
+          }
+        />
+
+        {/* Previous Button */}
+        {currentIndex > 0 && (
+          <TouchableOpacity
+            style={[styles.navButton, styles.prevButton, { backgroundColor: colors.card }]}
+            onPress={() => scrollToIndex(currentIndex - 1)}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="chevron-back" size={28} color={colors.primary} />
+          </TouchableOpacity>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
@@ -139,68 +217,81 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  centerContainer: {
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   header: {
     paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
-    borderBottomWidth: 1,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.sm,
+  },
+  dateText: {
+    fontSize: Typography.fontSize.sm,
+    marginBottom: Spacing.xs,
   },
   headerTitle: {
-    fontSize: Typography.fontSize.xxl,
+    fontSize: Typography.fontSize.xxxl,
     fontWeight: Typography.fontWeight.bold,
+    marginBottom: Spacing.sm,
   },
-  scrollContent: {
-    padding: Spacing.lg,
-  },
-  categorySection: {
-    marginBottom: Spacing.xl,
-  },
-  categoryHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-  },
-  categoryTitleContainer: {
+  infoPill: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-start',
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.full,
+    gap: Spacing.xs,
   },
-  categoryName: {
-    fontSize: Typography.fontSize.lg,
-    fontWeight: Typography.fontWeight.bold,
-    marginLeft: Spacing.sm,
+  infoText: {
+    fontSize: Typography.fontSize.xs,
   },
-  seeAll: {
-    fontSize: Typography.fontSize.sm,
-    fontWeight: Typography.fontWeight.semibold,
+  indicatorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: Spacing.md,
+    gap: Spacing.xs,
   },
-  newsCard: {
-    borderRadius: BorderRadius.lg,
-    marginBottom: Spacing.md,
-    overflow: 'hidden',
+  indicatorTouchable: {
+    padding: Spacing.xs,
   },
-  featuredCard: {
-    marginBottom: Spacing.lg,
+  indicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
-  featuredImage: {
-    width: '100%',
-    borderTopLeftRadius: BorderRadius.lg,
-    borderTopRightRadius: BorderRadius.lg,
+  carouselContainer: {
+    flex: 1,
+    position: 'relative',
   },
-  newsContent: {
-    padding: Spacing.md,
+  navButton: {
+    position: 'absolute',
+    bottom: Spacing.xxl,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
   },
-  newsTitle: {
+  prevButton: {
+    left: Spacing.md,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: Spacing.xxl * 2,
+  },
+  emptyText: {
     fontSize: Typography.fontSize.base,
-    fontWeight: Typography.fontWeight.semibold,
-    marginBottom: Spacing.xs,
-    lineHeight: Typography.fontSize.base * Typography.lineHeight.normal,
-  },
-  newsPublisher: {
-    fontSize: Typography.fontSize.sm,
+    marginTop: Spacing.md,
   },
 });

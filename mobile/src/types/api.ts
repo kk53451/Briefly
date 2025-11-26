@@ -102,3 +102,8 @@ export interface UpdateCategoriesRequest {
 export interface BookmarkRequest {
   news_id: string;
 }
+
+// Extended news item with category name for UI display
+export interface RankedNewsItem extends NewsItem {
+  categoryName: string; // Korean category name for display
+}

@@ -6,11 +6,16 @@ import { NavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-// Root Stack (Auth flow)
+// Root Stack (Auth flow + Modal screens)
 export type RootStackParamList = {
   Login: undefined;
   Onboarding: undefined;
   Main: undefined;
+  NewsDetail: {
+    newsId: string;
+    categoryName: string;
+    rank?: number;
+  };
 };
 
 // Main Tab Navigator
@@ -24,7 +29,11 @@ export type MainTabParamList = {
 // News Stack (nested in Home/Today tabs)
 export type NewsStackParamList = {
   NewsList: undefined;
-  NewsDetail: { newsId: string };
+  NewsDetail: {
+    newsId: string;
+    categoryName: string;
+    rank?: number;
+  };
   CategoryNews: { category: string; categoryName: string };
 };
 

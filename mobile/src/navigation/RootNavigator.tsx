@@ -10,6 +10,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { LoginScreen } from '../screens/LoginScreen';
 import { OnboardingScreen } from '../screens/OnboardingScreen';
+import { NewsDetailScreen } from '../screens/NewsDetailScreen';
 import { MainNavigator } from './MainNavigator';
 import { RootStackParamList } from '../types/navigation';
 
@@ -38,6 +39,13 @@ export const RootNavigator: React.FC = () => {
           <>
             <Stack.Screen name="Main" component={MainNavigator} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen
+              name="NewsDetail"
+              component={NewsDetailScreen}
+              options={{
+                presentation: 'card',
+              }}
+            />
           </>
         )}
       </Stack.Navigator>
