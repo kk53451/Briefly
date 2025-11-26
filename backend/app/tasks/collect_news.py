@@ -30,10 +30,10 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 category=category_en,
                 start_time=start_time,
                 end_time=end_time,
-                size=200,               # 오버페치 후 필터링
+                size=1000,              # 오버페치 후 필터링 (다양성 증가)
                 sort="popular",
                 min_content_length=300,
-                limit=70                # 최종 저장 수
+                limit=100               # 최종 저장 수 증가
             )
             logger.info(f"[{category_ko}] 유효 기사 수: {len(articles)}")
         except Exception as e:
@@ -138,7 +138,7 @@ def collect_today_news():
 
     # 병렬 처리: ThreadPoolExecutor 사용
     results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:  # 6개 카테고리 모두 동시 처리
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:  # BigKinds API 부하 제한 (5개씩 병렬 처리)
         # 각 카테고리를 병렬로 처리하는 Future 객체 생성
         future_to_category = {
             executor.submit(collect_category_news, category_ko, config, start_time, end_time, date_str): category_ko 
