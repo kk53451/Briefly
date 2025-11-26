@@ -22,7 +22,7 @@ if not os.getenv('DDB_BOOKMARKS_TABLE'):
 if not os.getenv('S3_BUCKET'):
     os.environ['S3_BUCKET'] = 'briefly-news-audio'
 
-from app.services.deepsearch_service import fetch_valid_articles_by_category
+from app.services.bigkinds_service import fetch_valid_articles_by_category
 from app.utils.dynamo import save_news_card
 from app.utils.date import get_today_kst
 from app.constants.category_map import CATEGORY_MAP

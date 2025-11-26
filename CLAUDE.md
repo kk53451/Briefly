@@ -51,9 +51,9 @@ sam logs -n BrieflyApi --stack-name briefly-backend  # View CloudWatch logs
 The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
 
 1. **News Collection** (`app/tasks/collect_news.py`)
-   - BigKinds API: 200 articles requested → 70 selected per category
-   - Total: 8 categories × 70 articles = 560 articles/day
-   - Parallel processing using `ThreadPoolExecutor` (max_workers=6)
+   - BigKinds API: 1000 articles requested → 100 selected per category
+   - Total: 8 categories × 100 articles = 800 articles/day
+   - Parallel processing using `ThreadPoolExecutor` (max_workers=5)
    - Content scraping: 300+ chars, 70%+ Korean text validation
    - Deduplication: ID, URL, title (memory + DB check)
 

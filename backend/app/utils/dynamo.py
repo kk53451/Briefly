@@ -130,7 +130,7 @@ def save_news_card(category: str, article: dict, date_str: str):
 
 def get_news_by_category_and_date(category: str, date: str):
     """
-    category와 date 기준으로 뉴스 목록 조회 (최신 70개 이상)
+    category와 date 기준으로 뉴스 목록 조회 (최신 100개 이상)
     """
     key = f"{category}#{date}"
     try:

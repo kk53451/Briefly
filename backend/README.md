@@ -10,7 +10,7 @@ Briefly 백엔드는 매일 자동으로 뉴스를 수집하여 AI로 요약하�
 
 ### 핵심 기능
 
-- **BigKinds API 뉴스 수집**: 8개 카테고리 × 70개 = 560건/일
+- **BigKinds API 뉴스 수집**: 8개 카테고리 × 100개 = 800건/일
 - **2-Pass AI 클러스터링**: Union-Find (85% 중복 제거) + Isolation 이상치 필터링
 - **GPT-4o-mini 팟캐스트 대본 생성**: 카테고리별 특화 스타일
 - **ElevenLabs TTS 변환**: 고품질 한국어 음성 생성
@@ -194,10 +194,10 @@ $env:PYTHONIOENCODING='utf-8'; python test_clustering.py
 # 8개 카테고리 병렬 처리 (ThreadPoolExecutor)
 categories = ["정치", "경제", "사회", "문화", "국제", "지역", "스포츠", "IT/과학"]
 
-# 카테고리당 200개 요청 → 70개 선별
+# 카테고리당 1000개 요청 → 100개 선별 (다양성 증가)
 for category in categories:
-    articles = fetch_bigkinds_news(category, size=200)
-    valid_articles = filter_valid_articles(articles, limit=70)
+    articles = fetch_bigkinds_news(category, size=1000)
+    valid_articles = filter_valid_articles(articles, limit=100)
     save_to_dynamodb(valid_articles)
 ```
 
@@ -214,7 +214,7 @@ for category in categories:
 # 모든 쌍 비교로 간접 연결도 발견 (A→B, B→C → A-B-C 통합)
 # 임계값: 0.85 (85% 유사도)
 groups = cluster_similar_texts(full_contents, threshold=0.85)
-# 결과: 70개 → 약 55-60개 클러스터
+# 결과: 100개 → 약 75-85개 클러스터
 ```
 
 **Pass 2: Hybrid 이상치 필터링 (Centroid + Isolation)**:
@@ -227,7 +227,7 @@ filtered = filter_outliers(
     centroid_threshold=0.30,
     isolation_threshold=0.25
 )
-# 결과: 55-60개 → 약 50-57개 (3-10개 제거)
+# 결과: 75-85개 → 약 70-80개 (5-10개 제거)
 ```
 
 **작동 방식**:
@@ -293,7 +293,7 @@ voice_settings = {
 # EventBridge cron: 0 21 * * ? * (UTC 21시 = KST 6시)
 
 def lambda_handler(event, context):
-    # 1단계: 뉴스 수집 (560건)
+    # 1단계: 뉴스 수집 (800건)
     collect_today_news()
 
     # 2단계: 주파수 생성 (8개 카테고리)
@@ -334,7 +334,7 @@ def lambda_handler(event, context):
 
 | 메서드 | 엔드포인트 | 설명 | 인증 |
 |--------|------------|------|------|
-| `GET` | `/?category={category}` | 카테고리별 뉴스 (최대 70개) | ❌ |
+| `GET` | `/?category={category}` | 카테고리별 뉴스 (최대 100개) | ❌ |
 | `GET` | `/{news_id}` | 뉴스 상세 조회 | ❌ |
 | `GET` | `/today` | 오늘의 카테고리별 뉴스 (6개씩, 이미지 포함) | ❌ |
 | `GET` | `/home` | 홈 탭 언론사별 뉴스 (6개씩, 최신순) | ❌ |
@@ -584,7 +584,7 @@ aws configure get region  # ap-northeast-2
 ### 주요 지표
 
 - **API 응답 시간**: 평균 200ms 이하
-- **일일 처리량**: 8개 카테고리 × 70개 = 560건/일
+- **일일 처리량**: 8개 카테고리 × 100개 = 800건/일
 - **성공률**: 99% 이상
 - **토큰 사용량**: 월 63,000자 (50% 절감 적용)
 
