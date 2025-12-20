@@ -68,7 +68,7 @@ python test_tts_service.py
 ## 테스트 범위
 
 ### 1. 주요 기능 테스트 (`test_frequency_unit.py`)
-- 카테고리 개수 (6개) 검증: 정치, 경제, 사회, 생활/문화, IT/과학, 연예
+- 카테고리 개수 (8개) 검증: 정치, 경제, 사회, 문화, 국제, 지역, 스포츠, IT/과학
 - 뉴스 수집 개수 (정확히 30개) 검증  
 - 대본 생성 (1800-2500자) 및 토큰 최적화 검증
 - GPT API 호출 테스트 (실제 2020자 생성 확인)
@@ -81,7 +81,7 @@ python test_tts_service.py
 
 ### 3. 클러스터링 전략 (`test_clustering.py`)
 - **Union-Find 2-Pass 클러스터링**
-  - Pass 1: Union-Find 중복 제거 (임계값 0.85, 모든 쌍 비교)
+  - Pass 1: Union-Find 중복 제거 (임계값 0.70, 모든 쌍 비교)
   - Pass 2: Hybrid 이상치 필터링 (centroid<0.30 AND isolation<0.25)
     - Centroid 기반: 카테고리 중심과의 유사도 측정
     - Isolation 기반: 다른 기사와의 최대 유사도 측정
@@ -100,7 +100,7 @@ python test_tts_service.py
 
 ### 5. 유틸리티 함수 (`test_utils.py`)
 - KST 날짜/시간 처리
-- 카테고리 매핑 및 역매핑 (6개 카테고리)
+- 카테고리 매핑 및 역매핑 (8개 카테고리)
 - DynamoDB 테이블명 확인
 - 주파수 ID 형식 검증
 - S3 버킷 설정 및 API 키 존재 확인
@@ -135,7 +135,7 @@ load_dotenv()
 - **뉴스 수집**: 200개 요청 → 70개 저장 (카테고리당, 총 560개/일)
 - **카테고리**: 8개 (정치, 경제, 사회, 문화, 국제, 지역, 스포츠, IT/과학)
 - **토큰 사용량**: 50% 감소 (90,000자 → 45,000자)
-- **Union-Find 2-Pass 클러스터링**: 중복 제거 (85% 유사도) + Hybrid 이상치 필터링
+- **Union-Find 2-Pass 클러스터링**: 중복 제거 (70% 유사도) + Hybrid 이상치 필터링
 - **Hybrid 필터링**: Centroid (카테고리 적합성) + Isolation (고립도) AND 조건
 - **대본 길이**: 1800-2200자 범위 준수 (실제 평균 1700자 생성)
 

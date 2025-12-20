@@ -53,12 +53,12 @@ The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
 1. **News Collection** (`app/tasks/collect_news.py`)
    - BigKinds API: 200 articles requested → 70 selected per category
    - Total: 8 categories × 70 articles = 560 articles/day
-   - Parallel processing using `ThreadPoolExecutor` (max_workers=6)
+   - Parallel processing using `ThreadPoolExecutor` (max_workers=5)
    - Content scraping: 300+ chars, 70%+ Korean text validation
    - Deduplication: ID, URL, title (memory + DB check)
 
 2. **Union-Find 2-Pass Clustering Strategy** (`app/services/openai_service.py`)
-   - **Pass 1 - Union-Find Deduplication**: Physical deduplication using Union-Find algorithm (85% threshold)
+   - **Pass 1 - Union-Find Deduplication**: Physical deduplication using Union-Find algorithm (70% threshold)
      - All-pairs comparison (O(n²/2)) to discover indirect connections (A→B, B→C → A-B-C merged)
      - Path compression for efficiency
      - Groups similar articles into clusters, longest article becomes representative
@@ -317,7 +317,7 @@ lambda_handler({}, None)  # Simulate EventBridge trigger
 **Optimization Strategies in Use:**
 - Parallel news collection across 8 categories (ThreadPoolExecutor with max_workers=5)
 - Overfetching strategy: Request 200 articles, select best 70 per category
-- Union-Find 2-Pass clustering: deduplication (85%) + hybrid filtering (centroid+isolation)
+- Union-Find 2-Pass clustering: deduplication (70%) + hybrid filtering (centroid+isolation)
 - Similarity matrix caching to prevent redundant cosine similarity calculations
 - Token limits on all GPT inputs to minimize costs
 - S3 presigned URLs instead of CloudFront (simpler architecture)
