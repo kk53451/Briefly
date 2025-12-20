@@ -1,9 +1,9 @@
 /**
- * Today Screen - Daily TOP 10 News with swipeable cards
- * Redesigned based on 투데이스크린.png reference
+ * Today Screen - 오늘의 브리핑 with swipeable headline cards
+ * Displays top 6 headlines from all categories based on cluster size
  */
 
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -19,8 +19,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { apiClient } from '../services/api';
-import { TodayNewsResponse, RankedNewsItem } from '../types/api';
-import { TopNewsCard } from '../components/TopNewsCard';
+import { HeadlineItem, HeadlinesResponse } from '../types/api';
+import { HeadlineCard } from '../components/HeadlineCard';
 import { ErrorView } from '../components/ErrorView';
 import { Spacing, Typography, BorderRadius } from '../constants/theme';
 
@@ -36,53 +36,33 @@ const formatDateHeader = (): string => {
   return `${month}월 ${day}일 ${weekday}`;
 };
 
-// Get TOP 10 news from API response (rank 1 from each category)
-const getTop10News = (newsData: TodayNewsResponse): RankedNewsItem[] => {
-  const top10: RankedNewsItem[] = [];
-
-  Object.entries(newsData).forEach(([categoryName, articles]) => {
-    // Get rank 1 article from each category
-    const sortedArticles = [...articles].sort((a, b) => (a.rank || 999) - (b.rank || 999));
-    if (sortedArticles.length > 0) {
-      top10.push({
-        ...sortedArticles[0],
-        categoryName,
-      });
-    }
-  });
-
-  // Sort by rank and limit to 10
-  return top10.sort((a, b) => (a.rank || 999) - (b.rank || 999)).slice(0, 10);
-};
-
 export const TodayScreen: React.FC = () => {
   const { colors } = useTheme();
   const flatListRef = useRef<FlatList>(null);
 
-  const [newsData, setNewsData] = useState<TodayNewsResponse>({});
+  const [headlines, setHeadlines] = useState<HeadlineItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    loadNews();
+    loadHeadlines();
   }, []);
 
-  const loadNews = async () => {
+  const loadHeadlines = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await apiClient.getTodayNews();
-      setNewsData(data);
+      // 전체 카테고리에서 상위 6개 헤드라인 조회
+      const response: HeadlinesResponse = await apiClient.getHeadlines();
+      setHeadlines(response.headlines || []);
     } catch (err) {
-      console.error('Failed to load today news:', err);
-      setError('뉴스를 불러오는데 실패했습니다. 다시 시도해주세요.');
+      console.error('Failed to load headlines:', err);
+      setError('브리핑을 불러오는데 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
     }
   };
-
-  const top10News = useMemo(() => getTop10News(newsData), [newsData]);
 
   const handleScrollEnd = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -94,23 +74,23 @@ export const TodayScreen: React.FC = () => {
   );
 
   const scrollToIndex = useCallback((index: number) => {
-    if (flatListRef.current && index >= 0 && index < top10News.length) {
+    if (flatListRef.current && index >= 0 && index < headlines.length) {
       flatListRef.current.scrollToOffset({
         offset: index * SCREEN_WIDTH,
         animated: true,
       });
       setCurrentIndex(index);
     }
-  }, [top10News.length]);
+  }, [headlines.length]);
 
   const renderCard = useCallback(
-    ({ item, index }: { item: RankedNewsItem; index: number }) => (
-      <TopNewsCard item={item} rank={index + 1} />
+    ({ item, index }: { item: HeadlineItem; index: number }) => (
+      <HeadlineCard item={item} index={index} />
     ),
     []
   );
 
-  const keyExtractor = useCallback((item: RankedNewsItem) => item.news_id, []);
+  const keyExtractor = useCallback((item: HeadlineItem) => item.headline_id, []);
 
   if (isLoading) {
     return (
@@ -125,7 +105,7 @@ export const TodayScreen: React.FC = () => {
   if (error) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ErrorView message={error} onRetry={loadNews} />
+        <ErrorView message={error} onRetry={loadHeadlines} />
       </SafeAreaView>
     );
   }
@@ -138,19 +118,19 @@ export const TodayScreen: React.FC = () => {
           {formatDateHeader()}
         </Text>
         <Text style={[styles.headerTitle, { color: colors.text }]}>
-          데일리 TOP10
+          오늘의 브리핑
         </Text>
         <View style={[styles.infoPill, { backgroundColor: colors.backgroundSecondary }]}>
           <Ionicons name="information-circle-outline" size={16} color={colors.textSecondary} />
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>
-            전날 21시 ~ 6시까지 모은 주요뉴스
+            AI가 선정한 오늘의 주요 이슈
           </Text>
         </View>
       </View>
 
       {/* Page Indicator */}
       <View style={styles.indicatorContainer}>
-        {top10News.map((_, index) => (
+        {headlines.map((_, index) => (
           <TouchableOpacity
             key={index}
             onPress={() => scrollToIndex(index)}
@@ -173,7 +153,7 @@ export const TodayScreen: React.FC = () => {
       <View style={styles.carouselContainer}>
         <FlatList
           ref={flatListRef}
-          data={top10News}
+          data={headlines}
           renderItem={renderCard}
           keyExtractor={keyExtractor}
           horizontal
@@ -192,7 +172,7 @@ export const TodayScreen: React.FC = () => {
             <View style={[styles.emptyContainer, { width: SCREEN_WIDTH }]}>
               <Ionicons name="newspaper-outline" size={64} color={colors.textTertiary} />
               <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
-                오늘의 뉴스가 없습니다
+                오늘의 브리핑이 없습니다
               </Text>
             </View>
           }

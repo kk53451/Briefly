@@ -439,3 +439,91 @@ def remove_bookmark(user_id: str, news_id: str):
         bookmark_table.delete_item(Key={"user_id": user_id, "news_id": news_id})
     except ClientError as e:
         raise Exception(f"[Bookmark 삭제 실패] {e.response['Error']['Message']}")
+
+
+# ============================================
+# 5. Headlines 관련 함수
+# ============================================
+headlines_table = dynamodb.Table(os.getenv("DDB_HEADLINES_TABLE", "Headlines"))
+
+
+def save_headlines(category: str, date: str, headlines: list):
+    """
+    카테고리별 헤드라인 저장
+
+    Args:
+        category: 카테고리 (영문: politics, economy 등)
+        date: 날짜 (YYYY-MM-DD)
+        headlines: 헤드라인 리스트 [{
+            "headline_id": str,
+            "title": str,           # GPT 생성 헤드라인
+            "summary": str,         # GPT 생성 요약 (~요, ~해요 체)
+            "cluster_size": int,    # 클러스터 크기
+            "representative_news_id": str,  # 대표 기사 ID
+            "news_ids": List[str]   # 클러스터 내 기사 ID 목록
+        }, ...]
+    """
+    item = {
+        "category_date": f"{category}#{date}",  # PK
+        "headlines": headlines,
+        "created_at": datetime.utcnow().isoformat()
+    }
+
+    try:
+        headlines_table.put_item(Item=deep_convert(item))
+    except ClientError as e:
+        raise Exception(f"[Headlines 저장 실패] {e.response['Error']['Message']}")
+
+
+def get_headlines_by_category_and_date(category: str, date: str):
+    """
+    카테고리/날짜 기준 헤드라인 조회
+
+    Args:
+        category: 카테고리 (영문: politics, economy 등)
+        date: 날짜 (YYYY-MM-DD)
+
+    Returns:
+        dict: {
+            "category_date": "politics#2024-01-15",
+            "headlines": [...],
+            "created_at": "..."
+        } 또는 None
+    """
+    key = f"{category}#{date}"
+    try:
+        response = headlines_table.get_item(Key={"category_date": key})
+        return response.get("Item")
+    except ClientError as e:
+        raise Exception(f"[Headlines 조회 실패] {e.response['Error']['Message']}")
+
+
+def get_all_headlines_by_date(date: str):
+    """
+    특정 날짜의 모든 카테고리 헤드라인 조회
+
+    Args:
+        date: 날짜 (YYYY-MM-DD)
+
+    Returns:
+        list: 모든 카테고리의 헤드라인 (클러스터 크기 기준 정렬됨)
+    """
+    all_headlines = []
+
+    try:
+        # 모든 카테고리에서 해당 날짜의 헤드라인 수집
+        for ko_category, en_category in CATEGORY_MAP.items():
+            category = en_category["api_name"]
+            item = get_headlines_by_category_and_date(category, date)
+            if item and item.get("headlines"):
+                for headline in item["headlines"]:
+                    headline["category"] = category
+                    headline["category_ko"] = ko_category
+                    all_headlines.append(headline)
+
+        # 클러스터 크기 기준 내림차순 정렬
+        all_headlines.sort(key=lambda x: x.get("cluster_size", 0), reverse=True)
+
+        return all_headlines
+    except Exception as e:
+        raise Exception(f"[전체 Headlines 조회 실패] {e}")

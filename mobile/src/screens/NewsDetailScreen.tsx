@@ -19,7 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
 import { apiClient } from '../services/api';
-import { NewsDetail } from '../types/api';
+import type { NewsItem } from '../types/api';
 import { NewsStackParamList } from '../types/navigation';
 import { Spacing, Typography, BorderRadius } from '../constants/theme';
 
@@ -51,7 +51,7 @@ export const NewsDetailScreen: React.FC = () => {
   const route = useRoute<NewsDetailRouteProp>();
   const { newsId, categoryName, rank } = route.params;
 
-  const [newsDetail, setNewsDetail] = useState<NewsDetail | null>(null);
+  const [newsDetail, setNewsDetail] = useState<NewsItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -111,7 +111,7 @@ export const NewsDetailScreen: React.FC = () => {
     );
   }
 
-  const rankLabel = rank ? `${categoryName} ${rank}위` : categoryName;
+  const rankLabel = categoryName;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -169,10 +169,10 @@ export const NewsDetailScreen: React.FC = () => {
           <View style={[styles.contentBar, { backgroundColor: colors.primary }]} />
           <View style={styles.contentTextContainer}>
             <Text style={[styles.contentLabel, { color: colors.textSecondary }]}>
-              본문
+              요약
             </Text>
             <Text style={[styles.content, { color: colors.text }]}>
-              {newsDetail.content || '본문 내용이 없습니다.'}
+              {newsDetail.hilight || '요약 내용이 없습니다.'}
             </Text>
           </View>
         </View>

@@ -1,0 +1,25 @@
+{
+  "show": {
+    "name": "The NeuralNoise Podcast",
+    "about": "A podcast about the future of AI and the impact it will have on our lives. We discuss interesting topics in AI and technology.",
+    "language": "English"
+  },
+  "speakers": {
+    "speaker1": {
+      "name": "Zach",
+      "about": "Zach is a software engineer and the founder of NeuralNoise.",
+      "settings": {
+        "provider": "hume",
+        "voice_id": "dfcdd7c7-8255-4216-9ca7-4d4d7b991fc7"
+      }
+    },
+    "speaker2": {
+      "name": "Emily",
+      "about": "Emily is the co-host of the NeuralNoise podcast, she is energetic, and a product designer.",
+      "settings": {
+        "provider": "hume",
+        "voice_id": "3e90dd7e-de46-448a-b143-10f521f84ac9"
+      }
+    }
+  }
+}

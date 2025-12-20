@@ -1,0 +1,32 @@
+name: Build and Publish Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          uv sync --only-dev --frozen
+          uv run pytest
+
+      - name: Build package
+        run: |
+          uv build --no-sources
+
+      - name: Publish package
+        run: |
+          uv publish --token ${{ secrets.PYPI_TOKEN }}

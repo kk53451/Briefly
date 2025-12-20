@@ -1,0 +1,6 @@
+# Lambda용 requirements.txt 포함
+-r requirements.txt
+
+# 로컬 전용 (podcastfy 대화형 팟캐스트)
+podcastfy>=0.4.0
+pydub>=0.25.1

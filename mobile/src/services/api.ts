@@ -19,6 +19,7 @@ import {
   UpdateProfileRequest,
   UpdateCategoriesRequest,
   BookmarkRequest,
+  HeadlinesResponse,
 } from '../types/api';
 
 // API Base URL from environment variables
@@ -187,6 +188,18 @@ class ApiClient {
 
   async getAllCategories(): Promise<CategoriesResponse> {
     const response = await this.client.get<CategoriesResponse>('/api/categories');
+    return response.data;
+  }
+
+  // ========== Headlines APIs (오늘의 브리핑) ==========
+
+  async getHeadlines(category?: string, date?: string): Promise<HeadlinesResponse> {
+    const response = await this.client.get<HeadlinesResponse>('/api/headlines', {
+      params: {
+        ...(category && { category }),
+        ...(date && { date })
+      },
+    });
     return response.data;
   }
 }

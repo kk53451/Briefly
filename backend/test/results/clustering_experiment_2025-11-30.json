@@ -1,0 +1,3680 @@
+{
+  "experiment_date": "2025-11-30",
+  "total_articles": 9449,
+  "categories": [
+    "politics",
+    "economy",
+    "society",
+    "culture",
+    "international",
+    "local",
+    "sports",
+    "tech"
+  ],
+  "algorithms": [
+    "no_clustering",
+    "union_find",
+    "greedy",
+    "hac",
+    "dbscan"
+  ],
+  "thresholds": [
+    0.5,
+    0.6,
+    0.7,
+    0.8
+  ],
+  "dbscan_eps": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "dbscan_min_samples": [
+    2,
+    3
+  ],
+  "results": [
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 1017,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 27,
+      "compression_rate": 0.9735,
+      "noise_count": 0,
+      "silhouette": 0.0302,
+      "execution_time": 7.8123,
+      "cluster_sizes": [
+        991,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 209,
+      "compression_rate": 0.7945,
+      "noise_count": 0,
+      "silhouette": 0.0023,
+      "execution_time": 7.7068,
+      "cluster_sizes": [
+        731,
+        30,
+        8,
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 395,
+      "compression_rate": 0.6116,
+      "noise_count": 0,
+      "silhouette": 0.1674,
+      "execution_time": 7.7296,
+      "cluster_sizes": [
+        362,
+        30,
+        22,
+        22,
+        20,
+        18,
+        11,
+        10,
+        9,
+        8
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 559,
+      "compression_rate": 0.4503,
+      "noise_count": 0,
+      "silhouette": 0.2501,
+      "execution_time": 7.7675,
+      "cluster_sizes": [
+        135,
+        61,
+        30,
+        26,
+        21,
+        20,
+        17,
+        17,
+        17,
+        16
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 157,
+      "compression_rate": 0.8456,
+      "noise_count": 0,
+      "silhouette": 0.0472,
+      "execution_time": 0.4082,
+      "cluster_sizes": [
+        437,
+        33,
+        30,
+        26,
+        25,
+        20,
+        19,
+        19,
+        18,
+        16
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 334,
+      "compression_rate": 0.6716,
+      "noise_count": 0,
+      "silhouette": 0.1092,
+      "execution_time": 1.5149,
+      "cluster_sizes": [
+        198,
+        75,
+        70,
+        30,
+        23,
+        16,
+        14,
+        13,
+        11,
+        9
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 464,
+      "compression_rate": 0.5438,
+      "noise_count": 0,
+      "silhouette": 0.2059,
+      "execution_time": 2.448,
+      "cluster_sizes": [
+        130,
+        77,
+        32,
+        30,
+        19,
+        18,
+        18,
+        18,
+        14,
+        14
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 601,
+      "compression_rate": 0.409,
+      "noise_count": 0,
+      "silhouette": 0.1823,
+      "execution_time": 4.3183,
+      "cluster_sizes": [
+        58,
+        33,
+        30,
+        26,
+        25,
+        24,
+        21,
+        17,
+        17,
+        12
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 177,
+      "compression_rate": 0.826,
+      "noise_count": 0,
+      "silhouette": 0.189,
+      "execution_time": 1.2016,
+      "cluster_sizes": [
+        433,
+        36,
+        31,
+        23,
+        19,
+        18,
+        14,
+        12,
+        11,
+        11
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 345,
+      "compression_rate": 0.6608,
+      "noise_count": 0,
+      "silhouette": 0.246,
+      "execution_time": 1.209,
+      "cluster_sizes": [
+        231,
+        96,
+        30,
+        22,
+        22,
+        18,
+        14,
+        13,
+        11,
+        10
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 454,
+      "compression_rate": 0.5536,
+      "noise_count": 0,
+      "silhouette": 0.2987,
+      "execution_time": 1.2009,
+      "cluster_sizes": [
+        137,
+        61,
+        39,
+        30,
+        21,
+        21,
+        19,
+        18,
+        18,
+        17
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 594,
+      "compression_rate": 0.4159,
+      "noise_count": 0,
+      "silhouette": 0.2217,
+      "execution_time": 1.2954,
+      "cluster_sizes": [
+        110,
+        57,
+        30,
+        26,
+        21,
+        19,
+        17,
+        17,
+        12,
+        11
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 74,
+      "compression_rate": 0.9272,
+      "noise_count": 321,
+      "silhouette": 0.3041,
+      "execution_time": 1.2064,
+      "cluster_sizes": [
+        362,
+        30,
+        22,
+        22,
+        20,
+        18,
+        11,
+        10,
+        9,
+        8
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 37,
+      "compression_rate": 0.9636,
+      "noise_count": 395,
+      "silhouette": 0.2938,
+      "execution_time": 1.1985,
+      "cluster_sizes": [
+        362,
+        30,
+        22,
+        22,
+        20,
+        18,
+        11,
+        10,
+        9,
+        8
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 30,
+      "compression_rate": 0.9705,
+      "noise_count": 179,
+      "silhouette": 0.0988,
+      "execution_time": 1.2085,
+      "cluster_sizes": [
+        731,
+        30,
+        8,
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 15,
+      "compression_rate": 0.9853,
+      "noise_count": 209,
+      "silhouette": 0.105,
+      "execution_time": 1.2248,
+      "cluster_sizes": [
+        731,
+        30,
+        8,
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 1,
+      "compression_rate": 0.999,
+      "noise_count": 26,
+      "silhouette": -1.0,
+      "execution_time": 1.2074,
+      "cluster_sizes": [
+        991
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "culture",
+      "input_count": 1017,
+      "cluster_count": 1,
+      "compression_rate": 0.999,
+      "noise_count": 26,
+      "silhouette": -1.0,
+      "execution_time": 1.2411,
+      "cluster_sizes": [
+        991
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 1601,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 9,
+      "compression_rate": 0.9944,
+      "noise_count": 0,
+      "silhouette": 0.0698,
+      "execution_time": 19.3381,
+      "cluster_sizes": [
+        1590,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 208,
+      "compression_rate": 0.8701,
+      "noise_count": 0,
+      "silhouette": -0.1096,
+      "execution_time": 18.96,
+      "cluster_sizes": [
+        1332,
+        15,
+        8,
+        6,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 605,
+      "compression_rate": 0.6221,
+      "noise_count": 0,
+      "silhouette": 0.0243,
+      "execution_time": 18.9278,
+      "cluster_sizes": [
+        647,
+        22,
+        20,
+        19,
+        15,
+        15,
+        14,
+        12,
+        12,
+        11
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 919,
+      "compression_rate": 0.426,
+      "noise_count": 0,
+      "silhouette": 0.1752,
+      "execution_time": 20.5731,
+      "cluster_sizes": [
+        133,
+        64,
+        34,
+        32,
+        28,
+        27,
+        18,
+        17,
+        15,
+        14
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 177,
+      "compression_rate": 0.8894,
+      "noise_count": 0,
+      "silhouette": -0.0004,
+      "execution_time": 0.6508,
+      "cluster_sizes": [
+        721,
+        70,
+        45,
+        35,
+        26,
+        25,
+        23,
+        21,
+        20,
+        20
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 480,
+      "compression_rate": 0.7002,
+      "noise_count": 0,
+      "silhouette": 0.0738,
+      "execution_time": 3.0614,
+      "cluster_sizes": [
+        325,
+        91,
+        22,
+        20,
+        19,
+        17,
+        17,
+        16,
+        15,
+        14
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 737,
+      "compression_rate": 0.5397,
+      "noise_count": 0,
+      "silhouette": 0.2143,
+      "execution_time": 6.126,
+      "cluster_sizes": [
+        106,
+        64,
+        36,
+        36,
+        27,
+        24,
+        21,
+        18,
+        17,
+        17
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 1028,
+      "compression_rate": 0.3579,
+      "noise_count": 0,
+      "silhouette": 0.1672,
+      "execution_time": 10.1787,
+      "cluster_sizes": [
+        71,
+        33,
+        32,
+        29,
+        28,
+        27,
+        18,
+        15,
+        13,
+        10
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 216,
+      "compression_rate": 0.8651,
+      "noise_count": 0,
+      "silhouette": 0.1843,
+      "execution_time": 2.9453,
+      "cluster_sizes": [
+        455,
+        65,
+        50,
+        47,
+        36,
+        29,
+        24,
+        23,
+        19,
+        19
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 489,
+      "compression_rate": 0.6946,
+      "noise_count": 0,
+      "silhouette": 0.2433,
+      "execution_time": 2.9668,
+      "cluster_sizes": [
+        233,
+        99,
+        67,
+        22,
+        19,
+        19,
+        17,
+        17,
+        15,
+        15
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 737,
+      "compression_rate": 0.5397,
+      "noise_count": 0,
+      "silhouette": 0.2707,
+      "execution_time": 2.9688,
+      "cluster_sizes": [
+        86,
+        67,
+        42,
+        37,
+        34,
+        32,
+        27,
+        19,
+        18,
+        17
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 1023,
+      "compression_rate": 0.361,
+      "noise_count": 0,
+      "silhouette": 0.1877,
+      "execution_time": 3.0489,
+      "cluster_sizes": [
+        77,
+        32,
+        32,
+        28,
+        28,
+        27,
+        18,
+        15,
+        13,
+        13
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 122,
+      "compression_rate": 0.9238,
+      "noise_count": 483,
+      "silhouette": 0.1129,
+      "execution_time": 2.9961,
+      "cluster_sizes": [
+        647,
+        22,
+        20,
+        19,
+        15,
+        15,
+        14,
+        12,
+        12,
+        11
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 54,
+      "compression_rate": 0.9663,
+      "noise_count": 619,
+      "silhouette": 0.1067,
+      "execution_time": 2.9508,
+      "cluster_sizes": [
+        647,
+        22,
+        20,
+        19,
+        15,
+        15,
+        14,
+        12,
+        12,
+        11
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 31,
+      "compression_rate": 0.9806,
+      "noise_count": 177,
+      "silhouette": -0.0242,
+      "execution_time": 2.9696,
+      "cluster_sizes": [
+        1332,
+        15,
+        8,
+        6,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 11,
+      "compression_rate": 0.9931,
+      "noise_count": 217,
+      "silhouette": 0.014,
+      "execution_time": 2.9594,
+      "cluster_sizes": [
+        1332,
+        15,
+        8,
+        6,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 4,
+      "compression_rate": 0.9975,
+      "noise_count": 5,
+      "silhouette": 0.1395,
+      "execution_time": 2.9841,
+      "cluster_sizes": [
+        1590,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "economy",
+      "input_count": 1601,
+      "cluster_count": 1,
+      "compression_rate": 0.9994,
+      "noise_count": 11,
+      "silhouette": -1.0,
+      "execution_time": 2.9441,
+      "cluster_sizes": [
+        1590
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 527,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 19,
+      "compression_rate": 0.9639,
+      "noise_count": 0,
+      "silhouette": -0.0033,
+      "execution_time": 2.1964,
+      "cluster_sizes": [
+        505,
+        3,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 76,
+      "compression_rate": 0.8558,
+      "noise_count": 0,
+      "silhouette": -0.1009,
+      "execution_time": 2.1134,
+      "cluster_sizes": [
+        421,
+        9,
+        4,
+        4,
+        4,
+        3,
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 183,
+      "compression_rate": 0.6528,
+      "noise_count": 0,
+      "silhouette": 0.093,
+      "execution_time": 2.0885,
+      "cluster_sizes": [
+        159,
+        27,
+        25,
+        16,
+        15,
+        9,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 336,
+      "compression_rate": 0.3624,
+      "noise_count": 0,
+      "silhouette": 0.148,
+      "execution_time": 2.0363,
+      "cluster_sizes": [
+        45,
+        19,
+        17,
+        15,
+        10,
+        10,
+        8,
+        8,
+        7,
+        4
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 93,
+      "compression_rate": 0.8235,
+      "noise_count": 0,
+      "silhouette": 0.0608,
+      "execution_time": 0.156,
+      "cluster_sizes": [
+        134,
+        33,
+        31,
+        30,
+        27,
+        24,
+        19,
+        15,
+        14,
+        12
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 150,
+      "compression_rate": 0.7154,
+      "noise_count": 0,
+      "silhouette": 0.1504,
+      "execution_time": 0.3553,
+      "cluster_sizes": [
+        32,
+        29,
+        28,
+        28,
+        20,
+        19,
+        18,
+        16,
+        15,
+        14
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 245,
+      "compression_rate": 0.5351,
+      "noise_count": 0,
+      "silhouette": 0.2054,
+      "execution_time": 0.6856,
+      "cluster_sizes": [
+        35,
+        18,
+        17,
+        16,
+        15,
+        14,
+        10,
+        10,
+        10,
+        9
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 376,
+      "compression_rate": 0.2865,
+      "noise_count": 0,
+      "silhouette": 0.1157,
+      "execution_time": 1.2343,
+      "cluster_sizes": [
+        23,
+        15,
+        10,
+        6,
+        6,
+        6,
+        5,
+        5,
+        5,
+        5
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 93,
+      "compression_rate": 0.8235,
+      "noise_count": 0,
+      "silhouette": 0.2165,
+      "execution_time": 0.3181,
+      "cluster_sizes": [
+        135,
+        38,
+        27,
+        24,
+        17,
+        17,
+        15,
+        14,
+        12,
+        12
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 152,
+      "compression_rate": 0.7116,
+      "noise_count": 0,
+      "silhouette": 0.2724,
+      "execution_time": 0.3419,
+      "cluster_sizes": [
+        45,
+        33,
+        27,
+        27,
+        21,
+        17,
+        16,
+        14,
+        11,
+        9
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 242,
+      "compression_rate": 0.5408,
+      "noise_count": 0,
+      "silhouette": 0.2566,
+      "execution_time": 0.3193,
+      "cluster_sizes": [
+        25,
+        22,
+        19,
+        18,
+        18,
+        15,
+        14,
+        10,
+        9,
+        8
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 372,
+      "compression_rate": 0.2941,
+      "noise_count": 0,
+      "silhouette": 0.1517,
+      "execution_time": 0.3169,
+      "cluster_sizes": [
+        22,
+        15,
+        15,
+        10,
+        8,
+        7,
+        6,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 53,
+      "compression_rate": 0.8994,
+      "noise_count": 130,
+      "silhouette": 0.1933,
+      "execution_time": 0.3181,
+      "cluster_sizes": [
+        159,
+        27,
+        25,
+        16,
+        15,
+        9,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 33,
+      "compression_rate": 0.9374,
+      "noise_count": 170,
+      "silhouette": 0.196,
+      "execution_time": 0.3181,
+      "cluster_sizes": [
+        159,
+        27,
+        25,
+        16,
+        15,
+        9,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 17,
+      "compression_rate": 0.9677,
+      "noise_count": 59,
+      "silhouette": -0.0084,
+      "execution_time": 0.3187,
+      "cluster_sizes": [
+        421,
+        9,
+        4,
+        4,
+        4,
+        3,
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 7,
+      "compression_rate": 0.9867,
+      "noise_count": 79,
+      "silhouette": 0.0242,
+      "execution_time": 0.3236,
+      "cluster_sizes": [
+        421,
+        9,
+        4,
+        4,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 4,
+      "compression_rate": 0.9924,
+      "noise_count": 15,
+      "silhouette": 0.0919,
+      "execution_time": 0.319,
+      "cluster_sizes": [
+        505,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "international",
+      "input_count": 527,
+      "cluster_count": 2,
+      "compression_rate": 0.9962,
+      "noise_count": 19,
+      "silhouette": 0.1418,
+      "execution_time": 0.3189,
+      "cluster_sizes": [
+        505,
+        3
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 2610,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 7,
+      "compression_rate": 0.9973,
+      "noise_count": 0,
+      "silhouette": 0.1307,
+      "execution_time": 51.1061,
+      "cluster_sizes": [
+        2604,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 179,
+      "compression_rate": 0.9314,
+      "noise_count": 0,
+      "silhouette": -0.1036,
+      "execution_time": 50.6786,
+      "cluster_sizes": [
+        2408,
+        5,
+        4,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 847,
+      "compression_rate": 0.6755,
+      "noise_count": 0,
+      "silhouette": 0.0418,
+      "execution_time": 50.4762,
+      "cluster_sizes": [
+        1357,
+        137,
+        9,
+        7,
+        6,
+        6,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1397,
+      "compression_rate": 0.4648,
+      "noise_count": 0,
+      "silhouette": 0.2748,
+      "execution_time": 51.6893,
+      "cluster_sizes": [
+        183,
+        168,
+        137,
+        125,
+        47,
+        43,
+        40,
+        33,
+        31,
+        25
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 205,
+      "compression_rate": 0.9215,
+      "noise_count": 0,
+      "silhouette": 0.0348,
+      "execution_time": 0.9911,
+      "cluster_sizes": [
+        1184,
+        156,
+        144,
+        122,
+        60,
+        55,
+        51,
+        33,
+        30,
+        30
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 620,
+      "compression_rate": 0.7625,
+      "noise_count": 0,
+      "silhouette": 0.0271,
+      "execution_time": 5.4394,
+      "cluster_sizes": [
+        862,
+        118,
+        91,
+        42,
+        28,
+        22,
+        22,
+        21,
+        18,
+        17
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1099,
+      "compression_rate": 0.5789,
+      "noise_count": 0,
+      "silhouette": 0.1858,
+      "execution_time": 14.1277,
+      "cluster_sizes": [
+        300,
+        151,
+        137,
+        72,
+        54,
+        42,
+        37,
+        34,
+        29,
+        25
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1516,
+      "compression_rate": 0.4192,
+      "noise_count": 0,
+      "silhouette": 0.254,
+      "execution_time": 23.6281,
+      "cluster_sizes": [
+        183,
+        142,
+        137,
+        73,
+        43,
+        40,
+        26,
+        25,
+        23,
+        23
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 231,
+      "compression_rate": 0.9115,
+      "noise_count": 0,
+      "silhouette": 0.16,
+      "execution_time": 7.9058,
+      "cluster_sizes": [
+        1089,
+        157,
+        103,
+        70,
+        63,
+        39,
+        26,
+        25,
+        24,
+        22
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 665,
+      "compression_rate": 0.7452,
+      "noise_count": 0,
+      "silhouette": 0.212,
+      "execution_time": 7.8629,
+      "cluster_sizes": [
+        769,
+        138,
+        60,
+        56,
+        45,
+        39,
+        28,
+        27,
+        23,
+        20
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1103,
+      "compression_rate": 0.5774,
+      "noise_count": 0,
+      "silhouette": 0.3216,
+      "execution_time": 7.9273,
+      "cluster_sizes": [
+        196,
+        183,
+        137,
+        122,
+        48,
+        44,
+        42,
+        40,
+        35,
+        27
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1509,
+      "compression_rate": 0.4218,
+      "noise_count": 0,
+      "silhouette": 0.268,
+      "execution_time": 7.9274,
+      "cluster_sizes": [
+        183,
+        142,
+        137,
+        77,
+        44,
+        40,
+        27,
+        26,
+        26,
+        25
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 168,
+      "compression_rate": 0.9356,
+      "noise_count": 679,
+      "silhouette": 0.1223,
+      "execution_time": 7.8681,
+      "cluster_sizes": [
+        1357,
+        137,
+        9,
+        7,
+        6,
+        6,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 56,
+      "compression_rate": 0.9785,
+      "noise_count": 903,
+      "silhouette": 0.1228,
+      "execution_time": 7.8623,
+      "cluster_sizes": [
+        1357,
+        137,
+        9,
+        7,
+        6,
+        6,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 18,
+      "compression_rate": 0.9931,
+      "noise_count": 161,
+      "silhouette": -0.0106,
+      "execution_time": 7.9202,
+      "cluster_sizes": [
+        2408,
+        5,
+        4,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 5,
+      "compression_rate": 0.9981,
+      "noise_count": 187,
+      "silhouette": 0.0809,
+      "execution_time": 7.9104,
+      "cluster_sizes": [
+        2408,
+        5,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1,
+      "compression_rate": 0.9996,
+      "noise_count": 6,
+      "silhouette": -1.0,
+      "execution_time": 7.9174,
+      "cluster_sizes": [
+        2604
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "local",
+      "input_count": 2610,
+      "cluster_count": 1,
+      "compression_rate": 0.9996,
+      "noise_count": 6,
+      "silhouette": -1.0,
+      "execution_time": 7.8534,
+      "cluster_sizes": [
+        2604
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 845,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 4,
+      "compression_rate": 0.9953,
+      "noise_count": 0,
+      "silhouette": 0.153,
+      "execution_time": 5.3959,
+      "cluster_sizes": [
+        842,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 51,
+      "compression_rate": 0.9396,
+      "noise_count": 0,
+      "silhouette": -0.074,
+      "execution_time": 5.4387,
+      "cluster_sizes": [
+        785,
+        8,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 198,
+      "compression_rate": 0.7657,
+      "noise_count": 0,
+      "silhouette": -0.0895,
+      "execution_time": 5.4778,
+      "cluster_sizes": [
+        552,
+        17,
+        10,
+        9,
+        8,
+        8,
+        5,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 487,
+      "compression_rate": 0.4237,
+      "noise_count": 0,
+      "silhouette": 0.1001,
+      "execution_time": 5.3343,
+      "cluster_sizes": [
+        99,
+        33,
+        20,
+        15,
+        13,
+        12,
+        12,
+        11,
+        9,
+        9
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 65,
+      "compression_rate": 0.9231,
+      "noise_count": 0,
+      "silhouette": 0.0002,
+      "execution_time": 0.1032,
+      "cluster_sizes": [
+        348,
+        95,
+        74,
+        55,
+        41,
+        26,
+        19,
+        17,
+        14,
+        13
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 170,
+      "compression_rate": 0.7988,
+      "noise_count": 0,
+      "silhouette": 0.0671,
+      "execution_time": 0.5015,
+      "cluster_sizes": [
+        95,
+        58,
+        53,
+        36,
+        36,
+        33,
+        33,
+        25,
+        23,
+        20
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 327,
+      "compression_rate": 0.613,
+      "noise_count": 0,
+      "silhouette": 0.1362,
+      "execution_time": 1.3568,
+      "cluster_sizes": [
+        42,
+        40,
+        34,
+        24,
+        16,
+        15,
+        14,
+        13,
+        12,
+        12
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 557,
+      "compression_rate": 0.3408,
+      "noise_count": 0,
+      "silhouette": 0.1272,
+      "execution_time": 2.8893,
+      "cluster_sizes": [
+        33,
+        27,
+        24,
+        20,
+        13,
+        11,
+        9,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 59,
+      "compression_rate": 0.9302,
+      "noise_count": 0,
+      "silhouette": 0.119,
+      "execution_time": 0.8155,
+      "cluster_sizes": [
+        306,
+        133,
+        88,
+        62,
+        25,
+        25,
+        20,
+        15,
+        13,
+        12
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 171,
+      "compression_rate": 0.7976,
+      "noise_count": 0,
+      "silhouette": 0.2047,
+      "execution_time": 0.8138,
+      "cluster_sizes": [
+        114,
+        48,
+        42,
+        29,
+        25,
+        25,
+        24,
+        23,
+        22,
+        21
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 322,
+      "compression_rate": 0.6189,
+      "noise_count": 0,
+      "silhouette": 0.2488,
+      "execution_time": 0.8174,
+      "cluster_sizes": [
+        37,
+        36,
+        34,
+        30,
+        20,
+        15,
+        14,
+        12,
+        12,
+        12
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 559,
+      "compression_rate": 0.3385,
+      "noise_count": 0,
+      "silhouette": 0.1635,
+      "execution_time": 0.8119,
+      "cluster_sizes": [
+        34,
+        22,
+        22,
+        20,
+        15,
+        11,
+        9,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 39,
+      "compression_rate": 0.9538,
+      "noise_count": 159,
+      "silhouette": -0.0006,
+      "execution_time": 0.8111,
+      "cluster_sizes": [
+        552,
+        17,
+        10,
+        9,
+        8,
+        8,
+        5,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 16,
+      "compression_rate": 0.9811,
+      "noise_count": 205,
+      "silhouette": 0.0343,
+      "execution_time": 0.8398,
+      "cluster_sizes": [
+        552,
+        17,
+        10,
+        9,
+        8,
+        8,
+        5,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 5,
+      "compression_rate": 0.9941,
+      "noise_count": 46,
+      "silhouette": 0.0852,
+      "execution_time": 0.8144,
+      "cluster_sizes": [
+        785,
+        8,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 2,
+      "compression_rate": 0.9976,
+      "noise_count": 52,
+      "silhouette": 0.1903,
+      "execution_time": 0.8147,
+      "cluster_sizes": [
+        785,
+        8
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 1,
+      "compression_rate": 0.9988,
+      "noise_count": 3,
+      "silhouette": -1.0,
+      "execution_time": 0.8287,
+      "cluster_sizes": [
+        842
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "politics",
+      "input_count": 845,
+      "cluster_count": 1,
+      "compression_rate": 0.9988,
+      "noise_count": 3,
+      "silhouette": -1.0,
+      "execution_time": 0.8162,
+      "cluster_sizes": [
+        842
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 1419,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 9,
+      "compression_rate": 0.9937,
+      "noise_count": 0,
+      "silhouette": 0.0753,
+      "execution_time": 15.4572,
+      "cluster_sizes": [
+        1411,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 170,
+      "compression_rate": 0.8802,
+      "noise_count": 0,
+      "silhouette": -0.1247,
+      "execution_time": 15.1389,
+      "cluster_sizes": [
+        1220,
+        6,
+        4,
+        4,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 476,
+      "compression_rate": 0.6646,
+      "noise_count": 0,
+      "silhouette": -0.0435,
+      "execution_time": 15.1206,
+      "cluster_sizes": [
+        740,
+        17,
+        15,
+        12,
+        11,
+        10,
+        10,
+        8,
+        7,
+        5
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 796,
+      "compression_rate": 0.439,
+      "noise_count": 0,
+      "silhouette": 0.23,
+      "execution_time": 15.0927,
+      "cluster_sizes": [
+        63,
+        57,
+        50,
+        41,
+        40,
+        39,
+        34,
+        24,
+        21,
+        21
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 143,
+      "compression_rate": 0.8992,
+      "noise_count": 0,
+      "silhouette": 0.0247,
+      "execution_time": 0.3557,
+      "cluster_sizes": [
+        760,
+        119,
+        51,
+        26,
+        21,
+        19,
+        18,
+        18,
+        16,
+        16
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 386,
+      "compression_rate": 0.728,
+      "noise_count": 0,
+      "silhouette": 0.0726,
+      "execution_time": 1.9001,
+      "cluster_sizes": [
+        406,
+        55,
+        53,
+        26,
+        25,
+        20,
+        17,
+        17,
+        17,
+        16
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 611,
+      "compression_rate": 0.5694,
+      "noise_count": 0,
+      "silhouette": 0.2336,
+      "execution_time": 4.3492,
+      "cluster_sizes": [
+        61,
+        59,
+        55,
+        50,
+        41,
+        41,
+        29,
+        28,
+        27,
+        22
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 879,
+      "compression_rate": 0.3805,
+      "noise_count": 0,
+      "silhouette": 0.178,
+      "execution_time": 7.8512,
+      "cluster_sizes": [
+        50,
+        43,
+        40,
+        39,
+        35,
+        25,
+        23,
+        21,
+        21,
+        20
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 175,
+      "compression_rate": 0.8767,
+      "noise_count": 0,
+      "silhouette": 0.1592,
+      "execution_time": 2.3079,
+      "cluster_sizes": [
+        519,
+        78,
+        60,
+        48,
+        39,
+        33,
+        27,
+        26,
+        24,
+        20
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 407,
+      "compression_rate": 0.7132,
+      "noise_count": 0,
+      "silhouette": 0.2395,
+      "execution_time": 2.3252,
+      "cluster_sizes": [
+        228,
+        67,
+        65,
+        52,
+        41,
+        35,
+        22,
+        19,
+        18,
+        18
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 614,
+      "compression_rate": 0.5673,
+      "noise_count": 0,
+      "silhouette": 0.2989,
+      "execution_time": 2.3337,
+      "cluster_sizes": [
+        64,
+        59,
+        52,
+        50,
+        46,
+        40,
+        35,
+        24,
+        21,
+        21
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 867,
+      "compression_rate": 0.389,
+      "noise_count": 0,
+      "silhouette": 0.2123,
+      "execution_time": 2.3281,
+      "cluster_sizes": [
+        57,
+        54,
+        50,
+        40,
+        39,
+        29,
+        28,
+        21,
+        21,
+        18
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 87,
+      "compression_rate": 0.9387,
+      "noise_count": 389,
+      "silhouette": 0.0382,
+      "execution_time": 2.3341,
+      "cluster_sizes": [
+        740,
+        17,
+        15,
+        12,
+        11,
+        10,
+        10,
+        8,
+        7,
+        5
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 33,
+      "compression_rate": 0.9767,
+      "noise_count": 497,
+      "silhouette": 0.01,
+      "execution_time": 2.3165,
+      "cluster_sizes": [
+        740,
+        17,
+        15,
+        12,
+        11,
+        10,
+        10,
+        8,
+        7,
+        5
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 21,
+      "compression_rate": 0.9852,
+      "noise_count": 149,
+      "silhouette": -0.0209,
+      "execution_time": 2.3248,
+      "cluster_sizes": [
+        1220,
+        6,
+        4,
+        4,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 6,
+      "compression_rate": 0.9958,
+      "noise_count": 179,
+      "silhouette": 0.0356,
+      "execution_time": 2.3157,
+      "cluster_sizes": [
+        1220,
+        6,
+        4,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 1,
+      "compression_rate": 0.9993,
+      "noise_count": 8,
+      "silhouette": -1.0,
+      "execution_time": 2.3269,
+      "cluster_sizes": [
+        1411
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "society",
+      "input_count": 1419,
+      "cluster_count": 1,
+      "compression_rate": 0.9993,
+      "noise_count": 8,
+      "silhouette": -1.0,
+      "execution_time": 2.3215,
+      "cluster_sizes": [
+        1411
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 288,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 3,
+      "compression_rate": 0.9896,
+      "noise_count": 0,
+      "silhouette": 0.1937,
+      "execution_time": 0.6222,
+      "cluster_sizes": [
+        284,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 30,
+      "compression_rate": 0.8958,
+      "noise_count": 0,
+      "silhouette": -0.0127,
+      "execution_time": 0.6373,
+      "cluster_sizes": [
+        251,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 116,
+      "compression_rate": 0.5972,
+      "noise_count": 0,
+      "silhouette": 0.1532,
+      "execution_time": 0.6346,
+      "cluster_sizes": [
+        79,
+        23,
+        11,
+        8,
+        7,
+        6,
+        6,
+        5,
+        5,
+        4
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 190,
+      "compression_rate": 0.3403,
+      "noise_count": 0,
+      "silhouette": 0.1892,
+      "execution_time": 0.6162,
+      "cluster_sizes": [
+        26,
+        19,
+        10,
+        8,
+        7,
+        7,
+        7,
+        5,
+        4,
+        3
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 39,
+      "compression_rate": 0.8646,
+      "noise_count": 0,
+      "silhouette": 0.0815,
+      "execution_time": 0.0412,
+      "cluster_sizes": [
+        72,
+        52,
+        21,
+        21,
+        16,
+        12,
+        11,
+        9,
+        8,
+        6
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 84,
+      "compression_rate": 0.7083,
+      "noise_count": 0,
+      "silhouette": 0.1534,
+      "execution_time": 0.1184,
+      "cluster_sizes": [
+        59,
+        18,
+        17,
+        11,
+        11,
+        9,
+        8,
+        8,
+        6,
+        6
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 142,
+      "compression_rate": 0.5069,
+      "noise_count": 0,
+      "silhouette": 0.2086,
+      "execution_time": 0.229,
+      "cluster_sizes": [
+        35,
+        24,
+        11,
+        10,
+        7,
+        7,
+        5,
+        5,
+        4,
+        4
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 210,
+      "compression_rate": 0.2708,
+      "noise_count": 0,
+      "silhouette": 0.1556,
+      "execution_time": 0.3922,
+      "cluster_sizes": [
+        19,
+        15,
+        9,
+        7,
+        6,
+        5,
+        4,
+        4,
+        3,
+        2
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 38,
+      "compression_rate": 0.8681,
+      "noise_count": 0,
+      "silhouette": 0.2215,
+      "execution_time": 0.0963,
+      "cluster_sizes": [
+        103,
+        39,
+        17,
+        13,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 85,
+      "compression_rate": 0.7049,
+      "noise_count": 0,
+      "silhouette": 0.25,
+      "execution_time": 0.0956,
+      "cluster_sizes": [
+        47,
+        39,
+        17,
+        11,
+        8,
+        8,
+        8,
+        8,
+        6,
+        5
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 139,
+      "compression_rate": 0.5174,
+      "noise_count": 0,
+      "silhouette": 0.2667,
+      "execution_time": 0.097,
+      "cluster_sizes": [
+        34,
+        19,
+        11,
+        10,
+        8,
+        7,
+        7,
+        6,
+        5,
+        4
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 209,
+      "compression_rate": 0.2743,
+      "noise_count": 0,
+      "silhouette": 0.1677,
+      "execution_time": 0.1126,
+      "cluster_sizes": [
+        19,
+        13,
+        9,
+        7,
+        6,
+        5,
+        5,
+        4,
+        4,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 31,
+      "compression_rate": 0.8924,
+      "noise_count": 85,
+      "silhouette": 0.301,
+      "execution_time": 0.0976,
+      "cluster_sizes": [
+        79,
+        23,
+        11,
+        8,
+        7,
+        6,
+        6,
+        5,
+        5,
+        4
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 16,
+      "compression_rate": 0.9444,
+      "noise_count": 115,
+      "silhouette": 0.2764,
+      "execution_time": 0.097,
+      "cluster_sizes": [
+        79,
+        23,
+        11,
+        8,
+        7,
+        6,
+        6,
+        5,
+        5,
+        4
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 7,
+      "compression_rate": 0.9757,
+      "noise_count": 23,
+      "silhouette": 0.1346,
+      "execution_time": 0.0971,
+      "cluster_sizes": [
+        251,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 3,
+      "compression_rate": 0.9896,
+      "noise_count": 31,
+      "silhouette": 0.1254,
+      "execution_time": 0.0967,
+      "cluster_sizes": [
+        251,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 3,
+      "compression_rate": 0.9896,
+      "noise_count": 0,
+      "silhouette": 0.1937,
+      "execution_time": 0.0959,
+      "cluster_sizes": [
+        284,
+        2,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "sports",
+      "input_count": 288,
+      "cluster_count": 1,
+      "compression_rate": 0.9965,
+      "noise_count": 4,
+      "silhouette": -1.0,
+      "execution_time": 0.0968,
+      "cluster_sizes": [
+        284
+      ]
+    },
+    {
+      "algorithm": "no_clustering",
+      "parameters": {},
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 1142,
+      "compression_rate": 0.0,
+      "noise_count": 0,
+      "silhouette": -1.0,
+      "execution_time": 0.0,
+      "cluster_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 8,
+      "compression_rate": 0.993,
+      "noise_count": 0,
+      "silhouette": 0.1012,
+      "execution_time": 10.0506,
+      "cluster_sizes": [
+        1134,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 138,
+      "compression_rate": 0.8792,
+      "noise_count": 0,
+      "silhouette": -0.0713,
+      "execution_time": 9.9931,
+      "cluster_sizes": [
+        964,
+        12,
+        7,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 327,
+      "compression_rate": 0.7137,
+      "noise_count": 0,
+      "silhouette": -0.0437,
+      "execution_time": 9.9606,
+      "cluster_sizes": [
+        667,
+        14,
+        13,
+        12,
+        11,
+        8,
+        7,
+        6,
+        6,
+        6
+      ]
+    },
+    {
+      "algorithm": "union_find",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 533,
+      "compression_rate": 0.5333,
+      "noise_count": 0,
+      "silhouette": 0.1562,
+      "execution_time": 9.9649,
+      "cluster_sizes": [
+        193,
+        67,
+        56,
+        27,
+        25,
+        20,
+        15,
+        14,
+        13,
+        12
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 128,
+      "compression_rate": 0.8879,
+      "noise_count": 0,
+      "silhouette": 0.0361,
+      "execution_time": 0.2951,
+      "cluster_sizes": [
+        387,
+        274,
+        41,
+        18,
+        17,
+        17,
+        16,
+        15,
+        15,
+        13
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 271,
+      "compression_rate": 0.7627,
+      "noise_count": 0,
+      "silhouette": 0.1253,
+      "execution_time": 0.9703,
+      "cluster_sizes": [
+        246,
+        215,
+        44,
+        26,
+        22,
+        22,
+        14,
+        13,
+        12,
+        12
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 431,
+      "compression_rate": 0.6226,
+      "noise_count": 0,
+      "silhouette": 0.1079,
+      "execution_time": 2.2995,
+      "cluster_sizes": [
+        104,
+        60,
+        45,
+        45,
+        44,
+        24,
+        20,
+        19,
+        17,
+        15
+      ]
+    },
+    {
+      "algorithm": "greedy",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 653,
+      "compression_rate": 0.4282,
+      "noise_count": 0,
+      "silhouette": 0.1499,
+      "execution_time": 4.4307,
+      "cluster_sizes": [
+        34,
+        31,
+        27,
+        26,
+        24,
+        19,
+        15,
+        14,
+        13,
+        12
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.5
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 138,
+      "compression_rate": 0.8792,
+      "noise_count": 0,
+      "silhouette": 0.2194,
+      "execution_time": 1.4924,
+      "cluster_sizes": [
+        333,
+        270,
+        41,
+        20,
+        19,
+        17,
+        17,
+        14,
+        14,
+        13
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.6
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 283,
+      "compression_rate": 0.7522,
+      "noise_count": 0,
+      "silhouette": 0.2232,
+      "execution_time": 1.4922,
+      "cluster_sizes": [
+        240,
+        183,
+        59,
+        27,
+        20,
+        18,
+        15,
+        14,
+        13,
+        13
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.7
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 433,
+      "compression_rate": 0.6208,
+      "noise_count": 0,
+      "silhouette": 0.2608,
+      "execution_time": 1.4905,
+      "cluster_sizes": [
+        118,
+        58,
+        47,
+        28,
+        27,
+        26,
+        25,
+        25,
+        16,
+        15
+      ]
+    },
+    {
+      "algorithm": "hac",
+      "parameters": {
+        "threshold": 0.8
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 649,
+      "compression_rate": 0.4317,
+      "noise_count": 0,
+      "silhouette": 0.1832,
+      "execution_time": 1.491,
+      "cluster_sizes": [
+        43,
+        29,
+        27,
+        24,
+        23,
+        17,
+        15,
+        13,
+        12,
+        12
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 2
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 60,
+      "compression_rate": 0.9475,
+      "noise_count": 267,
+      "silhouette": 0.131,
+      "execution_time": 1.4874,
+      "cluster_sizes": [
+        667,
+        14,
+        13,
+        12,
+        11,
+        8,
+        7,
+        6,
+        6,
+        6
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.3,
+        "min_samples": 3
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 23,
+      "compression_rate": 0.9799,
+      "noise_count": 341,
+      "silhouette": 0.1236,
+      "execution_time": 1.4886,
+      "cluster_sizes": [
+        667,
+        14,
+        13,
+        12,
+        11,
+        8,
+        7,
+        6,
+        6,
+        6
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 20,
+      "compression_rate": 0.9825,
+      "noise_count": 118,
+      "silhouette": 0.0254,
+      "execution_time": 1.4868,
+      "cluster_sizes": [
+        964,
+        12,
+        7,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.4,
+        "min_samples": 3
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 9,
+      "compression_rate": 0.9921,
+      "noise_count": 140,
+      "silhouette": 0.0592,
+      "execution_time": 1.4885,
+      "cluster_sizes": [
+        964,
+        12,
+        7,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 2
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 2,
+      "compression_rate": 0.9982,
+      "noise_count": 6,
+      "silhouette": 0.2061,
+      "execution_time": 1.4907,
+      "cluster_sizes": [
+        1134,
+        2
+      ]
+    },
+    {
+      "algorithm": "dbscan",
+      "parameters": {
+        "eps": 0.5,
+        "min_samples": 3
+      },
+      "category": "tech",
+      "input_count": 1142,
+      "cluster_count": 1,
+      "compression_rate": 0.9991,
+      "noise_count": 8,
+      "silhouette": -1.0,
+      "execution_time": 1.4922,
+      "cluster_sizes": [
+        1134
+      ]
+    }
+  ]
+}

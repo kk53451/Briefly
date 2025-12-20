@@ -103,7 +103,7 @@ def cosine_similarity(vec1, vec2):
         logger.warning(f" 코사인 유사도 예상치 못한 오류: {e}")
         return 0.0
 
-def cluster_similar_texts(texts, threshold=0.85):
+def cluster_similar_texts(texts, threshold=0.70):
     """
     Union-Find 알고리즘으로 유사한 텍스트들을 클러스터링하여 중복 내용을 그룹화합니다.
 
@@ -112,7 +112,7 @@ def cluster_similar_texts(texts, threshold=0.85):
 
     Args:
         texts: 클러스터링할 텍스트 리스트
-        threshold: 유사도 임계값 (0.85 = 85% 유사도, 기본값)
+        threshold: 유사도 임계값 (0.70 = 70% 유사도, 기본값)
 
     Returns:
         list: 클러스터링된 텍스트 그룹 리스트 [[text1, text2], [text3], ...]
@@ -187,6 +187,151 @@ def cluster_similar_texts(texts, threshold=0.85):
     except Exception as e:
         logger.warning(f" 클러스터링 예상치 못한 오류, 원본 반환: {e}")
         return [texts]
+
+
+def cluster_articles_with_metadata(articles, threshold=0.70):
+    """
+    Union-Find 알고리즘으로 기사들을 클러스터링하고 메타데이터를 반환합니다.
+    헤드라인 기능을 위해 클러스터 정보(대표 기사, 멤버 목록, 크기)를 함께 제공합니다.
+
+    Args:
+        articles: 클러스터링할 기사 리스트 (각 기사는 dict: {id, title, content/hilight, ...})
+        threshold: 유사도 임계값 (0.70 = 70% 유사도, 기본값)
+
+    Returns:
+        tuple: (대표 기사 리스트, 클러스터 메타데이터 리스트)
+            - 대표 기사 리스트: 기존 호환성을 위한 대표 기사들
+            - 클러스터 메타데이터: [{
+                "representative_id": str,
+                "representative_article": dict,
+                "member_ids": List[str],
+                "member_articles": List[dict],
+                "size": int
+              }, ...]
+    """
+    if len(articles) <= 1:
+        if len(articles) == 1:
+            return articles, [{
+                "representative_id": articles[0].get("id") or articles[0].get("news_id"),
+                "representative_article": articles[0],
+                "member_ids": [articles[0].get("id") or articles[0].get("news_id")],
+                "member_articles": articles,
+                "size": 1
+            }]
+        return [], []
+
+    try:
+        logger.info(f"📊 {len(articles)}개 기사 클러스터링 시작 (메타데이터 포함, threshold={threshold})...")
+        embeddings = []
+        valid_articles = []
+
+        # 임베딩 생성 (실패한 것들은 제외)
+        for article in articles:
+            # 임베딩용 텍스트: title + hilight 또는 content
+            text = article.get("title", "") + " " + (article.get("hilight") or article.get("content", ""))
+            emb = get_embedding(text[:1000])  # 토큰 제한: 1000자
+            if emb:
+                embeddings.append(emb)
+                valid_articles.append(article)
+
+        if len(embeddings) <= 1:
+            if len(valid_articles) == 1:
+                return valid_articles, [{
+                    "representative_id": valid_articles[0].get("id") or valid_articles[0].get("news_id"),
+                    "representative_article": valid_articles[0],
+                    "member_ids": [valid_articles[0].get("id") or valid_articles[0].get("news_id")],
+                    "member_articles": valid_articles,
+                    "size": 1
+                }]
+            return [], []
+
+        n = len(valid_articles)
+        parent = list(range(n))  # Union-Find 자료구조
+
+        # Union-Find: find 함수 (경로 압축)
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        # Union-Find: union 함수
+        def union(x, y):
+            root_x = find(x)
+            root_y = find(y)
+            if root_x != root_y:
+                parent[root_y] = root_x
+                return True
+            return False
+
+        # 모든 쌍 비교 및 병합
+        merge_count = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                sim = cosine_similarity(embeddings[i], embeddings[j])
+                if sim > threshold:
+                    if union(i, j):
+                        merge_count += 1
+
+        # 클러스터별로 인덱스 그룹화
+        clusters_dict = {}
+        for i in range(n):
+            root = find(i)
+            if root not in clusters_dict:
+                clusters_dict[root] = []
+            clusters_dict[root].append(i)
+
+        # 각 클러스터에서 대표 기사 선정 (Centroid 유사도 방식)
+        cluster_metadata = []
+        representative_articles = []
+
+        for root, member_indices in clusters_dict.items():
+            # 클러스터 멤버들의 임베딩으로 중심(centroid) 계산
+            cluster_embeddings = [embeddings[idx] for idx in member_indices]
+            centroid = np.mean(cluster_embeddings, axis=0)
+
+            # Centroid에 가장 가까운 기사를 대표로 선정
+            best_idx = member_indices[0]
+            best_sim = -1
+            for idx in member_indices:
+                sim = cosine_similarity(embeddings[idx], centroid)
+                if sim > best_sim:
+                    best_sim = sim
+                    best_idx = idx
+
+            representative = valid_articles[best_idx]
+            members = [valid_articles[idx] for idx in member_indices]
+
+            representative_articles.append(representative)
+            cluster_metadata.append({
+                "representative_id": representative.get("id") or representative.get("news_id"),
+                "representative_article": representative,
+                "member_ids": [
+                    (valid_articles[idx].get("id") or valid_articles[idx].get("news_id"))
+                    for idx in member_indices
+                ],
+                "member_articles": members,
+                "size": len(member_indices)
+            })
+
+        # 클러스터 크기 기준 내림차순 정렬
+        cluster_metadata.sort(key=lambda x: x["size"], reverse=True)
+        representative_articles = [c["representative_article"] for c in cluster_metadata]
+
+        logger.info(f"  🔗 병합 {merge_count}회 수행")
+        logger.info(f"  ✅ {len(articles)}개 기사 → {len(cluster_metadata)}개 클러스터")
+        logger.info(f"  📈 클러스터 크기 분포: {[c['size'] for c in cluster_metadata[:10]]}...")
+
+        return representative_articles, cluster_metadata
+
+    except MemoryError as e:
+        logger.warning(f" 메모리 부족으로 클러스터링 실패: {e}")
+        return articles, []
+    except (ValueError, TypeError) as e:
+        logger.warning(f" 데이터 형식 오류로 클러스터링 실패: {e}")
+        return articles, []
+    except Exception as e:
+        logger.warning(f" 클러스터링 예상치 못한 오류, 원본 반환: {e}")
+        return articles, []
 
 def filter_outliers(texts, titles=None, centroid_threshold=0.30, isolation_threshold=0.25):
     """
@@ -528,3 +673,116 @@ def summarize_articles(texts: list[str], category: str) -> str:
     except Exception as e:
         logger.warning(f" 대본 생성 예상치 못한 오류: {e}")
         return f"오늘 {category} 분야의 주요 소식들을 전해드렸습니다."
+
+
+def generate_headline_summary(cluster_articles: list) -> dict:
+    """
+    클러스터 내 기사들을 분석하여 헤드라인과 요약을 생성합니다.
+
+    Args:
+        cluster_articles: 클러스터에 속한 기사 리스트
+            각 기사는 dict: {title, hilight, content, ...}
+
+    Returns:
+        dict: {
+            "headline": str,  # 핵심 이슈를 한 문장으로 (예: "14년만에 애플이 삼성 추월?")
+            "summary": str    # 친근한 말투로 2-3문장 설명 (~요, ~해요 체)
+        }
+
+    Note:
+        - GPT 4o-mini 사용
+        - 입력: title + hilight (토큰 절약)
+        - 요약 스타일: 친근한 ~요, ~해요 체
+    """
+    if not cluster_articles:
+        return {"headline": "", "summary": ""}
+
+    # 토큰 절약을 위해 title + hilight만 사용 (각 기사 500자 제한)
+    article_inputs = []
+    for article in cluster_articles[:5]:  # 최대 5개 기사만 사용
+        title = article.get("title", "")
+        hilight = article.get("hilight", "") or article.get("content", "")[:300]
+        article_inputs.append(f"제목: {title}\n내용: {hilight[:500]}")
+
+    articles_text = "\n\n".join(article_inputs)
+
+    prompt = (
+        "당신은 뉴스 브리핑 작가입니다. 아래 관련 기사들을 분석하여 "
+        "핵심 이슈를 헤드라인과 요약으로 작성해주세요.\n\n"
+
+        "**작성 가이드:**\n"
+        "1. **헤드라인**: 핵심 이슈를 한 문장으로 표현 (15-30자)\n"
+        "   - 호기심을 자극하는 질문형이나 핵심 사실 전달\n"
+        "   - 예시: '14년만에 애플이 삼성 추월?', '원달러 환율 급등 이유는?'\n\n"
+
+        "2. **요약**: 친근한 말투로 2-3문장 설명 (80-150자)\n"
+        "   - 반드시 '~요', '~해요', '~이에요' 체 사용\n"
+        "   - 핵심 내용을 쉽게 풀어서 설명\n"
+        "   - 예시: '애플이 올해 삼성전자를 제치고 세계 최대 스마트폰 제조사가 될거라는 전망이 나왔어요. "
+        "세계 스마트폰 시장에서 출하량을 기준으로 1위에 오를 걸로 전망된 건데요. "
+        "아이폰 17 시리즈의 인기가 원인으로 꼽혀요.'\n\n"
+
+        f"**분석할 기사들:**\n{articles_text}\n\n"
+
+        "**출력 형식 (JSON):**\n"
+        '{"headline": "헤드라인 텍스트", "summary": "요약 텍스트"}\n\n'
+
+        "JSON 형식으로만 응답해주세요:"
+    )
+
+    try:
+        response = openai.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.5,
+            max_tokens=300
+        )
+
+        result_text = response.choices[0].message.content.strip()
+
+        # JSON 파싱 시도
+        import json
+
+        # JSON 블록 추출 (```json ... ``` 형식 처리)
+        if "```json" in result_text:
+            result_text = result_text.split("```json")[1].split("```")[0].strip()
+        elif "```" in result_text:
+            result_text = result_text.split("```")[1].split("```")[0].strip()
+
+        result = json.loads(result_text)
+
+        logger.info(f"✅ 헤드라인 생성 완료: {result.get('headline', '')[:30]}...")
+        return {
+            "headline": result.get("headline", ""),
+            "summary": result.get("summary", "")
+        }
+
+    except json.JSONDecodeError as e:
+        logger.warning(f"⚠️ 헤드라인 JSON 파싱 실패: {e}")
+        # 파싱 실패 시 첫 번째 기사 제목 사용
+        first_title = cluster_articles[0].get("title", "") if cluster_articles else ""
+        return {
+            "headline": first_title[:30] if first_title else "오늘의 주요 뉴스",
+            "summary": "관련 뉴스를 확인해보세요."
+        }
+    except openai.RateLimitError as e:
+        logger.warning(f"⚠️ OpenAI Rate Limit 초과 (헤드라인 생성): {e}")
+        first_title = cluster_articles[0].get("title", "") if cluster_articles else ""
+        return {
+            "headline": first_title[:30] if first_title else "오늘의 주요 뉴스",
+            "summary": "관련 뉴스를 확인해보세요."
+        }
+    except openai.APIError as e:
+        logger.warning(f"⚠️ OpenAI API 오류 (헤드라인 생성): {e}")
+        first_title = cluster_articles[0].get("title", "") if cluster_articles else ""
+        return {
+            "headline": first_title[:30] if first_title else "오늘의 주요 뉴스",
+            "summary": "관련 뉴스를 확인해보세요."
+        }
+    except Exception as e:
+        logger.warning(f"⚠️ 헤드라인 생성 예상치 못한 오류: {e}")
+        first_title = cluster_articles[0].get("title", "") if cluster_articles else ""
+        return {
+            "headline": first_title[:30] if first_title else "오늘의 주요 뉴스",
+            "summary": "관련 뉴스를 확인해보세요."
+        }

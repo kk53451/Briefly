@@ -1,0 +1,45 @@
+# Briefly 뉴스 팟캐스트 설정
+# 7분 분량 대화형 팟캐스트 (프로페셔널 스타일)
+
+# 기본 설정
+word_count: 2500  # 7분 분량 (대화체로 약 350단어/분)
+output_language: "Korean"
+podcast_name: "브리플리 뉴스"
+podcast_tagline: "AI가 전하는 오늘의 뉴스"
+
+# 대화 스타일
+conversation_style:
+  - "professional"
+  - "informative"
+  - "engaging"
+
+# 역할 정의
+roles_person1: "뉴스 앵커"
+roles_person2: "해설 전문가"
+
+# 대화 구조
+dialogue_structure:
+  - "오프닝 인사"
+  - "오늘의 주요 뉴스 소개"
+  - "뉴스별 심층 토론"
+  - "마무리 및 클로징"
+
+# 참여 기법
+engagement_techniques:
+  - "rhetorical questions"
+  - "expert analysis"
+  - "contextual commentary"
+
+# 창의성 수준 (0.0 ~ 1.0)
+creativity: 0.6
+
+# TTS 설정
+text_to_speech:
+  default_tts_model: "elevenlabs"
+  elevenlabs:
+    default_voices:
+      question: "TX3LPaxmHKxFdv7VOQHJ"   # Liam (남성) - 뉴스 앵커
+      answer: "xi3rF0t7dg7uN2M0WUhr"      # 여성 - 해설 전문가
+    model: "eleven_multilingual_v2"
+  audio_format: "mp3"
+  ending_message: "브리플리 뉴스였습니다. 내일 또 만나요."

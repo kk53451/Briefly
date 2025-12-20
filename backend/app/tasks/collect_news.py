@@ -30,10 +30,10 @@ def collect_category_news(category_ko: str, config: dict, start_time: str, end_t
                 category=category_en,
                 start_time=start_time,
                 end_time=end_time,
-                size=1000,              # 오버페치 후 필터링 (다양성 증가)
+                size=3000,              # 오버페치 후 필터링 (다양성 증가)
                 sort="popular",
                 min_content_length=300,
-                limit=100               # 최종 저장 수 증가
+                limit=300               # 최종 저장 수 증가
             )
             logger.info(f"[{category_ko}] 유효 기사 수: {len(articles)}")
         except Exception as e:

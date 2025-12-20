@@ -27,7 +27,8 @@ def lambda_handler(event, context):
     # 결과 요약용 딕셔너리 초기화
     result_summary = {
         "news": " 실패",
-        "frequency": " 실패"
+        "frequency": " 실패",
+        "headlines": " 실패"
     }
 
     #  1단계: 오늘의 뉴스 수집
@@ -62,6 +63,23 @@ def lambda_handler(event, context):
         logger.error(traceback.format_exc())
     except Exception as e:
         logger.error(f"[주파수 생성 예상치 못한 오류] {e}")
+        logger.error(traceback.format_exc())
+
+    #  3단계: 오늘의 브리핑 헤드라인 생성
+    try:
+        logger.info("📰 헤드라인 생성 시작")
+        from app.tasks.generate_headlines import generate_all_headlines
+        generate_all_headlines()
+        result_summary["headlines"] = " 완료"
+        logger.info(" 헤드라인 생성 완료")
+    except ImportError as e:
+        logger.error(f"[헤드라인 생성 모듈 오류] {e}")
+        logger.error(traceback.format_exc())
+    except MemoryError as e:
+        logger.error(f"[헤드라인 생성 메모리 부족] {e}")
+        logger.error(traceback.format_exc())
+    except Exception as e:
+        logger.error(f"[헤드라인 생성 예상치 못한 오류] {e}")
         logger.error(traceback.format_exc())
 
     logger.info(f"📦 작업 결과 요약: {result_summary}")

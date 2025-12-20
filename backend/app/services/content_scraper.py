@@ -72,6 +72,13 @@ UNWANTED_KEYWORDS = [
     "인용된 모든 콘텐츠는", "당신의 의견을 남겨주세요", "클릭! 기사는 어떠셨나요?"
 ]
 
+# 노이즈 탐지용 키워드 (메뉴/네비게이션/푸터에서 자주 발견)
+NOISE_KEYWORDS = {
+    '닫기', '로그인', '회원가입', '전체메뉴', '오피니언',
+    '개인정보처리방침', '청소년보호정책', '인기기사', '최신기사',
+    '댓글정책', '구독신청', '뉴스레터', '광고문의'
+}
+
 # 본문 내 반복적으로 등장하는 안내/광고/제보/저작권 텍스트 정규식 패턴
 REMOVE_TEXT_PATTERNS = [
     # 기자 이름 + 이메일
@@ -89,6 +96,35 @@ REMOVE_TEXT_PATTERNS_COMPILED = [re.compile(pat) for pat in REMOVE_TEXT_PATTERNS
 
 EMAIL_PATTERN = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 PHONE_PATTERN = re.compile(r"\d{2,3}-\d{3,4}-\d{4}")
+
+def is_structural_noise(content: str) -> bool:
+    """
+    구조적 메트릭 기반 노이즈 탐지
+    - 짧은 줄(10자 미만)이 30% 이상이고
+    - 평균 줄 길이가 20자 미만이면 NOISE로 판정
+    """
+    lines = [l.strip() for l in content.split('\n') if l.strip()]
+    if len(lines) < 5:
+        return False  # 너무 짧으면 판단 불가
+
+    short_lines = sum(1 for l in lines if len(l) < 10)
+    short_ratio = short_lines / len(lines)
+    avg_line_len = len(content) / len(lines)
+
+    # 짧은 줄이 30% 이상 AND 평균 줄 길이 20자 미만 → NOISE
+    if short_ratio > 0.30 and avg_line_len < 20:
+        return True
+
+    return False
+
+
+def count_noise_keywords(content: str) -> int:
+    """노이즈 키워드 출현 횟수 반환"""
+    count = 0
+    for kw in NOISE_KEYWORDS:
+        count += content.count(kw)
+    return count
+
 
 def clean_text_noise(text: str) -> str:
     """
@@ -197,17 +233,29 @@ def extract_content_flexibly(url: str, timeout: float = 10.0) -> str:
                 for tag in soup.select(selector):
                     tag.decompose()
             content = trafilatura.extract(str(soup))
-            # 길이/문장수/한글뉴스 기준 모두 만족해야 반환
+            # 길이/문장수/한글뉴스/노이즈 기준 모두 만족해야 반환
             if content and len(content) >= 300 and content.count('.') >= 5:
                 content = clean_text_noise(content)
                 if is_korean_text(content, threshold=0.7):  # 한글뉴스만 통과
-                    return content.strip()
+                    # 노이즈 필터링 (구조적 + 키워드)
+                    if is_structural_noise(content):
+                        print(f"⚠ [구조적노이즈] {url[:50]}...")
+                    elif count_noise_keywords(content) >= 3:
+                        print(f"⚠ [키워드노이즈] {url[:50]}...")
+                    else:
+                        return content.strip()
         # Trafilatura 실패/미달시 fallback: BS4 방식
         text = extract_content_with_bs4(url)
         if text and len(text) >= 300 and text.count('.') >= 5:
             text = clean_text_noise(text)
             if is_korean_text(text, threshold=0.7):
-                return text
+                # 노이즈 필터링 (구조적 + 키워드)
+                if is_structural_noise(text):
+                    print(f"⚠ [BS4-구조적노이즈] {url[:50]}...")
+                elif count_noise_keywords(text) >= 3:
+                    print(f"⚠ [BS4-키워드노이즈] {url[:50]}...")
+                else:
+                    return text
         return ""
     except ImportError as e:
         print(f"❌ [라이브러리 누락] trafilatura 설치 필요: {e}")

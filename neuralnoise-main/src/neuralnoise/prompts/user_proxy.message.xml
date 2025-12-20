@@ -1,0 +1,23 @@
+# Task
+
+Please summarize the content of the file ${content_path} to extract key information. Don't miss
+important details. Only process this file, nothing else.
+
+Make sure to keep the content in the context variables!
+
+# Queries
+
+- Extract all the titles from the content
+- Make questions about the titles to extract all key information
+- Provide a summary of all the extracted content
+
+
+# Podcast information
+
+## Show
+
+${show}
+
+## Speakers
+
+${speakers}

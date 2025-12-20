@@ -60,7 +60,7 @@ export function NewsDetailCard({
         </div>
 
         <div className="text-xs text-muted-foreground mb-2 text-center">
-          {news.publisher} • {formatDate(news.published_at)}
+          {formatDate(news.published_at)}
         </div>
 
         <p className="text-sm mb-3 whitespace-pre-line flex-1 line-clamp-6">{news.summary}</p>

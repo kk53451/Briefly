@@ -14,6 +14,7 @@ from app.routes import (
     auth,
     category,
     frequency,
+    headlines,
     news,
     user,
     test
@@ -32,6 +33,7 @@ app = FastAPI(
 app.include_router(auth.router)
 app.include_router(category.router)
 app.include_router(frequency.router)
+app.include_router(headlines.router)
 app.include_router(news.router)
 app.include_router(user.router)
 app.include_router(test.router)  # 테스트용 (운영 환경에서는 제거 권장)

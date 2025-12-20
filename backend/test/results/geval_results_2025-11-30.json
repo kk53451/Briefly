@@ -1,0 +1,2305 @@
+{
+  "evaluation_date": "2025-11-30",
+  "model": "gpt-4o",
+  "categories": [
+    "politics",
+    "economy",
+    "society",
+    "tech"
+  ],
+  "configs": [
+    {
+      "algorithm": "union_find",
+      "threshold": 0.5
+    },
+    {
+      "algorithm": "union_find",
+      "threshold": 0.6
+    },
+    {
+      "algorithm": "union_find",
+      "threshold": 0.7
+    },
+    {
+      "algorithm": "union_find",
+      "threshold": 0.8
+    },
+    {
+      "algorithm": "greedy",
+      "threshold": 0.6
+    },
+    {
+      "algorithm": "hac",
+      "threshold": 0.6
+    },
+    {
+      "algorithm": "dbscan",
+      "eps": 0.4,
+      "min_samples": 2
+    }
+  ],
+  "results": [
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.5
+      },
+      "category": "politics",
+      "cluster_count": 4,
+      "valid_cluster_count": 1,
+      "scores": {},
+      "error": "Not enough valid clusters"
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.6
+      },
+      "category": "politics",
+      "cluster_count": 51,
+      "valid_cluster_count": 5,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.6,
+          "std": 1.36,
+          "values": [
+            2,
+            4,
+            5,
+            5,
+            2
+          ]
+        },
+        "separation": {
+          "mean": 4.33,
+          "std": 0.94,
+          "values": [
+            5,
+            5,
+            3
+          ]
+        },
+        "representative": {
+          "mean": 3.6,
+          "std": 1.5,
+          "values": [
+            1,
+            3,
+            5,
+            5,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.6,
+          "std": 0.49,
+          "values": [
+            4,
+            3,
+            4,
+            3,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.7
+      },
+      "category": "politics",
+      "cluster_count": 198,
+      "valid_cluster_count": 39,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            5,
+            5,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            5,
+            4,
+            4,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.4,
+          "std": 1.2,
+          "values": [
+            5,
+            5,
+            2,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            5,
+            5,
+            4,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.8
+      },
+      "category": "politics",
+      "cluster_count": 487,
+      "valid_cluster_count": 70,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 1.17,
+          "values": [
+            5,
+            4,
+            5,
+            5,
+            2
+          ]
+        },
+        "separation": {
+          "mean": 3.0,
+          "std": 0.0,
+          "values": [
+            3,
+            3,
+            3
+          ]
+        },
+        "representative": {
+          "mean": 3.4,
+          "std": 1.2,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            1
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.0,
+          "std": 1.1,
+          "values": [
+            4,
+            3,
+            1,
+            4,
+            3
+          ]
+        },
+        "summary_consistency": {
+          "mean": 3.8,
+          "std": 1.6,
+          "values": [
+            5,
+            3,
+            1,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "greedy",
+        "threshold": 0.6
+      },
+      "category": "politics",
+      "cluster_count": 170,
+      "valid_cluster_count": 82,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.8,
+          "std": 1.47,
+          "values": [
+            2,
+            2,
+            5,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.33,
+          "std": 0.47,
+          "values": [
+            5,
+            4,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 3.4,
+          "std": 1.2,
+          "values": [
+            1,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.0,
+          "std": 0.63,
+          "values": [
+            3,
+            4,
+            4,
+            5,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "hac",
+        "threshold": 0.6
+      },
+      "category": "politics",
+      "cluster_count": 171,
+      "valid_cluster_count": 88,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 0.75,
+          "values": [
+            4,
+            5,
+            3,
+            4,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.0,
+          "std": 0.82,
+          "values": [
+            5,
+            4,
+            3
+          ]
+        },
+        "representative": {
+          "mean": 3.0,
+          "std": 1.1,
+          "values": [
+            3,
+            4,
+            1,
+            3,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.4,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "dbscan",
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "politics",
+      "cluster_count": 5,
+      "valid_cluster_count": 5,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.6,
+          "std": 1.36,
+          "values": [
+            2,
+            2,
+            4,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            4,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.6,
+          "std": 1.5,
+          "values": [
+            1,
+            4,
+            3,
+            5,
+            5
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.8,
+          "std": 0.4,
+          "values": [
+            4,
+            4,
+            3,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 3.8,
+          "std": 1.6,
+          "values": [
+            5,
+            5,
+            3,
+            5,
+            1
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.2,
+          "std": 0.4,
+          "values": [
+            5,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.5
+      },
+      "category": "economy",
+      "cluster_count": 9,
+      "valid_cluster_count": 4,
+      "evaluated_clusters": 4,
+      "scores": {
+        "coherence": {
+          "mean": 3.75,
+          "std": 1.3,
+          "values": [
+            3,
+            5,
+            2,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.25,
+          "std": 1.79,
+          "values": [
+            2,
+            5,
+            1,
+            5
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.25,
+          "std": 0.43,
+          "values": [
+            4,
+            4,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.75,
+          "std": 0.43,
+          "values": [
+            4,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.5,
+          "std": 0.5,
+          "values": [
+            4,
+            5,
+            5,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.6
+      },
+      "category": "economy",
+      "cluster_count": 208,
+      "valid_cluster_count": 31,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 0.98,
+          "values": [
+            3,
+            5,
+            5,
+            3,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 4.2,
+          "std": 0.98,
+          "values": [
+            3,
+            5,
+            5,
+            3,
+            5
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.4,
+          "values": [
+            4,
+            4,
+            4,
+            5,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.4,
+          "std": 0.8,
+          "values": [
+            4,
+            5,
+            3,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            4,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.7
+      },
+      "category": "economy",
+      "cluster_count": 605,
+      "valid_cluster_count": 122,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            5,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 3.6,
+          "std": 1.02,
+          "values": [
+            2,
+            4,
+            4,
+            3,
+            5
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.0,
+          "std": 0.63,
+          "values": [
+            4,
+            4,
+            4,
+            3,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            4,
+            4,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.8
+      },
+      "category": "economy",
+      "cluster_count": 919,
+      "valid_cluster_count": 134,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.6,
+          "std": 1.74,
+          "values": [
+            5,
+            5,
+            5,
+            2,
+            1
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.4,
+          "std": 1.62,
+          "values": [
+            4,
+            5,
+            5,
+            2,
+            1
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.0,
+          "std": 0.63,
+          "values": [
+            5,
+            4,
+            4,
+            4,
+            3
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            5,
+            5,
+            4,
+            5,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "greedy",
+        "threshold": 0.6
+      },
+      "category": "economy",
+      "cluster_count": 480,
+      "valid_cluster_count": 200,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.0,
+          "std": 0.63,
+          "values": [
+            4,
+            5,
+            3,
+            4,
+            4
+          ]
+        },
+        "separation": {
+          "mean": 4.33,
+          "std": 0.47,
+          "values": [
+            4,
+            4,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.6,
+          "std": 0.49,
+          "values": [
+            4,
+            4,
+            3,
+            4,
+            3
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.75,
+          "values": [
+            4,
+            3,
+            5,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.4,
+          "std": 1.2,
+          "values": [
+            2,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            4,
+            5,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "hac",
+        "threshold": 0.6
+      },
+      "category": "economy",
+      "cluster_count": 489,
+      "valid_cluster_count": 213,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.6,
+          "std": 1.02,
+          "values": [
+            3,
+            2,
+            4,
+            5,
+            4
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.0,
+          "std": 0.89,
+          "values": [
+            2,
+            2,
+            4,
+            4,
+            3
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.4,
+          "std": 1.2,
+          "values": [
+            4,
+            1,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "dbscan",
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "economy",
+      "cluster_count": 31,
+      "valid_cluster_count": 31,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.0,
+          "std": 0.89,
+          "values": [
+            5,
+            3,
+            4,
+            3,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            5,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 3.8,
+          "std": 0.4,
+          "values": [
+            4,
+            4,
+            4,
+            3,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.6,
+          "std": 1.36,
+          "values": [
+            4,
+            4,
+            1,
+            5,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.6,
+          "std": 0.8,
+          "values": [
+            5,
+            5,
+            3,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.5
+      },
+      "category": "society",
+      "cluster_count": 9,
+      "valid_cluster_count": 1,
+      "scores": {},
+      "error": "Not enough valid clusters"
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.6
+      },
+      "category": "society",
+      "cluster_count": 170,
+      "valid_cluster_count": 21,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 4.0,
+          "std": 0.63,
+          "values": [
+            4,
+            5,
+            4,
+            3,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.8,
+          "std": 1.47,
+          "values": [
+            4,
+            1,
+            5,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            5,
+            1,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.7
+      },
+      "category": "society",
+      "cluster_count": 476,
+      "valid_cluster_count": 87,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.6,
+          "std": 0.8,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            3
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            1
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            1
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            5,
+            4,
+            5,
+            5,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.8
+      },
+      "category": "society",
+      "cluster_count": 796,
+      "valid_cluster_count": 102,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            5,
+            5,
+            1,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.4,
+          "std": 1.2,
+          "values": [
+            4,
+            4,
+            1,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.75,
+          "values": [
+            4,
+            4,
+            3,
+            5,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            4,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "greedy",
+        "threshold": 0.6
+      },
+      "category": "society",
+      "cluster_count": 386,
+      "valid_cluster_count": 151,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.0,
+          "std": 1.41,
+          "values": [
+            5,
+            3,
+            2,
+            4,
+            1
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            5,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 3.2,
+          "std": 1.47,
+          "values": [
+            5,
+            2,
+            4,
+            4,
+            1
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.4,
+          "values": [
+            5,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.6,
+          "std": 0.8,
+          "values": [
+            5,
+            3,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.2,
+          "std": 0.4,
+          "values": [
+            5,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "hac",
+        "threshold": 0.6
+      },
+      "category": "society",
+      "cluster_count": 407,
+      "valid_cluster_count": 173,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 0.98,
+          "values": [
+            3,
+            5,
+            5,
+            5,
+            3
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            4,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.2,
+          "std": 0.98,
+          "values": [
+            2,
+            4,
+            4,
+            4,
+            2
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.8,
+          "std": 0.4,
+          "values": [
+            3,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.8,
+          "std": 0.4,
+          "values": [
+            5,
+            4,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            4,
+            5,
+            5,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "dbscan",
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "society",
+      "cluster_count": 21,
+      "valid_cluster_count": 21,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 0.98,
+          "values": [
+            3,
+            5,
+            5,
+            3,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            5,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 3.6,
+          "std": 1.02,
+          "values": [
+            2,
+            4,
+            5,
+            3,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.4,
+          "std": 1.36,
+          "values": [
+            3,
+            5,
+            1,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            5,
+            5,
+            1,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.5
+      },
+      "category": "tech",
+      "cluster_count": 8,
+      "valid_cluster_count": 2,
+      "evaluated_clusters": 2,
+      "scores": {
+        "coherence": {
+          "mean": 3.0,
+          "std": 2.0,
+          "values": [
+            5,
+            1
+          ]
+        },
+        "separation": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4
+          ]
+        },
+        "representative": {
+          "mean": 2.5,
+          "std": 1.5,
+          "values": [
+            4,
+            1
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.5,
+          "std": 0.5,
+          "values": [
+            4,
+            3
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.6
+      },
+      "category": "tech",
+      "cluster_count": 138,
+      "valid_cluster_count": 20,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            5,
+            1,
+            5,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            4,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.8,
+          "std": 1.47,
+          "values": [
+            4,
+            1,
+            5,
+            5,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 3.8,
+          "std": 0.4,
+          "values": [
+            4,
+            3,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            4,
+            5,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.7
+      },
+      "category": "tech",
+      "cluster_count": 327,
+      "valid_cluster_count": 60,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.4,
+          "std": 1.2,
+          "values": [
+            2,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.4,
+          "std": 1.2,
+          "values": [
+            1,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.75,
+          "values": [
+            4,
+            3,
+            5,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.8,
+          "std": 0.4,
+          "values": [
+            4,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            4,
+            5,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "union_find",
+        "threshold": 0.8
+      },
+      "category": "tech",
+      "cluster_count": 533,
+      "valid_cluster_count": 86,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.8,
+          "std": 0.4,
+          "values": [
+            4,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            5,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 3.8,
+          "std": 0.4,
+          "values": [
+            4,
+            4,
+            3,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            5,
+            5,
+            4,
+            5,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            5,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "greedy",
+        "threshold": 0.6
+      },
+      "category": "tech",
+      "cluster_count": 271,
+      "valid_cluster_count": 103,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.4,
+          "std": 0.8,
+          "values": [
+            3,
+            5,
+            4,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4
+          ]
+        },
+        "representative": {
+          "mean": 4.0,
+          "std": 0.0,
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.0,
+          "std": 0.63,
+          "values": [
+            4,
+            5,
+            4,
+            4,
+            3
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.2,
+          "std": 0.98,
+          "values": [
+            5,
+            5,
+            3,
+            5,
+            3
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            4,
+            5,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "hac",
+        "threshold": 0.6
+      },
+      "category": "tech",
+      "cluster_count": 283,
+      "valid_cluster_count": 111,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 4.6,
+          "std": 0.8,
+          "values": [
+            3,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 4.2,
+          "std": 0.75,
+          "values": [
+            3,
+            4,
+            5,
+            4,
+            5
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.4,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            4
+          ]
+        },
+        "summary_consistency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            4,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "config": {
+        "algorithm": "dbscan",
+        "eps": 0.4,
+        "min_samples": 2
+      },
+      "category": "tech",
+      "cluster_count": 20,
+      "valid_cluster_count": 20,
+      "evaluated_clusters": 5,
+      "scores": {
+        "coherence": {
+          "mean": 3.6,
+          "std": 1.74,
+          "values": [
+            5,
+            2,
+            5,
+            1,
+            5
+          ]
+        },
+        "separation": {
+          "mean": 4.67,
+          "std": 0.47,
+          "values": [
+            5,
+            4,
+            5
+          ]
+        },
+        "representative": {
+          "mean": 3.4,
+          "std": 1.36,
+          "values": [
+            4,
+            3,
+            5,
+            1,
+            4
+          ]
+        },
+        "summary_relevance": {
+          "mean": 4.2,
+          "std": 0.75,
+          "values": [
+            3,
+            5,
+            4,
+            4,
+            5
+          ]
+        },
+        "summary_consistency": {
+          "mean": 4.2,
+          "std": 1.6,
+          "values": [
+            1,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_fluency": {
+          "mean": 5.0,
+          "std": 0.0,
+          "values": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "summary_coverage": {
+          "mean": 4.6,
+          "std": 0.49,
+          "values": [
+            4,
+            5,
+            5,
+            4,
+            5
+          ]
+        }
+      }
+    }
+  ]
+}

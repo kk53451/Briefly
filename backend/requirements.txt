@@ -1,11 +1,9 @@
 fastapi
-uvicorn
+mangum
 python-dotenv
 requests
-boto3
 httpx
 openai
-mangum
 pyJWT
 pytz
 python-jose

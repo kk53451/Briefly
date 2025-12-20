@@ -14,6 +14,7 @@ from app.utils.dynamo import (
 )
 from app.services.openai_service import summarize_articles, cluster_similar_texts, summarize_group, filter_outliers
 from app.services.tts_service import text_to_speech
+from app.services.podcast_service import PodcastService
 from app.utils.s3 import upload_audio_to_s3_presigned
 from app.constants.category_map import CATEGORY_MAP
 from app.services.content_scraper import extract_content_flexibly
@@ -120,10 +121,10 @@ def process_single_category(category_ko: str, date: str) -> dict:
 
         clustering_start = time.time()
         try:
-            # ===== Pass 1: Union-Find 중복 제거 (threshold=0.85) =====
-            add_log(f"\n  [Pass 1] 중복 제거 (Union-Find, threshold=0.85)")
+            # ===== Pass 1: Union-Find 중복 제거 (threshold=0.70) =====
+            add_log(f"\n  [Pass 1] 중복 제거 (Union-Find, threshold=0.70)")
             pass1_start = time.time()
-            groups = cluster_similar_texts(full_contents, threshold=0.85)
+            groups = cluster_similar_texts(full_contents, threshold=0.70)
             pass1_time = time.time() - pass1_start
 
             # 각 클러스터에서 대표 선정 (가장 긴 것)
@@ -238,29 +239,54 @@ def process_single_category(category_ko: str, date: str) -> dict:
             add_log(f"  - 클러스터링 실패, 원본 기사 사용: {e}", "WARNING")
             final_contents = full_contents
 
-        # GPT로 종합 스크립트 생성
-        add_log(f"\n[3단계] GPT 대본 생성")
-        add_log(f"  - 입력: {len(final_contents)}개 요약문")
+        # 뉴스 콘텐츠 준비 (Podcastfy 입력용)
+        add_log(f"\n[3단계] 대화형 팟캐스트 생성 (Podcastfy)")
+        add_log(f"  - 입력: {len(final_contents)}개 기사")
 
-        gpt_start = time.time()
-        script = summarize_articles(final_contents, category_en)
-        gpt_time = time.time() - gpt_start
+        # final_contents를 하나의 텍스트로 결합
+        news_content = "\n\n---\n\n".join(final_contents)
+        add_log(f"  - 결합된 콘텐츠: {len(news_content)}자")
 
-        if not script or len(script) < 500:
-            add_log(f"❌ 대본 길이 부족 ({len(script) if script else 0}자) → 스킵", "WARNING")
+        # Podcastfy로 대화형 팟캐스트 생성 (스크립트 생성 + TTS 포함)
+        podcast_start = time.time()
+        try:
+            podcast_service = PodcastService()
+            audio_file = podcast_service.generate_news_podcast(news_content, category_en)
+            podcast_time = time.time() - podcast_start
+            add_log(f"  - 팟캐스트 생성 완료: {podcast_time:.2f}초")
+            add_log(f"  - 오디오 파일: {audio_file}")
+        except Exception as e:
+            add_log(f"❌ Podcastfy 생성 실패: {str(e)}", "ERROR")
             flush_logs()
-            return {"category": category_en, "status": "failed", "reason": "summary_too_short"}
+            return {"category": category_en, "status": "failed", "reason": f"podcast_generation_failed: {str(e)}"}
 
-        add_log(f"  - 출력: {len(script)}자")
-        add_log(f"  - 처리 시간: {gpt_time:.2f}초")
+        # S3 업로드
+        add_log(f"\n[4단계] S3 업로드")
+        try:
+            with open(audio_file, 'rb') as f:
+                audio_bytes = f.read()
+            audio_url = upload_audio_to_s3_presigned(
+                file_bytes=audio_bytes,
+                user_id="shared",
+                category=category_en,
+                date=date,
+                expires_in_seconds=604800  # 7일 유효
+            )
+            add_log(f"  - S3 업로드 완료")
+        except Exception as e:
+            add_log(f"❌ S3 업로드 실패: {str(e)}", "ERROR")
+            flush_logs()
+            return {"category": category_en, "status": "failed", "reason": f"s3_upload_failed: {str(e)}"}
 
-        # 스크립트 DynamoDB에 저장 (TTS 없이 먼저 저장)
-        add_log(f"\n[4단계] DynamoDB 저장")
+        # DynamoDB에 저장
+        add_log(f"\n[5단계] DynamoDB 저장")
         item = {
             "frequency_id": freq_id,
             "category": category_en,
             "date": date,
-            "script": script,
+            "script": f"[대화형 팟캐스트] {len(final_contents)}개 기사 기반",  # 메타 정보
+            "audio_url": audio_url,
+            "format": "conversation",  # 대화형 표시
             "created_at": datetime.utcnow().isoformat()
         }
         save_frequency_summary(item)
@@ -272,7 +298,7 @@ def process_single_category(category_ko: str, date: str) -> dict:
         add_log(f"✅ [{category_en.upper()}] 완료")
         add_log(f"{'='*70}")
         add_log(f"  - 총 소요시간: {elapsed_time:.1f}초")
-        add_log(f"  - 대본 길이: {len(script)}자")
+        add_log(f"  - 팟캐스트 생성: {podcast_time:.1f}초")
         add_log(f"  - 압축률: {total_compression:.1f}% ({len(full_contents)}개 → {len(filtered_texts)}개)")
 
         flush_logs()
@@ -280,48 +306,10 @@ def process_single_category(category_ko: str, date: str) -> dict:
         return {
             "category": category_en,
             "status": "success",
-            "script_length": len(script),
+            "audio_url": audio_url,
             "elapsed_time": elapsed_time,
             "compression_rate": total_compression
         }
-
-        # # ElevenLabs로 TTS 변환 → S3 Presigned URL 생성 (임시 비활성화)
-        # logger.info(f"[{category_en}] TTS 음성 생성 시작...")
-        # try:
-        #     audio_bytes = text_to_speech(script)
-        #     audio_url = upload_audio_to_s3_presigned(
-        #         file_bytes=audio_bytes,
-        #         user_id="shared",
-        #         category=category_en,
-        #         date=date,
-        #         expires_in_seconds=604800  # Presigned URL 7일 유효 (24시간에서 7일로 연장)
-        #     )
-        #     logger.info(f"  └─ TTS 음성 생성 완료 → S3 업로드")
-        # except Exception as e:
-        #     logger.warning(f"❌ [{category_en}] TTS 실패: {str(e)}")
-        #     return {"category": category_en, "status": "failed", "reason": f"tts_failed: {str(e)}"}
-
-        # # 결과 DynamoDB에 저장
-        # item = {
-        #     "frequency_id": freq_id,
-        #     "category": category_en,
-        #     "date": date,
-        #     "script": script,
-        #     "audio_url": audio_url,
-        #     "created_at": datetime.utcnow().isoformat()
-        # }
-
-        # save_frequency_summary(item)
-
-        # elapsed_time = time.time() - start_time
-        # logger.info(f"✅ [{category_en}] 완료 → 대본: {len(script)}자, TTS 생성, DynamoDB 저장 (소요시간: {elapsed_time:.1f}초)")
-
-        # return {
-        #     "category": category_en,
-        #     "status": "success",
-        #     "script_length": len(script),
-        #     "elapsed_time": elapsed_time
-        # }
 
     except Exception as e:
         elapsed_time = time.time() - start_time

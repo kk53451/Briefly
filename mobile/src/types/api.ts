@@ -107,3 +107,31 @@ export interface BookmarkRequest {
 export interface RankedNewsItem extends NewsItem {
   categoryName: string; // Korean category name for display
 }
+
+// Headlines types (오늘의 브리핑)
+export interface HeadlineNewsInfo {
+  news_id: string;
+  title: string;
+  images?: string;
+  provider: string;
+  provider_link_page?: string;
+  published_at: string;
+}
+
+export interface HeadlineItem {
+  headline_id: string;
+  title: string;           // GPT 생성 헤드라인
+  summary: string;         // GPT 생성 요약 (~요, ~해요 체)
+  cluster_size: number;    // 클러스터 크기 (관련 기사 수)
+  representative_news_id: string;
+  news_ids?: string[];     // 클러스터 내 기사 ID 목록
+  category?: string;       // 영문 카테고리
+  category_ko?: string;    // 한글 카테고리
+  news?: HeadlineNewsInfo; // 대표 기사 상세 정보
+}
+
+export interface HeadlinesResponse {
+  date: string;
+  category: string;        // "all" | "politics" | ...
+  headlines: HeadlineItem[];
+}
