@@ -1,0 +1,557 @@
+[
+  {
+    "dim": 5,
+    "label": "UMAP→5d",
+    "mcs": 3,
+    "n_clusters": 18,
+    "noise": 50,
+    "noise_ratio": 0.22026431718061673,
+    "silhouette": 0.4339289665222168,
+    "sizes_top8": [
+      29,
+      22,
+      17,
+      14,
+      12,
+      12,
+      11,
+      10
+    ],
+    "umap_time": 7.833568811416626,
+    "cluster_time": 0.005998373031616211
+  },
+  {
+    "dim": 5,
+    "label": "UMAP→5d",
+    "mcs": 5,
+    "n_clusters": 11,
+    "noise": 65,
+    "noise_ratio": 0.28634361233480177,
+    "silhouette": 0.4832026958465576,
+    "sizes_top8": [
+      33,
+      22,
+      19,
+      18,
+      13,
+      13,
+      11,
+      11
+    ],
+    "umap_time": 7.833568811416626,
+    "cluster_time": 0.005000114440917969
+  },
+  {
+    "dim": 5,
+    "label": "UMAP→5d",
+    "mcs": 8,
+    "n_clusters": 7,
+    "noise": 86,
+    "noise_ratio": 0.3788546255506608,
+    "silhouette": 0.5153953433036804,
+    "sizes_top8": [
+      34,
+      32,
+      29,
+      13,
+      11,
+      11,
+      11
+    ],
+    "umap_time": 7.833568811416626,
+    "cluster_time": 0.0045125484466552734
+  },
+  {
+    "dim": 5,
+    "label": "UMAP→5d",
+    "mcs": 10,
+    "n_clusters": 6,
+    "noise": 110,
+    "noise_ratio": 0.4845814977973568,
+    "silhouette": 0.5971789956092834,
+    "sizes_top8": [
+      32,
+      30,
+      21,
+      12,
+      11,
+      11
+    ],
+    "umap_time": 7.833568811416626,
+    "cluster_time": 0.004000663757324219
+  },
+  {
+    "dim": 10,
+    "label": "UMAP→10d",
+    "mcs": 3,
+    "n_clusters": 23,
+    "noise": 51,
+    "noise_ratio": 0.22466960352422907,
+    "silhouette": 0.5012379288673401,
+    "sizes_top8": [
+      18,
+      16,
+      13,
+      11,
+      11,
+      10,
+      10,
+      10
+    ],
+    "umap_time": 0.2550363540649414,
+    "cluster_time": 0.005224466323852539
+  },
+  {
+    "dim": 10,
+    "label": "UMAP→10d",
+    "mcs": 5,
+    "n_clusters": 11,
+    "noise": 51,
+    "noise_ratio": 0.22466960352422907,
+    "silhouette": 0.5439215898513794,
+    "sizes_top8": [
+      32,
+      25,
+      22,
+      18,
+      15,
+      14,
+      12,
+      11
+    ],
+    "umap_time": 0.2550363540649414,
+    "cluster_time": 0.0050048828125
+  },
+  {
+    "dim": 10,
+    "label": "UMAP→10d",
+    "mcs": 8,
+    "n_clusters": 7,
+    "noise": 51,
+    "noise_ratio": 0.22466960352422907,
+    "silhouette": 0.4382547438144684,
+    "sizes_top8": [
+      64,
+      34,
+      22,
+      17,
+      16,
+      12,
+      11
+    ],
+    "umap_time": 0.2550363540649414,
+    "cluster_time": 0.004090309143066406
+  },
+  {
+    "dim": 10,
+    "label": "UMAP→10d",
+    "mcs": 10,
+    "n_clusters": 7,
+    "noise": 65,
+    "noise_ratio": 0.28634361233480177,
+    "silhouette": 0.47724783420562744,
+    "sizes_top8": [
+      59,
+      32,
+      20,
+      15,
+      13,
+      12,
+      11
+    ],
+    "umap_time": 0.2550363540649414,
+    "cluster_time": 0.004006147384643555
+  },
+  {
+    "dim": 15,
+    "label": "UMAP→15d",
+    "mcs": 3,
+    "n_clusters": 19,
+    "noise": 55,
+    "noise_ratio": 0.2422907488986784,
+    "silhouette": 0.5382052659988403,
+    "sizes_top8": [
+      26,
+      15,
+      13,
+      13,
+      12,
+      12,
+      11,
+      11
+    ],
+    "umap_time": 0.2737710475921631,
+    "cluster_time": 0.0049970149993896484
+  },
+  {
+    "dim": 15,
+    "label": "UMAP→15d",
+    "mcs": 5,
+    "n_clusters": 12,
+    "noise": 63,
+    "noise_ratio": 0.2775330396475771,
+    "silhouette": 0.5608989596366882,
+    "sizes_top8": [
+      27,
+      20,
+      17,
+      17,
+      15,
+      12,
+      12,
+      12
+    ],
+    "umap_time": 0.2737710475921631,
+    "cluster_time": 0.004512310028076172
+  },
+  {
+    "dim": 15,
+    "label": "UMAP→15d",
+    "mcs": 8,
+    "n_clusters": 11,
+    "noise": 83,
+    "noise_ratio": 0.3656387665198238,
+    "silhouette": 0.6292903423309326,
+    "sizes_top8": [
+      24,
+      17,
+      15,
+      13,
+      13,
+      12,
+      12,
+      10
+    ],
+    "umap_time": 0.2737710475921631,
+    "cluster_time": 0.003999948501586914
+  },
+  {
+    "dim": 15,
+    "label": "UMAP→15d",
+    "mcs": 10,
+    "n_clusters": 7,
+    "noise": 85,
+    "noise_ratio": 0.3744493392070485,
+    "silhouette": 0.5105569958686829,
+    "sizes_top8": [
+      40,
+      23,
+      21,
+      20,
+      13,
+      13,
+      12
+    ],
+    "umap_time": 0.2737710475921631,
+    "cluster_time": 0.004011392593383789
+  },
+  {
+    "dim": 25,
+    "label": "UMAP→25d",
+    "mcs": 3,
+    "n_clusters": 20,
+    "noise": 50,
+    "noise_ratio": 0.22026431718061673,
+    "silhouette": 0.5219228267669678,
+    "sizes_top8": [
+      20,
+      14,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9
+    ],
+    "umap_time": 0.27353501319885254,
+    "cluster_time": 0.005510091781616211
+  },
+  {
+    "dim": 25,
+    "label": "UMAP→25d",
+    "mcs": 5,
+    "n_clusters": 14,
+    "noise": 67,
+    "noise_ratio": 0.29515418502202645,
+    "silhouette": 0.5707769989967346,
+    "sizes_top8": [
+      26,
+      14,
+      13,
+      13,
+      12,
+      12,
+      12,
+      11
+    ],
+    "umap_time": 0.27353501319885254,
+    "cluster_time": 0.004506826400756836
+  },
+  {
+    "dim": 25,
+    "label": "UMAP→25d",
+    "mcs": 8,
+    "n_clusters": 9,
+    "noise": 71,
+    "noise_ratio": 0.31277533039647576,
+    "silhouette": 0.48026880621910095,
+    "sizes_top8": [
+      41,
+      28,
+      23,
+      12,
+      12,
+      11,
+      10,
+      10
+    ],
+    "umap_time": 0.27353501319885254,
+    "cluster_time": 0.004998922348022461
+  },
+  {
+    "dim": 25,
+    "label": "UMAP→25d",
+    "mcs": 10,
+    "n_clusters": 6,
+    "noise": 74,
+    "noise_ratio": 0.32599118942731276,
+    "silhouette": 0.40332332253456116,
+    "sizes_top8": [
+      56,
+      37,
+      25,
+      12,
+      12,
+      11
+    ],
+    "umap_time": 0.27353501319885254,
+    "cluster_time": 0.00410771369934082
+  },
+  {
+    "dim": 50,
+    "label": "UMAP→50d",
+    "mcs": 3,
+    "n_clusters": 19,
+    "noise": 42,
+    "noise_ratio": 0.18502202643171806,
+    "silhouette": 0.47511595487594604,
+    "sizes_top8": [
+      22,
+      19,
+      17,
+      15,
+      12,
+      12,
+      10,
+      10
+    ],
+    "umap_time": 0.3940396308898926,
+    "cluster_time": 0.005510568618774414
+  },
+  {
+    "dim": 50,
+    "label": "UMAP→50d",
+    "mcs": 5,
+    "n_clusters": 12,
+    "noise": 66,
+    "noise_ratio": 0.2907488986784141,
+    "silhouette": 0.5424742698669434,
+    "sizes_top8": [
+      31,
+      21,
+      18,
+      13,
+      12,
+      12,
+      11,
+      11
+    ],
+    "umap_time": 0.3940396308898926,
+    "cluster_time": 0.0040035247802734375
+  },
+  {
+    "dim": 50,
+    "label": "UMAP→50d",
+    "mcs": 8,
+    "n_clusters": 9,
+    "noise": 77,
+    "noise_ratio": 0.3392070484581498,
+    "silhouette": 0.5561376214027405,
+    "sizes_top8": [
+      31,
+      26,
+      22,
+      17,
+      14,
+      12,
+      10,
+      10
+    ],
+    "umap_time": 0.3940396308898926,
+    "cluster_time": 0.0045087337493896484
+  },
+  {
+    "dim": 50,
+    "label": "UMAP→50d",
+    "mcs": 10,
+    "n_clusters": 7,
+    "noise": 75,
+    "noise_ratio": 0.3303964757709251,
+    "silhouette": 0.5336647033691406,
+    "sizes_top8": [
+      32,
+      32,
+      26,
+      21,
+      16,
+      13,
+      12
+    ],
+    "umap_time": 0.3940396308898926,
+    "cluster_time": 0.003998517990112305
+  },
+  {
+    "dim": 100,
+    "label": "UMAP→100d",
+    "mcs": 3,
+    "n_clusters": 21,
+    "noise": 54,
+    "noise_ratio": 0.23788546255506607,
+    "silhouette": 0.5167146921157837,
+    "sizes_top8": [
+      16,
+      15,
+      14,
+      11,
+      11,
+      10,
+      10,
+      10
+    ],
+    "umap_time": 0.4663710594177246,
+    "cluster_time": 0.0055141448974609375
+  },
+  {
+    "dim": 100,
+    "label": "UMAP→100d",
+    "mcs": 5,
+    "n_clusters": 14,
+    "noise": 64,
+    "noise_ratio": 0.28193832599118945,
+    "silhouette": 0.5729338526725769,
+    "sizes_top8": [
+      20,
+      20,
+      19,
+      14,
+      12,
+      11,
+      11,
+      9
+    ],
+    "umap_time": 0.4663710594177246,
+    "cluster_time": 0.0055084228515625
+  },
+  {
+    "dim": 100,
+    "label": "UMAP→100d",
+    "mcs": 8,
+    "n_clusters": 9,
+    "noise": 82,
+    "noise_ratio": 0.36123348017621143,
+    "silhouette": 0.5608412027359009,
+    "sizes_top8": [
+      43,
+      20,
+      19,
+      12,
+      11,
+      11,
+      11,
+      10
+    ],
+    "umap_time": 0.4663710594177246,
+    "cluster_time": 0.004997968673706055
+  },
+  {
+    "dim": 100,
+    "label": "UMAP→100d",
+    "mcs": 10,
+    "n_clusters": 6,
+    "noise": 69,
+    "noise_ratio": 0.3039647577092511,
+    "silhouette": 0.3972044289112091,
+    "sizes_top8": [
+      53,
+      37,
+      35,
+      12,
+      11,
+      10
+    ],
+    "umap_time": 0.4663710594177246,
+    "cluster_time": 0.0045125484466552734
+  },
+  {
+    "dim": "원본",
+    "label": "원본(1024d)",
+    "mcs": 3,
+    "n_clusters": 9,
+    "noise": 161,
+    "noise_ratio": 0.7092511013215859,
+    "silhouette": 0.150489592660838,
+    "sizes_top8": [
+      13,
+      12,
+      10,
+      9,
+      6,
+      6,
+      4,
+      3
+    ],
+    "umap_time": 0.0,
+    "cluster_time": 0.006501197814941406
+  },
+  {
+    "dim": "원본",
+    "label": "원본(1024d)",
+    "mcs": 5,
+    "n_clusters": 4,
+    "noise": 188,
+    "noise_ratio": 0.8281938325991189,
+    "silhouette": 0.1725371616739047,
+    "sizes_top8": [
+      12,
+      10,
+      10,
+      7
+    ],
+    "umap_time": 0.0,
+    "cluster_time": 0.006997346878051758
+  },
+  {
+    "dim": "원본",
+    "label": "원본(1024d)",
+    "mcs": 8,
+    "n_clusters": 0,
+    "noise": 227,
+    "noise_ratio": 1.0,
+    "silhouette": null,
+    "sizes_top8": [],
+    "umap_time": 0.0,
+    "cluster_time": 0.0070781707763671875
+  },
+  {
+    "dim": "원본",
+    "label": "원본(1024d)",
+    "mcs": 10,
+    "n_clusters": 0,
+    "noise": 227,
+    "noise_ratio": 1.0,
+    "silhouette": null,
+    "sizes_top8": [],
+    "umap_time": 0.0,
+    "cluster_time": 0.0065114498138427734
+  }
+]

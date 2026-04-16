@@ -25,9 +25,12 @@ backend/template.yaml
 # Logs
 *.log
 logs/
-# IDE
+# IDE & Tools
 .vscode/
 .idea/
+.claude/
+.playwright-mcp/
+
 *.swp
 *.swo
 
@@ -42,3 +45,8 @@ temp/
 *.temp 
 # Data backup
 data_backup/
+
+# ML 모델 가중치 (재다운로드 가능)
+*.onnx
+*.safetensors
+backend/test/models/

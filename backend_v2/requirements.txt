@@ -1,0 +1,32 @@
+# Briefly Backend v2 - 로컬 파이프라인
+# Python 3.12+
+
+# 뉴스 수집
+httpx>=0.27
+beautifulsoup4>=4.12
+
+# 임베딩
+torch>=2.0
+sentence-transformers>=5.0
+
+# 클러스터링
+umap-learn>=0.5
+hdbscan>=0.8
+scikit-learn>=1.5
+numpy>=1.26
+
+# 팟캐스트
+notebooklm-py>=0.3
+playwright>=1.40
+
+# 유틸
+python-dotenv>=1.0
+pytz>=2024.1
+
+# AWS (DB/Storage 연동)
+boto3>=1.34
+
+# API 서빙 (Lambda 호환)
+fastapi>=0.110
+mangum>=0.17
+uvicorn>=0.29
