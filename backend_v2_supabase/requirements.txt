@@ -1,0 +1,29 @@
+# Briefly Backend v3 (Supabase) - 로컬 파이프라인
+# Python 3.12+
+
+# 뉴스 수집
+httpx>=0.27
+beautifulsoup4>=4.12
+
+# 임베딩
+torch>=2.0
+sentence-transformers>=5.0
+
+# 클러스터링
+umap-learn>=0.5
+hdbscan>=0.8
+scikit-learn>=1.5
+numpy>=1.26
+
+# 팟캐스트
+notebooklm-py>=0.4.1
+playwright>=1.40
+# MP3 길이(초) 메타데이터 추출 — 순수 Python, MP3 헤더만 읽어 디코딩 없이 duration 뽑음
+mutagen>=1.47
+
+# 유틸
+python-dotenv>=1.0
+pytz>=2024.1
+
+# Supabase (DB + Storage + Auth)
+supabase>=2.5

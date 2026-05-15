@@ -1,0 +1,17 @@
+# ── 캐시 & 모델 가중치 (재생성/재다운로드 가능) ──
+data/embedding_cache/
+data/hf_cache/
+
+# ── 파이프라인 출력물 (S3/DynamoDB에 저장됨) ──
+outputs/
+
+# ── 실험 결과 (재현 가능, 용량 큼) ──
+test/results/
+
+# ── 환경변수 ──
+.env
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.egg-info/
