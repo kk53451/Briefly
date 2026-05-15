@@ -1,0 +1,73 @@
+name: briefly
+description: "Briefly — AI-powered Korean news podcast app"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Supabase (Auth + Database + Storage)
+  supabase_flutter: ^2.8.0
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # Routing
+  go_router: ^14.6.2
+
+  # Audio playback (podcast)
+  just_audio: ^0.9.42
+  just_audio_background: ^0.0.1-beta.13
+
+  # Google native sign-in (id_token → supabase)
+  # 7.x: Android Credential Manager / Web GIS 기반 (legacy play-services-auth 탈피)
+  google_sign_in: ^7.0.0
+
+  # Deep linking (Kakao OAuth web flow callback)
+  app_links: ^6.3.2
+
+  # Environment variables
+  flutter_dotenv: ^5.2.1
+
+  # SVG (로고 렌더링)
+  flutter_svg: ^2.0.17
+
+  # 로컬 플래그 저장 (게스트 모드)
+  shared_preferences: ^2.3.3
+
+  # Utilities
+  intl: ^0.19.0
+
+  # 원문 보기 — 외부 브라우저로 네이버 기사 링크 열기
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
+    - assets/logo/
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/PretendardVariable.ttf
+    - family: NotoSerifKR
+      fonts:
+        - asset: assets/fonts/NotoSerifKR-Bold.otf
+          weight: 700
+        - asset: assets/fonts/NotoSerifKR-Black.otf
+          weight: 900
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Variable.ttf
