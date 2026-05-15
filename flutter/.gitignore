@@ -49,3 +49,6 @@ app.*.map.json
 
 # 개발용 스크린샷 (포트폴리오 제외) — flutter 루트 직속 png만
 /*.png
+
+# 디버그 로그 덤프 (포트폴리오 제외) — flutter 루트 직속 txt만
+/*.txt

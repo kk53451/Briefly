@@ -1,2 +1,0 @@
---------- beginning of main
-04-26 14:53:41.503 I/flutter (32595): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
