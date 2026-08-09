@@ -13,9 +13,11 @@ import os
 import re
 import time
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import httpx
+
+from app.services import metrics_service
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +36,22 @@ def _extract_step_prefix(step: str) -> str:
     if m:
         return m.group(0)
     return step.split(maxsplit=1)[0] if step else ""
+
+
+def _step_status(step: str) -> Optional[str]:
+    """step 문자열에서 Grafana status 라벨을 판정합니다.
+
+    None 이면 계측 대상이 아님 — 판정 불가한 중간 안내 메시지
+    (예: "1️⃣ 뉴스 수집 (병렬 prefetch 사용)") 는 시계열에 노이즈만 되므로
+    푸시하지 않습니다.
+    """
+    if ("실패" in step) or ("❌" in step):
+        return "failed"
+    if "완료" in step:
+        return "success"
+    if ("⚠️" in step) or ("🚫" in step):
+        return "warning"
+    return None
 
 
 def _format_elapsed(seconds: float) -> str:
@@ -188,6 +206,68 @@ def notify_pipeline_success(feed_results: list, briefing_result: dict = None):
         fields=fields,
     )
 
+    # ── Grafana: 실행 요약 시계열 ──
+    # 이 함수가 feed 전체 + 브리핑 결과를 한꺼번에 들고 있어서, 추적하려는 지표
+    # (수집량·토픽수·대본길이·소요시간·status) 대부분이 여기서 나옵니다.
+    slot = briefing_result.get("slot") if briefing_result else None
+    if not slot and briefing_result:
+        slot = {"오전": "AM", "오후": "PM"}.get(briefing_result.get("time_slot"))
+
+    for r in feed_results:
+        cat_label, _ = metrics_service.category_label(r.get("category", "?"))
+        clustering = r.get("clustering") or {}
+        win = r.get("window_stats") or {}
+        metrics_service.push(
+            event="feed_summary",
+            category=cat_label,
+            status=r.get("status", "unknown"),
+            slot=slot,
+            collected=r.get("collected", 0),
+            after_dedup=r.get("after_dedup"),
+            n_clusters=clustering.get("n_clusters"),
+            noise_ratio=clustering.get("noise_ratio"),
+            max_cluster_size=clustering.get("max_cluster_size"),
+            cluster_attempt=clustering.get("attempt"),
+            ranked_topics_total=r.get("ranked_topics_total"),
+            headline_count=r.get("headline_topics_count", 0),
+            news_cards_saved=r.get("news_cards_saved"),
+            elapsed_sec=r.get("elapsed_sec", 0),
+            window_total_collected=win.get("total_collected"),
+            window_kept=win.get("kept"),
+            window_dropped_outside=win.get("dropped_outside"),
+            window_missing_pub=win.get("missing_pub"),
+        )
+
+    if briefing_result:
+        audio = briefing_result.get("audio", "skipped")
+        metrics_service.push(
+            event="briefing_summary",
+            category="briefing",
+            status=briefing_result.get("status", "unknown"),
+            slot=slot,
+            script_length=briefing_result.get("script_length", 0),
+            duration_sec=briefing_result.get("duration_sec"),
+            elapsed_sec=briefing_result.get("elapsed_sec", 0),
+            # 경로 문자열은 카디널리티만 늘리므로 상태로 축약.
+            audio_status=(
+                audio if audio in ("skipped", "failed", None) else "ok"
+            ),
+            categories=len(briefing_result.get("categories") or []),
+        )
+
+    metrics_service.push(
+        event="run_summary",
+        category="pipeline",
+        status="success",
+        slot=slot,
+        total_elapsed_sec=round(total_time, 1),
+        feed_categories=len(feed_results),
+        feed_failed=sum(
+            1 for r in feed_results if r.get("status") != "success"
+        ),
+    )
+    metrics_service.flush()
+
 
 def notify_pipeline_error(category: str, error: str):
     """에러 알림 → alerts."""
@@ -197,6 +277,18 @@ def notify_pipeline_error(category: str, error: str):
         title="🚨 Briefly 파이프라인 오류",
     )
 
+    # Grafana: "어느 카테고리가 자주 깨지나" 의 집계 대상.
+    # 에러 직후 프로세스가 죽을 수 있으므로 버퍼에 두지 않고 즉시 내보냅니다.
+    cat_label, slot = metrics_service.category_label(category)
+    metrics_service.push(
+        event="error",
+        category=cat_label,
+        status="failed",
+        slot=slot,
+        error=error[:500],
+    )
+    metrics_service.flush()
+
 
 def notify_auth_failure():
     """인증 만료 알림 → alerts."""
@@ -205,6 +297,13 @@ def notify_auth_failure():
         color=0xFFAA00,
         title="⚠️ NotebookLM 인증 만료",
     )
+
+    metrics_service.push(
+        event="auth_failure",
+        category="pipeline",
+        status="warning",
+    )
+    metrics_service.flush()
 
 
 def notify_missing_pub_rate(
@@ -218,6 +317,16 @@ def notify_missing_pub_rate(
     네이버 상세 페이지의 `data-date-time` 속성 파싱이 대량 실패하면 이 경고가
     뜹니다. 주로 네이버 HTML 구조 변경 신호 — 수집 파이프라인 조정 필요.
     """
+    cat_label, _ = metrics_service.category_label(category_ko)
+    metrics_service.push(
+        event="missing_pub_rate",
+        category=cat_label,
+        status="warning",
+        missing=missing,
+        total=total,
+        rate=round(rate, 4),
+    )
+
     return send_discord(
         message=(
             f"**카테고리**: {category_ko}\n"
@@ -256,9 +365,28 @@ def log_step(category: str, step: str, detail: str = "", color: int = 0x3498DB) 
 
     # 완료/실패: 타이머 정산 후 elapsed 첨부.
     elapsed_str = ""
+    elapsed_sec: Optional[float] = None
     t0 = _STEP_TIMERS.pop(key, None)
     if t0 is not None and (("완료" in step) or ("실패" in step) or ("❌" in step)):
-        elapsed_str = f" ({_format_elapsed(time.time() - t0)})"
+        elapsed_sec = time.time() - t0
+        elapsed_str = f" ({_format_elapsed(elapsed_sec)})"
+
+    # Grafana: 단계별 소요시간 시계열. "느려졌다" 가 아니라 "임베딩이 느려졌다"
+    # 까지 분해해서 보려는 용도.
+    status = _step_status(step)
+    if status:
+        cat_label, slot_label = metrics_service.category_label(category)
+        fields = {"step_text": step[:120]}
+        if elapsed_sec is not None:
+            fields["elapsed_sec"] = round(elapsed_sec, 2)
+        metrics_service.push(
+            event="step",
+            category=cat_label,
+            status=status,
+            step=metrics_service.step_label(prefix),
+            slot=slot_label,
+            **fields,
+        )
 
     msg = f"**[{category}]** {step}{elapsed_str}"
     if detail:
