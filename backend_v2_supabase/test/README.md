@@ -49,7 +49,7 @@ Naver 뉴스의 대분류. 우리는 7개를 사용합니다:
 | 국제 | international | 104 |
 | IT/과학 | tech | 105 |
 
-"지역(local)"은 다양성 부족, "스포츠(sports)"는 파이프라인 미지원으로 제외됨.
+"지역(local)"은 다양성 부족, "스포츠(sports)"는 서비스 범위에서 영구 제외.
 
 ### 2-2. "클러스터" 와 "토픽"
 
@@ -64,7 +64,7 @@ Naver 뉴스의 대분류. 우리는 7개를 사용합니다:
 하나의 카테고리 안에서도 여러 단계의 "기사 수" 가 있습니다:
 
 ```
-605건: BigKinds API에서 수집된 원본 경제 기사
+605건: 네이버에서 수집된 원본 경제 기사
    ↓ Near-duplicate 제거 (cosine > 0.95)
 586건: 중복 제거 후
    ↓ HDBSCAN 클러스터링
@@ -91,28 +91,39 @@ GPT 대본 생성 시 **"지식의 전부"** 로 제공하는 기사 묶음.
 ## 3. 파일 구조
 
 ```
-backend_v2/
+backend_v2_supabase/
 ├── app/
 │   ├── services/
 │   │   ├── naver_news_service.py       # Naver 뉴스 수집
 │   │   ├── embedding_service.py        # KURE-v1 로컬 임베딩
 │   │   ├── clustering_service.py       # UMAP + HDBSCAN + 토픽 랭킹
+│   │   ├── headline_service.py         # Ollama Gemma4 헤드라인
 │   │   ├── script_service.py           # GPT 대본 생성 + 검증
+│   │   ├── script_postprocess.py       # 대본 후처리
 │   │   ├── eval_service.py             # G-Eval 대본 품질 평가
 │   │   ├── podcast_eval_service.py     # G-Eval 팟캐스트 전사본 평가
-│   │   └── notebooklm_service.py       # NotebookLM A/B/C 3가지 방식
-│   └── tasks/
-│       └── scheduler.py                # 일일 배치 오케스트레이터
+│   │   ├── notebooklm_service.py       # NotebookLM 오디오 생성
+│   │   ├── supabase_storage_service.py # Supabase 저장 (Storage + Postgres)
+│   │   ├── notify_service.py           # Discord 알림
+│   │   └── engines/                    # LLM 엔진 추상화
+│   ├── constants/category_map.py       # 6개 카테고리
+│   ├── tasks/scheduler.py              # 일일 배치 오케스트레이터
+│   └── utils/                          # date(KST/슬롯), supabase_client
+├── data/
+│   └── embedding_cache/                # KURE-v1 임베딩 캐시 (.npy)
+├── outputs/                            # 대본 + 실행 결과 JSON
+│   ├── scripts/                        # briefing_{slot}_{date}_{time}.txt
+│   └── pipeline_result_*.json          # 실행 요약
 └── test/
-    ├── compare_abc_methods.py          # A/B/C 팟캐스트 비교 실험
-    ├── transcribe_podcasts.py          # Whisper 전사 + G-Eval
-    ├── data/
-    │   └── embedding_cache/            # KURE-v1 임베딩 캐시 (.npy)
-    └── results/                        # 실험 결과물
-        ├── script_*.txt                # 생성된 대본
-        ├── abc_experiment_*.json       # 실험 요약
-        ├── podcast_eval_*.json         # 팟캐스트 평가
-        └── *_transcript.txt            # Whisper 전사본
+    ├── generate_integrated_briefing_dryrun.py  # 대본만 드라이런
+    ├── regenerate_audio.py                     # 기존 대본으로 오디오 재생성
+    ├── test_supabase_storage_smoke.py          # 저장 경로 스모크
+    ├── transcribe_podcasts.py                  # 전사
+    ├── transcribe_and_evaluate.py              # 전사 + 평가
+    └── results/                                # 실험 결과물
+        ├── script_*.txt                        # 생성된 대본
+        ├── podcast_eval_*.json                 # 팟캐스트 평가
+        └── *_transcript.txt                    # 전사본
 ```
 
 ---
@@ -318,4 +329,4 @@ pip install torch --force-reinstall --index-url https://download.pytorch.org/whl
 - [ ] 다른 카테고리(politics, society) 에서도 동일 실험 수행하여 일반화 검증
 - [ ] 방식 A/B/C 팟캐스트 G-Eval 자동화 (현재는 대본 G-Eval 까지만 자동)
 - [ ] 프로덕션 스케줄러에 하루 2회 cron 등록 (Ubuntu 노트북)
-- [ ] DynamoDB/S3 업로드 연동
+- [x] Supabase 저장 연동 (`supabase_storage_service.py` — Storage + `podcasts`/`headlines`/`news_cards`)

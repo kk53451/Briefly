@@ -1,492 +1,356 @@
-# Briefly - AI 뉴스 팟캐스트 플랫폼
+# Briefly — AI 뉴스 팟캐스트 플랫폼
 
-**매일 업데이트되는 개인화 AI 뉴스 팟캐스트 서비스**
+**한국어 뉴스를 AI가 큐레이션하고, 대화형 팟캐스트로 만들어 하루 두 번(오전/오후) 전달하는 개인 프로젝트.**
 
-📽️ [유튜브 시연 영상 보기](https://youtu.be/fDMx_1knq70)
-
-[![AWS](https://img.shields.io/badge/AWS-Lambda%20%7C%20DynamoDB%20%7C%20S3-orange)](https://aws.amazon.com/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green)](https://openai.com/)
-[![ElevenLabs](https://img.shields.io/badge/ElevenLabs-TTS-blue)](https://elevenlabs.io/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Python-red)](https://fastapi.tiangolo.com/)
-
----
-
-## 1. 개발목표
-
-### 1.1 프로젝트 비전
-Briefly는 현대인의 정보 소비 패턴 변화에 대응하여, AI 기술을 활용한 개인화된 뉴스 팟캐스트 플랫폼을 구축하는 것을 목표로 합니다. 사용자가 바쁜 일상 속에서도 효율적으로 핵심 뉴스를 청취할 수 있도록 지원하며, 개인의 관심사에 맞춤화된 고품질 오디오 콘텐츠를 제공합니다.
-
-### 1.2 핵심 목표
-- **완전 자동화**: 뉴스 수집부터 음성 생성까지 무인 자동화 시스템 구축
-- **개인화 서비스**: 사용자 관심 카테고리 기반 맞춤형 콘텐츠 제공
-- **고품질 음성**: ElevenLabs TTS를 활용한 자연스러운 한국어 팟캐스트 생성
-- **효율적 요약**: GPT-4o-mini와 이중 클러스터링을 통한 중복 제거 및 핵심 정보 추출
-- **접근성**: 웹과 모바일에서 언제든 이용 가능한 사용자 친화적 인터페이스
-
-### 1.3 타겟 사용자
-- 바쁜 일상으로 인해 뉴스 읽기 시간이 부족한 직장인
-- 출퇴근 시간을 활용해 정보를 습득하고자 하는 사용자
-- 특정 분야에 대한 지속적인 정보 업데이트가 필요한 전문가
-- 시각적 콘텐츠보다 청각적 콘텐츠를 선호하는 사용자
+[![Python](https://img.shields.io/badge/Python-3.12-blue)](https://www.python.org/)
+[![Flutter](https://img.shields.io/badge/Flutter-Riverpod-02569B)](https://flutter.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres_|_Storage_|_Auth-3ECF8E)](https://supabase.com/)
+[![gpt-5.4](https://img.shields.io/badge/OpenAI-gpt--5.4-green)](https://openai.com/)
+[![NotebookLM](https://img.shields.io/badge/Google-NotebookLM-4285F4)](https://notebooklm.google.com/)
+[![Ollama](https://img.shields.io/badge/Ollama-Gemma4_local-black)](https://ollama.com/)
 
 ---
 
-## 2. 아키텍처 설계
+## 개요
 
-### 2.1 전체 시스템 아키텍처
+매일 뉴스를 수집해 AI 큐레이션을 거쳐 팟캐스트 오디오로 만드는 엔드투엔드 자동화 파이프라인.
+**배치 처리(로컬)** + **Supabase** + **모바일 앱(Flutter)** 의 2계층 구조로, 별도 API 서버가 없습니다.
+
+### 특징
+
+- **자동 파이프라인** — 뉴스 수집부터 오디오 배포까지 무인 운영, 하루 2회
+- **통합 브리핑** — 카테고리별 팟캐스트가 아니라, 하드뉴스 3분야(정치·경제·국제)를 하나로 엮은 8~10분 브리핑
+- **가중 토픽 랭킹** — size / corpus coverage / press diversity 3축 평가로 그날의 주요 이슈 선별
+- **로컬 임베딩 + 로컬 LLM** — KURE-v1(임베딩)과 Gemma4(헤드라인)로 해당 단계 비용 $0
+- **정통 뉴스 방송 톤** — gpt-5.4가 생성한 앵커/해설 2인 대본을 NotebookLM이 오디오로 변환
+- **직접 연동** — Flutter 앱이 Supabase를 직접 조회. API 서버 계층 없음
+- **Discord 실시간 모니터링** — 파이프라인 단계별 알림을 2채널(alerts / pipeline)로 분리
+
+---
+
+## 아키텍처
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        A[Next.js 14 App]
-        B[React Components]
-        C[Tailwind CSS + shadcn/ui]
+    subgraph "로컬 배치 (backend_v2_supabase/)"
+        direction TB
+        N1[뉴스 수집<br/>네이버 스크래핑]
+        N2[KURE-v1 임베딩<br/>로컬, 1024d]
+        N3[UMAP + HDBSCAN<br/>클러스터링]
+        N4[가중 토픽 랭킹<br/>size·corpus·diversity]
+        N5[Gemma4 헤드라인<br/>Ollama 로컬]
+        N6[gpt-5.4 통합 대본<br/>하드뉴스 3분야 병합]
+        N7[NotebookLM 오디오<br/>비공식 API]
+        N9[Discord 알림]
     end
-    
-    subgraph "Backend Layer"
-        D[FastAPI Server]
-        E[AWS Lambda Functions]
-        F[API Gateway]
+
+    subgraph "Supabase"
+        D1[(news_cards)]
+        D2[(headlines)]
+        D3[(podcasts)]
+        S1[(Storage<br/>briefly-audio)]
+        AU[Auth<br/>Kakao / Google]
     end
-    
-    subgraph "Data Layer"
-        G[DynamoDB Tables]
-        H[S3 Audio Storage]
-        I[CloudWatch Logs]
+
+    subgraph "클라이언트 (flutter/)"
+        M1[Flutter + Riverpod]
+        M2[오늘의 브리핑]
+        M3[팟캐스트 플레이어]
+        M4[홈 뉴스 카드]
     end
-    
-    subgraph "External APIs"
-        J[OpenAI GPT-4o-mini]
-        K[ElevenLabs TTS]
-        L[BigKinds News API]
-        M[Kakao Login API]
-    end
-    
-    subgraph "Automation"
-        N[EventBridge Scheduler]
-        O[Daily News Pipeline]
-    end
-    
-    A -->|REST API| F
-    F --> E
-    E --> G
-    E --> H
-    E --> J
-    E --> K
-    E --> L
-    A --> M
-    N -->|Daily 06:00 KST| O
-    O --> E
+
+    N1 --> N2 --> N3 --> N4 --> N5 --> N6 --> N7 --> N9
+    N4 --> D1
+    N5 --> D2
+    N7 --> D3
+    N7 --> S1
+
+    D1 --> M1
+    D2 --> M1
+    D3 --> M1
+    S1 --> M1
+    AU --> M1
+    M1 --> M2
+    M1 --> M3
+    M1 --> M4
 ```
-
-### 2.2 데이터베이스 설계
-
-#### DynamoDB 테이블 구조
-- **NewsCards**: 수집된 뉴스 기사 저장
-  - PK: news_id
-  - GSI: category_date (category#YYYY-MM-DD)
-  - 주요 필드: title, content, images (문자열 URL), provider, byline, published_at, hilight, rank
-- **Frequencies**: 생성된 팟캐스트 대본 및 오디오 정보
-  - PK: frequency_id (category#YYYY-MM-DD)
-  - 주요 필드: script, audio_url, category, date
-- **Users**: 사용자 프로필 및 설정 정보
-  - PK: user_id (kakao_{id})
-  - 주요 필드: nickname, profile_image, interests (배열), onboarding_completed
-- **Bookmarks**: 사용자 북마크 관리
-  - PK: user_id (HASH), news_id (RANGE)
-  - 주요 필드: bookmarked_at
-
-#### S3 버킷 구조
-```
-briefly-news-audio/
-├── frequencies/
-│   ├── politics/       # 정치
-│   ├── economy/        # 경제
-│   ├── society/        # 사회
-│   ├── culture/        # 문화
-│   ├── international/  # 국제
-│   ├── local/          # 지역
-│   ├── sports/         # 스포츠
-│   └── tech/           # IT/과학
-│       └── 2025-01-01.mp3
-└── temp/
-    └── processing/
-```
-
-### 2.3 서비스 계층 아키텍처
-
-#### 백엔드 서비스 구조
-- **OpenAI Service**: GPT-4o-mini를 활용한 뉴스 요약 및 이중 클러스터링
-- **TTS Service**: ElevenLabs API를 통한 한국어 음성 합성
-- **BigKinds Service**: 빅카인즈 API 뉴스 수집 및 본문 스크래핑
-- **Content Scraper**: 원문 URL 기반 본문 추출 (Selector 기반 + Fallback)
-- **Auth Service**: 카카오 소셜 로그인 및 JWT 토큰 관리
-
-#### 프론트엔드 컴포넌트 구조
-- **페이지 컴포넌트**: 각 라우트별 메인 페이지 구성
-- **UI 컴포넌트**: shadcn/ui 기반 재사용 가능한 컴포넌트
-- **비즈니스 컴포넌트**: 뉴스 카드, 오디오 플레이어 등 도메인 특화 컴포넌트
 
 ---
 
-## 3. 개발 세부 내용
+## 파이프라인
 
-### 3.1 뉴스 수집 및 검증 시스템
+`app/tasks/scheduler.py` 가 오케스트레이터이며 **2 Phase** 로 나뉩니다.
 
-#### BigKinds API 연동
-- **공식 데이터 소스**: 한국언론진흥재단 빅카인즈 공식 API 활용
-- **정확도순 정렬**: relation 기준 desc로 카테고리 내 대표 기사 우선 수집
-- **메타데이터 수집**: news_id, title, images, provider, byline, published_at 등
-- **본문 제한 대응**: API에서 200자만 제공하므로 별도 스크래핑 필요
+### Feed Phase — 6개 카테고리 전부
 
-#### 본문 추출 시스템 (content_scraper.py)
-- **Selector 기반 추출**: 언론사별 본문 태그 패턴 인식
-- **Fallback 처리**: 메인 Selector 실패 시 대체 방법 자동 시도
-- **품질 검증**: 최소 300자, 한글 비율 70% 이상 확인
-- **에러 핸들링**: HTTP 오류, 타임아웃, 인코딩 문제 대응
+| # | 단계 | 구현 | 비고 |
+|---|---|---|---|
+| 1 | **뉴스 수집** | `naver_news_service.py` | 카테고리 병렬 prefetch (max_workers=6) |
+| 2 | **임베딩** | `embedding_service.py` | KURE-v1 (한국어 특화, 1024d). 완료 후 모델 언로드 |
+| 3 | **Near-duplicate 제거** | `clustering_service.py` | cosine similarity 0.95 임계값 |
+| 4 | **UMAP + HDBSCAN 클러스터링** | `clustering_service.py` | 동적 mcs, 거대 클러스터 fallback |
+| 5 | **가중 토픽 랭킹** | `clustering_service.py` | `0.25·size + 0.60·corpus + 0.15·diversity` |
+| 5-b | **`news_cards` 저장** | `supabase_storage_service.py` | 클러스터 대표기사 rank 1~20 |
+| 6 | **오늘의 브리핑 헤드라인** | `headline_service.py` | Ollama Gemma4 로컬 → `headlines`, top 5 |
+| 7 | **비례 배분 소스 풀** | `clustering_service.py` | 하드뉴스 한정. 토픽당 최소 6건, 총 50건 |
 
-#### 중복 제거 및 필터링
-- **메모리 기반 중복 체크**: Set을 활용한 ID/URL/제목 중복 제거
-- **DB 기반 중복 체크**: DynamoDB 조회로 이미 저장된 기사 필터링
-- **이미지 유효성 검증**: "/" 및 빈 값 제거, 유효한 URL만 저장
-- **본문 검증**: 한글 비율, 최소 길이 등 품질 기준 충족 확인
+### Briefing Phase — 슬롯당 1회
 
-#### 이중 클러스터링 알고리즘
-1. **1차 클러스터링**: 원본 기사의 물리적 중복 제거 (80% 유사도 기준)
-2. **2차 클러스터링**: GPT 요약문의 의미적 중복 제거 (75% 유사도 기준)
-3. **토큰 최적화**: 본문 1,500자 제한으로 API 비용 50% 절감
+**정치·경제·국제** 3개 카테고리의 top 4 토픽(총 12개)을 하나로 엮어 단일 대본을 만듭니다.
+사회·문화·IT/과학은 Feed 단계만 수행하고 팟캐스트에는 포함되지 않습니다.
 
-#### GPT-4o-mini 활용 최적화
-- **Few-shot Learning**: 카테고리별 예시 기반 일관된 품질의 대본 생성
-- **컨텍스트 관리**: 카테고리별 맞춤형 톤앤매너 적용
-- **에러 핸들링**: Rate Limit 및 API 오류에 대한 견고한 예외 처리
+| # | 단계 | 구현 | 비고 |
+|---|---|---|---|
+| 8 | **gpt-5.4 통합 대본** | `script_service.py` | Closed-World + Source-Tagged, 목표 7,500자 |
+| 9 | **NotebookLM 오디오** | `notebooklm_service.py` | ~15분 소요, 8~10분 분량 |
+| 10 | **Supabase 저장** | `supabase_storage_service.py` | Storage 업로드 + `podcasts` 1행 |
 
-### 3.2 음성 생성 및 스트리밍
+### 품질 검증
+- **Closed-World 프롬프트** — 소스 기사에 없는 내용은 금지
+- **Source-Tagged 대본** — `[S1]...[SN]` 태그로 모든 사실 주장을 추적
+- **규칙 기반 숫자 검증** — 대본의 수치를 원본 기사에서 직접 대조
+- **후처리** — 연속 화자 병합, 메타언어 탐지, 숫자 과밀 경고
+- **중복 토픽 제거** — 최근 24시간 팟캐스트의 `covered_keywords` 와 2개 이상 겹치면 제외
 
-#### ElevenLabs TTS 통합
-- **한국어 최적화**: eleven_multilingual_v2 모델 활용
-- **음성 품질 설정**: Stability 0.4, Similarity Boost 0.75
-- **스트리밍 지원**: S3 Presigned URL을 통한 실시간 재생
+---
 
-#### 오디오 파일 관리
-- **자동 업로드**: TTS 생성 즉시 S3 저장
-- **URL 관리**: 7일 유효 Presigned URL 자동 갱신
-- **압축 최적화**: MP3 형식으로 파일 크기 최소화
+## 데이터 모델
 
-### 3.3 자동화 파이프라인
+### Supabase (Postgres)
 
-#### 매일 오전 6시 자동 실행
-```python
-# EventBridge 스케줄러 설정
-Events:
-  DailyNewsSchedule:
-    Type: Schedule
-    Properties:
-      Schedule: "cron(0 21 * * ? *)"  # UTC 기준 (KST 06:00)
-      Target:
-        Arn: !GetAtt NewsCollectionFunction.Arn
+**`podcasts`** — 통합 브리핑 대본 + 오디오
+- UNIQUE (`date`, `slot`) — 하루 최대 2행
+- Fields: `script`, `audio_url`, `title`, `covered_keywords`, `duration_sec`
+
+**`headlines`** — 오늘의 브리핑 카드 (AI 큐레이션)
+- UNIQUE (`category`, `date`, `slot`)
+- Fields: `headlines` (JSON: topic_id, headline, summary, cluster_size, representative_title/image/press, keywords)
+
+**`news_cards`** — 홈 탭 기사 카드 (클러스터 대표기사)
+- PK: `news_id` (oid+aid 기반), rank 1~N upsert
+- Fields: `title`, `images`, `provider`, `rank`, `cluster_size`, `content`, `published_at`
+
+### Storage
+
+버킷 `briefly-audio` (public):
+
+```
+briefly-audio/
+└── {date}/
+    ├── briefing_AM.mp3
+    └── briefing_PM.mp3
 ```
 
-#### 병렬 처리 최적화
-- **카테고리별 병렬 수집**: ThreadPoolExecutor로 8개 카테고리 동시 처리 (max_workers=5)
-- **오버페칭 전략**: 카테고리당 60개 요청 → 중복/본문 검증 → 30개 선별
-- **본문 검증**: 최소 300자, 한글 비율 70% 이상, 중복 URL/ID 제거
-- **이미지 필터링**: 빅카인즈 images 배열 → 첫 번째 이미지만 BigKinds URL로 변환
-- **실패 처리**: 자동 재시도 및 로깅 시스템
+카테고리별 파일이 아니라 **슬롯당 1개**입니다.
 
-### 3.4 사용자 인터페이스
+### Auth
 
-#### 반응형 디자인
-- **모바일 퍼스트**: 터치 친화적 인터페이스 설계
-- **다크 테마**: 눈의 피로를 줄이는 다크 모드 적용
-- **애니메이션**: Framer Motion을 활용한 부드러운 전환 효과
-
-#### 사용자 경험 최적화
-- **원클릭 로그인**: 카카오 소셜 로그인 간편 연동
-- **개인화 온보딩**: 관심 카테고리 선택을 통한 맞춤 설정
-- **직관적 네비게이션**: 하단 탭 기반 주요 기능 접근
+Supabase Auth 사용. Kakao(OAuth web flow) + Google(네이티브 Sign-In → `signInWithIdToken`).
 
 ---
 
-## 4. 구현 결과
+## 기술 스택
 
-### 4.1 완성된 기능 목록
+### 배치 파이프라인 (`backend_v2_supabase/`)
+- **Python 3.12**, CLI 스케줄러 (웹 프레임워크 없음)
+- **수집**: `httpx` + `BeautifulSoup` (네이버 스크래핑)
+- **임베딩**: `sentence-transformers` + KURE-v1 (로컬)
+- **클러스터링**: `umap-learn` + `hdbscan` + `scikit-learn`
+- **형태소 분석**: `konlpy` (Okt) — **선택적**, 없으면 정규식 토크나이저로 폴백
+- **LLM**:
+  - 대본 — OpenAI `gpt-5.4` (`engines/` 로 추상화)
+  - 헤드라인 — Ollama `gemma4:e4b-it-q4_K_M` (로컬)
+- **오디오**: `notebooklm-py` (비공식 API, 쿠키 기반 자동 인증) + `playwright`
+- **저장**: `supabase` (Postgres + Storage)
+- **알림**: Discord 웹훅 2채널
 
-#### 사용자 인증 및 관리 (3개 유즈케이스)
-- **UC-001**: 카카오 소셜 로그인 완전 구현
-- **UC-002**: 사용자 프로필 관리 시스템
-- **UC-003**: 관심 카테고리 설정 및 개인화
+### 모바일 앱 (`flutter/`)
+- **Flutter** + **Riverpod** (상태 관리)
+- **라우팅**: `go_router`
+- **오디오**: `just_audio` + `just_audio_background` (백그라운드 재생)
+- **백엔드**: `supabase_flutter` — DB 직접 조회, 중간 API 없음
+- **인증**: `google_sign_in` + Supabase OAuth (Kakao), `app_links` (딥링크 콜백)
+- **화면**: 오늘의 브리핑 / 홈 / 팟캐스트 / 에피소드 / 검색 / 북마크 / 프로필 / 설정
 
-#### 뉴스 조회 및 탐색 (3개 유즈케이스)
-- **UC-004**: 카테고리별 뉴스 목록 조회 (Top 10 + 더보기)
-- **UC-005**: 뉴스 상세 보기 및 북마크 기능
-- **UC-006**: 개인 북마크 관리 시스템
-
-#### 팟캐스트 서비스 (2개 유즈케이스)
-- **UC-007**: 개인 맞춤 주파수 재생 (관심 카테고리 기반)
-- **UC-008**: 카테고리별 주파수 청취 및 히스토리
-
-#### 개인화 및 설정 (3개 유즈케이스)
-- **UC-009**: 사용자 프로필 통합 관리
-- **UC-010**: 관심 카테고리 실시간 수정
-- **UC-011**: 온보딩 프로세스 완성
-
-#### 자동화 시스템 (2개 유즈케이스)
-- **UC-012**: 매일 자동 뉴스 수집 (8개 카테고리 × 30개 기사)
-  - 카테고리: 정치, 경제, 사회, 문화, 국제, 지역, 스포츠, IT/과학
-- **UC-013**: 자동 팟캐스트 생성 및 TTS 변환
-
-### 4.2 성능 지표
-
-#### 시스템 처리 성능
-- **뉴스 수집**: 240개 기사/일 (8 카테고리 × 30개, 60개 요청 후 필터링)
-- **본문 추출**: Selector 기반 스크래핑 + 최소 300자 검증
-- **중복 제거율**: 물리적 80% + 의미적 75% 이중 필터링
-- **팟캐스트 생성**: 8개 오디오 파일/일 (카테고리별)
-- **응답 시간**: API 평균 응답 시간 < 2초
-
-#### 비용 최적화
-- **토큰 사용량**: 본문 1,500자 제한으로 50% 절감
-- **TTS 비용**: 카테고리별 일일 1회 생성으로 최적화
-- **S3 스토리지**: 압축된 MP3 파일로 저장 공간 효율화
-
-### 4.3 기술 스택 완성도
-
-#### 프론트엔드 (100% 완성)
-- **Next.js 14**: App Router 기반 모던 웹 애플리케이션
-- **TypeScript**: 타입 안전성 보장
-- **Tailwind CSS + shadcn/ui**: 일관된 디자인 시스템
-- **Framer Motion**: 부드러운 애니메이션 효과
-
-#### 백엔드 (100% 완성)
-- **FastAPI**: 고성능 REST API 서버
-- **AWS Lambda**: 서버리스 아키텍처
-- **DynamoDB**: NoSQL 데이터베이스
-- **S3**: 오디오 파일 스토리지
-
-#### AI 서비스 통합 (100% 완성)
-- **OpenAI GPT-4o-mini**: 뉴스 요약 및 대본 생성
-- **ElevenLabs TTS**: 한국어 음성 합성
-- **BigKinds API**: 한국언론진흥재단 뉴스 수집 (정확도순 정렬)
-- **Content Scraper**: Selector 기반 원문 본문 추출 시스템
-
----
-
-## 5. 기대 효과
-
-### 5.1 사용자 가치 제공
-
-#### 시간 효율성
-- **정보 소비 시간 단축**: 30분 뉴스 읽기 → 5분 팟캐스트 청취
-- **멀티태스킹 지원**: 운동, 출퇴근 중 정보 습득 가능
-- **핵심 정보 집중**: AI 요약을 통한 중요 내용만 선별 제공
-
-#### 개인화 경험
-- **맞춤형 콘텐츠**: 관심 분야 중심의 개인화된 뉴스 큐레이션
-- **적응형 서비스**: 사용자 패턴 학습을 통한 지속적 개선
-- **접근성 향상**: 시각 장애인 등 다양한 사용자층 지원
-
-### 5.2 기술적 혁신 효과
-
-#### AI 기술 활용
-- **이중 클러스터링**: 기존 단순 중복 제거 대비 정확도 향상
-- **비용 최적화**: 본문 1,500자 제한으로 운영 효율성 증대
-- **품질 향상**: GPT-4o-mini 활용으로 자연스러운 요약문 생성
-
-#### 자동화 시스템
-- **무인 운영**: 인력 투입 없이 24/7 자동 콘텐츠 생성
-- **확장성**: 카테고리 및 언어 확장 용이한 모듈형 구조
-- **안정성**: 에러 핸들링 및 재시도 로직으로 서비스 연속성 보장
-
-### 5.3 비즈니스 임팩트
-
-#### 시장 차별화
-- **독창적 서비스**: AI 기반 개인화 뉴스 팟캐스트 선도 모델
-- **기술 경쟁력**: 최신 AI 기술 통합으로 높은 진입 장벽 구축
-- **사용자 경험**: 직관적 UI/UX로 높은 사용자 만족도 달성
-
-#### 확장 가능성
-- **다국어 지원**: 다양한 언어로 서비스 확장 가능
-- **콘텐츠 다양화**: 뉴스 외 다른 정보 콘텐츠로 확장 가능
-- **플랫폼 연계**: 다양한 플랫폼과의 연동 가능성
-
-### 5.4 사회적 가치
-
-#### 정보 접근성 개선
-- **디지털 격차 해소**: 음성 기반 서비스로 다양한 사용자층 포용
-- **정보 민주화**: AI 요약을 통한 공평한 정보 접근 기회 제공
-- **미디어 리터러시**: 핵심 정보 중심의 효율적 정보 소비 문화 조성
-
-#### 기술 발전 기여
-- **AI 실용화**: 실제 서비스에서의 AI 기술 활용 사례 제시
-- **오픈소스 기여**: 개발 과정에서 얻은 인사이트 커뮤니티 공유
-- **혁신 촉진**: 새로운 형태의 미디어 서비스 모델 제시
+### 외부 서비스
+| 서비스 | 용도 | 비용 |
+|---|---|---|
+| OpenAI gpt-5.4 | 통합 대본 생성 (2회/일) | 사용량 과금 |
+| NotebookLM | 오디오 생성 | 무료 (비공식 API) |
+| 네이버 뉴스 | 뉴스 수집 | 무료 (스크래핑) |
+| KURE-v1 | 임베딩 | 무료 (로컬) |
+| Gemma4 | 헤드라인 | 무료 (로컬) |
+| Supabase | DB + Storage + Auth | Free Tier 내 |
+| Discord | 알림 | 무료 |
 
 ---
 
 ## 프로젝트 구조
 
-### Frontend (Next.js 14 + TypeScript)
-
 ```
-frontend/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx               # 루트 레이아웃
-│   ├── page.tsx                 # 홈페이지 (Home 탭으로 리다이렉트)
-│   ├── home/                    # 홈 탭
-│   │   └── page.tsx            # 언론사별 최신 뉴스 (API: /api/news/home)
-│   ├── today/                   # 오늘의 뉴스 탭
-│   │   └── page.tsx            # 카테고리별 뉴스 목록 (API: /api/news/today)
-│   ├── frequency/               # 내 주파수 (팟캐스트)
-│   │   └── page.tsx            # 개인화된 팟캐스트 리스트
-│   ├── profile/                 # 사용자 프로필
-│   │   ├── page.tsx            # 프로필 페이지
-│   │   └── categories/page.tsx  # 관심 카테고리 설정
-│   ├── news/[id]/              # 뉴스 상세
-│   │   └── page.tsx            # 개별 뉴스 상세 보기
-│   ├── onboarding/             # 온보딩
-│   │   └── page.tsx            # 초기 설정 및 카테고리 선택
-│   └── login/kakao/callback/   # 인증
-│       └── page.tsx            # 카카오 로그인 콜백 처리
+Briefly/
+├── backend_v2_supabase/          # ★ 현재 백엔드 — 배치 파이프라인
+│   ├── app/
+│   │   ├── services/
+│   │   │   ├── naver_news_service.py       # 1. 수집
+│   │   │   ├── embedding_service.py        # 2. 임베딩 + unload
+│   │   │   ├── clustering_service.py       # 3~5,7. 클러스터링·랭킹·소스풀
+│   │   │   ├── headline_service.py         # 6. Gemma4 헤드라인
+│   │   │   ├── script_service.py           # 8. gpt-5.4 통합 대본
+│   │   │   ├── script_postprocess.py       #    대본 후처리
+│   │   │   ├── notebooklm_service.py       # 9. 오디오
+│   │   │   ├── supabase_storage_service.py # 10. Storage + Postgres
+│   │   │   ├── notify_service.py           #    Discord 알림
+│   │   │   ├── eval_service.py             #    대본 품질 평가
+│   │   │   ├── podcast_eval_service.py     #    오디오 품질 평가
+│   │   │   └── engines/                    #    LLM 엔진 추상화
+│   │   ├── tasks/scheduler.py              # 메인 오케스트레이터
+│   │   ├── constants/category_map.py       # 6개 카테고리
+│   │   └── utils/                          # date(KST/슬롯), supabase_client
+│   ├── test/                     # 실행형 검증 스크립트
+│   └── requirements.txt
 │
-├── components/                   # 재사용 컴포넌트
-│   ├── ui/                      # shadcn/ui 기본 컴포넌트 라이브러리
-│   ├── page-header.tsx          # 페이지 상단 헤더
-│   ├── navigation-tabs.tsx      # 하단 탭 네비게이션
-│   ├── category-filter.tsx      # 카테고리 필터링
-│   ├── news-card.tsx           # 뉴스 카드 컴포넌트
-│   ├── news-carousel.tsx       # 뉴스 캐러셀 슬라이더
-│   ├── audio-player.tsx        # 음성 재생 플레이어
-│   ├── frequency-card.tsx      # 주파수 카드 컴포넌트
-│   └── bookmark-button.tsx     # 북마크 토글 버튼
+├── flutter/                      # ★ 현재 클라이언트 — 모바일 앱
+│   ├── lib/
+│   │   ├── core/                 # config(Supabase) / router / theme / constants
+│   │   ├── features/
+│   │   │   ├── today/            # 오늘의 브리핑 (AM/PM)
+│   │   │   ├── home/             # 카테고리별 뉴스 카드
+│   │   │   ├── frequency/        # 팟캐스트 플레이어 + 에피소드 목록
+│   │   │   ├── headlines/        # 헤드라인 카드
+│   │   │   ├── news_detail/      # 기사 상세
+│   │   │   ├── search/           # 검색
+│   │   │   ├── bookmarks/        # 북마크
+│   │   │   ├── auth/             # Kakao / Google 로그인
+│   │   │   ├── profile/          # 프로필
+│   │   │   ├── settings/         # 폰트 설정
+│   │   │   ├── onboarding/       # 온보딩
+│   │   │   ├── shell/            # 하단 탭 셸
+│   │   │   └── splash/
+│   │   └── shared/
+│   └── pubspec.yaml
 │
-├── lib/                         # 유틸리티 및 설정
-│   ├── api.ts                  # REST API 클라이언트
-│   ├── utils.ts                # 공통 유틸리티 함수
-│   ├── constants.ts            # 상수 정의 (카테고리, URL 등)
-│   ├── auth.ts                 # 인증 관련 유틸리티
-│   └── mock-data.ts            # 개발용 목업 데이터
-│
-└── types/                       # TypeScript 타입 정의
-    ├── api.ts                  # API 관련 타입
-    ├── user.ts                 # 사용자 관련 타입
-    └── news.ts                 # 뉴스 관련 타입
-```
-
-### Backend (FastAPI + AWS Serverless)
-
-```
-backend/
-├── app/
-│   ├── main.py                 # FastAPI 메인 애플리케이션
-│   │
-│   ├── constants/               # 상수 정의
-│   │   └── category_map.py     # 카테고리 매핑 (한글 ↔ 영어)
-│   │
-│   ├── services/               # 핵심 비즈니스 로직
-│   │   ├── openai_service.py   # GPT 요약 + Few-shot learning
-│   │   ├── bigkinds_service.py # 빅카인즈 API 뉴스 수집
-│   │   ├── content_scraper.py  # 원문 본문 추출 (Selector 기반)
-│   │   └── tts_service.py      # ElevenLabs TTS 음성 변환
-│   │
-│   ├── utils/                  # 유틸리티 모듈
-│   │   ├── dynamo.py          # DynamoDB 연결 및 쿼리
-│   │   ├── jwt_service.py     # JWT 토큰 생성/검증
-│   │   ├── date.py            # 날짜 처리 (KST 기준)
-│   │   └── s3_utils.py        # S3 파일 업로드/다운로드
-│   │
-│   ├── routes/                # REST API 라우터
-│   │   ├── auth.py           # 카카오 로그인/로그아웃
-│   │   ├── user.py           # 사용자 프로필/설정 관리
-│   │   ├── news.py           # 뉴스 조회/검색/북마크
-│   │   ├── frequency.py      # 주파수(팟캐스트) 관리
-│   │   └── category.py       # 카테고리 조회
-│   │   
-│   │
-│   └── tasks/                 # 배치 작업 및 스케줄러
-│       ├── scheduler.py       # 매일 6시 메인 스케줄러
-│       ├── collect_news.py    # 뉴스 수집 파이프라인
-│       └── generate_frequency.py # 음성 생성 파이프라인
-│      
-│
-├── test/                      # 단위 테스트
-│   ├── run_all_tests.py      # 전체 테스트 실행기
-│   ├── test_frequency_unit.py # 주파수 생성 테스트
-│   ├── test_clustering.py    # 클러스터링 알고리즘 테스트
-│   ├── test_tts_service.py   # TTS 서비스 테스트
-│   └── README.md             # 테스트 가이드
-│
-├── template.yaml             # AWS SAM 배포 설정
-├── samconfig.toml           # SAM 배포 구성
-├── requirements.txt         # Python 의존성
-└── README.md                # 백엔드 개발 가이드
+├── CLAUDE.md                     # Claude Code 작업 가이드
+└── README.md
 ```
 
----
+### 히스토리 (보존용, 현재 미사용)
 
-## 주요 기능
+포트폴리오 목적으로 이전 버전을 남겨두었습니다. **현재 동작의 근거로 삼지 마세요.**
 
-### 스마트 뉴스 큐레이션
-- **빅카인즈 API 연동**: 한국언론진흥재단 공식 뉴스 DB 활용
-- **카테고리별 뉴스 수집**: 매일 8개 카테고리에서 60개 요청 → 30개 선별 (총 240개)
-- **본문 스크래핑**: 원문 URL 기반 Selector 추출 + Fallback 처리로 고품질 본문 확보
-- **이중 클러스터링**: 물리적(80%) + 의미적(75%) 중복 제거로 5-10개 핵심 그룹 생성
-- **개인화 필터링**: 사용자 관심 카테고리 기반 맞춤 제공
-
-### AI 기반 요약 시스템
-- **GPT-4o-mini**: Few-shot learning 기반 고품질 뉴스 요약 및 팟캐스트 대본 생성
-- **Temperature 자동 조정**: 0.3→0.5→0.7 점진적 조정으로 최적 결과 선택
-- **최적화된 길이**: 1,800-2,200자 범위의 완벽한 청취 시간 (4-5분)
-
-### 음성 변환
-- **ElevenLabs TTS**: eleven_multilingual_v2 모델 기반 한국어 최적화 음성 합성
-- **스트리밍 지원**: S3 Presigned URL을 통한 실시간 재생
-- **품질 최적화**: stability와 similarity_boost 파라미터 조정으로 일관된 음성 톤 유지
-
-### 직관적인 사용자 경험
-- **반응형 디자인**: PC/모바일에서 최적화된 UI/UX
-- **카카오 로그인**: 간편한 소셜 로그인
-- **북마크 기능**: 관심 뉴스 저장 및 관리
+| 경로 | 무엇이었나 |
+|---|---|
+| `backend/` | v1 — FastAPI + AWS Lambda + DynamoDB + BigKinds + ElevenLabs |
+| `backend_v2/` | v2 초기 — 파이프라인은 현재와 유사하나 저장이 DynamoDB/S3 |
+| `frontend/` | v1 웹 (Next.js 14) |
+| `mobile/` | React Native + Expo 앱 |
+| `mobile_v2_expo/` | Expo 재작성 시도 |
+| `Briefly_design/` | 디자인 산출물 |
 
 ---
 
 ## 시작하기
 
-### 환경 요구사항
-- Node.js 14+
-- Python 3.12+
-- AWS CLI 설정
+### 요구사항
+- **Python 3.12**, **Flutter SDK**
+- **CUDA GPU** (KURE-v1 로컬 추론용 — 없으면 CPU 폴백, 매우 느림)
+- **Ollama** (`gemma4:e4b-it-q4_K_M` pull 필요)
+- **Supabase 프로젝트** (Postgres + Storage + Auth)
+- **OpenAI API 키**
+- **NotebookLM 구글 계정 쿠키** (`notebooklm login`)
+- **Discord 웹훅 URL** 2개 (alerts / pipeline)
+- JDK 17 — `konlpy` 를 쓸 때만. 없으면 정규식 폴백으로 동작
 
-### 로컬 개발 환경 설정
+### 배치 파이프라인 실행
 
-#### 프론트엔드 실행
 ```bash
-cd frontend
-npm install
-npm run dev
-```
-
-#### 백엔드 실행
-```bash
-cd backend
+cd backend_v2_supabase
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+
+# 전체 실행 (현재 KST 시각으로 오전/오후 자동 판정)
+python -m app.tasks.scheduler
+
+# 슬롯 명시
+python -m app.tasks.scheduler --time-slot morning
+python -m app.tasks.scheduler --time-slot afternoon
+
+# 특정 카테고리만 (Feed 단계 한정)
+python -m app.tasks.scheduler --categories economy politics
+
+# 오디오 건너뛰기 (대본까지만)
+python -m app.tasks.scheduler --skip-podcast
+
+# Feed 단계만 (대본·오디오 통째로 생략)
+python -m app.tasks.scheduler --skip-script
 ```
 
-### 배포
+Windows 콘솔(cp949)에서는 이모지 로그가 깨지므로:
 
-#### AWS SAM을 이용한 배포
 ```bash
-cd backend
-sam build
-sam deploy --guided
+$env:PYTHONIOENCODING='utf-8'; python -m app.tasks.scheduler
 ```
 
+### cron 등록 (Ubuntu)
+
+```bash
+0 5  * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
+0 16 * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
+```
+
+### 모바일 앱
+
+```bash
+cd flutter
+flutter pub get
+flutter run
+flutter build apk --release
+```
+
+### 환경 변수 (`backend_v2_supabase/.env`)
+
+```bash
+# OpenAI
+OPENAI_API_KEY=sk-proj-...
+OPENAI_MODEL=gpt-5.4
+OPENAI_JUDGE_MODEL=gpt-5.4
+
+# Supabase
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=...
+SUPABASE_AUDIO_BUCKET=briefly-audio
+
+# Discord 알림
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/.../...         # alerts 채널
+DISCORD_PIPELINE_WEBHOOK_URL=https://discord.com/api/webhooks/.../... # pipeline 채널
+```
+
+Flutter 쪽 Supabase 설정은 `flutter/lib/core/config/` 에 있습니다.
+
 ---
 
-## 라이센스
+## 현재 상태 (2026-07-29 기준)
 
-이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+### ✅ 완료
+- 6개 카테고리(정치/경제/사회/문화/국제/IT과학) Feed 파이프라인
+- 하드뉴스 3분야 통합 브리핑 대본 + NotebookLM 오디오
+- Supabase 마이그레이션 (Postgres 3테이블 + Storage + Auth)
+- Flutter 앱 Supabase 직접 연동
+- Kakao / Google 로그인
+- 오늘의 브리핑 자동 생성 (Gemma4 로컬, 비용 $0)
+- Discord 실시간 모니터링 (2채널)
+
+### 🚧 진행 중
+- 수집 시간 윈도우 활성화 (`BRIEFING_WINDOW_ENABLED`, 출시 전까지 비활성)
+- 정기 실행 자동화 등록 (cron)
+- UI 재설계
+
+### 💡 개선 여지
+- 토픽 랭킹 가중치 튜닝
+- 오디오 TTS 한국어 숫자 처리 (현재는 전처리로 완화)
+- 임베딩 캐시 키에 모델명 포함 (현재 모델 교체 시 수동으로 캐시를 비워야 함)
 
 ---
+
+## 라이선스
+
+MIT License.

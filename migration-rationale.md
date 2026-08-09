@@ -1,9 +1,18 @@
 # React (Next.js) → React Native Expo 전환 이유 분석
 
+> 📌 **과거 의사결정 기록입니다.** 이 문서가 다루는 전환(Next.js → React Native)은 실제로
+> 진행됐지만, 이후 클라이언트는 **Flutter 로 다시 전환**되어 현재는 `flutter/` 가 유일한
+> 클라이언트입니다. `frontend/` 와 `mobile/` 은 보존용이며 더 이상 개발하지 않습니다.
+>
+> 아래 내용은 당시의 판단 근거로 남겨둡니다. 여기서 든 요구사항(네이티브 오디오 재생,
+> OAuth 통합, 백그라운드 재생 등)은 현재 Flutter 에서 `just_audio` / `supabase_flutter` /
+> `google_sign_in` 으로 충족하고 있습니다.
+
 ## 프로젝트 개요
 - **Briefly**: AI 기반 뉴스 팟캐스트 플랫폼
-- **기존 스택**: Next.js 14 (frontend/)
-- **새 스택**: React Native Expo (mobile/)
+- **당시 기존 스택**: Next.js 14 (frontend/)
+- **당시 새 스택**: React Native Expo (mobile/)
+- **현재 스택**: Flutter (flutter/)
 
 ---
 

@@ -1,357 +1,274 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+이 파일은 Claude Code(claude.ai/code)가 이 저장소에서 작업할 때 참고하는 가이드입니다.
 
-## Project Overview
+## 프로젝트 개요
 
-**Briefly** is an AI-powered news podcast platform that automatically collects, summarizes, and converts daily news into personalized audio podcasts. The system runs fully automated with a serverless architecture on AWS.
+**Briefly** — 한국어 뉴스를 자동 수집·클러스터링해서 하루 2회(오전/오후) **통합 브리핑 팟캐스트**로 만들고, 모바일 앱으로 전달하는 개인 프로젝트.
 
-**Core Technology Stack:**
-- Frontend: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui
-- Backend: FastAPI, Python 3.12, AWS Lambda (SAM)
-- AI Services: OpenAI GPT-4o-mini, ElevenLabs TTS
-- Data: DynamoDB (4 tables), S3 (audio storage)
-- Scheduler: AWS EventBridge (daily 6 AM KST)
+**현재 아키텍처는 2계층입니다. API 서버 계층이 없습니다.**
 
-## Development Commands
-
-### Frontend (Next.js)
-```bash
-cd frontend
-npm install              # Install dependencies
-npm run dev             # Start dev server (http://localhost:3000)
-npm run build           # Production build
-npm run lint            # Run ESLint
+```
+backend_v2_supabase/   로컬 배치 파이프라인 (cron, 하루 2회)
+        ↓ 직접 쓰기
+    Supabase           Postgres 3테이블 + Storage(오디오)
+        ↑ 직접 읽기
+    flutter/           모바일 앱 (supabase_flutter 로 DB 직접 조회)
 ```
 
-### Backend (FastAPI)
-```bash
-cd backend
+Flutter 앱은 **Supabase 를 직접 호출합니다.** 중간에 REST API 서버가 없으므로, 데이터 형태를 바꾸려면 파이프라인의 저장 로직과 앱의 조회 로직을 같이 고쳐야 합니다.
 
-# Local development
+**핵심 스택**
+- 배치: Python 3.12 (CLI 스케줄러, FastAPI 아님)
+- 수집: 네이버 뉴스 스크래핑 (`httpx` + `BeautifulSoup`)
+- 임베딩: KURE-v1 로컬 추론 (`sentence-transformers`, 1024차원)
+- 클러스터링: UMAP + HDBSCAN
+- 대본: OpenAI `gpt-5.4`
+- 헤드라인: Ollama `gemma4:e4b-it-q4_K_M` 로컬
+- 오디오: NotebookLM (`notebooklm-py`, 비공식 API)
+- 저장: Supabase (Postgres + Storage)
+- 앱: Flutter + Riverpod + go_router + just_audio
+- 알림: Discord 웹훅 2채널
+
+## 저장소 구조
+
+**현재 활성 — 여기서 작업합니다**
+| 경로 | 역할 |
+|---|---|
+| `backend_v2_supabase/` | 배치 파이프라인 (유일한 백엔드) |
+| `flutter/` | 모바일 앱 (유일한 클라이언트) |
+
+**히스토리 — 보존용, 수정하지 않습니다**
+| 경로 | 무엇이었나 |
+|---|---|
+| `backend/` | v1. FastAPI + AWS Lambda + DynamoDB + BigKinds + ElevenLabs |
+| `backend_v2/` | v2 초기. 파이프라인은 현재와 유사하나 저장이 DynamoDB/S3 |
+| `frontend/` | v1 웹 (Next.js 14) |
+| `mobile/` | React Native + Expo 앱 |
+| `mobile_v2_expo/` | Expo 재작성 시도 |
+| `Briefly_design/` | 디자인 산출물 |
+
+과거 버전의 코드·문서를 현재 동작의 근거로 삼지 마세요. BigKinds, ElevenLabs, DynamoDB, Kakao OAuth, Union-Find 클러스터링은 **전부 v1 유물이며 현재 파이프라인에 없습니다.**
+
+## 개발 명령어
+
+### 배치 파이프라인
+
+```bash
+cd backend_v2_supabase
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000    # Start local server
-# API docs: http://localhost:8000/docs
 
-# Testing
-cd test
-python run_all_tests.py                      # Run all tests
-$env:PYTHONIOENCODING='utf-8'; python test_frequency_unit.py  # Single test (Windows)
+# 전체 실행 (현재 KST 시각으로 오전/오후 자동 판정)
+python -m app.tasks.scheduler
 
-# AWS SAM deployment
-sam build                # Build Lambda functions
-sam deploy --guided     # First deployment (interactive)
-sam deploy              # Subsequent deployments
-sam logs -n BrieflyApi --stack-name briefly-backend  # View CloudWatch logs
+# 슬롯 명시
+python -m app.tasks.scheduler --time-slot morning
+python -m app.tasks.scheduler --time-slot afternoon
+
+# 특정 카테고리만 (Feed 단계 한정)
+python -m app.tasks.scheduler --categories economy politics
+
+# 오디오 생략 (대본까지만)
+python -m app.tasks.scheduler --skip-podcast
+
+# Feed 단계만 (대본·오디오 통째로 생략)
+python -m app.tasks.scheduler --skip-script
 ```
 
-## Architecture & Key Concepts
+cron 등록 (Ubuntu):
+```bash
+0 5  * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
+0 16 * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
+```
 
-### Automated Daily Pipeline (6 AM KST)
-The system runs automatically via EventBridge → Lambda (`DailyBrieflyTask`):
+Windows 에서 테스트할 때는 콘솔이 cp949 라 이모지 로그가 `UnicodeEncodeError` 로 죽습니다:
+```bash
+$env:PYTHONIOENCODING='utf-8'; python -m app.tasks.scheduler --skip-script
+```
 
-1. **News Collection** (`app/tasks/collect_news.py`)
-   - BigKinds API: 200 articles requested → 70 selected per category
-   - Total: 8 categories × 70 articles = 560 articles/day
-   - Parallel processing using `ThreadPoolExecutor` (max_workers=5)
-   - Content scraping: 300+ chars, 70%+ Korean text validation
-   - Deduplication: ID, URL, title (memory + DB check)
+### Flutter 앱
 
-2. **Union-Find 2-Pass Clustering Strategy** (`app/services/openai_service.py`)
-   - **Pass 1 - Union-Find Deduplication**: Physical deduplication using Union-Find algorithm (70% threshold)
-     - All-pairs comparison (O(n²/2)) to discover indirect connections (A→B, B→C → A-B-C merged)
-     - Path compression for efficiency
-     - Groups similar articles into clusters, longest article becomes representative
-   - **Pass 2 - Hybrid Outlier Filtering**: Centroid + Isolation based filtering (AND condition)
-     - **Centroid-based**: Measures distance from category center (threshold < 0.30)
-     - **Isolation-based**: Measures max similarity with other articles (threshold < 0.25)
-     - **AND condition**: Article removed only if BOTH thresholds are violated
-     - Keeps legitimate unique articles, removes only true ads/spam
-     - **Performance optimized**: Similarity matrix caching to avoid redundant calculations
-   - **Cosine similarity**: OpenAI text-embedding-3-small based embeddings
-   - Reduces 70 articles → 50-57 articles per category
-   - Saves 50% on token costs
-   - Execution time: ~8-9 minutes per full cycle (8 categories)
+```bash
+cd flutter
+flutter pub get
+flutter run
+flutter build apk --release
+```
 
-3. **Podcast Script Generation** (`app/services/openai_service.py`)
-   - Few-shot learning with category-specific examples
-   - Progressive temperature adjustment (0.3 → 0.5 → 0.7) for quality
-   - Category-specific tone and style (politics: balanced, economy: approachable, etc.)
-   - Target length: 1,800-2,200 characters (4-5 min audio)
+## 파이프라인 구조
 
-4. **TTS Conversion** (`app/services/tts_service.py`)
-   - ElevenLabs `eleven_multilingual_v2` model
-   - Voice settings: stability=0.5, similarity_boost=0.8
-   - Auto-upload to S3 with presigned URLs (7-day expiry)
+`app/tasks/scheduler.py` 가 오케스트레이터입니다. **2 Phase 로 나뉩니다.**
 
-### Database Structure (DynamoDB)
+### Feed Phase — 6개 카테고리 전부
 
-**NewsCards Table**
-- PK: `news_id`
-- GSI: `category_date` (for querying by category+date)
-- Stores: title, content, images (string URL), provider, byline, published_at, hilight, rank, etc.
+카테고리별로 순차 실행하되, 수집만 `ThreadPoolExecutor(max_workers=6)` 로 병렬 prefetch 합니다. 임베딩·클러스터링은 GPU 메모리를 공유하므로 순차 유지합니다.
 
-**Frequencies Table**
-- PK: `frequency_id` (format: `{category}#{date}`)
-- Stores: script, audio_url, category, date, created_at
-- Shared by all users (one podcast per category per day)
+| # | 단계 | 구현 |
+|---|---|---|
+| 1 | 뉴스 수집 | `naver_news_service.py` |
+| 2 | 임베딩 (1024d) | `embedding_service.py` — 완료 후 `unload_model()` 로 GPU 해제 |
+| 3 | Near-duplicate 제거 | `clustering_service.py` — cosine ≥ 0.95 |
+| 4 | UMAP + HDBSCAN 클러스터링 | `clustering_service.py` — 동적 mcs, 거대 클러스터 fallback |
+| 5 | 가중 토픽 랭킹 | `clustering_service.py` — `0.25·size + 0.60·corpus + 0.15·diversity` |
+| 5-b | `news_cards` 저장 | `supabase_storage_service.py` — rank 1~20 |
+| 6 | 헤드라인 생성/저장 | `headline_service.py` (Ollama) → `headlines` 테이블, top 5 |
+| 7 | 통합 브리핑용 소스 풀 | `clustering_service.py` — **하드뉴스 3개 카테고리만** |
 
-**Users Table**
-- PK: `user_id` (format: `kakao_{kakao_id}`)
-- Stores: nickname, profile_image, interests[], onboarding_completed, created_at
+### Briefing Phase — 하루 1회 (슬롯당)
 
-**Bookmarks Table**
-- Composite PK: `user_id` (HASH) + `news_id` (RANGE)
-- Stores: bookmark_date
+**정치·경제·국제** 3개 카테고리의 top 토픽을 하나로 엮어 **단일 통합 대본**을 만듭니다. 사회·문화·IT/과학은 Feed 단계만 수행하고 팟캐스트에는 들어가지 않습니다.
 
-### Frontend Architecture
+```
+카테고리당 top 4 토픽 × 3분야 = 12 토픽
+→ gpt-5.4 대본 생성 (목표 7,500자)
+→ NotebookLM 오디오 (~15분 소요, 8~10분 분량)
+→ podcasts 테이블 1행 저장
+```
 
-**App Router Structure** (`frontend/app/`)
-- `/home` - Provider-grouped latest news (언론사별 최신 뉴스, API: GET /api/news/home)
-- `/today` - Category-grouped news (카테고리별 뉴스, API: GET /api/news/today)
-- `/frequency` - Personalized podcast player
-- `/profile` - User settings & category preferences
-- `/news/[id]` - News detail view
-- `/onboarding` - Initial setup flow
-- `/login/kakao/callback` - OAuth callback handler
+**과거 모델과 혼동 주의**: v1/v2 는 "카테고리별 팟캐스트 1개"였습니다. 현재는 **하루 슬롯당 통합 브리핑 1개**입니다.
 
-**Key Components** (`frontend/components/`)
-- `news-card.tsx` - Reusable news card with bookmark toggle
-- `audio-player.tsx` - Custom audio player for podcasts
-- `category-filter.tsx` - Category selection UI
-- `navigation-tabs.tsx` - Bottom tab navigation
+## 데이터 모델 (Supabase)
 
-**Tab-to-API Mapping**
+`app/services/supabase_storage_service.py` 참조.
 
-| Tab | Route | Backend API | Description |
-|-----|-------|-------------|-------------|
-| Home | `/home` | `GET /api/news/home` | 언론사별로 그룹핑된 최신 뉴스 (각 언론사당 6개, 첫 번째는 이미지 보장) |
-| Today | `/today` | `GET /api/news/today` | 카테고리별로 그룹핑된 뉴스 (각 카테고리당 6개, 이미지 있는 것만) |
-| Frequency | `/frequency` | `GET /api/frequency?category={category}&date={date}` | 카테고리별 팟캐스트 스크립트 및 오디오 |
-| Profile | `/profile` | `GET /api/user/profile` | 사용자 프로필 및 북마크 정보 |
+| 테이블 | 키 | 내용 |
+|---|---|---|
+| `podcasts` | UNIQUE (`date`, `slot`) | 통합 브리핑. 하루 최대 2행 |
+| `headlines` | UNIQUE (`category`, `date`, `slot`) | 카테고리별 피드 헤드라인 (top 5) |
+| `news_cards` | PK `news_id` | 카테고리별 피드 카드 (rank 1~N upsert) |
 
-**API Client** (`frontend/lib/api.ts`)
-- Centralized REST API calls to backend
-- JWT token management via localStorage
-- Base URL configuration for different environments
+`podcasts` 주요 필드: `script`, `audio_url`, `title`, `covered_keywords`, `duration_sec`
 
-### Authentication Flow
+`covered_keywords` 는 다음 실행의 **중복 토픽 제거**에 쓰입니다. 최근 24시간 내 팟캐스트의 키워드 집합과 2개 이상 겹치는 토픽은 제외합니다.
 
-1. User clicks "Login with Kakao"
-2. Frontend redirects to `/api/auth/kakao/login`
-3. Backend redirects to Kakao OAuth page
-4. User authorizes → Kakao redirects to `/api/auth/kakao/callback?code=...`
-5. Backend exchanges code for Kakao access token
-6. Backend fetches user info from Kakao API
-7. Backend creates/updates user in DynamoDB
-8. Backend generates JWT token with `user_id`
-9. Frontend stores JWT in localStorage, redirects to app
+### Storage
 
-**Token Usage:**
-- All protected endpoints require `Authorization: Bearer {token}` header
-- Token validation via `get_current_user()` dependency in FastAPI
-- Token contains: `{"sub": "kakao_{id}", "exp": timestamp}`
+버킷 `briefly-audio` (public):
+```
+{date}/briefing_{slot}.mp3      예: 2026-05-15/briefing_AM.mp3
+```
 
-## Important Implementation Details
+슬롯은 `AM` / `PM` 이고, 한글 `오전` / `오후` 와 매핑됩니다.
 
-### Token Optimization
-To minimize OpenAI costs, the codebase implements strict token limits:
-- Article content: 1,500 char limit when collecting
-- Clustering embeddings: 1,000 char limit
-- Group summaries: 800 char per article
-- Final script: 2,000 max_tokens
+## 중요한 구현 세부사항
 
-**When modifying GPT calls**, maintain these limits to avoid cost overruns.
+### 카테고리
 
-### Category Mapping
-Categories have both Korean and English names:
 ```python
-# app/constants/category_map.py
+# app/constants/category_map.py — 6개. 지역·스포츠 제외.
 CATEGORY_MAP = {
-    "정치": {"api_name": "politics", "bigkinds_name": "정치"},
-    "경제": {"api_name": "economy", "bigkinds_name": "경제"},
-    "사회": {"api_name": "society", "bigkinds_name": "사회"},
-    "문화": {"api_name": "culture", "bigkinds_name": "문화"},
-    "국제": {"api_name": "international", "bigkinds_name": "국제"},
-    "지역": {"api_name": "local", "bigkinds_name": "지역"},
-    "스포츠": {"api_name": "sports", "bigkinds_name": "스포츠"},
-    "IT/과학": {"api_name": "tech", "bigkinds_name": "IT_과학"}
+    "정치":     {"api_name": "politics",      "naver_sid": "100"},
+    "경제":     {"api_name": "economy",       "naver_sid": "101"},
+    "사회":     {"api_name": "society",       "naver_sid": "102"},
+    "문화":     {"api_name": "culture",       "naver_sid": "103"},
+    "국제":     {"api_name": "international", "naver_sid": "104"},
+    "IT/과학":  {"api_name": "tech",          "naver_sid": "105"},
 }
 ```
-Always use Korean names in frontend UI, English names for API/database.
 
-### Timezone Handling
-All dates must use KST (Korea Standard Time):
+UI 는 한글, API/DB 는 영문(`api_name`)을 씁니다. **스포츠 카테고리는 영구 제외입니다** — 추가를 제안하지 마세요.
+
+이 중 팟캐스트에 들어가는 하드뉴스는 `HARD_NEWS_CATEGORIES_KO = ["정치", "경제", "국제"]` 3개뿐입니다 (`scheduler.py`).
+
+### 시간대
+
+모든 날짜는 KST 기준입니다 (`app/utils/date.py`).
+
 ```python
-# app/utils/date.py
-def get_today_kst() -> str:
-    kst = pytz.timezone("Asia/Seoul")
-    return datetime.now(kst).strftime("%Y-%m-%d")
+get_today_kst()      # "YYYY-MM-DD"
+get_now_kst()        # tz-aware datetime
+get_briefing_slot()  # 정오 기준 "오전" / "오후"
 ```
-DynamoDB stores dates as strings in `YYYY-MM-DD` format.
 
-### Error Handling Philosophy
-The codebase uses extensive error handling with fallbacks:
-- API failures: Return original text instead of failing
-- Clustering failures: Skip clustering, use all articles
-- TTS failures: Save script without audio URL
-- **Never throw unhandled exceptions** in Lambda functions (they're expensive)
+### 수집 시간 윈도우 — 현재 비활성
 
-### Memory Constraints
-Lambda functions have 1024MB memory for clustering operations:
-- Batch processing is used to avoid OOM
-- Embeddings are generated one-by-one, not in bulk
-- If adding new features, monitor CloudWatch memory metrics
+`scheduler.py` 의 `BRIEFING_WINDOW_ENABLED = False` 입니다. 출시 전 단계라 임의 시각에 돌려도 기사가 확보되도록 윈도우 필터를 끄고 네이버 "오늘 카테고리 리스트" 전체를 씁니다. 켜면 오전은 전날 18시~당일 5시, 오후는 당일 5시~16시 범위로 `published_at` 을 필터링합니다.
 
-## Environment Variables
+이 플래그를 만지기 전에 다운스트림이 `win_stats` 의 키를 참조한다는 점을 확인하세요 — 윈도우 OFF 모드도 같은 형태의 dict 를 반환해야 합니다.
 
-**Backend** (`.env` or `template.yaml`):
+### 로컬 모델 의존성
+
+임베딩(KURE-v1)과 헤드라인(Gemma4)은 **로컬에서 돕니다.** 실행 머신에 다음이 필요합니다:
+- CUDA GPU (없으면 CPU 폴백 — 매우 느림)
+- Ollama 실행 중 + `gemma4:e4b-it-q4_K_M` pull 완료
+
+`konlpy`(Okt)는 **선택적**입니다. `clustering_service._get_okt()` 가 lazy 로딩하고 없으면 `None` 을 반환해 정규식 토크나이저로 폴백합니다. JVM 부팅이 무거워 모듈당 1회만 인스턴스화합니다.
+
+### 에러 처리 철학
+
+배치가 중간에 죽으면 그날 콘텐츠가 통째로 없어지므로, 치명적이지 않은 실패는 삼키고 진행합니다.
+- `news_cards` 저장 실패 → 로그만 남기고 계속 (팟캐스트는 만들어야 함)
+- NotebookLM 인증 실패 → `--skip-podcast` 모드로 자동 전환, 대본은 저장
+- 오디오 생성 실패 → 대본은 그대로 저장
+- Discord 전송 실패 → 파이프라인에 영향 없음
+
+반면 임베딩·클러스터링·헤드라인 실패는 `raise` 해서 해당 카테고리를 `failed` 로 마킹합니다. 결과가 쓸모없어지기 때문입니다.
+
+### 대본 품질 장치
+
+`script_service.py` + `script_postprocess.py`:
+- **Closed-World 프롬프트** — 소스 기사에 없는 내용 생성 금지
+- **Source-Tagged** — `[S1]...[SN]` 태그로 사실 주장 추적
+- **규칙 기반 숫자 검증** — 대본의 수치를 원본 기사에서 직접 대조
+- **후처리** — 연속 화자 병합, 메타언어 탐지, 숫자 과밀 경고
+
+LLM 호출은 `app/services/engines/` 로 추상화되어 있습니다 (`ScriptEngine` ABC + `OpenAIScriptEngine`). 모델을 바꾸려면 엔진을 추가하세요.
+
+## 테스트
+
+`backend_v2_supabase/test/` — pytest 스위트가 아니라 **실행형 스크립트**입니다.
+
+| 파일 | 용도 |
+|---|---|
+| `test_supabase_storage_smoke.py` | Supabase 쓰기 경로 스모크 |
+| `generate_integrated_briefing_dryrun.py` | 대본 생성만 드라이런 |
+| `regenerate_audio.py` | 기존 대본으로 오디오만 재생성 |
+| `transcribe_podcasts.py` | 생성된 오디오 전사 |
+| `transcribe_and_evaluate.py` | 전사 + 품질 평가 |
+
+대본/전사본 품질 평가는 `.claude/skills/briefly-eval-v3` 스킬을 씁니다.
+
+## 컨벤션
+
+- Python `snake_case`, 클래스 `PascalCase`
+- 로그에 이모지 접두사: ✅ 성공 / ⚠️ 경고 / ❌ 실패
+- 로그에 컨텍스트 포함: 카테고리, 기사 수, 소요 시간
+- 커밋 메시지는 한국어
+- 현재 브랜치는 `backend_v3_rework` 이지만 **백엔드는 "v2" 로 부릅니다** (브랜치명만 v3)
+- master 에 force push 금지
+
+## 환경 변수
+
+`backend_v2_supabase/.env` (git 제외됨):
+
 ```bash
 OPENAI_API_KEY=sk-proj-...
-OPENAI_MODEL=gpt-4o-mini
-ELEVENLABS_API_KEY=sk_...
-ELEVENLABS_VOICE_ID=TX3LPaxmHKxFdv7VOQHJ
-BIGKINDS_ACCESS_KEY=...
-KAKAO_CLIENT_ID=...
-KAKAO_REDIRECT_URI=https://your-domain.com/api/auth/kakao/callback
-DDB_NEWS_TABLE=NewsCards
-DDB_FREQ_TABLE=Frequencies
-DDB_USERS_TABLE=Users
-DDB_BOOKMARKS_TABLE=Bookmarks
-S3_BUCKET=briefly-news-audio
+OPENAI_MODEL=gpt-5.4
+OPENAI_JUDGE_MODEL=gpt-5.4
+
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=...
+SUPABASE_AUDIO_BUCKET=briefly-audio
+
+DISCORD_WEBHOOK_URL=...            # alerts 채널
+DISCORD_PIPELINE_WEBHOOK_URL=...   # pipeline 채널
 ```
 
-**Frontend** (`.env.local`):
-```bash
-NEXT_PUBLIC_API_URL=https://your-api-gateway-url
-NEXT_PUBLIC_KAKAO_CLIENT_ID=...
-```
+Flutter 쪽 Supabase 설정은 `flutter/lib/core/config/` 에 있습니다.
 
-⚠️ **SECURITY WARNING:** The `template.yaml` currently has hardcoded API keys. Before deploying to production:
-1. Move all secrets to AWS Secrets Manager or Parameter Store
-2. Update Lambda environment variables to reference secrets
-3. Rotate all exposed keys immediately
+## 자주 겪는 문제
 
-## Common Development Patterns
+**Ollama 호출이 빈 응답을 반환**
+`headline_service._call_ollama` 는 `num_predict=2000` 으로 부릅니다. 이 모델은 thinking 토큰을 쓰기 때문에 값을 줄이면 thinking 도중 잘려 `response` 가 빈 문자열로 옵니다.
 
-### Adding a New API Route
-1. Create route file in `backend/app/routes/{name}.py`
-2. Define router: `router = APIRouter(prefix="/api/{name}", tags=["{Name}"])`
-3. Add authentication with `Depends(get_current_user)` for protected routes
-4. Register in `backend/app/main.py`: `app.include_router({name}.router)`
-5. Update frontend API client in `frontend/lib/api.ts`
+**Ollama 가 500 + `GGML_ASSERT` 로 죽음**
+모델이 해당 하드웨어/빌드에서 로드 불가한 경우입니다. `curl http://localhost:11434/api/tags` 로 모델 존재를 확인하고, 다른 태그로 시도해 보세요.
 
-### Adding a New DynamoDB Table
-1. Define in `backend/template.yaml` under `Resources`
-2. Add environment variable for table name
-3. Create utility functions in `backend/app/utils/dynamo.py`
-4. Update IAM policies if needed (`Policies` section)
+**임베딩 캐시가 이상한 결과를 줌**
+`data/embedding_cache/*.npy` 캐시 키는 텍스트 내용 기반이고 **모델명을 포함하지 않습니다.** 임베딩 모델을 바꾸면 차원이 다른 캐시를 잘못 로드합니다. 모델 교체 시 캐시를 비우세요.
 
-### Adding a New Frontend Page
-1. Create `frontend/app/{route}/page.tsx`
-2. Use server components by default, add `'use client'` only when needed
-3. Import types from `frontend/types/`
-4. Use API client from `frontend/lib/api.ts`
-5. Add navigation link in `frontend/components/navigation-tabs.tsx` if needed
+**Supabase 쓰기가 전부 실패**
+무료 플랜은 비활동 시 프로젝트가 자동 일시정지(INACTIVE)됩니다. 대시보드에서 Restore 하세요.
 
-### Modifying GPT Prompts
-When updating prompts in `openai_service.py`:
-- Keep Few-shot examples consistent with desired output format
-- Test with multiple temperature values (0.3, 0.5, 0.7)
-- Validate output length is within 1,800-2,200 char range
-- Check that TTS-optimized formatting is preserved (natural breathing points, no overly long sentences)
-
-## Testing Strategy
-
-**Unit Tests** (`backend/test/`):
-- `test_frequency_unit.py` - Core podcast generation logic
-- `test_clustering.py` - Union-Find 2-Pass clustering algorithm (deduplication + hybrid filtering)
-- `test_tts_service.py` - ElevenLabs integration
-
-**Current Coverage:** 100% of core business logic (6/6 tests passing)
-
-**When adding features:**
-- Write unit tests for all new service functions
-- Test error handling paths (API failures, rate limits)
-- Use mocking for external API calls (OpenAI, ElevenLabs, BigKinds)
-
-## Debugging Tips
-
-**CloudWatch Logs:**
-```bash
-sam logs -n BrieflyApi --stack-name briefly-backend --tail
-sam logs -n DailyBrieflyTask --stack-name briefly-backend --tail
-```
-
-**Local Testing of Scheduler:**
-```python
-# backend/test/test_scheduler_local.py
-from app.tasks.scheduler import lambda_handler
-lambda_handler({}, None)  # Simulate EventBridge trigger
-```
-
-**Common Issues:**
-
-1. **"Rate Limit Error" from OpenAI**
-   - Check `openai_service.py` retry logic
-   - Consider adding exponential backoff
-   - Monitor daily token usage in OpenAI dashboard
-
-2. **"Table does not exist" in DynamoDB**
-   - Verify table names in environment variables
-   - Check AWS region configuration
-   - Ensure SAM deployment completed successfully
-
-3. **"Missing audio_url" in Frequencies**
-   - Check S3 bucket permissions
-   - Verify ElevenLabs API key is valid
-   - Review `tts_service.py` error logs
-
-4. **Kakao Login fails with "Invalid redirect_uri"**
-   - Ensure `KAKAO_REDIRECT_URI` exactly matches Kakao Developer Console setting
-   - Check for trailing slashes (should not have one)
-   - Verify client ID matches the configured app
-
-## Performance Considerations
-
-**Optimization Strategies in Use:**
-- Parallel news collection across 8 categories (ThreadPoolExecutor with max_workers=5)
-- Overfetching strategy: Request 200 articles, select best 70 per category
-- Union-Find 2-Pass clustering: deduplication (70%) + hybrid filtering (centroid+isolation)
-- Similarity matrix caching to prevent redundant cosine similarity calculations
-- Token limits on all GPT inputs to minimize costs
-- S3 presigned URLs instead of CloudFront (simpler architecture)
-- DynamoDB GSI for efficient category+date queries
-
-**Future Optimization Opportunities:**
-- Implement Redis cache for frequently accessed news
-- Add CloudFront CDN for S3 audio files
-- Batch DynamoDB writes using `batch_write_item`
-- Implement connection pooling for external APIs
-
-## Project-Specific Conventions
-
-**Naming Conventions:**
-- Python: `snake_case` for functions/variables, `PascalCase` for classes
-- TypeScript: `camelCase` for variables, `PascalCase` for components/types
-- Database keys: `{entity}_{attribute}` (e.g., `news_id`, `user_id`)
-- API routes: `/api/{resource}` pattern
-
-**File Organization:**
-- Backend services: One class/module per external API
-  - `bigkinds_service.py` - BigKinds API 뉴스 수집
-  - `content_scraper.py` - 원문 본문 추출 (Selector 기반)
-  - `openai_service.py` - GPT 요약 및 클러스터링
-  - `tts_service.py` - ElevenLabs TTS 음성 변환
-- Frontend components: Separate UI primitives from business logic
-- Types: Shared types in `types/` directory, mirror backend models
-
-**Logging:**
-- Use emoji prefixes for visibility: ✅ (success), ⚠️ (warning), ❌ (error)
-- Include context: category, user_id, article count, etc.
-- Log entry/exit of major operations with elapsed time
-
-**Git Workflow:**
-- Current branch: `master` (main branch)
-- Commit messages: Use Korean for consistency with README
-- No force pushes to master
+**대본은 있는데 오디오가 없음**
+NotebookLM 인증 만료입니다. `notebooklm login` 을 수동 실행하세요. 파이프라인은 이 경우 Discord 로 경고하고 대본만 저장합니다.

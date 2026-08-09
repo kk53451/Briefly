@@ -2,14 +2,28 @@
 
 AI가 선정한 오늘의 주요 이슈를 보여주는 기능입니다.
 
+> ⚠️ **이 문서의 구현 세부는 v1 시점 기준입니다.**
+> 기능 자체는 현재도 운영되지만, 아래 본문의 코드 예시·API 엔드포인트·테이블 스키마는
+> 더 이상 유효하지 않습니다. 현행 구현은 이 표를 따르세요.
+>
+> | 항목 | 본문(v1) | **현행** |
+> |---|---|---|
+> | 헤드라인 생성 | GPT-4o-mini | **Ollama Gemma4 로컬** (`headline_service.py`) |
+> | 저장 | DynamoDB `Headlines` | **Supabase `headlines`** UNIQUE(category, date, slot) |
+> | 조회 | REST API (`/api/headlines`) | **Flutter 가 Supabase 직접 SELECT** — API 서버 없음 |
+> | 클라이언트 | React Native (`mobile/`) | **Flutter** (`flutter/lib/features/headlines`, `today`) |
+> | 토픽 수 | 카테고리별 6개 | **카테고리별 5개** (`scheduler.py` 의 `headline_topics`) |
+>
+> 본문은 설계 의도와 초기 구현 기록으로 남겨둡니다.
+
 ## 개요
 
-매일 수집되는 뉴스 기사들을 클러스터링하여 주요 이슈를 추출하고, GPT를 활용해 친근한 한국어 헤드라인과 요약을 생성합니다.
+매일 수집되는 뉴스 기사들을 클러스터링하여 주요 이슈를 추출하고, LLM을 활용해 친근한 한국어 헤드라인과 요약을 생성합니다.
 
 **핵심 특징:**
-- 카테고리별 상위 6개 클러스터 추출 (총 48개)
-- 전체 카테고리에서 cluster_size 기준 상위 6개 표시
-- GPT 4o-mini로 헤드라인/요약 생성 (~요, ~해요 체)
+- 카테고리별 상위 클러스터 추출 (현행: 카테고리당 5개)
+- cluster_size 및 가중 점수 기준 상위 토픽 표시
+- 친근체(~요, ~해요) 헤드라인/요약 생성 — 현행은 Ollama Gemma4 로컬
 - 대표 기사의 이미지, 링크 포함
 
 ## 아키텍처
@@ -363,26 +377,33 @@ export const HeadlineCard: React.FC<{ item: HeadlineItem }> = ({ item }) => {
 }
 ```
 
-## 관련 파일
+## 관련 파일 (현행)
 
-### Backend
-- `app/tasks/generate_headlines.py` - 헤드라인 생성 태스크
-- `app/tasks/scheduler.py` - 일일 스케줄러 (3단계 추가)
-- `app/services/openai_service.py` - 클러스터링 및 GPT 호출
-- `app/routes/headlines.py` - API 라우터
-- `app/utils/dynamo.py` - DynamoDB 헬퍼 함수
+### 배치 파이프라인 — `backend_v2_supabase/`
+- `app/services/headline_service.py` - Ollama Gemma4 헤드라인/요약 생성
+- `app/services/clustering_service.py` - 클러스터링 + 가중 토픽 랭킹
+- `app/services/supabase_storage_service.py` - `save_headlines()` 저장
+- `app/tasks/scheduler.py` - Feed Phase 6단계에서 호출
 
-### Mobile
-- `src/screens/TodayScreen.tsx` - 오늘의 브리핑 화면
-- `src/components/HeadlineCard.tsx` - 헤드라인 카드 컴포넌트
-- `src/services/api.ts` - API 클라이언트
-- `src/types/api.ts` - 타입 정의
+### 앱 — `flutter/`
+- `lib/features/today/` - 오늘의 브리핑 화면
+- `lib/features/headlines/` - 헤드라인 카드
+- `lib/core/config/supabase.dart` - Supabase 클라이언트
+
+> v1 경로(`app/tasks/generate_headlines.py`, `app/services/openai_service.py`,
+> `app/routes/headlines.py`, `app/utils/dynamo.py`, `mobile/src/screens/TodayScreen.tsx`)는
+> 현재 코드베이스에 존재하지 않습니다.
 
 ## 환경 변수
 
 ```bash
-# Backend (template.yaml)
-DDB_HEADLINES_TABLE=Headlines
+# backend_v2_supabase/.env
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=...
+
+# 헤드라인 생성 (Ollama 기본값 — 코드 상수)
+# OLLAMA_BASE_URL = http://localhost:11434
+# OLLAMA_MODEL    = gemma4:e4b-it-q4_K_M
 ```
 
 ## 테스트
