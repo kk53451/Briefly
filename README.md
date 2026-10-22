@@ -1,359 +1,341 @@
-# Briefly — AI 뉴스 팟캐스트 플랫폼
+# Briefly
 
-**한국어 뉴스를 AI가 큐레이션하고, 대화형 팟캐스트로 만들어 하루 두 번(오전/오후) 전달하는 개인 프로젝트.**
+한국어 뉴스를 모아 주요 이슈를 정리하고, 두 진행자가 대화하는 팟캐스트로 만드는 개인 프로젝트입니다.
+Python 배치가 콘텐츠를 생성해 Supabase에 저장하고, Flutter 앱이 기사·브리핑·오디오를 읽습니다.
+오전·오후 브리핑을 생성하는 구조이며, 정기 실행은 사용자가 별도로 등록합니다.
 
-[![Python](https://img.shields.io/badge/Python-3.12-blue)](https://www.python.org/)
-[![Flutter](https://img.shields.io/badge/Flutter-Riverpod-02569B)](https://flutter.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-Postgres_|_Storage_|_Auth-3ECF8E)](https://supabase.com/)
-[![gpt-5.4](https://img.shields.io/badge/OpenAI-gpt--5.4-green)](https://openai.com/)
-[![NotebookLM](https://img.shields.io/badge/Google-NotebookLM-4285F4)](https://notebooklm.google.com/)
-[![Ollama](https://img.shields.io/badge/Ollama-Gemma4_local-black)](https://ollama.com/)
+- **뉴스 피드**: 정치·경제·사회·문화·국제·IT/과학 6개 카테고리의 기사와 주요 헤드라인
+- **통합 브리핑**: 정치·경제·국제의 주요 토픽을 엮은 대본과 오디오. 목표 분량은 8~10분
+- **모바일 앱**: 뉴스 탐색·검색·기사 상세·팟캐스트 재생, Kakao/Google 로그인과 게스트 모드
 
----
+[구조](#구조) · [설치](#설치) · [실행](#실행) · [검증](#검증) · [문제 해결](#문제-해결) · [보존 자료](#현재-범위와-보존-자료)
 
-## 개요
+## 구조
 
-매일 뉴스를 수집해 AI 큐레이션을 거쳐 팟캐스트 오디오로 만드는 엔드투엔드 자동화 파이프라인.
-**배치 처리(로컬)** + **Supabase** + **모바일 앱(Flutter)** 의 2계층 구조로, 별도 API 서버가 없습니다.
-
-### 특징
-
-- **자동 파이프라인** — 뉴스 수집부터 오디오 배포까지 무인 운영, 하루 2회
-- **통합 브리핑** — 카테고리별 팟캐스트가 아니라, 하드뉴스 3분야(정치·경제·국제)를 하나로 엮은 8~10분 브리핑
-- **가중 토픽 랭킹** — size / corpus coverage / press diversity 3축 평가로 그날의 주요 이슈 선별
-- **로컬 임베딩 + 로컬 LLM** — KURE-v1(임베딩)과 Gemma4(헤드라인)로 해당 단계 비용 $0
-- **정통 뉴스 방송 톤** — gpt-5.4가 생성한 앵커/해설 2인 대본을 NotebookLM이 오디오로 변환
-- **직접 연동** — Flutter 앱이 Supabase를 직접 조회. API 서버 계층 없음
-- **Discord 실시간 모니터링** — 파이프라인 단계별 알림을 2채널(alerts / pipeline)로 분리
-
----
-
-## 아키텍처
+`backend/`는 한 번 실행한 뒤 종료하는 **로컬 배치 CLI**입니다.
+앱은 Supabase를 직접 사용하므로 별도의 Briefly HTTP 서버를 실행할 필요가 없습니다.
 
 ```mermaid
-graph TB
-    subgraph "로컬 배치 (backend/)"
-        direction TB
-        N1[뉴스 수집<br/>네이버 스크래핑]
-        N2[KURE-v1 임베딩<br/>로컬, 1024d]
-        N3[UMAP + HDBSCAN<br/>클러스터링]
-        N4[가중 토픽 랭킹<br/>size·corpus·diversity]
-        N5[Gemma4 헤드라인<br/>Ollama 로컬]
-        N6[gpt-5.4 통합 대본<br/>하드뉴스 3분야 병합]
-        N7[NotebookLM 오디오<br/>비공식 API]
-        N9[Discord 알림]
-    end
-
-    subgraph "Supabase"
-        D1[(news_cards)]
-        D2[(headlines)]
-        D3[(podcasts)]
-        S1[(Storage<br/>briefly-audio)]
-        AU[Auth<br/>Kakao / Google]
-    end
-
-    subgraph "클라이언트 (flutter/)"
-        M1[Flutter + Riverpod]
-        M2[오늘의 브리핑]
-        M3[팟캐스트 플레이어]
-        M4[홈 뉴스 카드]
-    end
-
-    N1 --> N2 --> N3 --> N4 --> N5 --> N6 --> N7 --> N9
-    N4 --> D1
-    N5 --> D2
-    N7 --> D3
-    N7 --> S1
-
-    D1 --> M1
-    D2 --> M1
-    D3 --> M1
-    S1 --> M1
-    AU --> M1
-    M1 --> M2
-    M1 --> M3
-    M1 --> M4
+flowchart LR
+    N[네이버 뉴스] --> B["backend/ · Python 배치"]
+    B -->|기사·헤드라인·대본| D[(Supabase Postgres)]
+    B -->|팟캐스트 오디오| S[Supabase Storage]
+    D --> F["flutter/ · 모바일 앱"]
+    S --> F
+    A[Supabase Auth] --> F
 ```
 
----
+배치는 다음 순서로 동작합니다.
 
-## 파이프라인
+1. 네이버 기사 수집 → KURE-v1 임베딩 → 중복 제거 → UMAP/HDBSCAN 클러스터링
+2. 토픽 순위와 대표 기사를 `news_cards`에 저장하고, Ollama Gemma4로 헤드라인을 생성해 `headlines`에 저장
+3. 하드뉴스 3분야의 주요 토픽으로 OpenAI 대본 생성 → NotebookLM 오디오 생성 → `podcasts`와 Storage에 저장
 
-`app/tasks/scheduler.py` 가 오케스트레이터이며 **2 Phase** 로 나뉩니다.
+대본에는 기사 출처 태그를 사용하며, 숫자 대조와 문장 후처리를 수행합니다.
+Discord 알림과 Grafana Loki 계측은 선택적으로 연결할 수 있습니다.
 
-### Feed Phase — 6개 카테고리 전부
+| 구성 | 주요 기술 |
+|---|---|
+| 수집·분석 | Python 3.12, httpx, BeautifulSoup, sentence-transformers, UMAP, HDBSCAN |
+| 생성 | KURE-v1, Ollama `gemma4:e4b-it-q4_K_M`, OpenAI `gpt-5.4`, `notebooklm-py` |
+| 데이터·인증 | Supabase Postgres, Storage, Auth |
+| 앱 | Flutter, Riverpod, go_router, just_audio |
 
-| # | 단계 | 구현 | 비고 |
-|---|---|---|---|
-| 1 | **뉴스 수집** | `naver_news_service.py` | 카테고리 병렬 prefetch (max_workers=6) |
-| 2 | **임베딩** | `embedding_service.py` | KURE-v1 (한국어 특화, 1024d). 완료 후 모델 언로드 |
-| 3 | **Near-duplicate 제거** | `clustering_service.py` | cosine similarity 0.95 임계값 |
-| 4 | **UMAP + HDBSCAN 클러스터링** | `clustering_service.py` | 동적 mcs, 거대 클러스터 fallback |
-| 5 | **가중 토픽 랭킹** | `clustering_service.py` | `0.25·size + 0.60·corpus + 0.15·diversity` |
-| 5-b | **`news_cards` 저장** | `supabase_storage_service.py` | 클러스터 대표기사 rank 1~20 |
-| 6 | **오늘의 브리핑 헤드라인** | `headline_service.py` | Ollama Gemma4 로컬 → `headlines`, top 5 |
-| 7 | **비례 배분 소스 풀** | `clustering_service.py` | 하드뉴스 한정. 토픽당 최소 6건, 총 50건 |
-
-### Briefing Phase — 슬롯당 1회
-
-**정치·경제·국제** 3개 카테고리의 top 4 토픽(총 12개)을 하나로 엮어 단일 대본을 만듭니다.
-사회·문화·IT/과학은 Feed 단계만 수행하고 팟캐스트에는 포함되지 않습니다.
-
-| # | 단계 | 구현 | 비고 |
-|---|---|---|---|
-| 8 | **gpt-5.4 통합 대본** | `script_service.py` | Closed-World + Source-Tagged, 목표 7,500자 |
-| 9 | **NotebookLM 오디오** | `notebooklm_service.py` | ~15분 소요, 8~10분 분량 |
-| 10 | **Supabase 저장** | `supabase_storage_service.py` | Storage 업로드 + `podcasts` 1행 |
-
-### 품질 검증
-- **Closed-World 프롬프트** — 소스 기사에 없는 내용은 금지
-- **Source-Tagged 대본** — `[S1]...[SN]` 태그로 모든 사실 주장을 추적
-- **규칙 기반 숫자 검증** — 대본의 수치를 원본 기사에서 직접 대조
-- **후처리** — 연속 화자 병합, 메타언어 탐지, 숫자 과밀 경고
-- **중복 토픽 제거** — 최근 24시간 팟캐스트의 `covered_keywords` 와 2개 이상 겹치면 제외
-
----
-
-## 데이터 모델
-
-### Supabase (Postgres)
-
-**`podcasts`** — 통합 브리핑 대본 + 오디오
-- UNIQUE (`date`, `slot`) — 하루 최대 2행
-- Fields: `script`, `audio_url`, `title`, `covered_keywords`, `duration_sec`
-
-**`headlines`** — 오늘의 브리핑 카드 (AI 큐레이션)
-- UNIQUE (`category`, `date`, `slot`)
-- Fields: `headlines` (JSON: topic_id, headline, summary, cluster_size, representative_title/image/press, keywords)
-
-**`news_cards`** — 홈 탭 기사 카드 (클러스터 대표기사)
-- PK: `news_id` (oid+aid 기반), rank 1~N upsert
-- Fields: `title`, `images`, `provider`, `rank`, `cluster_size`, `content`, `published_at`
-
-### Storage
-
-버킷 `briefly-audio` (public):
-
-```
-briefly-audio/
-└── {date}/
-    ├── briefing_AM.mp3
-    └── briefing_PM.mp3
-```
-
-카테고리별 파일이 아니라 **슬롯당 1개**입니다.
-
-### Auth
-
-Supabase Auth 사용. Kakao(OAuth web flow) + Google(네이티브 Sign-In → `signInWithIdToken`).
-
----
-
-## 기술 스택
-
-### 배치 파이프라인 (`backend/`)
-- **Python 3.12**, CLI 스케줄러 (웹 프레임워크 없음)
-- **수집**: `httpx` + `BeautifulSoup` (네이버 스크래핑)
-- **임베딩**: `sentence-transformers` + KURE-v1 (로컬)
-- **클러스터링**: `umap-learn` + `hdbscan` + `scikit-learn`
-- **형태소 분석**: `konlpy` (Okt) — **선택적**, 없으면 정규식 토크나이저로 폴백
-- **LLM**:
-  - 대본 — OpenAI `gpt-5.4` (`engines/` 로 추상화)
-  - 헤드라인 — Ollama `gemma4:e4b-it-q4_K_M` (로컬)
-- **오디오**: `notebooklm-py` (비공식 API, 쿠키 기반 자동 인증) + `playwright`
-- **저장**: `supabase` (Postgres + Storage)
-- **알림**: Discord 웹훅 2채널
-
-### 모바일 앱 (`flutter/`)
-- **Flutter** + **Riverpod** (상태 관리)
-- **라우팅**: `go_router`
-- **오디오**: `just_audio` + `just_audio_background` (백그라운드 재생)
-- **백엔드**: `supabase_flutter` — DB 직접 조회, 중간 API 없음
-- **인증**: `google_sign_in` + Supabase OAuth (Kakao), `app_links` (딥링크 콜백)
-- **화면**: 오늘의 브리핑 / 홈 / 팟캐스트 / 에피소드 / 검색 / 프로필 / 설정
-
-### 외부 서비스
-| 서비스 | 용도 | 비용 |
-|---|---|---|
-| OpenAI gpt-5.4 | 통합 대본 생성 (2회/일) | 사용량 과금 |
-| NotebookLM | 오디오 생성 | 무료 (비공식 API) |
-| 네이버 뉴스 | 뉴스 수집 | 무료 (스크래핑) |
-| KURE-v1 | 임베딩 | 무료 (로컬) |
-| Gemma4 | 헤드라인 | 무료 (로컬) |
-| Supabase | DB + Storage + Auth | Free Tier 내 |
-| Discord | 알림 | 무료 |
-
----
-
-## 프로젝트 구조
-
-```
+```text
 Briefly/
-├── backend/                      # ★ 현재 백엔드 — 배치 파이프라인
-│   ├── app/
-│   │   ├── services/
-│   │   │   ├── naver_news_service.py       # 1. 수집
-│   │   │   ├── embedding_service.py        # 2. 임베딩 + unload
-│   │   │   ├── clustering_service.py       # 3~5,7. 클러스터링·랭킹·소스풀
-│   │   │   ├── headline_service.py         # 6. Gemma4 헤드라인
-│   │   │   ├── script_service.py           # 8. gpt-5.4 통합 대본
-│   │   │   ├── script_postprocess.py       #    대본 후처리
-│   │   │   ├── notebooklm_service.py       # 9. 오디오
-│   │   │   ├── supabase_storage_service.py # 10. Storage + Postgres
-│   │   │   ├── notify_service.py           #    Discord 알림
-│   │   │   ├── eval_service.py             #    대본 품질 평가
-│   │   │   ├── podcast_eval_service.py     #    오디오 품질 평가
-│   │   │   └── engines/                    #    LLM 엔진 추상화
-│   │   ├── tasks/scheduler.py              # 메인 오케스트레이터
-│   │   ├── constants/category_map.py       # 6개 카테고리
-│   │   └── utils/                          # date(KST/슬롯), supabase_client
-│   ├── test/                     # 실행형 검증 스크립트
+├── backend/
+│   ├── app/tasks/scheduler.py    # 배치 진입점
+│   ├── app/services/            # 수집·분석·생성·저장
+│   ├── app/db/migrations/       # DB 초기화·변경 SQL
+│   ├── test/                   # 수동 검증 CLI와 fixtures/
+│   ├── .env.example
 │   └── requirements.txt
-│
-├── flutter/                      # ★ 현재 클라이언트 — 모바일 앱
-│   ├── lib/
-│   │   ├── core/                 # config(Supabase) / router / theme / constants
-│   │   ├── features/
-│   │   │   ├── today/            # 오늘의 브리핑 (AM/PM)
-│   │   │   ├── home/             # 카테고리별 뉴스 카드
-│   │   │   ├── frequency/        # 팟캐스트 플레이어 + 에피소드 목록
-│   │   │   ├── news_detail/      # 기사 상세
-│   │   │   ├── search/           # 검색
-│   │   │   ├── auth/             # Kakao / Google 로그인
-│   │   │   ├── profile/          # 프로필
-│   │   │   ├── settings/         # 폰트 설정
-│   │   │   ├── onboarding/       # 온보딩
-│   │   │   ├── shell/            # 하단 탭 셸
-│   │   │   └── splash/
-│   │   └── shared/
+├── flutter/
+│   ├── lib/                    # 앱 화면·상태·데이터 조회
+│   ├── android/                # Android 프로젝트
+│   ├── ios/                    # iOS 프로젝트
+│   ├── .env.example
 │   └── pubspec.yaml
-│
-├── docs/                         # 종료된 구현·디자인·실험·의사결정 기록
-├── CLAUDE.md                     # Claude Code 작업 가이드
-└── README.md
+└── docs/                       # 디자인·실험·과거 구현 기록
 ```
 
-### 종료된 구현과 보존 자료
+## 설치
 
-2026-10-23에 이전 구현을 **DEPRECATED**로 지정하고 master에서 제거했습니다.
-현행 실행 코드는 `backend/`와 `flutter/`입니다.
+### 준비할 것
 
-- [DEPRECATED 목록과 복구 방법](docs/DEPRECATED.md)
-- [문서·설계·실험 자료 안내](docs/README.md)
-- [디자인 원본과 화면 기록](docs/design/README.md)
-- [클러스터링 실험 및 튜닝 기록](docs/research/README.md)
-- [과거 설계·전환 의사결정](docs/history/README.md)
+| 실행 범위 | 필요한 환경 |
+|---|---|
+| 공통 | Git, 본인 소유의 Supabase 프로젝트 |
+| 배치 | Python 3.12, Ollama, 모델을 저장할 디스크 공간. GPU 사용 권장 |
+| 대본 생성 | OpenAI API 키와 모델 사용 권한 |
+| 오디오 생성 | NotebookLM을 사용할 Google 계정과 브라우저 로그인 |
+| 앱 | [Flutter SDK](https://docs.flutter.dev/install), Dart `>=3.11.5 <4.0.0`을 만족하는 버전 |
+| Android | Android SDK와 에뮬레이터 또는 실제 기기. `flutter doctor`로 도구 확인 |
+| iOS | macOS, Xcode, 시뮬레이터 또는 실제 기기 |
 
-옛 구현과 정리 전 미커밋 소스는 `archive/pre-cleanup-2026-10-23` 태그에 보존했습니다.
-독립 브랜치의 고유 커밋은 별도 보존 태그에 남겼습니다. 태그 목록과 범위는 DEPRECATED 문서를 참고하세요.
-대본 검증에 사용하는 뉴스 샘플은 `backend/test/fixtures/`에 있습니다.
+이미 콘텐츠가 있는 Supabase에 앱만 연결하려면 Python·Ollama·생성용 API 키 없이 Flutter 설정부터 진행할 수 있습니다.
+새 프로젝트에는 콘텐츠가 없으므로 기사·오디오를 보려면 배치를 실행해야 합니다.
+OpenAI 호출과 외부 서비스 사용에는 계정별 비용·한도가 적용됩니다.
 
----
+### 1. 저장소 받기
 
-## 시작하기
+```bash
+git clone https://github.com/kk53451/Briefly.git
+cd Briefly
+```
 
-### 요구사항
-- **Python 3.12**, **Flutter SDK**
-- **CUDA GPU** (KURE-v1 로컬 추론용 — 없으면 CPU 폴백, 매우 느림)
-- **Ollama** (`gemma4:e4b-it-q4_K_M` pull 필요)
-- **Supabase 프로젝트** (Postgres + Storage + Auth)
-- **OpenAI API 키**
-- **NotebookLM 구글 계정 쿠키** (`notebooklm login`)
-- **Discord 웹훅 URL** 2개 (alerts / pipeline)
-- JDK 17 — `konlpy` 를 쓸 때만. 없으면 정규식 폴백으로 동작
+### 2. Supabase 준비
 
-### 배치 파이프라인 실행
+**새 프로젝트**의 SQL Editor에서 [마이그레이션 폴더](backend/app/db/migrations/)의 다음 파일을 순서대로 실행합니다.
+기존 DB에서는 적용 이력을 먼저 확인하세요. 초기 스키마와 일부 ALTER 문은 반복 실행용이 아닙니다.
+
+1. [0001_init_schema.sql](backend/app/db/migrations/0001_init_schema.sql)
+2. [0002_rls_policies.sql](backend/app/db/migrations/0002_rls_policies.sql)
+3. [0003_storage_bucket.sql](backend/app/db/migrations/0003_storage_bucket.sql)
+4. [0005_rename_frequencies_to_podcasts.sql](backend/app/db/migrations/0005_rename_frequencies_to_podcasts.sql)
+5. [0007_add_podcast_title_and_covered_keywords.sql](backend/app/db/migrations/0007_add_podcast_title_and_covered_keywords.sql)
+6. [0008_add_podcast_duration_sec.sql](backend/app/db/migrations/0008_add_podcast_duration_sec.sql)
+7. [0009_add_news_cards_hero_image.sql](backend/app/db/migrations/0009_add_news_cards_hero_image.sql)
+8. [0010_add_news_cards_keywords.sql](backend/app/db/migrations/0010_add_news_cards_keywords.sql)
+
+`0004`와 `0006`은 이전 오디오 정리 작업입니다. `storage.objects`를 SQL로 직접 삭제하는 구현이어서 이 기본 설치 순서에서는 제외합니다.
+오디오 보관 기간 자동화는 [Storage API를 사용하는 방식](https://supabase.com/docs/guides/storage/management/delete-objects)으로 별도 보완해야 합니다.
+
+그다음 Data API를 활성화하고 `public` 스키마가 노출 대상인지 확인한 뒤, 다음 권한을 적용합니다.
+[테이블 접근 권한과 RLS](https://supabase.com/docs/guides/api/securing-your-api)는 함께 필요합니다. RLS 정책은 위의 `0002`에 있습니다.
+
+```sql
+grant usage on schema public to anon, authenticated, service_role;
+
+grant select on public.news_cards, public.headlines, public.podcasts
+  to anon, authenticated;
+grant select, insert, update on public.news_cards, public.headlines, public.podcasts
+  to service_role;
+grant select, update on public.profiles to authenticated;
+grant select, insert, delete on public.bookmarks to authenticated;
+```
+
+설치 후 데이터 구조는 다음과 같습니다.
+
+| 테이블·버킷 | 용도 |
+|---|---|
+| `news_cards` | 대표 기사, 카테고리, 날짜·슬롯, 순위, 이미지, 본문·키워드 |
+| `headlines` | 카테고리별 브리핑. 헤드라인 배열은 `items`에 저장 |
+| `podcasts` | 날짜·슬롯별 통합 브리핑. `script`, `audio_path`, `title`, `duration_sec`, `covered_keywords` |
+| `profiles` | 가입 시 생성되는 프로필, 관심사, 온보딩 완료 여부 |
+| `bookmarks` | 북마크용 테이블. 앱 저장 기능 연결은 미완성 |
+| `briefly-audio` | 공개 오디오 버킷. `{date}/briefing_AM.mp3` 또는 `briefing_PM.mp3` 저장 |
+
+앱은 `audio_path`로 Storage 공개 URL을 만듭니다. 버킷 이름은 현재 앱 코드와 맞춰 `briefly-audio`를 사용하세요.
+
+로그인 기능을 사용하려면 다음도 설정합니다.
+
+- Supabase Auth에서 사용할 [Kakao](https://supabase.com/docs/guides/auth/social-login/auth-kakao)·[Google](https://supabase.com/docs/guides/auth/social-login/auth-google) provider를 활성화하고 OAuth 앱 정보를 등록합니다.
+- Supabase의 허용 redirect URL에 `briefly://auth-callback`을 추가합니다. Kakao 개발자 콘솔의 redirect URI에는 Supabase가 표시하는 `https://<project-ref>.supabase.co/auth/v1/callback`을 사용합니다.
+- Google 네이티브 로그인은 플랫폼별 앱 식별자·인증서·클라이언트 ID 설정도 필요합니다. 앱의 기본 식별자는 `com.briefly.briefly`입니다.
+
+### 3. 백엔드 준비
+
+저장소 루트에서 아래 **OS에 맞는 블록 하나**를 실행합니다. 기존 `.env`가 있다면 복사 단계를 생략하세요.
+
+**Windows PowerShell**
+
+```powershell
+cd backend
+py -3.12 -m venv venv
+.\venv\Scripts\Activate.ps1
+Copy-Item .env.example .env
+```
+
+**macOS / Linux**
 
 ```bash
 cd backend
-pip install -r requirements.txt
-
-# 전체 실행 (현재 KST 시각으로 오전/오후 자동 판정)
-python -m app.tasks.scheduler
-
-# 슬롯 명시
-python -m app.tasks.scheduler --time-slot morning
-python -m app.tasks.scheduler --time-slot afternoon
-
-# 특정 카테고리만 (Feed 단계 한정)
-python -m app.tasks.scheduler --categories economy politics
-
-# 오디오 건너뛰기 (대본까지만)
-python -m app.tasks.scheduler --skip-podcast
-
-# Feed 단계만 (대본·오디오 통째로 생략)
-python -m app.tasks.scheduler --skip-script
+python3.12 -m venv venv
+source venv/bin/activate
+cp .env.example .env
 ```
 
-Windows 콘솔(cp949)에서는 이모지 로그가 깨지므로:
+이후 명령은 활성화된 가상환경과 `backend/` 디렉터리를 기준으로 합니다.
+CUDA를 사용할 경우 [PyTorch 설치 안내](https://pytorch.org/get-started/locally/)에서 GPU·드라이버에 맞는 패키지를 먼저 설치하세요.
 
 ```bash
-$env:PYTHONIOENCODING='utf-8'; python -m app.tasks.scheduler
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt "notebooklm-py==0.4.1"
 ```
 
-### cron 등록 (Ubuntu)
+이 안내는 현재 코드가 사용하는 `DEFAULT_STORAGE_PATH` 등을 확인한 `notebooklm-py 0.4.1`을 지정합니다.
+`requirements.txt`는 여러 패키지에 최소 버전만 지정하므로 전체 환경이 고정된 lockfile은 아닙니다.
+
+[backend/.env.example](backend/.env.example)을 참고해 `backend/.env`에 값을 입력합니다.
+
+| 변수 | 용도 |
+|---|---|
+| `SUPABASE_URL` | 사용할 프로젝트의 `https://<project-ref>.supabase.co` 주소 |
+| `SUPABASE_SERVICE_ROLE_KEY` | 배치 쓰기용 **legacy `service_role` JWT 키** |
+| `SUPABASE_AUDIO_BUCKET` | `briefly-audio` 유지 |
+| `OPENAI_API_KEY` | 대본 생성·평가에 사용하는 키 |
+| `OPENAI_MODEL`, `OPENAI_JUDGE_MODEL` | 기본 예시 `gpt-5.4`. 계정에서 사용할 모델로 설정 |
+| `DISCORD_WEBHOOK_URL`, `DISCORD_PIPELINE_WEBHOOK_URL` | 선택: 오류·진행 알림. 미설정 시 알림 생략 |
+| `GRAFANA_LOKI_URL`, `GRAFANA_LOKI_USER`, `GRAFANA_LOKI_TOKEN` | 선택: Loki 계측. 사용할 때 `.env`에 추가 |
+
+현재 [백엔드 키 검증](backend/app/utils/supabase_client.py)은 JWT 형식만 받습니다.
+따라서 이 코드에서는 `sb_secret_...` 대신 legacy `service_role` 키를 사용합니다. 키 종류는 [Supabase API 키 안내](https://supabase.com/docs/guides/getting-started/api-keys)를 참고하세요.
+이 키는 백엔드에만 두고 Flutter `.env`에는 넣지 마세요.
+
+**로컬 모델 준비**
+
+[Ollama](https://docs.ollama.com/quickstart)를 설치하고 실행한 뒤, 코드에서 사용하는 모델을 받습니다.
 
 ```bash
-0 5  * * * cd ~/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
-0 16 * * * cd ~/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
+ollama pull gemma4:e4b-it-q4_K_M
+ollama list
 ```
 
-### 모바일 앱
+Ollama 서버가 실행 중이 아니라면 별도 터미널에서 `ollama serve`를 실행합니다.
+현재 주소와 모델명은 [headline_service.py](backend/app/services/headline_service.py)의 `OLLAMA_BASE_URL`, `OLLAMA_MODEL` 상수입니다.
+KURE-v1 임베딩 모델은 첫 사용 시 내려받으며, CUDA 사용 여부는 `python -c "import torch; print(torch.cuda.is_available())"`로 확인할 수 있습니다.
+
+**오디오 생성용 로그인**
+
+```bash
+python -m playwright install chromium
+notebooklm login
+```
+
+브라우저에서 Google 로그인을 마친 뒤 터미널 안내에 따라 인증을 저장합니다.
+배치를 실행할 OS 사용자 계정에서 진행하세요. Linux에서 브라우저 시스템 라이브러리가 부족하면 `python -m playwright install-deps chromium`이 추가로 필요할 수 있습니다.
+`notebooklm-py`는 비공식 클라이언트이며, 인증이 만료되면 다시 로그인해야 합니다. [프로젝트 설치 안내](https://github.com/teng-lin/notebooklm-py/blob/main/docs/installation.md)
+오디오를 생략하는 `--skip-podcast` 또는 `--skip-script` 실행에는 이 로그인 단계가 필요하지 않습니다.
+
+### 4. Flutter 준비
+
+**새 터미널의 저장소 루트**에서 시작합니다.
 
 ```bash
 cd flutter
+flutter doctor
 flutter pub get
-flutter run
-flutter build apk --release
 ```
 
-환경변수 준비와 플랫폼 설정은 [Flutter 실행 안내](flutter/README.md)를 참고하세요.
-저장소에 포함된 플랫폼은 Android와 iOS입니다.
+`flutter/.env.example`을 `flutter/.env`로 복사합니다. PowerShell은 `Copy-Item .env.example .env`, macOS/Linux는 `cp .env.example .env`를 사용합니다.
+기존 `.env`가 있으면 덮어쓰지 말고 확인하세요. 템플릿에 프로젝트 값이 들어 있어도 **본인의 Supabase 값으로 교체**합니다.
 
-### 환경 변수 (`backend/.env`)
+| 변수 | 용도 |
+|---|---|
+| `SUPABASE_URL` | 백엔드와 같은 프로젝트 URL |
+| `SUPABASE_ANON_KEY` | 앱용 publishable 키 또는 legacy anon 키 |
+| `GOOGLE_WEB_CLIENT_ID` | Google 로그인용 Web 클라이언트 ID |
+| `GOOGLE_IOS_CLIENT_ID` | iOS Google 로그인용 클라이언트 ID. Android만 개발할 때는 생략 가능 |
+
+`.env`는 앱 asset에 포함됩니다. 서버 비밀 키를 넣으면 앱에 함께 배포됩니다.
+Kakao 딥링크와 오디오 백그라운드 설정은 이미 플랫폼 파일에 있으며, 자세한 위치는 [Flutter 안내](flutter/README.md)에 있습니다.
+
+## 실행
+
+### 백엔드
+
+`backend/`에서 가상환경을 활성화한 상태로 실행합니다.
+아래 명령은 실제 기사를 수집하고 Supabase에 데이터를 저장합니다. 같은 날짜·슬롯의 콘텐츠는 갱신될 수 있습니다.
 
 ```bash
-# OpenAI
-OPENAI_API_KEY=sk-proj-...
-OPENAI_MODEL=gpt-5.4
-OPENAI_JUDGE_MODEL=gpt-5.4
+# 처음에는 경제 피드만 생성해 수집·모델·DB 연결 확인
+python -X utf8 -m app.tasks.scheduler --categories economy --skip-script
 
-# Supabase
-SUPABASE_URL=https://<project-ref>.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=...
-SUPABASE_AUDIO_BUCKET=briefly-audio
+# 전체 6개 카테고리 피드 + 통합 대본, 오디오 생략
+python -X utf8 -m app.tasks.scheduler --time-slot morning --skip-podcast
 
-# Discord 알림
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/.../...         # alerts 채널
-DISCORD_PIPELINE_WEBHOOK_URL=https://discord.com/api/webhooks/.../... # pipeline 채널
+# 전체 피드 + 통합 대본 + 오디오
+python -X utf8 -m app.tasks.scheduler --time-slot morning
+python -X utf8 -m app.tasks.scheduler --time-slot afternoon
 ```
 
-Flutter 쪽 Supabase 설정은 `flutter/lib/core/config/` 에 있습니다.
+| 옵션 | 동작 |
+|---|---|
+| `--time-slot morning` / `afternoon` | 오전/오후 지정. 생략하면 KST 정오를 기준으로 자동 선택 |
+| `--categories economy politics` | 수집할 카테고리 제한. 선택한 하드뉴스로 브리핑도 생성될 수 있음 |
+| `--skip-script` | 피드만 생성. 대본·오디오 생략 |
+| `--skip-podcast` | 대본까지 생성. 오디오 생략 |
 
----
+정치·경제·국제는 브리핑 대상이며, 사회·문화·IT/과학은 피드만 생성합니다.
+실행 결과 JSON·대본·오디오는 `backend/outputs/`, 임베딩 캐시는 `backend/data/embedding_cache/`에 저장됩니다.
+상세 옵션은 `python -X utf8 -m app.tasks.scheduler --help`에서 확인할 수 있습니다.
 
-## 현재 상태 (2026-07-29 기준)
+### 앱
 
-### ✅ 완료
-- 6개 카테고리(정치/경제/사회/문화/국제/IT과학) Feed 파이프라인
-- 하드뉴스 3분야 통합 브리핑 대본 + NotebookLM 오디오
-- Supabase 마이그레이션 (Postgres 3테이블 + Storage + Auth)
-- Flutter 앱 Supabase 직접 연동
-- Kakao / Google 로그인
-- 오늘의 브리핑 자동 생성 (Gemma4 로컬, 비용 $0)
-- Discord 실시간 모니터링 (2채널)
+`flutter/`에서 실행합니다.
 
-### 🚧 진행 중
-- 수집 시간 윈도우 활성화 (`BRIEFING_WINDOW_ENABLED`, 출시 전까지 비활성)
-- 정기 실행 자동화 등록 (cron)
-- UI 재설계
+```bash
+flutter devices
+flutter run -d <device-id>
+```
 
-### 💡 개선 여지
-- 토픽 랭킹 가중치 튜닝
-- 오디오 TTS 한국어 숫자 처리 (현재는 전처리로 완화)
-- 임베딩 캐시 키에 모델명 포함 (현재 모델 교체 시 수동으로 캐시를 비워야 함)
+새 DB는 배치가 콘텐츠를 저장하기 전까지 빈 화면을 표시할 수 있습니다. 홈·오늘 화면은 KST 날짜 기준 데이터를 사용합니다.
+현재 플랫폼은 Android/iOS이며, 웹 프로젝트는 포함되어 있지 않습니다.
+Android APK는 `flutter build apk --release`로 만들 수 있지만, 현재 release 설정은 debug 서명을 사용하므로 배포 전 서명 구성이 필요합니다.
 
----
+### 정기 실행
+
+`scheduler.py` 자체에는 상시 대기하는 타이머가 없습니다. 수동 실행을 확인한 뒤 cron 또는 작업 스케줄러에 등록합니다.
+아래는 **시간대가 Asia/Seoul인 Linux 호스트**의 사용자 crontab 예시입니다. `/home/you/Briefly`를 실제 절대 경로로 바꾸고 `backend/logs/`를 먼저 만드세요.
+
+```cron
+0 5 * * * cd /home/you/Briefly/backend && /home/you/Briefly/backend/venv/bin/python -X utf8 -m app.tasks.scheduler --time-slot morning >> /home/you/Briefly/backend/logs/pipeline.log 2>&1
+0 16 * * * cd /home/you/Briefly/backend && /home/you/Briefly/backend/venv/bin/python -X utf8 -m app.tasks.scheduler --time-slot afternoon >> /home/you/Briefly/backend/logs/pipeline.log 2>&1
+```
+
+Windows 작업 스케줄러에서는 프로그램을 `backend\venv\Scripts\python.exe`의 절대 경로로,
+인수를 `-X utf8 -m app.tasks.scheduler --time-slot morning` 또는 `afternoon`으로,
+시작 위치를 `backend`의 절대 경로로 지정합니다. 실행 계정에서 Ollama와 NotebookLM 인증을 사용할 수 있어야 합니다.
+
+## 검증
+
+배치의 `test/`는 외부 서비스와 모델을 사용하는 **수동 검증 CLI 모음**입니다.
+처음에는 `backend/`에서 도움말로 실행 환경을 확인하세요.
+
+```bash
+python -X utf8 -m app.tasks.scheduler --help
+python -X utf8 -m test.generate_integrated_briefing_dryrun --help
+python -X utf8 -m test.transcribe_and_evaluate --help
+```
+
+저장된 뉴스 샘플로 대본만 생성하려면 다음을 실행합니다. 로컬 임베딩과 OpenAI 호출이 발생하고 결과는 `test/results/`에 저장됩니다.
+
+```bash
+python -X utf8 -m test.generate_integrated_briefing_dryrun --time-slot morning
+```
+
+오디오 재생성·전사·DB 쓰기 스모크 테스트의 영향과 추가 의존성(`faster-whisper`, `ffprobe`)은 [검증 도구 안내](backend/test/README.md)에 정리했습니다.
+앱 정적 분석은 `flutter/`에서 `flutter analyze`로 실행합니다. 앱 동작을 검증하는 Dart 자동 테스트는 아직 없습니다.
+
+## 문제 해결
+
+| 증상 | 확인할 것 |
+|---|---|
+| `No module named app` 또는 `.env`를 못 찾음 | `backend/`에서 실행했는지, 가상환경이 활성화됐는지 확인 |
+| `SUPABASE_SERVICE_ROLE_KEY` 형식 오류 | backend에 legacy JWT 키를 넣었는지 확인. 현재 검증기는 `sb_secret_...`를 받지 않음 |
+| DB에서 `permission denied` / `42501` | Data API 노출과 테이블 GRANT, RLS 정책 확인 |
+| 앱에 기사가 없음 | 앱·배치가 같은 프로젝트를 사용하는지, 오늘 KST 날짜의 `news_cards`·`headlines`가 있는지 확인 |
+| Ollama 연결 실패 또는 모델 없음 | 서버 실행 여부, `ollama list`, 코드의 모델 상수 확인 |
+| 임베딩이 매우 느림 | PyTorch CUDA 사용 여부와 첫 모델 다운로드 상태 확인 |
+| 대본만 있고 오디오가 없음 | `--skip-podcast` 사용 여부, NotebookLM 재로그인, 생성·업로드 오류 로그 확인 |
+| 모델 교체 후 임베딩 차원 오류 | 현재 캐시 키에 모델명이 포함되지 않으므로 기존 임베딩 캐시를 별도로 보관한 뒤 새로 생성 |
+| 로그인 후 앱으로 돌아오지 않음 | Supabase redirect URL과 플랫폼 OAuth 설정, Google 클라이언트 ID 확인 |
+
+## 현재 범위와 보존 자료
+
+현재 구현에는 뉴스 피드·통합 대본·오디오 생성과 앱 조회·재생 흐름이 있습니다.
+북마크 저장, 프로필 활동 지표, 배포 서명과 자동 테스트는 추가 작업이 필요합니다.
+기사 수집 시간 윈도우는 `BRIEFING_WINDOW_ENABLED = False`로 꺼져 있고, 지정 슬롯은 브리핑 라벨과 저장 구분에 사용합니다.
+
+- [문서 목록](docs/README.md)
+- [디자인 원본과 화면 기록](docs/design/README.md)
+- [실험·평가 기록](docs/research/README.md)
+- [과거 구조와 기술 선택](docs/history/README.md)
+- [DEPRECATED 구현·보존 태그·복구 방법](docs/DEPRECATED.md)
+
+현재 `backend/`는 Supabase 배치입니다. 과거 FastAPI 서버와 React Native·Next.js 구현은 보존 태그에서 확인할 수 있습니다.
+과거 문서의 코드·지표·명령은 작성 당시의 기록입니다.
 
 ## 라이선스
 
