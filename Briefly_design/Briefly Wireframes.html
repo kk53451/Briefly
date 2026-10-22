@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Briefly — Wireframes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Gowun+Dodum&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/briefly.css?v=2"/>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Pretendard', 'Pretendard Variable', -apple-system, BlinkMacSystemFont,
+                   'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      color: #1a1714;
+    }
+    body { background: #f0eee9; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="data/mock.js?v=2"></script>
+  <script type="text/babel" src="components/design-canvas.jsx"></script>
+  <script type="text/babel" src="components/ios-frame.jsx"></script>
+  <script type="text/babel" src="components/android-frame.jsx"></script>
+  <script type="text/babel" src="components/icons.jsx"></script>
+  <script type="text/babel" src="components/ui.jsx"></script>
+  <script type="text/babel" src="screens/login.jsx"></script>
+  <script type="text/babel" src="screens/auth.jsx"></script>
+  <script type="text/babel" src="screens/onboarding.jsx"></script>
+  <script type="text/babel" src="screens/today.jsx"></script>
+  <script type="text/babel" src="screens/home.jsx"></script>
+  <script type="text/babel" src="screens/podcast.jsx"></script>
+  <script type="text/babel" src="screens/podcast-episodes.jsx"></script>
+  <script type="text/babel" src="screens/detail-profile.jsx"></script>
+  <script type="text/babel" src="screens/font-settings.jsx"></script>
+  <script type="text/babel" src="screens/topic-detail.jsx"></script>
+  <script type="text/babel" src="screens/category-index.jsx"></script>
+  <script type="text/babel" src="screens/search.jsx"></script>
+  <script type="text/babel" src="screens/notifications.jsx"></script>
+  <script type="text/babel" src="screens/bookmarks.jsx"></script>
+  <script type="text/babel" src="screens/states.jsx"></script>
+  <script type="text/babel" src="screens/widgets.jsx"></script>
+  <script type="text/babel" src="screens/brand.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect } = React;
+
+    // Tweak defaults
+    const TWEAKS = /*EDITMODE-BEGIN*/{
+      "device": "android",
+      "accent": "rust",
+      "fontPairing": "serif_sans",
+      "theme": "light"
+    }/*EDITMODE-END*/;
+
+    // Phone wrapper — iPhone or Android bezel around a 390x844 content area
+    const Phone = ({ children, device = 'iphone' }) => {
+      if (device === 'android') {
+        return (
+          <div style={{
+            width: 390, height: 844, borderRadius: 22, overflow: 'hidden',
+            background: '#111', padding: 4,
+            boxShadow: '0 40px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.15)',
+          }}>
+            <div style={{ width: '100%', height: '100%', borderRadius: 18, overflow: 'hidden', background: '#000' }}>
+              {children}
+            </div>
+          </div>
+        );
+      }
+      return (
+        <div style={{
+          width: 390, height: 844, borderRadius: 48, overflow: 'hidden',
+          background: '#000', padding: 3,
+          boxShadow: '0 40px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.15)',
+          position: 'relative',
+        }}>
+          <div style={{ width: '100%', height: '100%', borderRadius: 45, overflow: 'hidden', position: 'relative' }}>
+            <div style={{
+              position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
+              width: 120, height: 34, borderRadius: 24, background: '#000', zIndex: 50,
+            }}/>
+            {children}
+          </div>
+        </div>
+      );
+    };
+
+    // Global theme (set by App). Comparison cards override via explicit theme prop.
+    const ThemeCtx = React.createContext({ theme: 'light', setTheme: () => {} });
+    window.ThemeCtx = ThemeCtx;
+
+    const ART = (label, el, theme) => (
+      <DCArtboard label={label} width={390} height={844} style={{ borderRadius: 48, background: 'transparent', boxShadow: 'none' }}>
+        <ThemeCtx.Consumer>
+          {(ctx) => {
+            const globalTheme = (ctx && ctx.theme) || 'light';
+            const effective = theme || globalTheme;
+            return (
+              <Phone>
+                {effective && effective !== 'light'
+                  ? <div data-theme={effective} style={{ width: '100%', height: '100%', background: 'var(--paper)' }}>{el}</div>
+                  : el}
+              </Phone>
+            );
+          }}
+        </ThemeCtx.Consumer>
+      </DCArtboard>
+    );
+
+    // Mini-player wraps a screen — injects mini player above tab bar.
+    // We render the screen then overlay a mini player absolutely above the tab bar.
+    const WithMiniPlayer = ({ children, slot = 'AM' }) => (
+      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {children}
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 83 /* above 49 tab bar + 34 home indicator */, zIndex: 20 }}>
+          <MiniPlayer slot={slot}/>
+        </div>
+      </div>
+    );
+
+    // Tweaks panel
+    function TweaksPanel({ tweaks, setTweaks, show }) {
+      if (!show) return null;
+      const set = (k, v) => {
+        const next = { ...tweaks, [k]: v };
+        setTweaks(next);
+        window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+      };
+      return (
+        <div style={{
+          position: 'fixed', bottom: 20, right: 20, width: 260,
+          background: '#fcfaf4', border: '1px solid #dcd3c1', borderRadius: 4,
+          padding: 16, fontFamily: 'Pretendard, sans-serif',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.15)', zIndex: 1000,
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #1a1714', paddingBottom: 8, marginBottom: 12 }}>
+            <span style={{ fontFamily: 'Noto Serif KR, serif', fontWeight: 700, fontSize: 15 }}>Tweaks</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, color: '#857a6d', letterSpacing: '0.14em' }}>BRIEFLY</span>
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Theme</div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 14 }}>
+            {[['light', '☀ Light'], ['dark', '☾ Dark']].map(([v, l]) => (
+              <button key={v} onClick={() => set('theme', v)} style={{
+                flex: 1, padding: '6px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                border: '1px solid #1a1714', borderRadius: 2,
+                background: (tweaks.theme || 'light') === v ? '#1a1714' : 'transparent',
+                color: (tweaks.theme || 'light') === v ? '#f7f2e9' : '#1a1714',
+              }}>{l}</button>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Device frame</div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 14 }}>
+            {[['iphone', 'iPhone'], ['android', 'Android']].map(([v, l]) => (
+              <button key={v} onClick={() => set('device', v)} style={{
+                flex: 1, padding: '6px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                border: '1px solid #1a1714', borderRadius: 2,
+                background: tweaks.device === v ? '#1a1714' : 'transparent',
+                color: tweaks.device === v ? '#f7f2e9' : '#1a1714',
+              }}>{l}</button>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Accent</div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 14 }}>
+            {[['rust', '#a03a28'], ['forest', '#4a7c59'], ['navy', '#3d6b8c'], ['plum', '#6b4e8a']].map(([v, color]) => (
+              <button key={v} onClick={() => {
+                document.documentElement.style.setProperty('--accent', color);
+                set('accent', v);
+              }} style={{
+                flex: 1, height: 28, cursor: 'pointer',
+                border: tweaks.accent === v ? '2px solid #1a1714' : '1px solid #dcd3c1', borderRadius: 2,
+                background: color,
+              }}/>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Type pairing</div>
+          <div style={{ display: 'flex', gap: 4, flexDirection: 'column' }}>
+            {[['serif_sans', 'Serif 헤드라인 · Sans 본문'], ['all_serif', '모두 세리프 (정통 에디토리얼)']].map(([v, l]) => (
+              <button key={v} onClick={() => {
+                if (v === 'all_serif') {
+                  document.documentElement.style.setProperty('--sans', 'Noto Serif KR, serif');
+                } else {
+                  document.documentElement.style.setProperty('--sans', "Pretendard, 'Pretendard Variable', -apple-system, sans-serif");
+                }
+                set('fontPairing', v);
+              }} style={{
+                padding: '6px 10px', fontSize: 11, fontWeight: 500, cursor: 'pointer',
+                border: '1px solid #dcd3c1', borderRadius: 2, textAlign: 'left',
+                background: tweaks.fontPairing === v ? '#efe8da' : 'transparent',
+                color: '#1a1714',
+              }}>{l}</button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [tweaks, setTweaks] = useState(TWEAKS);
+      const [editMode, setEditMode] = useState(false);
+
+      useEffect(() => {
+        const onMsg = (e) => {
+          if (e.data?.type === '__activate_edit_mode') setEditMode(true);
+          if (e.data?.type === '__deactivate_edit_mode') setEditMode(false);
+        };
+        window.addEventListener('message', onMsg);
+        setTimeout(() => window.parent.postMessage({ type: '__edit_mode_available' }, '*'), 100);
+        return () => window.removeEventListener('message', onMsg);
+      }, []);
+
+      return (
+        <ThemeCtx.Provider value={{
+          theme: tweaks.theme || 'light',
+          setTheme: (t) => {
+            const next = { ...tweaks, theme: t };
+            setTweaks(next);
+            window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: t } }, '*');
+          },
+        }}>
+          <DesignCanvas>
+            {/* Masthead */}
+            <div style={{ padding: '20px 60px 40px', maxWidth: 1200 }}>
+              <div style={{ borderTop: '2px solid #1a1714', borderBottom: '1px solid #1a1714', padding: '14px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div>
+                  <span style={{ fontFamily: 'Noto Serif KR, serif', fontWeight: 900, fontSize: 32, letterSpacing: '-0.03em' }}>
+                    Briefly<span style={{ color: '#a03a28' }}>.</span>
+                  </span>
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: '#857a6d', letterSpacing: '0.16em', marginLeft: 16, textTransform: 'uppercase' }}>
+                    Design Exploration · Vol. 2 · Apr 20, 2026
+                  </span>
+                </div>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  Warm editorial · Serif + Sans · Muted accents
+                </span>
+              </div>
+              <div style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
+                <div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#a03a28', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 8 }}>In this issue</div>
+                  <div style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 17, fontWeight: 500, lineHeight: 1.55, letterSpacing: '-0.01em', color: '#4a423b' }}>
+                    13개 화면 · 각 화면당 2–3개 변형 · 라이트/다크 대비 · iOS & Android 홈스크린 위젯 · 로딩/빈/에러 상태 · 미니 플레이어가 올라간 네비게이션. 우측 상단 <b style={{ color: '#1a1714' }}>Tweaks</b> 토글로 테마·디바이스·액센트·타입 페어링을 즉시 바꿔볼 수 있어요.
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 6 }}>Type</div>
+                  <div style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 13, lineHeight: 1.5 }}>
+                    <b>Noto Serif KR</b> · 헤드라인<br/>
+                    <b style={{ fontFamily: 'Pretendard, sans-serif' }}>Pretendard</b> · 본문·UI<br/>
+                    <b style={{ fontFamily: 'JetBrains Mono, monospace' }}>JetBrains Mono</b> · 메타
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 6 }}>Palette</div>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    {[['#f7f2e9', '종이'], ['#1a1714', '먹'], ['#a03a28', '러스트'], ['#4a7c59', '경제'], ['#3d6b8c', '국제'], ['#6b4e8a', '사회']].map(([c, l]) => (
+                      <div key={c} style={{ textAlign: 'center' }}>
+                        <div style={{ width: 30, height: 30, background: c, border: '1px solid #dcd3c1' }}/>
+                        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, color: '#857a6d', marginTop: 3 }}>{l}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Table of contents */}
+              <div style={{ marginTop: 28, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, borderTop: '1px solid #1a1714', borderBottom: '1px solid #1a1714' }}>
+                {[
+                  ['Ⅰ', '로그인·온보딩'],
+                  ['Ⅱ', '투데이 브리핑 (A/B)'],
+                  ['Ⅲ', '홈 피드 (A/B)'],
+                  ['Ⅳ', '뉴스 상세 (A/B)'],
+                  ['Ⅴ', '토픽 딥다이브'],
+                  ['Ⅵ', '검색'],
+                  ['Ⅶ', '북마크'],
+                  ['Ⅷ', '팟캐스트 (B/C)'],
+                  ['Ⅸ', '프로필'],
+                  ['Ⅹ', '빈·로딩·에러'],
+                  ['ⅩⅠ', '미니 플레이어'],
+                  ['ⅩⅡ', '홈스크린 위젯'],
+                  ['ⅩⅢ', '앱 아이콘·스플래시'],
+                  ['ⅩⅣ', '다크 모드 대조'],
+                ].map(([n, l], i) => (
+                  <div key={i} style={{ padding: '10px 14px', borderRight: (i % 4 !== 3) ? '1px solid #dcd3c1' : 'none', borderBottom: i < 12 ? '1px solid #dcd3c1' : 'none', display: 'flex', gap: 8, alignItems: 'baseline' }}>
+                    <span style={{ fontFamily: 'Noto Serif KR, serif', fontWeight: 700, fontSize: 13, color: '#a03a28', width: 28 }}>{n}</span>
+                    <span style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 13, color: '#1a1714' }}>{l}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ─── Ⅰ. 로그인·온보딩 ─── */}
+            <DCSection title="Ⅰ · 로그인 · Login" subtitle="마스트헤드 풀스크린과 소셜 바텀시트 — 2가지 진입 톤.">
+              {ART('A · 마스트헤드 에디션', <LoginScreen variant="A"/>)}
+              {ART('C · 소셜 바텀시트', <AuthSheet/>)}
+            </DCSection>
+
+            <DCSection title="Ⅰ · 온보딩 · Onboarding" subtitle="카테고리 선택 — 첫 인상의 친근함을 설정하는 화면.">
+              {ART('관심 주제 선택', <OnboardingScreen variant="A"/>)}
+            </DCSection>
+
+            {/* ─── Ⅱ. 투데이 브리핑 ─── */}
+            <DCSection title="Ⅱ · 투데이 브리핑 · Today" subtitle="A = 정석 에디토리얼 카드, B = 실사 사진 + 그레이 오버레이 매거진 커버. 상단 컬러 닷은 카테고리 표식.">
+              {ART('A · 에디토리얼 카드', <TodayScreen variant="A" slot="AM"/>)}
+              {ART('B · 매거진 커버 (사진 + 그레이 오버레이)', <TodayScreen variant="B" slot="AM"/>)}
+            </DCSection>
+
+            {/* ─── Ⅲ. 홈 ─── */}
+            <DCSection title="Ⅲ · 홈 · Home" subtitle="A = 리드+썸네일, B = 신문 컬럼(이미지 無) — 두 가지 밀도의 피드.">
+              {ART('A · 리드 + 썸네일 (경제)', <HomeScreen variant="A" category="economy"/>)}
+              {ART('B · 신문 컬럼 인덱스', <HomeScreen variant="B" category="politics"/>)}
+            </DCSection>
+
+            {/* ─── Ⅳ. 뉴스 상세 ─── */}
+            <DCSection title="Ⅳ · 뉴스 상세 · Article" subtitle="A = 정통 에디토리얼 (종이 배경), B = 히어로 이미지 + 드롭캡.">
+              {ART('A · 표준 에디토리얼', <NewsDetailScreen variant="A"/>)}
+              {ART('B · 히어로 이미지 + 드롭캡', <NewsDetailScreen variant="B"/>)}
+            </DCSection>
+
+            {/* ─── Ⅴ. 토픽 딥다이브 ─── */}
+            <DCSection title="Ⅴ · 토픽 딥다이브 · Topic" subtitle="투데이 한 꼭지에서 열리는 '관련 기사 N건' 모음 뷰 — 한 사건의 여러 관점을 펼쳐 보여준다.">
+              {ART('토픽: 기준금리 인상', <TopicDetailScreen/>)}
+            </DCSection>
+
+            {/* ─── Ⅵ. 검색 ─── */}
+            <DCSection title="Ⅵ · 검색 · Search" subtitle="키워드 중심 탐색 — 최근 검색, 뜨는 키워드, 결과 미리보기.">
+              {ART('진입 · 키워드 추천', <SearchScreen state="initial"/>)}
+              {ART('결과 · "금리"', <SearchScreen state="results"/>)}
+            </DCSection>
+
+            {/* ─── Ⅶ. 북마크 ─── */}
+            <DCSection title="Ⅶ · 북마크 · Bookmarks" subtitle="저장한 기사 — 폴더 필터 + 저장 시점 표시.">
+              {ART('저장된 기사', <BookmarksScreen/>)}
+            </DCSection>
+
+            {/* ─── Ⅷ. 팟캐스트 ─── */}
+            <DCSection title="Ⅷ · 팟캐스트 · Podcast" subtitle="B = 스크립트 + 오늘의 뉴스, C = 팟캐스트 목록.">
+              {ART('B · 상세 + 오늘의 뉴스', <PodcastScreen variant="B" slot="AM"/>)}
+              {ART('C · 팟캐스트 목록', <PodcastEpisodesScreen/>)}
+            </DCSection>
+
+            {/* ─── Ⅸ. 프로필 ─── */}
+            <DCSection title="Ⅸ · 프로필 · Profile" subtitle="관심 주제 편집이 설정 메뉴로 들어간 심플한 형태. 폰트 설정에선 제목/본문 폰트를 라이브 프리뷰로 고른다.">
+              {ART('구독자 데스크', <ProfileScreen variant="A"/>)}
+              {ART('폰트 설정 · 라이브 프리뷰', <FontSettingsScreen/>)}
+            </DCSection>
+
+            {/* ─── Ⅹ. 상태 ─── */}
+            <DCSection title="Ⅹ · 빈 · 로딩 · 에러 상태" subtitle="로딩에는 shimmer 애니메이션. 에러는 최소 구성에 에러 코드.">
+              {ART('로딩 · shimmer', <LoadingState/>)}
+              {ART('빈 상태 · 북마크 없음', <EmptyState/>)}
+              {ART('에러 · 오류 발생', <ErrorState/>)}
+            </DCSection>
+
+            {/* ─── ⅩⅠ. 미니 플레이어 적용 ─── */}
+            <DCSection title="ⅩⅠ · 미니 플레이어 · Mini Player" subtitle="팟캐스트 재생 중 — 다른 화면으로 넘어가도 탭 바 위에 얹혀 따라온다.">
+              {ART('홈 + 미니 플레이어', <WithMiniPlayer slot="AM"><HomeScreen variant="A" category="economy"/></WithMiniPlayer>)}
+              {ART('투데이 + 미니 플레이어', <WithMiniPlayer slot="AM"><TodayScreen variant="A" slot="AM"/></WithMiniPlayer>)}
+              {ART('북마크 + 미니 플레이어', <WithMiniPlayer slot="PM"><BookmarksScreen/></WithMiniPlayer>)}
+            </DCSection>
+
+            {/* ─── ⅩⅡ. 홈스크린 위젯 ─── */}
+            <DCSection title="ⅩⅡ · 홈스크린 위젯 · Widgets" subtitle="앱을 열지 않아도 한 번의 탭으로 오늘의 브리핑이 재생된다. 위젯은 곧 플레이어.">
+              <DCArtboard label="iOS · Small + Medium + Large" width={420} height={700} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <IOSHomeMock label="iOS 16+ · Home Screen">
+                  <IOSWidget size="sm"/>
+                  <IOSWidget size="med"/>
+                </IOSHomeMock>
+              </DCArtboard>
+              <DCArtboard label="iOS · Large 4x4" width={380} height={420} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <IOSHomeMock label="iOS · Large widget">
+                  <IOSWidget size="lg"/>
+                </IOSHomeMock>
+              </DCArtboard>
+              <DCArtboard label="Android · Material You" width={360} height={360} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <AndroidHomeMock label="Android 14 · Home Screen">
+                  <AndroidWidget/>
+                </AndroidHomeMock>
+              </DCArtboard>
+            </DCSection>
+
+            {/* ─── ⅩⅢ. 앱 아이콘·스플래시 ─── */}
+            <DCSection title="ⅩⅢ · 앱 아이콘 · App Icon" subtitle="'Briefly.' 풀 워드마크. 홈 화면에 놓였을 때의 모습.">
+              <DCArtboard label="풀 워드마크" width={200} height={260} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <IconCard label="'Briefly.' 전체">
+                  <IconAWord size={160} bg="#f7f2e9" ink="#1a1714" dot="#a03a28"/>
+                </IconCard>
+              </DCArtboard>
+              <DCArtboard label="홈 화면 미리보기" width={280} height={260} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <HomeScreenPreview IconComp={(p) => <IconAWord {...p} bg="#f7f2e9" ink="#1a1714" dot="#a03a28"/>}/>
+              </DCArtboard>
+              {ART('스플래시 · 마스트헤드', <SplashA/>)}
+            </DCSection>
+
+            {/* ─── ⅩⅣ. 다크 모드 대조 ─── */}
+            <DCSection title="ⅩⅣ · 다크 모드 대조 · Deep Ink" subtitle="라이트(종이 크림)의 정반대 — 따뜻한 잉크 블랙 기반 신문 야간판. 핵심 화면만 좌우 대조.">
+              {ART('Light · 투데이', <TodayScreen variant="A" slot="AM"/>, 'light')}
+              {ART('Dark · 투데이', <TodayScreen variant="A" slot="AM"/>, 'dark')}
+              {ART('Light · 홈', <HomeScreen variant="A" category="economy"/>, 'light')}
+              {ART('Dark · 홈', <HomeScreen variant="A" category="economy"/>, 'dark')}
+              {ART('Light · 뉴스 상세', <NewsDetailScreen variant="A"/>, 'light')}
+              {ART('Dark · 뉴스 상세', <NewsDetailScreen variant="A"/>, 'dark')}
+              {ART('Light · 팟캐스트', <PodcastScreen variant="B" slot="AM"/>, 'light')}
+              {ART('Dark · 팟캐스트', <PodcastScreen variant="B" slot="AM"/>, 'dark')}
+            </DCSection>
+
+            <div style={{ padding: '40px 60px 40px', maxWidth: 900 }}>
+              <div style={{ borderTop: '1px solid #1a1714', paddingTop: 12, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                End of exploration · v2
+              </div>
+              <div style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 14, color: '#4a423b', lineHeight: 1.7, marginTop: 10 }}>
+                다음 단계 제안 — ① 방향 확정 (투데이 A/B/C, 홈 A/B/C, 상세 A/B, 팟캐스트 A/B/C 중 하나씩) → ② 선택된 조합으로 핵심 인터랙션 프로토타입 (스와이프 카드 전환, 팟캐스트 재생 컨트롤, 토픽 확장, 검색 타이핑) → ③ 저해상도 애니메이션 스펙 (화면 전환, 미니 플레이어 등장, 풀투리프레시) → ④ 한 화면 고해상도 픽셀 마감. 우측 상단 <b>Tweaks</b>에서 라이트/다크, 디바이스, 액센트, 타입을 바꿔보세요.
+              </div>
+            </div>
+          </DesignCanvas>
+
+          <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} show={editMode}/>
+        </ThemeCtx.Provider>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App/>);
+  </script>
+</body>
+</html>

@@ -50,3 +50,4 @@ data_backup/
 *.onnx
 *.safetensors
 backend/test/models/
+.mcp.json

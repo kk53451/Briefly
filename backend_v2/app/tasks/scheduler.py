@@ -149,22 +149,30 @@ def process_category(
             raise
 
         # ── 5. 토픽 랭킹 (Phase 2 가중 점수) ──
+        # 홈 탭 NewsCards 저장을 위해 top 20 을 한 번에 가져온 뒤,
+        # 앞부분 5개만 대본/헤드라인 생성에 사용합니다.
         log_step(category_ko, "5️⃣ 토픽 랭킹 시작")
         try:
             logger.info(f"  [{category_ko}] 토픽 랭킹...")
-            topics = rank_topics(
+            all_ranked_topics = rank_topics(
                 clusters, articles, embeddings,
-                top_n=5, articles_per_topic=3,
+                top_n=20, articles_per_topic=3,
                 category_articles=category_articles_full,
                 use_weighted_score=True,
             )
+            topics = all_ranked_topics[:5]  # 대본/헤드라인 생성은 top 5
             result["topics"] = len(topics)
+            result["ranked_topics_total"] = len(all_ranked_topics)
 
             topic_lines = "\n".join(
                 f"  {i+1}. ({t['size']}건) {t['representative_article'].get('title', '')[:40]}"
                 for i, t in enumerate(topics)
             )
-            log_step(category_ko, f"5️⃣ 토픽 랭킹 완료: {len(topics)}토픽", topic_lines)
+            log_step(
+                category_ko,
+                f"5️⃣ 토픽 랭킹 완료: top {len(topics)} (전체 {len(all_ranked_topics)}개)",
+                topic_lines,
+            )
         except Exception as e:
             log_step(category_ko, f"❌ 5️⃣ 토픽 랭킹 실패: {str(e)[:100]}", color=0xFF0000)
             raise
@@ -174,6 +182,24 @@ def process_category(
                 f"    토픽 {i+1} ({topic['size']}건): "
                 f"{topic['representative_article'].get('title', '')[:50]}"
             )
+
+        # ── 5-b. NewsCards 저장 (홈 탭용, 클러스터 대표 기사 rank 1~20) ──
+        log_step(category_ko, "5️⃣-b 홈 탭 NewsCards 저장 시작")
+        try:
+            from app.services.storage_service import save_news_cards
+            from app.utils.date import get_today_kst as _today_nc
+            saved_count = save_news_cards(
+                topics=all_ranked_topics,
+                category_en=category_en,
+                date_str=_today_nc(),
+                max_cards=20,
+            )
+            result["news_cards_saved"] = saved_count
+            log_step(category_ko, f"5️⃣-b NewsCards 저장 완료: {saved_count}건")
+        except Exception as e:
+            log_step(category_ko, f"❌ 5️⃣-b NewsCards 저장 실패: {str(e)[:100]}", color=0xFF0000)
+            # NewsCards 저장 실패는 치명적이지 않으므로 계속 진행
+            result["news_cards_saved"] = 0
 
         # ── 6. 오늘의 브리핑 헤드라인 생성 (Gemma4 로컬) ──
         log_step(category_ko, "6️⃣ 헤드라인 생성 시작 (Gemma4)")

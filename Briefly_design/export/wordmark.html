@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Briefly — 워드마크 내보내기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f7f2e9;
+    --ink:   #1a1714;
+    --accent:#a03a28;
+    --line:  #dcd3c1;
+    --ink-3: #857a6d;
+    --serif: 'Noto Serif KR', 'Nanum Myeongjo', ui-serif, Georgia, serif;
+    --sans:  'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 40px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 14px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: baseline; }
+  header .mark { font-family: var(--serif); font-size: 34px; font-weight: 700; letter-spacing: -0.02em; }
+  header .mark .dot { color: var(--accent); }
+  header .meta { font-size: 12px; color: var(--ink-3); letter-spacing: 0.06em; }
+  h1 { font-family: var(--serif); font-size: 40px; font-weight: 900; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .sub { color: var(--ink-3); font-size: 14px; margin-bottom: 28px; line-height: 1.6; max-width: 640px; }
+  .sub b { color: var(--ink); font-weight: 600; }
+
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin: 24px 0 28px; padding: 14px 16px; background: #fcfaf4; border: 1px solid var(--line); }
+  .toolbar button {
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+    padding: 10px 16px; border-radius: 2px; cursor: pointer;
+    border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+  }
+  .toolbar button.secondary { background: transparent; color: var(--ink); }
+  .toolbar .grow { flex: 1; }
+  .toolbar label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .card { background: #fcfaf4; border: 1px solid var(--line); display: flex; flex-direction: column; }
+  .card .preview { flex: 1; min-height: 160px; display: flex; align-items: center; justify-content: center; padding: 24px; background-size: 20px 20px; background-image: linear-gradient(45deg, #efe8da 25%, transparent 25%), linear-gradient(-45deg, #efe8da 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #efe8da 75%), linear-gradient(-45deg, transparent 75%, #efe8da 75%); background-position: 0 0, 0 10px, 10px -10px, -10px 0px; }
+  .card.dark .preview { background: var(--ink); background-image: none; }
+  .card .preview canvas, .card .preview img { max-width: 100%; height: auto; display: block; margin: auto; image-rendering: -webkit-optimize-contrast; }
+  .card .meta { padding: 14px 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; }
+  .card .name { font-family: var(--serif); font-weight: 700; font-size: 14px; }
+  .card .size { font-size: 11px; color: var(--ink-3); letter-spacing: 0.04em; }
+  .card .actions { display: flex; gap: 8px; padding: 0 16px 14px; }
+  .card .actions a { flex: 1; text-align: center; font-size: 12px; padding: 8px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-weight: 600; }
+  .card .actions a:hover { background: var(--ink); color: var(--paper); }
+
+  .status { font-size: 12px; color: var(--ink-3); margin-top: 16px; }
+  .status.err { color: #a03a28; }
+  .bg-toggle { display: flex; gap: 6px; }
+  .bg-toggle button { padding: 6px 10px; font-size: 12px; background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .bg-toggle button.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark">Briefly<span class="dot">.</span></div>
+    <div class="meta">워드마크 · 다운로드</div>
+  </header>
+
+  <h1>Briefly 워드마크</h1>
+  <p class="sub">
+    투명 배경 PNG로 여러 사이즈(높이 기준 48 / 96 / 192 / 384 / 768 / 1024 px)를 생성합니다.
+    각 카드에서 개별 다운로드하거나, <b>전체 ZIP 다운로드</b>를 눌러 한 번에 받으세요. 기본은 투명 배경 + 잉크 색, 다크 토글 시 배경이 짙은 색이 되고 워드마크는 크림색으로 바뀝니다.
+  </p>
+
+  <div class="toolbar">
+    <div class="bg-toggle">
+      <button id="bg-light" class="active">투명 / 잉크</button>
+      <button id="bg-paper">크림 배경</button>
+      <button id="bg-dark">다크 배경 / 크림</button>
+    </div>
+    <div class="grow"></div>
+    <button id="zip">전체 ZIP 다운로드</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="status" id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+const SIZES = [48, 96, 192, 384, 768, 1024];
+// Layout: wordmark is set at fontSize = height * 0.7, canvas height = given, width auto
+// Inks
+const INK = '#1a1714';
+const ACCENT = '#a03a28';
+const PAPER = '#f7f2e9';
+
+let mode = 'light'; // 'light' (transparent), 'paper' (cream bg), 'dark' (ink bg)
+
+function colorsFor(m) {
+  if (m === 'dark')  return { bg: INK,   ink: PAPER, dot: ACCENT, suffix: 'dark' };
+  if (m === 'paper') return { bg: PAPER, ink: INK,   dot: ACCENT, suffix: 'paper' };
+  return                 { bg: null,  ink: INK,   dot: ACCENT, suffix: 'transparent' };
+}
+
+async function waitForFont() {
+  if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  // also explicitly load the weight at a big size
+  try { await document.fonts.load('700 200px "Noto Serif KR"'); } catch(e) {}
+}
+
+function renderWordmark(heightPx, opts) {
+  const fontSize = Math.round(heightPx * 0.82);
+  const tracking = -0.02; // em
+
+  // Measure using actualBoundingBox to get a TIGHT crop
+  const measurer = document.createElement('canvas');
+  const mctx = measurer.getContext('2d');
+  mctx.font = `700 ${fontSize}px "Noto Serif KR", "Nanum Myeongjo", serif`;
+  const txt1 = 'Briefly';
+  const txt2 = '.';
+
+  // Per-char advances (with tracking)
+  const advances1 = [];
+  for (let i = 0; i < txt1.length; i++) {
+    advances1.push(mctx.measureText(txt1[i]).width + fontSize * tracking);
+  }
+  const totalAdvance = advances1.reduce((a, b) => a + b, 0) + mctx.measureText(txt2).width;
+
+  // Measure tight top/bottom from the combined text using actualBoundingBox
+  const combined = txt1 + txt2;
+  const M = mctx.measureText(combined);
+  const ascent  = M.actualBoundingBoxAscent  || fontSize * 0.78;
+  const descent = M.actualBoundingBoxDescent || fontSize * 0.22;
+  const tightH = Math.ceil(ascent + descent);
+
+  // small uniform padding so glyphs don't touch edges
+  const pad = Math.max(2, Math.round(heightPx * 0.08));
+  const totalW = Math.ceil(totalAdvance + pad * 2);
+  const totalH = tightH + pad * 2;
+
+  const c = document.createElement('canvas');
+  c.width = totalW;
+  c.height = totalH;
+  const ctx = c.getContext('2d');
+  ctx.textBaseline = 'alphabetic';
+  ctx.font = `700 ${fontSize}px "Noto Serif KR", "Nanum Myeongjo", serif`;
+
+  if (opts.bg) {
+    ctx.fillStyle = opts.bg;
+    ctx.fillRect(0, 0, totalW, totalH);
+  }
+
+  const baseline = pad + ascent;
+
+  let x = pad;
+  ctx.fillStyle = opts.ink;
+  for (let i = 0; i < txt1.length; i++) {
+    ctx.fillText(txt1[i], x, baseline);
+    x += advances1[i];
+  }
+  ctx.fillStyle = opts.dot;
+  ctx.fillText(txt2, x, baseline);
+
+  return c;
+}
+
+async function build() {
+  await waitForFont();
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const colors = colorsFor(mode);
+
+  for (const h of SIZES) {
+    const card = document.createElement('div');
+    card.className = 'card' + (mode === 'dark' ? ' dark' : '');
+    const preview = document.createElement('div');
+    preview.className = 'preview';
+    const canvas = renderWordmark(h, colors);
+    // scale preview down for very large
+    if (canvas.width > 600) {
+      const img = new Image();
+      img.src = canvas.toDataURL('image/png');
+      img.style.maxWidth = '100%';
+      preview.appendChild(img);
+    } else {
+      preview.appendChild(canvas);
+    }
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.innerHTML = `<span class="name">briefly-wordmark-${h}px</span><span class="size">${canvas.width} × ${canvas.height}</span>`;
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `briefly-wordmark-${colors.suffix}-${h}px.png`;
+    a.textContent = 'PNG 다운로드';
+    actions.appendChild(a);
+    card.appendChild(preview);
+    card.appendChild(meta);
+    card.appendChild(actions);
+    grid.appendChild(card);
+  }
+  document.getElementById('status').textContent = `${SIZES.length}개 사이즈 준비 완료 · 폰트: Noto Serif KR 700`;
+}
+
+document.getElementById('zip').addEventListener('click', async () => {
+  const status = document.getElementById('status');
+  status.textContent = 'ZIP 생성 중…';
+  try {
+    const zip = new JSZip();
+    const folder = zip.folder('briefly-wordmark');
+    // include all three bg variants for convenience
+    for (const m of ['light', 'paper', 'dark']) {
+      const colors = colorsFor(m);
+      for (const h of SIZES) {
+        const canvas = renderWordmark(h, colors);
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        folder.file(`${colors.suffix}/briefly-wordmark-${colors.suffix}-${h}px.png`, blob);
+      }
+    }
+    // include an SVG version too
+    folder.file('briefly-wordmark.svg', svgMarkup({ ink: INK, dot: ACCENT }));
+    folder.file('briefly-wordmark-dark.svg', svgMarkup({ ink: PAPER, dot: ACCENT, bg: INK }));
+    const out = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(out);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'briefly-wordmark.zip';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    status.textContent = 'ZIP 다운로드 완료.';
+  } catch (e) {
+    status.textContent = 'ZIP 생성 실패: ' + e.message;
+    status.classList.add('err');
+  }
+});
+
+function svgMarkup({ ink, dot, bg }) {
+  // 1024 tall svg; measure-ish via canvas
+  const fontSize = 720;
+  const m = document.createElement('canvas').getContext('2d');
+  m.font = `700 ${fontSize}px "Noto Serif KR", serif`;
+  const w1 = m.measureText('Briefly').width + 6 * fontSize * -0.02;
+  const w2 = m.measureText('.').width;
+  const padX = 185, padY = 150;
+  const totalW = Math.ceil(w1 + w2 + padX * 2);
+  const totalH = 1024 + padY * 2 - 150;
+  const bgRect = bg ? `<rect width="${totalW}" height="${totalH}" fill="${bg}"/>` : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalW} ${totalH}" width="${totalW}" height="${totalH}">
+  ${bgRect}
+  <text x="${padX}" y="${padY + fontSize * 0.82}" font-family="Noto Serif KR, Nanum Myeongjo, serif" font-weight="700" font-size="${fontSize}" letter-spacing="${-0.02 * fontSize}" fill="${ink}">Briefly<tspan fill="${dot}">.</tspan></text>
+</svg>`;
+}
+
+function setMode(m) {
+  mode = m;
+  for (const id of ['bg-light', 'bg-paper', 'bg-dark']) {
+    document.getElementById(id).classList.toggle('active', id === 'bg-' + m);
+  }
+  build();
+}
+document.getElementById('bg-light').addEventListener('click', () => setMode('light'));
+document.getElementById('bg-paper').addEventListener('click', () => setMode('paper'));
+document.getElementById('bg-dark').addEventListener('click',  () => setMode('dark'));
+
+build();
+</script>
+</body>
+</html>

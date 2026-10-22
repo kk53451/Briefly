@@ -1,0 +1,109 @@
+/* Briefly design tokens — warm editorial */
+
+:root {
+  /* Paper & ink */
+  --paper:        #f7f2e9;   /* warm cream — app background */
+  --paper-2:      #efe8da;   /* secondary surface */
+  --card:         #fcfaf4;   /* elevated card */
+  --ink:          #1a1714;   /* near-black, warm */
+  --ink-2:        #4a423b;   /* body secondary */
+  --ink-3:        #857a6d;   /* meta / dates */
+  --ink-4:        #b8ad9d;   /* tertiary / placeholder */
+  --line:         #dcd3c1;   /* divider, warm */
+  --line-soft:    #e8e0cd;
+
+  /* Accent — editorial muted */
+  --accent:       #a03a28;   /* rust — brand primary */
+  --accent-soft:  #eadbc9;   /* rust tint background */
+  --accent-ink:   #6b2416;
+
+  /* Category — editorial muted palette (not neon) */
+  --cat-politics: #b54a3a;
+  --cat-economy:  #4a7c59;
+  --cat-society:  #6b4e8a;
+  --cat-culture:  #b85a75;
+  --cat-world:    #3d6b8c;
+  --cat-local:    #c08a3e;
+  --cat-sports:   #3e8c8c;
+  --cat-tech:     #5a5fb0;
+
+  /* Type — KoPub World (한국출판인회의) */
+  --serif:  'KoPubWorldBatang', 'KoPub Batang', 'Noto Serif KR', 'Nanum Myeongjo', ui-serif, Georgia, serif;
+  --sans:   'KoPubWorldDotum', 'KoPub Dotum', 'Pretendard', 'Pretendard Variable', -apple-system, BlinkMacSystemFont,
+            'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+  --mono:   'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Mono-styled label for mixed Korean+Latin — use sans with mono tracking */
+  --label:  'KoPubWorldDotum', 'KoPub Dotum', 'Pretendard', 'Pretendard Variable', -apple-system, BlinkMacSystemFont,
+            'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+}
+
+/* Global resets for within the phone frames */
+.briefly {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Dark mode (Deep Ink — 신문 야간판, 라이트의 정반대) */
+
+/* Wrapper-based theme override; .briefly inherits via cascade */
+[data-theme="dark"] .briefly,
+[data-theme="dark"] { color: var(--ink); background: var(--paper); }
+
+[data-theme="dark"],
+.briefly[data-theme="dark"] {
+  --paper:        #0e0c08;
+  --paper-2:      #1a1714;
+  --card:         #1f1b16;
+  --ink:          #f7f2e9;
+  --ink-2:        #c8bfaf;
+  --ink-3:        #8d8578;
+  --ink-4:        #5a554a;
+  --line:         #2c2721;
+  --line-soft:    #221e19;
+  --accent:       #d96650;
+  --accent-soft:  #3a2218;
+  --accent-ink:   #f0a78e;
+  --cat-politics: #d96a58;
+  --cat-economy:  #7aa688;
+  --cat-society:  #9b84b5;
+  --cat-culture:  #d68aa1;
+  --cat-world:    #6e99b8;
+  --cat-local:    #d6a866;
+  --cat-sports:   #6bafaf;
+  --cat-tech:     #8a8fd1;
+}
+.briefly *, .briefly *::before, .briefly *::after { box-sizing: border-box; }
+.briefly h1, .briefly h2, .briefly h3, .briefly h4 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.briefly p { margin: 0; line-height: 1.55; }
+.briefly button { font-family: inherit; }
+.briefly .serif { font-family: var(--serif); }
+.briefly .sans  { font-family: var(--sans); }
+.briefly .mono  { font-family: var(--mono); }
+
+/* Masthead top rule, editorial accents */
+.briefly .rule {
+  height: 1px;
+  background: var(--line);
+}
+.briefly .rule-thick {
+  height: 2px;
+  background: var(--ink);
+}
+
+/* Category swatch */
+.briefly .cat-dot {
+  width: 6px; height: 6px; border-radius: 999px;
+  display: inline-block;
+}
+
+/* Scroll nicety */
+.briefly ::-webkit-scrollbar { width: 0; height: 0; }

@@ -55,11 +55,12 @@ export interface HomeNewsResponse {
 
 // Podcast/Frequency types
 export interface FrequencyItem {
-  frequency_id: string;
+  frequency_id: string;       // format: "{category}#{date}#{slot}"
   category: string;
   script: string;
   audio_url: string;
   date: string;
+  slot?: "AM" | "PM";         // v2: 오전(AM) / 오후(PM) 브리핑 구분
   created_at: string;
   duration?: number;
 }
@@ -108,30 +109,23 @@ export interface RankedNewsItem extends NewsItem {
   categoryName: string; // Korean category name for display
 }
 
-// Headlines types (오늘의 브리핑)
-export interface HeadlineNewsInfo {
-  news_id: string;
-  title: string;
-  images?: string;
-  provider: string;
-  provider_link_page?: string;
-  published_at: string;
-}
-
+// Headlines types (오늘의 브리핑) — v2 backend
 export interface HeadlineItem {
-  headline_id: string;
-  title: string;           // GPT 생성 헤드라인
-  summary: string;         // GPT 생성 요약 (~요, ~해요 체)
-  cluster_size: number;    // 클러스터 크기 (관련 기사 수)
-  representative_news_id: string;
-  news_ids?: string[];     // 클러스터 내 기사 ID 목록
-  category?: string;       // 영문 카테고리
-  category_ko?: string;    // 한글 카테고리
-  news?: HeadlineNewsInfo; // 대표 기사 상세 정보
+  topic_id: number;              // 토픽 순번 (0~4)
+  headline: string;              // Gemma4 생성 헤드라인
+  summary: string;               // Gemma4 생성 요약 (~요, ~해요 체)
+  cluster_size: number;          // 클러스터 크기 (관련 기사 수)
+  representative_title: string;  // 대표 기사 제목
+  representative_image?: string; // 대표 기사 이미지 URL
+  representative_press?: string; // 대표 기사 언론사
+  keywords?: string[];           // Phase 2 랭킹 키워드
+  category?: string;             // 영문 카테고리
+  category_ko?: string;          // 한글 카테고리
 }
 
 export interface HeadlinesResponse {
   date: string;
-  category: string;        // "all" | "politics" | ...
+  slot: "AM" | "PM";             // v2: 오전/오후 브리핑 구분
+  category: string;              // "all" | "politics" | ...
   headlines: HeadlineItem[];
 }

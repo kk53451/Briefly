@@ -1,5 +1,10 @@
 /**
- * Authentication Context for managing user state
+ * Authentication Context (Kakao 제거 후 게스트 모드)
+ *
+ * 현재는 Kakao SDK 의존성을 제거하기 위해 **게스트 모드**로 동작.
+ * 앱 시작 시 자동으로 게스트 사용자로 로그인된 상태를 만듭니다.
+ * 추후 다른 인증 수단(이메일, Google, Apple 등)으로 교체할 수 있도록
+ * 인터페이스는 유지합니다.
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -11,8 +16,7 @@ interface AuthContextType {
   user: UserProfile | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (code: string) => Promise<void>;
-  loginWithKakao: (accessToken: string) => Promise<void>;
+  login: (code?: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
   updateUser: (user: UserProfile) => void;
@@ -20,76 +24,67 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// 게스트 사용자 기본 프로필 (서버 연동 실패 시 fallback)
+const GUEST_USER_FALLBACK: UserProfile = {
+  user_id: 'guest',
+  nickname: '게스트',
+  interests: ['정치', '경제', '사회', '문화', '국제', 'IT/과학'],
+  onboarding_completed: true,
+  created_at: new Date().toISOString(),
+};
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
+    bootstrap();
   }, []);
 
-  const checkAuth = async () => {
+  const bootstrap = async () => {
+    // 저장된 토큰이 있으면 그대로 쓰고, 없거나 만료됐으면 게스트 로그인 발급
     try {
       const token = await SecureStore.getItemAsync('access_token');
       if (token) {
-        const userData = await apiClient.getCurrentUser();
-        setUser(userData);
+        try {
+          const userData = await apiClient.getCurrentUser();
+          setUser(userData);
+          setIsLoading(false);
+          return;
+        } catch {
+          // 토큰 만료/무효 → 게스트 로그인 재발급
+          await SecureStore.deleteItemAsync('access_token');
+        }
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      await SecureStore.deleteItemAsync('access_token');
+
+      await guestLoginFlow();
     } finally {
       setIsLoading(false);
     }
   };
 
-  const login = async (code: string) => {
+  const guestLoginFlow = async () => {
     try {
-      const authResponse = await apiClient.handleKakaoCallback(code);
+      await apiClient.guestLogin(); // 서버에서 JWT 저장
       const userData = await apiClient.getCurrentUser();
       setUser(userData);
     } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
+      console.warn('Guest login failed, using local fallback:', error);
+      setUser(GUEST_USER_FALLBACK);
     }
   };
 
-  const loginWithKakao = async (accessToken: string) => {
-    try {
-      console.log('📡 백엔드에 카카오 토큰 전송 중...');
-
-      // Send Kakao access token to backend
-      const authResponse = await apiClient.loginWithKakaoToken(accessToken);
-
-      console.log('✅ JWT 토큰 받음:', authResponse.access_token ? 'success' : 'failed');
-      console.log('👤 사용자 정보:', authResponse.nickname);
-
-      // Get full user data
-      const userData = await apiClient.getCurrentUser();
-      setUser(userData);
-
-      console.log('✅ 로그인 완료!');
-    } catch (error: any) {
-      console.error('❌ Kakao token login failed:', error);
-
-      // 에러 정보를 더 명확하게 전달
-      if (error.response) {
-        console.error('Response error:', error.response.data);
-        console.error('Response status:', error.response.status);
-      }
-
-      throw error;
-    }
+  const login = async (_code?: string) => {
+    await guestLoginFlow();
   };
 
   const logout = async () => {
     try {
-      await apiClient.logout();
-    } catch (error) {
-      console.error('Logout failed:', error);
+      await SecureStore.deleteItemAsync('access_token');
+    } catch {
+      // ignore
     } finally {
       setUser(null);
-      await SecureStore.deleteItemAsync('access_token');
     }
   };
 
@@ -97,9 +92,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const userData = await apiClient.getCurrentUser();
       setUser(userData);
-    } catch (error) {
-      console.error('Failed to refresh user:', error);
-      throw error;
+    } catch {
+      setUser(GUEST_USER_FALLBACK);
     }
   };
 
@@ -114,7 +108,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isLoading,
         isAuthenticated: !!user,
         login,
-        loginWithKakao,
         logout,
         refreshUser,
         updateUser,

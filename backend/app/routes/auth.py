@@ -175,3 +175,22 @@ def auth_me(user: dict = Depends(get_current_user)):
 @router.post("/logout")
 def logout():
     return {"message": "로그아웃 완료 (클라이언트 토큰 삭제 권장)"}
+
+
+#  5. 게스트 로그인 (Kakao 대체, 추후 정식 인증 추가 시 제거)
+@router.post("/guest")
+def guest_login():
+    """
+    게스트 JWT 발급 엔드포인트.
+
+    DynamoDB 저장 없이 즉시 JWT 토큰을 발급합니다.
+    jwt_service.get_current_user 가 토큰 없어도 게스트로 통과시키므로
+    이 엔드포인트는 호환용 — 모바일 앱이 토큰을 받아 저장해두면 됩니다.
+    """
+    guest_user_id = "guest"
+    jwt_token = create_access_token(guest_user_id)
+    return JSONResponse({
+        "access_token": jwt_token,
+        "user_id": guest_user_id,
+        "nickname": "게스트",
+    })

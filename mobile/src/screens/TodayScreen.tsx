@@ -45,17 +45,28 @@ export const TodayScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // 현재 KST 시간 기준 기본 슬롯 (오전 12시 이전 = AM, 이후 = PM)
+  const getDefaultSlot = (): "AM" | "PM" => {
+    return new Date().getHours() < 12 ? "AM" : "PM";
+  };
+  const [slot, setSlot] = useState<"AM" | "PM">(getDefaultSlot());
+
   useEffect(() => {
     loadHeadlines();
-  }, []);
+  }, [slot]);
 
   const loadHeadlines = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      // 전체 카테고리에서 상위 6개 헤드라인 조회
-      const response: HeadlinesResponse = await apiClient.getHeadlines();
+      // 전체 카테고리에서 상위 헤드라인 조회
+      const response: HeadlinesResponse = await apiClient.getHeadlines(
+        undefined,
+        undefined,
+        slot,
+      );
       setHeadlines(response.headlines || []);
+      setCurrentIndex(0);
     } catch (err) {
       console.error('Failed to load headlines:', err);
       setError('브리핑을 불러오는데 실패했습니다. 다시 시도해주세요.');
@@ -90,7 +101,10 @@ export const TodayScreen: React.FC = () => {
     []
   );
 
-  const keyExtractor = useCallback((item: HeadlineItem) => item.headline_id, []);
+  const keyExtractor = useCallback(
+    (item: HeadlineItem) => `${item.category || 'all'}-${item.topic_id}`,
+    [],
+  );
 
   if (isLoading) {
     return (
@@ -125,6 +139,44 @@ export const TodayScreen: React.FC = () => {
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>
             AI가 선정한 오늘의 주요 이슈
           </Text>
+        </View>
+
+        {/* AM/PM Slot Toggle */}
+        <View style={[styles.slotToggle, { backgroundColor: colors.backgroundSecondary }]}>
+          <TouchableOpacity
+            style={[
+              styles.slotButton,
+              slot === 'AM' && { backgroundColor: colors.primary },
+            ]}
+            onPress={() => setSlot('AM')}
+            activeOpacity={0.8}
+          >
+            <Text
+              style={[
+                styles.slotText,
+                { color: slot === 'AM' ? '#FFFFFF' : colors.textSecondary },
+              ]}
+            >
+              오전
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.slotButton,
+              slot === 'PM' && { backgroundColor: colors.primary },
+            ]}
+            onPress={() => setSlot('PM')}
+            activeOpacity={0.8}
+          >
+            <Text
+              style={[
+                styles.slotText,
+                { color: slot === 'PM' ? '#FFFFFF' : colors.textSecondary },
+              ]}
+            >
+              오후
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -227,6 +279,22 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: Typography.fontSize.xs,
+  },
+  slotToggle: {
+    flexDirection: 'row',
+    marginTop: Spacing.md,
+    borderRadius: BorderRadius.full,
+    padding: 4,
+    alignSelf: 'flex-start',
+  },
+  slotButton: {
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.full,
+  },
+  slotText: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
   },
   indicatorContainer: {
     flexDirection: 'row',

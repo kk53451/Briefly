@@ -23,7 +23,6 @@ export const CATEGORY_TABS = [
   '문화',
   '국제',
   '지역',
-  '스포츠',
   'IT/과학',
 ] as const;
 

@@ -11,50 +11,57 @@ try:
 except ImportError:
     raise ImportError("PyJWT 라이브러리가 설치되어 있지 않습니다. 'pip install PyJWT'를 실행하세요.")
 
-JWT_SECRET = os.getenv("JWT_SECRET")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256") 
+JWT_SECRET = os.getenv("JWT_SECRET", "dev-secret-change-in-prod")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", 60))
 
-# OAuth2PasswordBearer는 token을 Header에서 추출하는 역할만 함
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")  # 실제 토큰 발급 엔드포인트는 Kakao 인증 기반이므로 사용 X, 형식용
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token", auto_error=False)
+
+# 현재는 인증을 생략하고 모든 사용자를 게스트로 취급합니다.
+# 추후 정식 인증(이메일, Google, Apple 등) 추가 시 이 모듈을 교체하세요.
+DEFAULT_GUEST_USER = {
+    "user_id": "guest",
+    "nickname": "게스트",
+    "interests": ["정치", "경제", "사회", "문화", "국제", "IT/과학"],
+    "onboarding_completed": True,
+}
+
 
 def create_access_token(user_id: str) -> str:
-    """
-    주어진 user_id를 기반으로 JWT 액세스 토큰을 생성하여 반환
-    """
+    """주어진 user_id로 JWT 토큰 생성 (기존 인터페이스 호환용)"""
     payload = {
         "sub": user_id,
-        "exp": datetime.utcnow() + timedelta(minutes=JWT_EXPIRE_MINUTES)
+        "exp": datetime.utcnow() + timedelta(minutes=JWT_EXPIRE_MINUTES),
     }
     try:
         return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"JWT 토큰 생성 실패: {str(e)}")
 
+
 def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
     """
-    HTTP Authorization 헤더에서 JWT 토큰을 읽어 현재 로그인된 사용자의 전체 정보를 반환
+    현재 사용자 반환.
+
+    현재 모든 요청을 게스트로 허용합니다. 토큰이 있으면 디코딩을 시도하고,
+    실패하거나 없으면 기본 게스트 사용자를 반환합니다 (401 반환 안 함).
     """
+    if not token:
+        return DEFAULT_GUEST_USER
+
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            raise HTTPException(status_code=401, detail="토큰에서 사용자 ID를 찾을 수 없습니다.")
-        
-        # DynamoDB에서 사용자 전체 정보 조회
+        user_id = payload.get("sub") or "guest"
+    except Exception:
+        return DEFAULT_GUEST_USER
+
+    # DynamoDB 조회는 실패해도 게스트로 fallback
+    try:
         from app.utils.dynamo import get_user
         user = get_user(user_id)
-        if not user:
-            raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다.")
-            
-        return user
-    except jwt.InvalidTokenError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="유효하지 않은 인증 정보입니다 (JWT 디코딩 실패).",
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"JWT 토큰 처리 중 오류: {str(e)}",
-        )
+        if user:
+            return user
+    except Exception:
+        pass
+
+    return {**DEFAULT_GUEST_USER, "user_id": user_id}

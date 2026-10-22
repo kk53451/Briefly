@@ -298,11 +298,13 @@ def save_frequency_summary(item: dict):
     except ClientError as e:
         raise Exception(f"[Frequencies 저장 실패] {e.response['Error']['Message']}")
 
-def get_frequency_by_category_and_date(category: str, date: str):
+def get_frequency_by_category_and_date(category: str, date: str, slot: str = "AM"):
     """
-    카테고리/날짜 기준 공유 요약 스크립트 조회
+    카테고리/날짜/슬롯 기준 공유 요약 스크립트 조회.
+
+    PK 포맷: {category}#{date}#{slot}  (예: economy#2026-04-17#AM)
     """
-    frequency_id = f"{category}#{date}"
+    frequency_id = f"{category}#{date}#{slot}"
     try:
         response = freq_table.get_item(Key={"frequency_id": frequency_id})
         return response.get("Item")
@@ -475,53 +477,44 @@ def save_headlines(category: str, date: str, headlines: list):
         raise Exception(f"[Headlines 저장 실패] {e.response['Error']['Message']}")
 
 
-def get_headlines_by_category_and_date(category: str, date: str):
+def get_headlines_by_category_and_date(category: str, date: str, slot: str = "AM"):
     """
-    카테고리/날짜 기준 헤드라인 조회
+    카테고리/날짜/슬롯 기준 헤드라인 조회.
 
-    Args:
-        category: 카테고리 (영문: politics, economy 등)
-        date: 날짜 (YYYY-MM-DD)
+    PK 포맷: {category}#{date}#{slot}
 
-    Returns:
-        dict: {
-            "category_date": "politics#2024-01-15",
-            "headlines": [...],
-            "created_at": "..."
-        } 또는 None
+    v2 데이터의 headlines 필드는 JSON 문자열이므로 파싱해서 반환합니다.
     """
-    key = f"{category}#{date}"
+    key = f"{category}#{date}#{slot}"
     try:
         response = headlines_table.get_item(Key={"category_date": key})
-        return response.get("Item")
+        item = response.get("Item")
+        if item and isinstance(item.get("headlines"), str):
+            import json
+            item["headlines"] = json.loads(item["headlines"])
+        return item
     except ClientError as e:
         raise Exception(f"[Headlines 조회 실패] {e.response['Error']['Message']}")
 
 
-def get_all_headlines_by_date(date: str):
+def get_all_headlines_by_date(date: str, slot: str = "AM"):
     """
-    특정 날짜의 모든 카테고리 헤드라인 조회
+    특정 날짜/슬롯의 모든 카테고리 헤드라인 조회.
 
-    Args:
-        date: 날짜 (YYYY-MM-DD)
-
-    Returns:
-        list: 모든 카테고리의 헤드라인 (클러스터 크기 기준 정렬됨)
+    클러스터 크기 기준 내림차순 정렬.
     """
     all_headlines = []
 
     try:
-        # 모든 카테고리에서 해당 날짜의 헤드라인 수집
         for ko_category, en_category in CATEGORY_MAP.items():
             category = en_category["api_name"]
-            item = get_headlines_by_category_and_date(category, date)
+            item = get_headlines_by_category_and_date(category, date, slot)
             if item and item.get("headlines"):
                 for headline in item["headlines"]:
                     headline["category"] = category
                     headline["category_ko"] = ko_category
                     all_headlines.append(headline)
 
-        # 클러스터 크기 기준 내림차순 정렬
         all_headlines.sort(key=lambda x: x.get("cluster_size", 0), reverse=True)
 
         return all_headlines

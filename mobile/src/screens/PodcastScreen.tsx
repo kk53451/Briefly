@@ -49,14 +49,20 @@ export const PodcastScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [playerStyle, setPlayerStyle] = useState<PlayerStyle>('minimal');
 
+  // 현재 KST 기준 기본 슬롯
+  const getDefaultSlot = (): "AM" | "PM" => {
+    return new Date().getHours() < 12 ? "AM" : "PM";
+  };
+  const [slot, setSlot] = useState<"AM" | "PM">(getDefaultSlot());
+
   useEffect(() => {
     loadFrequencies();
-  }, []);
+  }, [slot]);
 
   const loadFrequencies = async () => {
     try {
       setIsLoading(true);
-      const data = await apiClient.getFrequencies();
+      const data = await apiClient.getFrequencies(slot);
       setFrequencies(data);
 
       // Auto-play first track if available

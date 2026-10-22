@@ -50,19 +50,7 @@ export default {
           microphonePermission: false
         }
       ],
-      "expo-web-browser",
-      [
-        "@react-native-kakao/core",
-        {
-          nativeAppKey: process.env.EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY,
-          android: {
-            redirectUri: `kakao${process.env.EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY}://oauth`
-          },
-          ios: {
-            redirectUri: `kakao${process.env.EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY}://oauth`
-          }
-        }
-      ]
+      "expo-web-browser"
     ],
     extra: {
       eas: {

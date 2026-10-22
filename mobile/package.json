@@ -12,8 +12,6 @@
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/slider": "^5.0.1",
-    "@react-native-kakao/core": "^2.4.2",
-    "@react-native-kakao/user": "^2.4.2",
     "@react-navigation/bottom-tabs": "^7.8.4",
     "@react-navigation/native": "^7.1.19",
     "@react-navigation/stack": "^7.6.3",

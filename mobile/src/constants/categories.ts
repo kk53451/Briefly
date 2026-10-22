@@ -54,12 +54,6 @@ export const CATEGORIES: Category[] = [
     color: '#F59E0B', // Amber
   },
   {
-    id: 'sports',
-    name: '스포츠',
-    icon: 'trophy',
-    color: '#06B6D4', // Cyan
-  },
-  {
     id: 'tech',
     name: 'IT/과학',
     icon: 'hardware-chip',

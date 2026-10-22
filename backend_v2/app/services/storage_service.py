@@ -198,6 +198,96 @@ def save_pipeline_result(
 
 
 # ──────────────────────────────────────────────
+# NewsCards 저장 (홈 탭용 — 클러스터 대표 기사)
+# ──────────────────────────────────────────────
+
+def save_news_cards(
+    topics: List[Dict],
+    category_en: str,
+    date_str: str,
+    max_cards: int = 20,
+) -> int:
+    """
+    클러스터 대표 기사를 NewsCards 테이블에 저장합니다.
+
+    홈 탭(`/api/news/today`, `/api/news/home`)에서 쓰입니다.
+    클러스터 크기 기준으로 rank 1~N을 부여하고, top max_cards 개만 저장합니다.
+
+    Args:
+        topics: rank_topics() 결과 (이미 크기 내림차순 정렬)
+        category_en: 영문 카테고리
+        date_str: YYYY-MM-DD
+        max_cards: 저장할 최대 카드 수 (기본 20)
+
+    Returns:
+        저장된 카드 수
+    """
+    import re
+    from datetime import datetime as _dt
+
+    ddb = boto3.client("dynamodb", region_name=REGION)
+    news_table = os.getenv("DDB_NEWS_TABLE", "NewsCards")
+
+    selected = topics[:max_cards]
+    category_date = f"{category_en}#{date_str}"
+    collected_at = get_now_kst().isoformat()
+
+    saved = 0
+    # DynamoDB BatchWriteItem 제한: 1회 25개
+    for batch_start in range(0, len(selected), 25):
+        batch = selected[batch_start : batch_start + 25]
+        put_requests = []
+
+        for i, topic in enumerate(batch, start=batch_start):
+            rep = topic.get("representative_article", {})
+            rank = i + 1
+            cluster_size = int(topic.get("size", 0))
+
+            # news_id 추출: 링크에서 {oid}_{aid}, 없으면 rank 기반 대체 키
+            link = rep.get("link", "") or ""
+            m = re.search(r"/article/(\d+)/(\d+)", link)
+            if m:
+                news_id = f"naver_{m.group(1)}_{m.group(2)}"
+            else:
+                news_id = f"{category_en}_{date_str}_rank{rank}"
+
+            item = {
+                "news_id": {"S": news_id},
+                "category_date": {"S": category_date},
+                "category": {"S": category_en},
+                "rank": {"N": str(rank)},
+                "cluster_size": {"N": str(cluster_size)},
+                "title": {"S": (rep.get("title") or "")[:500]},
+                "images": {"S": (rep.get("thumbnail") or "")},
+                "provider_link_page": {"S": link},
+                "provider": {"S": (rep.get("press") or rep.get("provider") or "")},
+                "byline": {"S": (rep.get("journalist") or "")},
+                "published_at": {"S": (rep.get("published_at") or "")},
+                "hilight": {"S": (rep.get("lede") or "")[:300]},
+                "collected_at": {"S": collected_at},
+                "content": {"S": (rep.get("content") or "")[:3000]},
+            }
+
+            put_requests.append({"PutRequest": {"Item": item}})
+
+        try:
+            resp = ddb.batch_write_item(RequestItems={news_table: put_requests})
+            # unprocessed 재시도 (최대 3회)
+            unprocessed = resp.get("UnprocessedItems", {})
+            retry = 0
+            while unprocessed and retry < 3:
+                resp = ddb.batch_write_item(RequestItems=unprocessed)
+                unprocessed = resp.get("UnprocessedItems", {})
+                retry += 1
+            saved += len(put_requests) - sum(len(v) for v in unprocessed.values())
+        except Exception as e:
+            logger.error(f"  ❌ NewsCards 배치 저장 실패: {e}")
+
+    logger.info(f"  🗂️ NewsCards 저장: {saved}/{len(selected)}건 ({category_date}, rank 1~{len(selected)})")
+    return saved
+
+
+# ──────────────────────────────────────────────
 # Headlines 저장
 # ──────────────────────────────────────────────
 

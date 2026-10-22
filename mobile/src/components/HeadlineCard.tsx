@@ -29,16 +29,11 @@ interface HeadlineCardProps {
 export const HeadlineCard: React.FC<HeadlineCardProps> = ({ item, index }) => {
   const { colors } = useTheme();
 
-  const handleDetailPress = async () => {
-    // 대표 기사의 원문 링크로 이동
-    const url = item.news?.provider_link_page;
-    if (url) {
-      try {
-        await Linking.openURL(url);
-      } catch (error) {
-        console.error('Failed to open URL:', error);
-      }
-    }
+  // v2 backend는 대표 기사의 원문 링크를 직접 제공하지 않으므로
+  // "자세히 보기" 동작은 추후 토픽 상세 화면 또는 클러스터 기사 목록으로 확장
+  const handleDetailPress = () => {
+    // TODO: 토픽 상세 뷰 네비게이션 (추후 구현)
+    console.log('topic detail:', item.topic_id, item.headline);
   };
 
   // 카테고리 배지 텍스트
@@ -63,31 +58,39 @@ export const HeadlineCard: React.FC<HeadlineCardProps> = ({ item, index }) => {
             </View>
           </View>
 
-          {/* Headline Title (GPT 생성) */}
+          {/* Headline (Gemma4 로컬 생성) */}
           <Text style={[styles.headline, { color: colors.text }]} numberOfLines={3}>
-            {item.title}
+            {item.headline}
           </Text>
 
           {/* Divider */}
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
 
-          {/* Summary (GPT 생성, ~요/~해요 체) */}
+          {/* Summary (Gemma4 생성, ~요/~해요 체) */}
           <Text style={[styles.summary, { color: colors.text }]}>
             {item.summary}
           </Text>
 
           {/* Representative Article Image */}
-          {item.news?.images && (
+          {item.representative_image && (
             <NewsImage
-              uri={item.news.images}
+              uri={item.representative_image}
               style={styles.image}
             />
           )}
 
-          {/* Provider Info */}
-          {item.news?.provider && (
+          {/* Representative Article Title + Press */}
+          {item.representative_title && (
+            <Text
+              style={[styles.repTitle, { color: colors.textSecondary }]}
+              numberOfLines={2}
+            >
+              {item.representative_title}
+            </Text>
+          )}
+          {item.representative_press && (
             <Text style={[styles.providerText, { color: colors.textTertiary }]}>
-              {item.news.provider}
+              {item.representative_press}
             </Text>
           )}
 
@@ -162,6 +165,12 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: BorderRadius.lg,
     marginBottom: Spacing.md,
+  },
+  repTitle: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+    lineHeight: Typography.fontSize.sm * Typography.lineHeight.normal,
+    marginBottom: Spacing.xs,
   },
   providerText: {
     fontSize: Typography.fontSize.sm,

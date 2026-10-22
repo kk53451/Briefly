@@ -91,28 +91,28 @@ router = APIRouter(prefix="/api/frequencies", tags=["Frequency"])
 
 #  [GET] /api/frequencies
 @router.get("")
-def get_frequencies(user: dict = Depends(get_current_user)):
+def get_frequencies(
+    user: dict = Depends(get_current_user),
+    slot: str = Query(default="AM", description="브리핑 슬롯 (AM 또는 PM)"),
+):
     """
-    오늘 날짜 기준으로 사용자의 관심 카테고리별 공유 요약(TTS 스크립트 및 오디오)을 반환합니다.
-    
-    - 각 카테고리에 대해, 시스템이 사전에 생성해둔 공유 주파수를 DynamoDB에서 가져옵니다.
-    - 프론트에서는 사용자 관심사 기반의 오디오 목록 뷰에 사용됩니다.
-    - 리턴: [{category, script, audio_url, ...}, ...]
+    오늘 날짜 기준으로 사용자의 관심 카테고리별 팟캐스트를 반환합니다.
+
+    - slot=AM (오전 브리핑) 또는 slot=PM (오후 브리핑)
+    - 리턴: [{category, script, audio_url, slot, ...}, ...]
     """
     date = get_today_kst()
     results = []
 
     for korean_category in user.get("interests", []):
-        # 한국어 카테고리를 영어 카테고리로 변환
         if korean_category in CATEGORY_MAP:
             english_category = CATEGORY_MAP[korean_category]["api_name"]
-            item = get_frequency_by_category_and_date(english_category, date)
+            item = get_frequency_by_category_and_date(english_category, date, slot)
             if item:
                 results.append(item)
 
-    # 오디오 URL 유효성 검증 및 재생성
     validated_results = validate_and_refresh_audio_urls(results)
-    
+
     return validated_results
 
 #  [GET] /api/frequencies/history
@@ -158,24 +158,25 @@ def get_frequency_history(
 
 #  [GET] /api/frequencies/{category}
 @router.get("/{category}")
-def get_frequency_detail(category: str, user: dict = Depends(get_current_user)):
+def get_frequency_detail(
+    category: str,
+    user: dict = Depends(get_current_user),
+    slot: str = Query(default="AM", description="브리핑 슬롯 (AM 또는 PM)"),
+):
     """
-    특정 카테고리에 대한 공유 주파수 상세 정보를 조회합니다.
-    
-    - 사용자는 관심 카테고리에 상관없이 직접 카테고리 detail 접근 가능
-    - 공유된 script (요약 텍스트) 및 audio_url (MP3) 정보를 반환
-    - 예외 처리: 해당 카테고리에 오늘자 데이터가 없을 경우 404 반환
+    특정 카테고리의 팟캐스트 상세 조회.
+
+    - slot=AM 또는 PM
+    - 해당 카테고리에 오늘자 데이터가 없을 경우 404
     """
     date = get_today_kst()
-    
-    # 카테고리가 한국어인 경우 영어로 변환
+
     if category in CATEGORY_MAP:
         english_category = CATEGORY_MAP[category]["api_name"]
     else:
-        # 이미 영어 카테고리인 경우 그대로 사용
         english_category = category
-    
-    result = get_frequency_by_category_and_date(english_category, date)
+
+    result = get_frequency_by_category_and_date(english_category, date, slot)
     if not result:
         raise HTTPException(status_code=404, detail="해당 주파수가 없습니다.")
     return result

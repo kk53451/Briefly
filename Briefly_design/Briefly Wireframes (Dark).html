@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Briefly — Wireframes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/briefly.css?v=2"/>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Pretendard', 'Pretendard Variable', -apple-system, BlinkMacSystemFont,
+                   'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      color: #1a1714;
+    }
+    body { background: #f0eee9; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="data/mock.js?v=2"></script>
+  <script type="text/babel" src="components/design-canvas.jsx"></script>
+  <script type="text/babel" src="components/ios-frame.jsx"></script>
+  <script type="text/babel" src="components/android-frame.jsx"></script>
+  <script type="text/babel" src="components/icons.jsx"></script>
+  <script type="text/babel" src="components/ui.jsx"></script>
+  <script type="text/babel" src="screens/login.jsx"></script>
+  <script type="text/babel" src="screens/auth.jsx"></script>
+  <script type="text/babel" src="screens/onboarding.jsx"></script>
+  <script type="text/babel" src="screens/today.jsx"></script>
+  <script type="text/babel" src="screens/home.jsx"></script>
+  <script type="text/babel" src="screens/podcast.jsx"></script>
+  <script type="text/babel" src="screens/podcast-episodes.jsx"></script>
+  <script type="text/babel" src="screens/detail-profile.jsx"></script>
+  <script type="text/babel" src="screens/brand.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect } = React;
+
+    // Tweak defaults
+    const TWEAKS = /*EDITMODE-BEGIN*/{
+      "device": "android",
+      "accent": "rust",
+      "fontPairing": "serif_sans",
+      "theme": "light"
+    }/*EDITMODE-END*/;
+
+    // iPhone wrapper — thin bezel around a 390x844 content area
+    const Phone = ({ children, device = 'iphone' }) => {
+      if (device === 'android') {
+        return (
+          <div style={{
+            width: 390, height: 844, borderRadius: 22, overflow: 'hidden',
+            background: '#111', padding: 4,
+            boxShadow: '0 40px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.15)',
+          }}>
+            <div style={{ width: '100%', height: '100%', borderRadius: 18, overflow: 'hidden', background: '#000' }}>
+              {children}
+            </div>
+          </div>
+        );
+      }
+      return (
+        <div style={{
+          width: 390, height: 844, borderRadius: 48, overflow: 'hidden',
+          background: '#000', padding: 3,
+          boxShadow: '0 40px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.15)',
+          position: 'relative',
+        }}>
+          <div style={{ width: '100%', height: '100%', borderRadius: 45, overflow: 'hidden', position: 'relative' }}>
+            {/* Dynamic island */}
+            <div style={{
+              position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
+              width: 120, height: 34, borderRadius: 24, background: '#000', zIndex: 50,
+            }}/>
+            {children}
+          </div>
+        </div>
+      );
+    };
+
+    // Global theme (set by App). Comparison cards override via explicit theme prop.
+    const ThemeCtx = React.createContext({ theme: 'light', setTheme: () => {} });
+    window.ThemeCtx = ThemeCtx;
+
+    const ART = (label, el, theme) => (
+      <DCArtboard label={label} width={390} height={844} style={{ borderRadius: 48, background: 'transparent', boxShadow: 'none' }}>
+        <ThemeCtx.Consumer>
+          {(ctx) => {
+            const globalTheme = (ctx && ctx.theme) || 'light';
+            const effective = theme || globalTheme;
+            return (
+              <Phone>
+                {effective && effective !== 'light'
+                  ? <div data-theme={effective} style={{ width: '100%', height: '100%', background: 'var(--paper)' }}>{el}</div>
+                  : el}
+              </Phone>
+            );
+          }}
+        </ThemeCtx.Consumer>
+      </DCArtboard>
+    );
+
+    // Tweaks panel
+    function TweaksPanel({ tweaks, setTweaks, show }) {
+      if (!show) return null;
+      const set = (k, v) => {
+        const next = { ...tweaks, [k]: v };
+        setTweaks(next);
+        window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+      };
+      return (
+        <div style={{
+          position: 'fixed', bottom: 20, right: 20, width: 260,
+          background: '#fcfaf4', border: '1px solid #dcd3c1', borderRadius: 4,
+          padding: 16, fontFamily: 'Pretendard, sans-serif',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.15)', zIndex: 1000,
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #1a1714', paddingBottom: 8, marginBottom: 12 }}>
+            <span style={{ fontFamily: 'Noto Serif KR, serif', fontWeight: 700, fontSize: 15 }}>Tweaks</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, color: '#857a6d', letterSpacing: '0.14em' }}>BRIEFLY</span>
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Theme</div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 14 }}>
+            {[['light', '☀ Light'], ['dark', '☾ Dark']].map(([v, l]) => (
+              <button key={v} onClick={() => set('theme', v)} style={{
+                flex: 1, padding: '6px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                border: '1px solid #1a1714', borderRadius: 2,
+                background: (tweaks.theme || 'light') === v ? '#1a1714' : 'transparent',
+                color: (tweaks.theme || 'light') === v ? '#f7f2e9' : '#1a1714',
+              }}>{l}</button>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Device frame</div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 14 }}>
+            {[['iphone', 'iPhone'], ['android', 'Android']].map(([v, l]) => (
+              <button key={v} onClick={() => set('device', v)} style={{
+                flex: 1, padding: '6px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                border: '1px solid #1a1714', borderRadius: 2,
+                background: tweaks.device === v ? '#1a1714' : 'transparent',
+                color: tweaks.device === v ? '#f7f2e9' : '#1a1714',
+              }}>{l}</button>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Accent</div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 14 }}>
+            {[['rust', '#a03a28'], ['forest', '#4a7c59'], ['navy', '#3d6b8c'], ['plum', '#6b4e8a']].map(([v, color]) => (
+              <button key={v} onClick={() => {
+                document.documentElement.style.setProperty('--accent', color);
+                set('accent', v);
+              }} style={{
+                flex: 1, height: 28, cursor: 'pointer',
+                border: tweaks.accent === v ? '2px solid #1a1714' : '1px solid #dcd3c1', borderRadius: 2,
+                background: color,
+              }}/>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Type pairing</div>
+          <div style={{ display: 'flex', gap: 4, flexDirection: 'column' }}>
+            {[['serif_sans', 'Serif 헤드라인 · Sans 본문'], ['all_serif', '모두 세리프 (정통 에디토리얼)']].map(([v, l]) => (
+              <button key={v} onClick={() => {
+                if (v === 'all_serif') {
+                  document.documentElement.style.setProperty('--sans', 'Noto Serif KR, serif');
+                } else {
+                  document.documentElement.style.setProperty('--sans', "Pretendard, 'Pretendard Variable', -apple-system, sans-serif");
+                }
+                set('fontPairing', v);
+              }} style={{
+                padding: '6px 10px', fontSize: 11, fontWeight: 500, cursor: 'pointer',
+                border: '1px solid #dcd3c1', borderRadius: 2, textAlign: 'left',
+                background: tweaks.fontPairing === v ? '#efe8da' : 'transparent',
+                color: '#1a1714',
+              }}>{l}</button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [tweaks, setTweaks] = useState(TWEAKS);
+      const [editMode, setEditMode] = useState(false);
+      const device = tweaks.device;
+
+      useEffect(() => {
+        const onMsg = (e) => {
+          if (e.data?.type === '__activate_edit_mode') setEditMode(true);
+          if (e.data?.type === '__deactivate_edit_mode') setEditMode(false);
+        };
+        window.addEventListener('message', onMsg);
+        setTimeout(() => window.parent.postMessage({ type: '__edit_mode_available' }, '*'), 100);
+        return () => window.removeEventListener('message', onMsg);
+      }, []);
+
+      return (
+        <ThemeCtx.Provider value={{
+          theme: tweaks.theme || 'light',
+          setTheme: (t) => {
+            const next = { ...tweaks, theme: t };
+            setTweaks(next);
+            window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: t } }, '*');
+          },
+        }}>
+          <DesignCanvas>
+            {/* Masthead */}
+            <div style={{ padding: '20px 60px 40px', maxWidth: 1200 }}>
+              <div style={{ borderTop: '2px solid #1a1714', borderBottom: '1px solid #1a1714', padding: '14px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div>
+                  <span style={{ fontFamily: 'Noto Serif KR, serif', fontWeight: 900, fontSize: 32, letterSpacing: '-0.03em' }}>
+                    Briefly<span style={{ color: '#a03a28' }}>.</span>
+                  </span>
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: '#857a6d', letterSpacing: '0.16em', marginLeft: 16, textTransform: 'uppercase' }}>
+                    Design Exploration · Apr 18, 2026
+                  </span>
+                </div>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  Warm editorial · Serif + Sans · Muted accents
+                </span>
+              </div>
+              <div style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
+                <div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#a03a28', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 8 }}>Design direction</div>
+                  <div style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 22, fontWeight: 700, lineHeight: 1.3, letterSpacing: '-0.02em' }}>
+                    신문·매거진의 편집 감성을 모바일로.<br/>
+                    <span style={{ color: '#4a423b', fontWeight: 500 }}>조용하지만 진지하게, 그리고 따뜻하게.</span>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 6 }}>Type</div>
+                  <div style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 13, lineHeight: 1.5 }}>
+                    <b>Noto Serif KR</b> · 헤드라인<br/>
+                    <b style={{ fontFamily: 'Pretendard, sans-serif' }}>Pretendard</b> · 본문·UI<br/>
+                    <b style={{ fontFamily: 'JetBrains Mono, monospace' }}>JetBrains Mono</b> · 메타
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 6 }}>Palette</div>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    {[['#f7f2e9', '종이'], ['#1a1714', '먹'], ['#a03a28', '러스트'], ['#4a7c59', '경제'], ['#3d6b8c', '국제'], ['#6b4e8a', '사회']].map(([c, l]) => (
+                      <div key={c} style={{ textAlign: 'center' }}>
+                        <div style={{ width: 30, height: 30, background: c, border: '1px solid #dcd3c1' }}/>
+                        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, color: '#857a6d', marginTop: 3 }}>{l}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <DCSection title="🌙 다크 모드 · Deep Ink" subtitle="라이트(크림)의 정반대 — 따뜻한 잉크 블랙 기반 신문 야간판 테마. 좌측 라이트, 우측 다크.">
+              {ART('Light · 로그인', <LoginScreen variant="A"/>, 'light')}
+              {ART('Dark · 로그인', <LoginScreen variant="A"/>, 'dark')}
+              {ART('Light · 온보딩', <OnboardingScreen variant="A"/>, 'light')}
+              {ART('Dark · 온보딩', <OnboardingScreen variant="A"/>, 'dark')}
+              {ART('Light · 투데이', <TodayScreen variant="A" slot="AM"/>, 'light')}
+              {ART('Dark · 투데이', <TodayScreen variant="A" slot="AM"/>, 'dark')}
+              {ART('Light · 홈', <HomeScreen variant="A" category="economy"/>, 'light')}
+              {ART('Dark · 홈', <HomeScreen variant="A" category="economy"/>, 'dark')}
+              {ART('Light · 뉴스 상세', <NewsDetailScreen variant="A"/>, 'light')}
+              {ART('Dark · 뉴스 상세', <NewsDetailScreen variant="A"/>, 'dark')}
+              {ART('Light · 팟캐스트', <PodcastScreen variant="B" slot="AM"/>, 'light')}
+              {ART('Dark · 팟캐스트', <PodcastScreen variant="B" slot="AM"/>, 'dark')}
+              {ART('Light · 에피소드', <PodcastEpisodesScreen/>, 'light')}
+              {ART('Dark · 에피소드', <PodcastEpisodesScreen/>, 'dark')}
+              {ART('Light · 프로필', <ProfileScreen variant="A"/>, 'light')}
+              {ART('Dark · 프로필', <ProfileScreen variant="A"/>, 'dark')}
+            </DCSection>
+
+            <DCSection title="① 로그인 · Login" subtitle="마스트헤드 → 시작하기 탭 → 소셜 로그인 바텀시트.">
+              {ART('마스트헤드 에디션', <LoginScreen variant="A"/>)}
+              {ART('바텀시트 로그인', <AuthSheet/>)}
+            </DCSection>
+
+            <DCSection title="② 온보딩 · Onboarding">
+              {ART('그리드 카드', <OnboardingScreen variant="A"/>)}
+            </DCSection>
+
+            <DCSection title="③ 투데이 · Today's Briefing">
+              {ART('에디토리얼 카드 (AM)', <TodayScreen variant="A" slot="AM"/>)}
+            </DCSection>
+
+            <DCSection title="④ 홈 · Home (카테고리별 뉴스)">
+              {ART('리드 + 썸네일 (경제)', <HomeScreen variant="A" category="economy"/>)}
+            </DCSection>
+
+            <DCSection title="⑤ 팟캐스트 · Podcast">
+              {ART('미니멀 플레이어 (AM)', <PodcastScreen variant="A" slot="AM"/>)}
+              {ART('상세 + 최근 에피소드', <PodcastScreen variant="B" slot="AM"/>)}
+              {ART('에피소드 카탈로그', <PodcastEpisodesScreen/>)}
+            </DCSection>
+
+            <DCSection title="⑥ 뉴스 상세 · Article">
+              {ART('표준 에디토리얼', <NewsDetailScreen variant="A"/>)}
+            </DCSection>
+
+            <DCSection title="⑦ 프로필 · Profile">
+              {ART('구독자 데스크', <ProfileScreen variant="A"/>)}
+            </DCSection>
+
+            <DCSection title="⑧ 앱 아이콘 · App Icon" subtitle="'Briefly.' 풀 워드마크. 홈 화면에 놓였을 때의 모습.">
+              <DCArtboard label="풀 워드마크" width={200} height={260} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <IconCard label="'Briefly.' 전체">
+                  <IconAWord size={160} bg="#f7f2e9" ink="#1a1714" dot="#a03a28"/>
+                </IconCard>
+              </DCArtboard>
+
+              {/* Home screen context — A4 기준 */}
+              <DCArtboard label="홈 화면 미리보기" width={280} height={260} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <HomeScreenPreview IconComp={(p) => <IconAWord {...p} bg="#f7f2e9" ink="#1a1714" dot="#a03a28"/>}/>
+              </DCArtboard>
+            </DCSection>
+
+            <DCSection title="⑨ 스플래시 · Splash" subtitle="마스트헤드 · 콜드 스타트 시 0.8초 내외 노출.">
+              {ART('마스트헤드', <SplashA/>)}
+            </DCSection>
+
+            <div style={{ padding: '40px 60px 20px', maxWidth: 900 }}>
+              <div style={{ borderTop: '1px solid #1a1714', paddingTop: 12, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#857a6d', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                End of exploration · v1
+              </div>
+              <div style={{ fontFamily: 'Noto Serif KR, serif', fontSize: 14, color: '#4a423b', lineHeight: 1.7, marginTop: 10 }}>
+                다음 단계 제안 — ① 선호 방향 선택 (투데이 A/B/C 중, 홈 A/B/C 중, 팟캐스트 A/B/C 중) → ② 선택된 조합으로 다크 모드 버전 추가 → ③ 핵심 인터랙션 (스와이프 카드, 플레이어 컨트롤) 프로토타입 → ④ 미니 플레이어, 토픽 상세 화면, 빈/로딩/에러 상태 추가. 우측 상단의 <b>Tweaks</b> 토글로 디바이스 프레임, 액센트 컬러, 타입 페어링을 실시간으로 바꿔볼 수 있어요.
+              </div>
+            </div>
+          </DesignCanvas>
+
+          <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} show={editMode}/>
+        </ThemeCtx.Provider>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App/>);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>Briefly · Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;800;900&family=Nanum+Myeongjo:wght@400;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../styles/briefly.css">
+<style>
+  /* ── Reset & shell ─────────────────────────────────────────── */
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-width: 1440px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  h1, h2, h3, h4, h5 { margin: 0; font-family: var(--serif); font-weight: 800; letter-spacing: -0.025em; line-height: 1.15; }
+  p { margin: 0; line-height: 1.6; }
+  a { color: inherit; }
+
+  /* ── Layout ────────────────────────────────────────────────── */
+  .ds-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  .ds-nav {
+    position: sticky; top: 0; height: 100vh;
+    border-right: 1px solid var(--line);
+    padding: 36px 24px;
+    background: var(--paper);
+    overflow-y: auto;
+  }
+  .ds-nav-mast {
+    font-family: var(--serif); font-weight: 900; font-size: 28px; letter-spacing: -0.04em;
+    line-height: 0.9; padding-bottom: 14px; margin-bottom: 22px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .ds-nav-mast small {
+    display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; font-weight: 500;
+    color: var(--ink-3); margin-top: 6px; text-transform: uppercase;
+  }
+  .ds-nav-section { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--ink-4); text-transform: uppercase; margin: 22px 0 8px; font-weight: 700; }
+  .ds-nav-link {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+    padding: 6px 0; font-size: 14px; color: var(--ink-2); text-decoration: none;
+    border-bottom: 1px dotted transparent;
+  }
+  .ds-nav-link:hover { color: var(--ink); border-bottom-color: var(--line); }
+  .ds-nav-link .num { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: 0.08em; }
+
+  .ds-main { padding: 0 64px 120px; max-width: 1200px; }
+
+  /* Cover */
+  .ds-cover { padding: 64px 0 56px; border-bottom: 4px double var(--ink); }
+  .ds-cover .vol {
+    font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.18em; font-weight: 700;
+    text-transform: uppercase; display: flex; align-items: center; gap: 10px;
+  }
+  .ds-cover .vol::before { content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: 999px; }
+  .ds-cover h1 {
+    font-size: 96px; font-weight: 900; letter-spacing: -0.05em; line-height: 0.92; margin: 22px 0 14px;
+  }
+  .ds-cover .lede {
+    font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.5; color: var(--ink-2);
+    max-width: 780px; letter-spacing: -0.015em;
+  }
+  .ds-cover .meta {
+    margin-top: 36px; display: flex; gap: 36px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);
+  }
+  .ds-cover .meta b { color: var(--ink); font-weight: 700; }
+
+  /* Section heading */
+  .ds-sect { padding: 72px 0 0; }
+  .ds-sect-num {
+    font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.18em; font-weight: 700;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .ds-sect-num::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .ds-sect-title { font-size: 56px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; margin: 14px 0 12px; }
+  .ds-sect-lede { font-family: var(--serif); font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 720px; margin-bottom: 36px; letter-spacing: -0.01em; }
+
+  .ds-sub { font-family: var(--serif); font-size: 22px; font-weight: 800; letter-spacing: -0.025em; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; justify-content: space-between; }
+  .ds-sub small { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--ink-4); font-weight: 500; }
+
+  .ds-note { font-family: var(--sans); font-size: 13px; line-height: 1.6; color: var(--ink-3); margin: 8px 0 18px; max-width: 640px; }
+  .ds-note b { color: var(--ink-2); font-weight: 700; }
+
+  /* Tokens / cards */
+  .col-card {
+    background: var(--card); border: 1px solid var(--line);
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .col-swatch { aspect-ratio: 5 / 3; border: 1px solid var(--line); }
+  .col-name { font-family: var(--serif); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .col-token { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.04em; }
+  .col-hex { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: 0.04em; }
+
+  /* Theme strip */
+  .theme-strip {
+    border: 1px solid var(--line);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .theme-strip-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);
+  }
+
+  .scale-row { display: grid; grid-template-columns: 96px 1fr; gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--line-soft); align-items: baseline; }
+  .scale-row:last-child { border-bottom: 0; }
+  .scale-label { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; }
+  .scale-spec { font-family: var(--mono); font-size: 11px; color: var(--ink-4); margin-top: 4px; }
+
+  /* Spacing scale */
+  .sp-row { display: grid; grid-template-columns: 60px 80px 1fr; gap: 16px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line-soft); }
+  .sp-row:last-child { border-bottom: 0; }
+  .sp-bar { background: var(--ink); height: 16px; }
+
+  /* Buttons / chips */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 22px;
+    font-family: var(--sans); font-size: 14px; font-weight: 700; letter-spacing: -0.005em;
+    border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+    cursor: pointer; border-radius: 0;
+  }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.accent { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .btn.sm { padding: 8px 14px; font-size: 12px; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+    font-size: 12px; font-weight: 600; color: var(--ink-2); background: var(--paper);
+  }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .badge-cat {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--label); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-3); font-weight: 600;
+  }
+  .badge-cat .dot { width: 6px; height: 6px; border-radius: 999px; }
+
+  /* Phone preview frame (for component examples) */
+  .phone-card {
+    width: 100%; max-width: 360px; aspect-ratio: 9 / 16;
+    background: var(--paper); border: 1px solid var(--line);
+    overflow: hidden; position: relative;
+  }
+
+  /* Type spec table */
+  .type-spec {
+    border: 1px solid var(--line); background: var(--card); padding: 24px;
+  }
+  .type-stack-card {
+    border: 1px solid var(--line); background: var(--card); padding: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    cursor: pointer;
+  }
+  .type-stack-card.selected { border-color: var(--ink); border-width: 2px; padding: 19px; }
+
+  /* Footer */
+  .ds-foot { padding: 48px 0 0; margin-top: 80px; border-top: 4px double var(--ink); display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; }
+  .ds-foot b { color: var(--ink); font-weight: 700; }
+
+  /* Theme switcher (for full-page demo of dark) */
+  .ds-theme-toggle {
+    position: fixed; right: 24px; top: 24px; z-index: 100;
+    display: flex; gap: 0;
+    border: 1px solid var(--line); background: var(--paper);
+  }
+  .ds-theme-toggle button {
+    padding: 8px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    background: transparent; border: 0; color: var(--ink-3); cursor: pointer; font-weight: 700;
+  }
+  .ds-theme-toggle button.active { background: var(--ink); color: var(--paper); }
+</style>
+</head>
+<body data-theme="light">
+
+<div class="ds-theme-toggle">
+  <button data-theme-btn="light" class="active">LIGHT</button>
+  <button data-theme-btn="dark">DARK</button>
+</div>
+
+<div class="ds-shell">
+  <!-- ───────── NAV ───────── -->
+  <aside class="ds-nav">
+    <div class="ds-nav-mast">Briefly<br/>System<small>v0.1 · 2026.04</small></div>
+
+    <div class="ds-nav-section">Foundations</div>
+    <a href="#principles" class="ds-nav-link"><span>원칙</span><span class="num">00</span></a>
+    <a href="#color" class="ds-nav-link"><span>색</span><span class="num">01</span></a>
+    <a href="#category" class="ds-nav-link"><span>카테고리</span><span class="num">02</span></a>
+    <a href="#typography" class="ds-nav-link"><span>타이포</span><span class="num">03</span></a>
+    <a href="#scale" class="ds-nav-link"><span>타입 스케일</span><span class="num">04</span></a>
+    <a href="#space" class="ds-nav-link"><span>여백·그리드</span><span class="num">05</span></a>
+
+    <div class="ds-nav-section">Components</div>
+    <a href="#buttons" class="ds-nav-link"><span>버튼</span><span class="num">06</span></a>
+    <a href="#chips" class="ds-nav-link"><span>칩·뱃지</span><span class="num">07</span></a>
+    <a href="#cards" class="ds-nav-link"><span>아티클 카드</span><span class="num">08</span></a>
+    <a href="#chrome" class="ds-nav-link"><span>헤더·탭바</span><span class="num">09</span></a>
+    <a href="#icons" class="ds-nav-link"><span>아이콘</span><span class="num">10</span></a>
+  </aside>
+
+  <!-- ───────── MAIN ───────── -->
+  <main class="ds-main">
+
+    <!-- ─── COVER ─── -->
+    <div class="ds-cover" id="cover">
+      <div class="vol">VOL.01 · DESIGN SYSTEM</div>
+      <h1>잉크와<br/>여백의 신문.</h1>
+      <p class="lede">
+        Briefly의 디자인 시스템은 전통 신문의 미학을 모바일로 옮긴다.
+        검은 잉크, 따뜻한 종이, 신중한 여백, 그리고 조판된 활자.
+        장식이 아니라 위계로 말하고, 색이 아니라 타입그래피로 강조한다.
+      </p>
+      <div class="meta">
+        <span><b>FOUNDATIONS</b> · 06</span>
+        <span><b>COMPONENTS</b> · 05</span>
+        <span><b>THEMES</b> · LIGHT / DARK</span>
+        <span><b>UPDATED</b> · 2026.04.18</span>
+      </div>
+    </div>
+
+    <!-- ─── 00 PRINCIPLES ─── -->
+    <section class="ds-sect" id="principles">
+      <div class="ds-sect-num">00 · PRINCIPLES</div>
+      <h2 class="ds-sect-title">원칙 다섯.</h2>
+      <p class="ds-sect-lede">디자인 결정의 기준점. 의심이 들 때 여기로 돌아온다.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; margin-top: 12px;">
+        <div>
+          <div style="font-family: var(--serif); font-size: 64px; font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; color: var(--accent);">01</div>
+          <div style="font-family: var(--serif); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 6px;">활자가<br/>중심이다</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">사진보다 타입, 색보다 위계. 좋은 헤드라인은 다른 모든 장식을 대체한다.</p>
+        </div>
+        <div>
+          <div style="font-family: var(--serif); font-size: 64px; font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; color: var(--accent);">02</div>
+          <div style="font-family: var(--serif); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 6px;">여백은<br/>콘텐츠다</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">여백을 채우려 들지 않는다. 빈 공간은 휴식이자 신뢰다.</p>
+        </div>
+        <div>
+          <div style="font-family: var(--serif); font-size: 64px; font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; color: var(--accent);">03</div>
+          <div style="font-family: var(--serif); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 6px;">색은<br/>아껴 쓴다</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">잉크와 종이가 기본. 액센트 1색은 강조용. 카테고리 색은 식별용이지 장식이 아니다.</p>
+        </div>
+        <div>
+          <div style="font-family: var(--serif); font-size: 64px; font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; color: var(--accent);">04</div>
+          <div style="font-family: var(--serif); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 6px;">규칙이<br/>보여야 한다</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">선, 그리드, 단(column)은 숨기지 않는다. 신문의 골격은 미덕이다.</p>
+        </div>
+        <div>
+          <div style="font-family: var(--serif); font-size: 64px; font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; color: var(--accent);">05</div>
+          <div style="font-family: var(--serif); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 6px;">시간이<br/>흐른다</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">날짜 · 호수 · AM/PM 라벨은 인터페이스의 일부다. 매일 발행되는 매체임을 잊지 않는다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 01 COLOR ─── -->
+    <section class="ds-sect" id="color">
+      <div class="ds-sect-num">01 · COLOR</div>
+      <h2 class="ds-sect-title">잉크와 종이.</h2>
+      <p class="ds-sect-lede">
+        무채색이라기보단 따뜻한 회색. 바탕은 갓 인쇄된 신문지의 크림톤,
+        잉크는 순흑이 아닌 살짝 갈색이 도는 검정. 액센트는 인쇄 광고에서 흔히 쓰던 녹슨 적색 한 가지뿐.
+      </p>
+
+      <!-- Light theme strip -->
+      <div class="theme-strip" id="lightStrip">
+        <div class="theme-strip-head">
+          <span>LIGHT — DAY EDITION</span>
+          <span>화이트가 아닌 따뜻한 크림(#F7F2E9)</span>
+        </div>
+        <div style="padding: 24px;">
+          <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px;">
+            <div class="col-card">
+              <div class="col-swatch" style="background: #f7f2e9;"></div>
+              <div class="col-name">Paper</div>
+              <div class="col-token">--paper</div>
+              <div class="col-hex">#F7F2E9</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #efe8da;"></div>
+              <div class="col-name">Paper 2</div>
+              <div class="col-token">--paper-2</div>
+              <div class="col-hex">#EFE8DA</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #fcfaf4;"></div>
+              <div class="col-name">Card</div>
+              <div class="col-token">--card</div>
+              <div class="col-hex">#FCFAF4</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #1a1714;"></div>
+              <div class="col-name" style="color: var(--ink);">Ink</div>
+              <div class="col-token">--ink</div>
+              <div class="col-hex">#1A1714</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #4a423b;"></div>
+              <div class="col-name">Ink 2</div>
+              <div class="col-token">--ink-2</div>
+              <div class="col-hex">#4A423B</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #857a6d;"></div>
+              <div class="col-name">Ink 3</div>
+              <div class="col-token">--ink-3</div>
+              <div class="col-hex">#857A6D</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #b8ad9d;"></div>
+              <div class="col-name">Ink 4</div>
+              <div class="col-token">--ink-4</div>
+              <div class="col-hex">#B8AD9D</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #dcd3c1;"></div>
+              <div class="col-name">Line</div>
+              <div class="col-token">--line</div>
+              <div class="col-hex">#DCD3C1</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #e8e0cd;"></div>
+              <div class="col-name">Line soft</div>
+              <div class="col-token">--line-soft</div>
+              <div class="col-hex">#E8E0CD</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #a03a28;"></div>
+              <div class="col-name" style="color: var(--accent);">Accent</div>
+              <div class="col-token">--accent</div>
+              <div class="col-hex">#A03A28</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #eadbc9;"></div>
+              <div class="col-name">Accent soft</div>
+              <div class="col-token">--accent-soft</div>
+              <div class="col-hex">#EADBC9</div>
+            </div>
+            <div class="col-card">
+              <div class="col-swatch" style="background: #6b2416;"></div>
+              <div class="col-name">Accent ink</div>
+              <div class="col-token">--accent-ink</div>
+              <div class="col-hex">#6B2416</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dark theme strip — fixed dark, doesn't follow toggle -->
+      <div class="theme-strip" data-theme="dark" style="margin-top: 24px; background: #0e0c08; color: #f7f2e9; border-color: #2c2721;">
+        <div class="theme-strip-head" style="border-color: #2c2721; color: #8d8578;">
+          <span>DARK — NIGHT EDITION</span>
+          <span>딥 블랙이 아닌 잉크색의 종이로 반전</span>
+        </div>
+        <div style="padding: 24px;">
+          <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px;">
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #0e0c08; border-color: #2c2721;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Paper</div>
+              <div class="col-token" style="color: #8d8578;">--paper</div>
+              <div class="col-hex" style="color: #5a554a;">#0E0C08</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #1a1714; border-color: #2c2721;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Paper 2</div>
+              <div class="col-token" style="color: #8d8578;">--paper-2</div>
+              <div class="col-hex" style="color: #5a554a;">#1A1714</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #1f1b16; border-color: #2c2721;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Card</div>
+              <div class="col-token" style="color: #8d8578;">--card</div>
+              <div class="col-hex" style="color: #5a554a;">#1F1B16</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #f7f2e9;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Ink</div>
+              <div class="col-token" style="color: #8d8578;">--ink</div>
+              <div class="col-hex" style="color: #5a554a;">#F7F2E9</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #c8bfaf;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Ink 2</div>
+              <div class="col-token" style="color: #8d8578;">--ink-2</div>
+              <div class="col-hex" style="color: #5a554a;">#C8BFAF</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #8d8578;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Ink 3</div>
+              <div class="col-token" style="color: #8d8578;">--ink-3</div>
+              <div class="col-hex" style="color: #5a554a;">#8D8578</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #5a554a;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Ink 4</div>
+              <div class="col-token" style="color: #8d8578;">--ink-4</div>
+              <div class="col-hex" style="color: #5a554a;">#5A554A</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #2c2721;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Line</div>
+              <div class="col-token" style="color: #8d8578;">--line</div>
+              <div class="col-hex" style="color: #5a554a;">#2C2721</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #221e19;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Line soft</div>
+              <div class="col-token" style="color: #8d8578;">--line-soft</div>
+              <div class="col-hex" style="color: #5a554a;">#221E19</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #d96650;"></div>
+              <div class="col-name" style="color: #d96650;">Accent</div>
+              <div class="col-token" style="color: #8d8578;">--accent</div>
+              <div class="col-hex" style="color: #5a554a;">#D96650</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #3a2218;"></div>
+              <div class="col-name" style="color: #f7f2e9;">Accent soft</div>
+              <div class="col-token" style="color: #8d8578;">--accent-soft</div>
+              <div class="col-hex" style="color: #5a554a;">#3A2218</div>
+            </div>
+            <div class="col-card" style="background: #1f1b16; border-color: #2c2721;">
+              <div class="col-swatch" style="background: #f0a78e;"></div>
+              <div class="col-name" style="color: #f0a78e;">Accent ink</div>
+              <div class="col-token" style="color: #8d8578;">--accent-ink</div>
+              <div class="col-hex" style="color: #5a554a;">#F0A78E</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage rules -->
+      <div class="ds-sub">사용 규칙 <small>WHEN TO USE</small></div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div style="border: 1px solid var(--line); padding: 18px;">
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 700; margin-bottom: 8px;">ACCENT</div>
+          <div style="font-family: var(--serif); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 8px;">한 화면 한두 곳만.</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">활성 미니플레이어, 현재 재생 중 표시, "오늘의 한 줄" 같은 강조 한 곳. 더 쓰이면 의미가 죽는다.</p>
+        </div>
+        <div style="border: 1px solid var(--line); padding: 18px;">
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; font-weight: 700; margin-bottom: 8px;">INK · TEXT</div>
+          <div style="font-family: var(--serif); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 8px;">위계는 4단계.</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;"><b>Ink</b> 헤드라인 / <b>Ink 2</b> 본문 / <b>Ink 3</b> 메타 · 날짜 / <b>Ink 4</b> 보조 · 플레이스홀더. 그 사이의 회색은 만들지 않는다.</p>
+        </div>
+        <div style="border: 1px solid var(--line); padding: 18px;">
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; font-weight: 700; margin-bottom: 8px;">LINE</div>
+          <div style="font-family: var(--serif); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 8px;">선이 그림자다.</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">엘리베이션은 그림자로 표현하지 않는다. 1px의 따뜻한 라인이 카드와 섹션을 나눈다. 굵은 룰(2px)은 마스트헤드 전용.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 02 CATEGORY ─── -->
+    <section class="ds-sect" id="category">
+      <div class="ds-sect-num">02 · CATEGORY</div>
+      <h2 class="ds-sect-title">여덟 가지 색.</h2>
+      <p class="ds-sect-lede">
+        무지개도 파스텔도 아니다. 인쇄 광고에서 본 듯한, 채도를 한 단 낮춘 8개의 차분한 색.
+        라이트에선 깊은 톤으로, 다크에선 한 단 밝힌 톤으로 전환된다.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <!-- LIGHT category -->
+        <div class="theme-strip">
+          <div class="theme-strip-head">
+            <span>LIGHT</span>
+            <span>본 톤 — 무게중심 깊다</span>
+          </div>
+          <div style="padding: 18px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <div class="cat-row" data-name="정치" data-color="#b54a3a" data-token="politics"></div>
+              <div class="cat-row" data-name="경제" data-color="#4a7c59" data-token="economy"></div>
+              <div class="cat-row" data-name="사회" data-color="#6b4e8a" data-token="society"></div>
+              <div class="cat-row" data-name="문화" data-color="#b85a75" data-token="culture"></div>
+              <div class="cat-row" data-name="국제" data-color="#3d6b8c" data-token="world"></div>
+              <div class="cat-row" data-name="지역" data-color="#c08a3e" data-token="local"></div>
+              <div class="cat-row" data-name="스포츠" data-color="#3e8c8c" data-token="sports"></div>
+              <div class="cat-row" data-name="테크" data-color="#5a5fb0" data-token="tech"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DARK category -->
+        <div class="theme-strip" style="background: #0e0c08; border-color: #2c2721; color: #f7f2e9;">
+          <div class="theme-strip-head" style="border-color: #2c2721; color: #8d8578;">
+            <span>DARK</span>
+            <span>한 단 밝힌 톤 — 어두운 종이 위에서</span>
+          </div>
+          <div style="padding: 18px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <div class="cat-row dark" data-name="정치" data-color="#d96a58"></div>
+              <div class="cat-row dark" data-name="경제" data-color="#7aa688"></div>
+              <div class="cat-row dark" data-name="사회" data-color="#9b84b5"></div>
+              <div class="cat-row dark" data-name="문화" data-color="#d68aa1"></div>
+              <div class="cat-row dark" data-name="국제" data-color="#6e99b8"></div>
+              <div class="cat-row dark" data-name="지역" data-color="#d6a866"></div>
+              <div class="cat-row dark" data-name="스포츠" data-color="#6bafaf"></div>
+              <div class="cat-row dark" data-name="테크" data-color="#8a8fd1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">사용 패턴 <small>3 USAGE PATTERNS</small></div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;">
+        <div style="border: 1px solid var(--line); padding: 20px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+            <span style="width: 6px; height: 6px; border-radius: 999px; background: #b54a3a;"></span>
+            <span style="font-family: var(--label); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; font-weight: 600;">정치</span>
+          </div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 6px;">A · DOT</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">기본형. 라벨 앞 6px 도트. 본문에 가장 많이 등장.</p>
+        </div>
+        <div style="border: 1px solid var(--line); padding: 20px;">
+          <div style="margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: #b54a3a; color: var(--paper); font-family: var(--label); font-size: 11px; font-weight: 700; letter-spacing: 0.1em;">정치</div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 6px;">B · CHIP</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">강조형. 카드 위에서 확실한 식별이 필요할 때. 한 화면에서 절제해서.</p>
+        </div>
+        <div style="border: 1px solid var(--line); padding: 20px; position: relative; padding-left: 28px;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #b54a3a;"></div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 6px;">C · RAIL</div>
+          <p style="font-size: 13px; color: var(--ink-3); line-height: 1.55;">레일형. 섹션 헤더나 큰 카드 좌측에. 카테고리가 구획의 정체성일 때.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 03 TYPOGRAPHY ─── -->
+    <section class="ds-sect" id="typography">
+      <div class="ds-sect-num">03 · TYPOGRAPHY</div>
+      <h2 class="ds-sect-title">활자 한 벌.</h2>
+      <p class="ds-sect-lede">
+        헤드라인은 세리프, 본문은 산세리프, 라벨은 같은 산세리프의 모노 트래킹.
+        세 가지 후보 조합을 비교한다.
+      </p>
+
+      <div class="ds-sub">조합 후보 <small>3 CANDIDATES — 클릭하면 전체 페이지에 적용</small></div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;">
+        <!-- A: KoPub + Pretendard (current) -->
+        <div class="type-stack-card selected" data-type-stack="kopub-pre">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div style="font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 700;">A · 현재</div>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.1em;">DEFAULT</div>
+          </div>
+          <div style="font-family: 'KoPubWorldBatang','Noto Serif KR',serif; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;">한국은행 동결</div>
+          <div style="font-family: 'Pretendard',sans-serif; font-size: 13px; line-height: 1.6; color: var(--ink-2);">금리 동결 결정 후 시장은 즉각 환율과 채권 수익률에 반응했다. 이번 결정은 가계 부채 부담을 더 늘리지 않으려는 한은의 신호로 풀이된다.</div>
+          <div style="border-top: 1px solid var(--line); padding-top: 10px; font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.1em;">KoPub Batang / Pretendard</div>
+        </div>
+
+        <!-- B: Noto Serif + SUIT -->
+        <div class="type-stack-card" data-type-stack="noto-suit">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; font-weight: 700;">B · 모던</div>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.1em;">CLEANER</div>
+          </div>
+          <div style="font-family: 'Noto Serif KR',serif; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;">한국은행 동결</div>
+          <div style="font-family: 'SUIT',sans-serif; font-size: 13px; line-height: 1.6; color: var(--ink-2);">금리 동결 결정 후 시장은 즉각 환율과 채권 수익률에 반응했다. 이번 결정은 가계 부채 부담을 더 늘리지 않으려는 한은의 신호로 풀이된다.</div>
+          <div style="border-top: 1px solid var(--line); padding-top: 10px; font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.1em;">Noto Serif KR / SUIT</div>
+        </div>
+
+        <!-- C: Nanum Myeongjo + Pretendard -->
+        <div class="type-stack-card" data-type-stack="nanum-pre">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; font-weight: 700;">C · 클래식</div>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.1em;">EDITORIAL</div>
+          </div>
+          <div style="font-family: 'Nanum Myeongjo',serif; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;">한국은행 동결</div>
+          <div style="font-family: 'Pretendard',sans-serif; font-size: 13px; line-height: 1.6; color: var(--ink-2);">금리 동결 결정 후 시장은 즉각 환율과 채권 수익률에 반응했다. 이번 결정은 가계 부채 부담을 더 늘리지 않으려는 한은의 신호로 풀이된다.</div>
+          <div style="border-top: 1px solid var(--line); padding-top: 10px; font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.1em;">Nanum Myeongjo / Pretendard</div>
+        </div>
+      </div>
+
+      <div class="ds-note">
+        <b>현재 채택은 A.</b> KoPub Batang은 한국출판인회의 무료 글꼴로, 신문·출판물에서 검증된 가독성과 무게감을 가진다.
+        Pretendard는 한국어 + 영문 + 숫자 혼용에서 가장 균형 있는 시스템 폰트다.
+        B는 더 단정한 모던 톤, C는 더 전통적인 일간지 톤.
+      </div>
+    </section>
+
+    <!-- ─── 04 TYPE SCALE ─── -->
+    <section class="ds-sect" id="scale">
+      <div class="ds-sect-num">04 · TYPE SCALE</div>
+      <h2 class="ds-sect-title">크기 11단.</h2>
+      <p class="ds-sect-lede">
+        모바일 기준. 11단으로 충분하다. 더 만들면 위계가 흐려진다.
+      </p>
+
+      <div class="type-spec">
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">DISPLAY</div>
+            <div class="scale-spec">36 / 1.05 / -0.04em / 900</div>
+          </div>
+          <div style="font-family: var(--serif); font-size: 36px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.05;">조용한 아침, 큰 헤드라인</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">H1</div>
+            <div class="scale-spec">28 / 1.15 / -0.03em / 800</div>
+          </div>
+          <div style="font-family: var(--serif); font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15;">한국은행 기준금리 0.25%p 동결, 시장은 6월 인하에 무게</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">H2</div>
+            <div class="scale-spec">22 / 1.2 / -0.025em / 800</div>
+          </div>
+          <div style="font-family: var(--serif); font-size: 22px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.2;">아침 브리핑 · 7개 헤드라인을 5분 안에</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">H3</div>
+            <div class="scale-spec">17 / 1.3 / -0.02em / 700</div>
+          </div>
+          <div style="font-family: var(--serif); font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3;">"하반기 인하" 가능성에 무게 — 채권 시장의 해석</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">CARD</div>
+            <div class="scale-spec">15 / 1.35 / -0.015em / 700</div>
+          </div>
+          <div style="font-family: var(--serif); font-size: 15px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.35;">전세사기 특별법 5월 1일 시행…2만8천 명 구제 길</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">LEAD</div>
+            <div class="scale-spec">15 / 1.65 / -0.005em / 500</div>
+          </div>
+          <div style="font-family: var(--sans); font-size: 15px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.65; color: var(--ink-2);">금리 동결 결정 후 시장은 즉각 환율과 채권 수익률에 반응했다.</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">BODY</div>
+            <div class="scale-spec">14 / 1.65 / -0.005em / 400</div>
+          </div>
+          <div style="font-family: var(--sans); font-size: 14px; font-weight: 400; letter-spacing: -0.005em; line-height: 1.65; color: var(--ink-2);">한국은행 금융통화위원회는 이날 기준금리를 연 3.50%로 유지하기로 의결했다. 동결은 6회 연속이다.</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">META</div>
+            <div class="scale-spec">12 / 1.5 / 0 / 500</div>
+          </div>
+          <div style="font-family: var(--sans); font-size: 12px; font-weight: 500; line-height: 1.5; color: var(--ink-3);">조선일보 · 4. 18. · 관련 보도 14건</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">LABEL</div>
+            <div class="scale-spec">11 / 1.4 / 0.08em / 600</div>
+          </div>
+          <div style="font-family: var(--label); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--ink-3);">경제 · ECONOMY</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">MONO</div>
+            <div class="scale-spec">11 / 1.4 / 0.12em / 700</div>
+          </div>
+          <div style="font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--ink-3);">VOL.108 · AM EDITION · 04.18</div>
+        </div>
+        <div class="scale-row">
+          <div>
+            <div class="scale-label">CAPTION</div>
+            <div class="scale-spec">11 / 1.5 / 0 / 400</div>
+          </div>
+          <div style="font-family: var(--sans); font-size: 11px; font-weight: 400; line-height: 1.5; color: var(--ink-4);">사진. 연합뉴스 (게티이미지)</div>
+        </div>
+      </div>
+
+      <div class="ds-note">
+        <b>최소 텍스트 크기는 11px</b>. 이보다 작아지면 한국어 가독성이 무너진다.
+        <b>본문은 14px가 기본</b>이며, 폰트 설정에서 92~124% 사이로 조절 가능하다.
+      </div>
+    </section>
+
+    <!-- ─── 05 SPACE ─── -->
+    <section class="ds-sect" id="space">
+      <div class="ds-sect-num">05 · SPACE</div>
+      <h2 class="ds-sect-title">8의 배수, 그리드.</h2>
+      <p class="ds-sect-lede">
+        스페이싱은 4의 배수, 큰 단위는 8의 배수. 화면 좌우 패딩은 24px 고정. 본문은 단(column) 기반.
+      </p>
+
+      <div class="ds-sub">스페이싱 토큰 <small>4PX BASE</small></div>
+      <div style="border: 1px solid var(--line); padding: 16px; background: var(--card);">
+        <div class="sp-row">
+          <div class="scale-label">--sp-1</div>
+          <div class="col-hex">4 px</div>
+          <div><div class="sp-bar" style="width: 4px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-2</div>
+          <div class="col-hex">8 px</div>
+          <div><div class="sp-bar" style="width: 8px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-3</div>
+          <div class="col-hex">12 px</div>
+          <div><div class="sp-bar" style="width: 12px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-4</div>
+          <div class="col-hex">16 px</div>
+          <div><div class="sp-bar" style="width: 16px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-5</div>
+          <div class="col-hex">24 px</div>
+          <div><div class="sp-bar" style="width: 24px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-6</div>
+          <div class="col-hex">32 px</div>
+          <div><div class="sp-bar" style="width: 32px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-7</div>
+          <div class="col-hex">48 px</div>
+          <div><div class="sp-bar" style="width: 48px;"></div></div>
+        </div>
+        <div class="sp-row">
+          <div class="scale-label">--sp-8</div>
+          <div class="col-hex">64 px</div>
+          <div><div class="sp-bar" style="width: 64px;"></div></div>
+        </div>
+      </div>
+
+      <div class="ds-sub">화면 그리드 <small>375 PX MOBILE</small></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
+        <div style="border: 1px solid var(--line); padding: 18px;">
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 14px;">PADDING — 24px / 24px</div>
+          <div style="position: relative; background: var(--card); border: 1px solid var(--line); height: 200px;">
+            <div style="position: absolute; left: 24px; right: 24px; top: 0; bottom: 0; background: rgba(160,58,40,0.08); border-left: 1px dashed var(--accent); border-right: 1px dashed var(--accent);"></div>
+            <div style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; padding-left: 4px;">24</div>
+            <div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; padding-right: 4px;">24</div>
+          </div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 10px; line-height: 1.5;">모든 화면 좌우 24px. 단을 세분할 때만 콘텐츠 영역 안에서 추가 분할.</div>
+        </div>
+        <div style="border: 1px solid var(--line); padding: 18px;">
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 14px;">COLUMNS — 1 / 2 / 3</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 4px;"><div style="background: var(--card); border: 1px solid var(--line); height: 30px;"></div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;"><div style="background: var(--card); border: 1px solid var(--line); height: 30px;"></div><div style="background: var(--card); border: 1px solid var(--line); height: 30px;"></div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;"><div style="background: var(--card); border: 1px solid var(--line); height: 30px;"></div><div style="background: var(--card); border: 1px solid var(--line); height: 30px;"></div><div style="background: var(--card); border: 1px solid var(--line); height: 30px;"></div></div>
+          </div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 10px; line-height: 1.5;">콘텐츠 영역(327px) 내 1·2·3단. 단 사이 거터는 12px. 4단 이상은 사용하지 않는다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 06 BUTTONS ─── -->
+    <section class="ds-sect" id="buttons">
+      <div class="ds-sect-num">06 · BUTTONS</div>
+      <h2 class="ds-sect-title">버튼 세 종.</h2>
+      <p class="ds-sect-lede">
+        직사각형. 라운드 없음. 잉크 / 고스트 / 액센트 — 그 외는 만들지 않는다.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start;">
+        <div style="border: 1px solid var(--line); padding: 32px; background: var(--card);">
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; align-items: center;">
+            <button class="btn">시작하기</button>
+            <button class="btn ghost">취소</button>
+            <button class="btn accent">▶ 재생</button>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+            <button class="btn sm">팔로우</button>
+            <button class="btn ghost sm">더보기</button>
+            <button class="btn accent sm">구독하기</button>
+          </div>
+          <div style="border-top: 1px solid var(--line); margin-top: 28px; padding-top: 18px; display: flex; gap: 32px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em;">
+            <span>HEIGHT 44 / 32</span>
+            <span>RADIUS 0</span>
+            <span>WEIGHT 700</span>
+          </div>
+        </div>
+        <div style="font-size: 13px; color: var(--ink-3); line-height: 1.6;">
+          <div class="scale-label" style="margin-bottom: 10px;">RULES</div>
+          <p style="margin-bottom: 8px;"><b style="color: var(--ink-2);">잉크</b>가 기본. 한 화면에 1차 액션은 하나뿐.</p>
+          <p style="margin-bottom: 8px;"><b style="color: var(--accent);">액센트</b>는 재생/구독/오늘의 한 줄 같은 의미 있는 행동에만.</p>
+          <p><b style="color: var(--ink-2);">라운드 처리는 칩에만</b>. 버튼은 활자가 그렇듯 직사각.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 07 CHIPS / BADGES ─── -->
+    <section class="ds-sect" id="chips">
+      <div class="ds-sect-num">07 · CHIPS · BADGES</div>
+      <h2 class="ds-sect-title">칩과 뱃지.</h2>
+      <p class="ds-sect-lede">필터·태그는 둥근 칩. 카테고리 식별은 도트 + 라벨. 뉴스 신선도는 뱃지로.</p>
+
+      <div class="ds-sub">필터 칩 <small>HEIGHT 28</small></div>
+      <div style="border: 1px solid var(--line); padding: 18px; background: var(--card); display: flex; gap: 6px; flex-wrap: wrap;">
+        <span class="chip active">전체 <span style="font-family: var(--mono); opacity: 0.7;">28</span></span>
+        <span class="chip">경제 <span style="font-family: var(--mono); opacity: 0.7;">11</span></span>
+        <span class="chip">읽을거리 <span style="font-family: var(--mono); opacity: 0.7;">9</span></span>
+        <span class="chip">정책 <span style="font-family: var(--mono); opacity: 0.7;">5</span></span>
+        <span class="chip">기타 <span style="font-family: var(--mono); opacity: 0.7;">3</span></span>
+      </div>
+
+      <div class="ds-sub">카테고리 뱃지 <small>HEIGHT 14</small></div>
+      <div style="border: 1px solid var(--line); padding: 18px; background: var(--card); display: flex; gap: 24px; flex-wrap: wrap;">
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-politics);"></span>정치</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-economy);"></span>경제</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-society);"></span>사회</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-culture);"></span>문화</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-world);"></span>국제</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-local);"></span>지역</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-sports);"></span>스포츠</span>
+        <span class="badge-cat"><span class="dot" style="background: var(--cat-tech);"></span>테크</span>
+      </div>
+
+      <div class="ds-sub">상태 뱃지 <small>STATE BADGES</small></div>
+      <div style="border: 1px solid var(--line); padding: 18px; background: var(--card); display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); font-weight: 700;">
+          <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--accent);"></span> NOW PLAYING
+        </span>
+        <span style="display: inline-flex; align-items: center; padding: 2px 8px; background: var(--accent); color: var(--paper); font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; font-weight: 700;">NEW</span>
+        <span style="display: inline-flex; align-items: center; padding: 2px 8px; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; font-weight: 700;">속보</span>
+        <span style="display: inline-flex; align-items: center; padding: 2px 8px; border: 1px solid var(--line); color: var(--ink-3); font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; font-weight: 700;">예정</span>
+      </div>
+    </section>
+
+    <!-- ─── 08 ARTICLE CARDS ─── -->
+    <section class="ds-sect" id="cards">
+      <div class="ds-sect-num">08 · ARTICLE CARDS</div>
+      <h2 class="ds-sect-title">기사 카드.</h2>
+      <p class="ds-sect-lede">
+        세 가지 변형. 리스트(메인)·미디엄(피드)·라지(브리핑·딥다이브). 모두 직사각, 모두 잉크.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <!-- LIST -->
+        <div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; margin-bottom: 12px;">A · LIST</div>
+          <div style="border: 1px solid var(--line); background: var(--card); padding: 18px;">
+            <div style="display: flex; gap: 12px;">
+              <div style="flex: 1; min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--cat-economy);"></span>
+                  <span style="font-family: var(--label); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em;">경제</span>
+                </div>
+                <div style="font-family: var(--serif); font-size: 15px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.35; color: var(--ink);">현대차 1분기 영업이익 4조 돌파…역대 최대</div>
+                <div style="font-family: var(--sans); font-size: 12px; color: var(--ink-3); margin-top: 6px;">조선비즈 · 2시간 전</div>
+              </div>
+              <div style="flex-shrink: 0; width: 64px; height: 64px; background: linear-gradient(135deg, var(--cat-economy) 0%, var(--ink) 160%); border: 1px solid var(--line);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEDIUM -->
+        <div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; margin-bottom: 12px;">B · MEDIUM</div>
+          <div style="border: 1px solid var(--line); background: var(--card); padding: 18px;">
+            <div style="aspect-ratio: 16/9; background: linear-gradient(135deg, var(--cat-tech) 0%, var(--ink) 160%); border: 1px solid var(--line); margin-bottom: 14px;"></div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+              <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--cat-tech);"></span>
+              <span style="font-family: var(--label); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em;">테크 · 관련 보도 14건</span>
+            </div>
+            <div style="font-family: var(--serif); font-size: 17px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; color: var(--ink); margin-bottom: 8px;">삼성 2나노 양산 개시…"TSMC 추격 9부 능선"</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink-2); line-height: 1.55;">평택 4공장에서 첫 양산 라인 가동. 수율은 아직 70%대로, 본격 출하는 6월 이후 가능할 전망.</div>
+          </div>
+        </div>
+
+        <!-- LARGE / LEAD -->
+        <div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; margin-bottom: 12px;">C · LEAD</div>
+          <div style="border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); padding: 18px 0; background: transparent;">
+            <div style="font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 700; margin-bottom: 8px;">● TODAY'S LEAD</div>
+            <div style="font-family: var(--serif); font-size: 26px; font-weight: 900; letter-spacing: -0.035em; line-height: 1.1; color: var(--ink); margin-bottom: 12px;">한은, 6회 연속 동결.<br/>시장은 인하 시점에 무게.</div>
+            <div style="font-family: var(--serif); font-size: 14px; font-weight: 500; line-height: 1.6; color: var(--ink-2);">기준금리 3.50% 유지. 채권 시장은 6월 인하 확률을 72%로 반영하기 시작했다. 동결은 안정의 신호이지만, 가계부채는 여전히 사상 최대치다.</div>
+            <div style="font-family: var(--sans); font-size: 12px; color: var(--ink-3); margin-top: 10px;">조선일보 · 4. 18. · 관련 보도 23건</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 09 CHROME ─── -->
+    <section class="ds-sect" id="chrome">
+      <div class="ds-sect-num">09 · CHROME</div>
+      <h2 class="ds-sect-title">헤더와 탭바.</h2>
+      <p class="ds-sect-lede">
+        헤더는 마스트헤드 — 신문 제호처럼 굵은 활자와 2px 룰. 탭바는 4개, 라벨 항상 표시.
+      </p>
+
+      <div class="ds-sub">마스트헤드 <small>MASTHEAD</small></div>
+      <div style="border: 1px solid var(--line); background: var(--card); padding: 24px;">
+        <div style="background: var(--paper); border: 1px solid var(--line); padding: 18px 24px; border-bottom: 2px solid var(--ink);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 700;">VOL.108</span>
+            <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--accent); font-weight: 700;">● AM EDITION</span>
+          </div>
+          <div style="font-family: var(--serif); font-size: 36px; font-weight: 900; letter-spacing: -0.045em; line-height: 0.95;">Briefly</div>
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3); margin-top: 6px;">2026 · 04 · 18 · 토요일</div>
+        </div>
+      </div>
+
+      <div class="ds-sub">단순 헤더 <small>SCREEN HEADER</small></div>
+      <div style="border: 1px solid var(--line); background: var(--card); padding: 24px;">
+        <div style="background: var(--paper); border: 1px solid var(--line); border-bottom: 2px solid var(--ink); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 22px; color: var(--ink-3);">←</span>
+          <span style="font-family: var(--serif); font-size: 17px; font-weight: 900; letter-spacing: -0.02em;">북마크</span>
+          <span style="font-size: 18px; color: var(--ink-3);">⌕</span>
+        </div>
+      </div>
+
+      <div class="ds-sub">탭바 <small>BOTTOM TAB · 4 ITEMS</small></div>
+      <div style="border: 1px solid var(--line); background: var(--card); padding: 24px;">
+        <div style="background: var(--paper); border: 1px solid var(--line); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 0;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; color: var(--ink);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H6a2 2 0 01-2-2z"/><path d="M18 8h2v9a2 2 0 01-2 2M7 9h8M7 13h8M7 17h5"/></svg>
+            <span style="font-family: var(--label); font-size: 10px; letter-spacing: 0.08em; font-weight: 700;">홈</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; color: var(--ink-3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>
+            <span style="font-family: var(--label); font-size: 10px; letter-spacing: 0.08em; font-weight: 500;">검색</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; color: var(--ink-3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="3"/><path d="M5.5 8.5a8 8 0 0113 0M8 11a4.5 4.5 0 017 0"/><rect x="3" y="14" width="18" height="6" rx="1"/></svg>
+            <span style="font-family: var(--label); font-size: 10px; letter-spacing: 0.08em; font-weight: 500;">팟캐스트</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; color: var(--ink-3);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>
+            <span style="font-family: var(--label); font-size: 10px; letter-spacing: 0.08em; font-weight: 500;">프로필</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 10 ICONS ─── -->
+    <section class="ds-sect" id="icons">
+      <div class="ds-sect-num">10 · ICONS</div>
+      <h2 class="ds-sect-title">아이콘 한 벌.</h2>
+      <p class="ds-sect-lede">
+        24×24 기본. 1.6px 라인. 라운드 캡·라운드 조인. 채워진 형태는 활성화 표시(북마크·재생)에만.
+      </p>
+
+      <div style="border: 1px solid var(--line); background: var(--card); padding: 28px;">
+        <div id="iconGrid" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 18px;"></div>
+        <div style="border-top: 1px solid var(--line); margin-top: 24px; padding-top: 18px; display: flex; gap: 32px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em;">
+          <span>SIZE 24×24</span>
+          <span>STROKE 1.6 PX</span>
+          <span>LINECAP ROUND</span>
+          <span>VIEWBOX 0 0 24 24</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="ds-foot">
+      <span><b>Briefly · Design System</b> v0.1</span>
+      <span>UPDATED 2026.04.18</span>
+      <span>NEXT — 8 SCREENS × LIGHT/DARK</span>
+    </div>
+  </main>
+</div>
+
+<style>
+  /* Category row component */
+  .cat-row { display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); background: var(--card); }
+  .cat-row::before { content: ''; width: 32px; height: 32px; background: var(--c); border: 1px solid var(--line); display: block; }
+  .cat-row .cat-name { font-family: var(--serif); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+  .cat-row .cat-hex { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.08em; }
+  .cat-row.dark { border-color: #2c2721; background: #1f1b16; }
+  .cat-row.dark .cat-name { color: #f7f2e9; }
+  .cat-row.dark .cat-hex { color: #8d8578; }
+  .cat-row.dark::before { border-color: #2c2721; }
+</style>
+
+<script>
+  // Category rows — paint via JS to avoid CSS variable nesting issues
+  document.querySelectorAll('.cat-row').forEach(el => {
+    const name = el.dataset.name;
+    const color = el.dataset.color;
+    const before = document.createElement('span');
+    before.style.cssText = `width: 32px; height: 32px; background: ${color}; border: 1px solid currentColor; opacity: 1; display: block;`;
+    before.style.borderColor = el.classList.contains('dark') ? '#2c2721' : 'var(--line)';
+    el.innerHTML = `
+      <span style="width: 32px; height: 32px; background: ${color}; border: 1px solid ${el.classList.contains('dark') ? '#2c2721' : '#dcd3c1'}; display: block;"></span>
+      <span class="cat-name">${name}</span>
+      <span class="cat-hex">${color.toUpperCase()}</span>
+    `;
+  });
+
+  // Icon grid — render all icons
+  const ICONS = {
+    'home': '<path d="M4 5h14v14H6a2 2 0 01-2-2z"/><path d="M18 8h2v9a2 2 0 01-2 2M7 9h8M7 13h8M7 17h5"/>',
+    'search': '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/>',
+    'podcast': '<circle cx="12" cy="13" r="3"/><path d="M5.5 8.5a8 8 0 0113 0M8 11a4.5 4.5 0 017 0"/><rect x="3" y="14" width="18" height="6" rx="1"/>',
+    'person': '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/>',
+    'bookmark': '<path d="M6 4h12v17l-6-4-6 4z"/>',
+    'bookmark-fill': '<path d="M6 4h12v17l-6-4-6 4z" fill="currentColor"/>',
+    'play': '<path d="M7 5v14l12-7z" fill="currentColor"/>',
+    'pause': '<rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/>',
+    'track-prev': '<path d="M19 5L9 12l10 7z" fill="currentColor"/><rect x="5" y="5" width="2" height="14" fill="currentColor"/>',
+    'track-next': '<path d="M5 5l10 7-10 7z" fill="currentColor"/><rect x="17" y="5" width="2" height="14" fill="currentColor"/>',
+    'list': '<path d="M8 6h12M8 12h12M8 18h12"/><circle fill="currentColor" cx="4" cy="6" r="1.3"/><circle fill="currentColor" cx="4" cy="12" r="1.3"/><circle fill="currentColor" cx="4" cy="18" r="1.3"/>',
+    'arrow-left': '<path d="M19 12H5M12 19l-7-7 7-7"/>',
+    'chevron-right': '<path d="M9 6l6 6-6 6"/>',
+    'chevron-down': '<path d="M6 9l6 6 6-6"/>',
+    'share': '<path d="M12 4v12M7 9l5-5 5 5M5 16v3a1 1 0 001 1h12a1 1 0 001-1v-3"/>',
+    'bell': '<path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/>',
+    'eye': '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    'heart': '<path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z"/>',
+    'check': '<path d="M5 12l5 5L20 7"/>',
+    'dots': '<circle cx="6" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="18" cy="12" r="1.5" fill="currentColor"/>',
+    'volume': '<path d="M4 9h3l4-4v14l-4-4H4z"/><path d="M16 8a5 5 0 010 8M19 5a8 8 0 010 14"/>',
+    'newspaper': '<path d="M4 5h14v14H6a2 2 0 01-2-2z"/><path d="M18 8h2v9a2 2 0 01-2 2M7 9h8M7 13h8M7 17h5"/>',
+    'settings': '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M22 12h-3M5 12H2M19 5l-2.1 2.1M7.1 16.9L5 19M19 19l-2.1-2.1M7.1 7.1L5 5"/>',
+    'mail': '<rect x="3" y="6" width="18" height="13"/><path d="M3 7l9 7 9-7"/>',
+  };
+  const grid = document.getElementById('iconGrid');
+  Object.keys(ICONS).forEach(name => {
+    const cell = document.createElement('div');
+    cell.style.cssText = 'display: flex; flex-direction: column; align-items: center; gap: 8px;';
+    cell.innerHTML = `
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink);">${ICONS[name]}</svg>
+      <span style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.06em;">${name}</span>
+    `;
+    grid.appendChild(cell);
+  });
+
+  // Theme toggle
+  document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.body.dataset.theme = theme;
+      document.documentElement.dataset.theme = theme;
+      document.querySelectorAll('[data-theme-btn]').forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+
+  // Type stack swap — preview only (changes display vars within #typography section)
+  const STACKS = {
+    'kopub-pre': { serif: "'KoPubWorldBatang','Noto Serif KR',serif", sans: "'Pretendard',sans-serif" },
+    'noto-suit': { serif: "'Noto Serif KR',serif", sans: "'SUIT',sans-serif" },
+    'nanum-pre': { serif: "'Nanum Myeongjo',serif", sans: "'Pretendard',sans-serif" },
+  };
+  document.querySelectorAll('[data-type-stack]').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.typeStack;
+      const stack = STACKS[id];
+      document.documentElement.style.setProperty('--serif', stack.serif);
+      document.documentElement.style.setProperty('--sans', stack.sans);
+      document.documentElement.style.setProperty('--label', stack.sans);
+      document.querySelectorAll('[data-type-stack]').forEach(c => c.classList.toggle('selected', c === card));
+    });
+  });
+</script>
+</body>
+</html>

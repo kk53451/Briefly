@@ -45,19 +45,7 @@
           "microphonePermission": false
         }
       ],
-      "expo-web-browser",
-      [
-        "@react-native-kakao/core",
-        {
-          "nativeAppKey": "2283f292bd65f9faff9289e4abd91920",
-          "android": {
-            "redirectUri": "kakao2283f292bd65f9faff9289e4abd91920://oauth"
-          },
-          "ios": {
-            "redirectUri": "kakao2283f292bd65f9faff9289e4abd91920://oauth"
-          }
-        }
-      ]
+      "expo-web-browser"
     ]
   }
 }

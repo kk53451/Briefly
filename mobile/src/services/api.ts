@@ -65,24 +65,11 @@ class ApiClient {
   }
 
   // ========== Auth APIs ==========
+  // Kakao 로그인은 제거. 현재는 게스트 모드로 운영.
+  // 추후 이메일/Google/Apple 로그인 등이 추가될 때 이 섹션에 메서드 추가.
 
-  async getKakaoLoginUrl(): Promise<string> {
-    const response = await this.client.get<{ url: string }>('/api/auth/kakao/login');
-    return response.data.url;
-  }
-
-  async handleKakaoCallback(code: string): Promise<AuthResponse> {
-    const response = await this.client.get<AuthResponse>('/api/auth/kakao/callback', {
-      params: { code },
-    });
-    await SecureStore.setItemAsync('access_token', response.data.access_token);
-    return response.data;
-  }
-
-  async loginWithKakaoToken(accessToken: string): Promise<AuthResponse> {
-    const response = await this.client.post<AuthResponse>('/api/auth/kakao/token', {
-      access_token: accessToken,
-    });
+  async guestLogin(): Promise<AuthResponse> {
+    const response = await this.client.post<AuthResponse>('/api/auth/guest');
     await SecureStore.setItemAsync('access_token', response.data.access_token);
     return response.data;
   }
@@ -167,8 +154,10 @@ class ApiClient {
 
   // ========== Frequency/Podcast APIs ==========
 
-  async getFrequencies(): Promise<FrequencyItem[]> {
-    const response = await this.client.get<FrequencyItem[]>('/api/frequencies');
+  async getFrequencies(slot: "AM" | "PM" = "AM"): Promise<FrequencyItem[]> {
+    const response = await this.client.get<FrequencyItem[]>('/api/frequencies', {
+      params: { slot },
+    });
     return response.data;
   }
 
@@ -179,8 +168,13 @@ class ApiClient {
     return response.data;
   }
 
-  async getFrequencyByCategory(category: string): Promise<FrequencyItem> {
-    const response = await this.client.get<FrequencyItem>(`/api/frequencies/${category}`);
+  async getFrequencyByCategory(
+    category: string,
+    slot: "AM" | "PM" = "AM"
+  ): Promise<FrequencyItem> {
+    const response = await this.client.get<FrequencyItem>(`/api/frequencies/${category}`, {
+      params: { slot },
+    });
     return response.data;
   }
 
@@ -193,9 +187,14 @@ class ApiClient {
 
   // ========== Headlines APIs (오늘의 브리핑) ==========
 
-  async getHeadlines(category?: string, date?: string): Promise<HeadlinesResponse> {
+  async getHeadlines(
+    category?: string,
+    date?: string,
+    slot: "AM" | "PM" = "AM"
+  ): Promise<HeadlinesResponse> {
     const response = await this.client.get<HeadlinesResponse>('/api/headlines', {
       params: {
+        slot,
         ...(category && { category }),
         ...(date && { date })
       },
