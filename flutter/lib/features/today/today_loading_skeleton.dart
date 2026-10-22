@@ -6,7 +6,7 @@ import '../../core/theme/app_theme.dart';
 /// Today 의 정규 헤더(`_Header` — "오늘의 브리핑" 타이틀 + AM/PM 토글)는
 /// 그대로 유지되고, 그 아래 body 영역에 이 스켈레톤이 표시됩니다.
 ///
-/// Briefly_design v2.1 (`Briefly_design/screens/states.jsx:LoadingState`) 의
+/// Briefly_design v2.1 (`docs/design/prototype/screens/states.jsx:LoadingState`) 의
 /// 카드 + 풋터 부분만 발췌:
 /// - 카드 내부: 카테고리/시간 바 + 제목 2줄 + 이미지 placeholder + body 3줄,
 ///   전부 shimmer sweep 애니메이션

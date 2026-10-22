@@ -11,7 +11,7 @@
 - scheduler 경로는 Naver 실시간 수집·임베딩·KURE 모델 로드까지 거쳐
   6 카테고리를 다 돌리므로 1시간 이상 걸립니다. Supabase/Discord 등 외부
   의존성도 건드립니다.
-- 이 dry-run 은 `backend/test/data/news_*.json` **오프라인 샘플 데이터**를
+- 이 dry-run 은 `test/fixtures/news_*.json` **오프라인 샘플 데이터**를
   재활용하고, 하드뉴스 3카테고리만 돌리며, Supabase 저장/알림을 건너뜁니다.
   임베딩 캐시가 이미 있으면 총 4~6분에 끝나 프롬프트 변경(SYSTEM_PROMPT,
   GENERATION_PROMPT_TEMPLATE, instructions, REF 토픽 구성 등) 에 대한
@@ -20,7 +20,7 @@
 즉 이건 **개발·튜닝용 로컬 유틸** 입니다. 프로덕션 파이프라인과는 완전 분리.
 
 스크립트 교체/삭제 기준:
-- 샘플 데이터 경로(`backend/test/data/news_*.json`) 가 사라지거나,
+- 샘플 데이터 경로(`test/fixtures/news_*.json`) 가 사라지거나,
   `categories_data` 인자 형태가 다시 바뀌거나,
 - 프롬프트 튜닝이 수렴해서 더 이상 빠른 iteration 이 필요 없어지면
   그때 삭제 고려.
@@ -61,7 +61,7 @@ HARD_NEWS: List[Dict[str, str]] = [
     {"ko": "국제", "en": "international"},
 ]
 
-DATA_PATH = Path("../backend/test/data/news_2026-04-11.json")
+DATA_PATH = Path(__file__).resolve().parent / "fixtures" / "news_2026-04-11.json"
 OUTPUT_DIR = Path("test/results")
 
 

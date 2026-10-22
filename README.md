@@ -230,22 +230,25 @@ Briefly/
 │   │   └── shared/
 │   └── pubspec.yaml
 │
+├── docs/                         # 종료된 구현·디자인·실험·의사결정 기록
 ├── CLAUDE.md                     # Claude Code 작업 가이드
 └── README.md
 ```
 
-### 히스토리 (보존용, 현재 미사용)
+### 종료된 구현과 보존 자료
 
-포트폴리오 목적으로 이전 버전을 남겨두었습니다. **현재 동작의 근거로 삼지 마세요.**
+2026-10-23에 이전 구현을 **DEPRECATED**로 지정하고 master에서 제거했습니다.
+현행 실행 코드는 `backend_v2_supabase/`와 `flutter/`입니다.
 
-| 경로 | 무엇이었나 |
-|---|---|
-| `backend/` | v1 — FastAPI + AWS Lambda + DynamoDB + BigKinds + ElevenLabs |
-| `backend_v2/` | v2 초기 — 파이프라인은 현재와 유사하나 저장이 DynamoDB/S3 |
-| `frontend/` | v1 웹 (Next.js 14) |
-| `mobile/` | React Native + Expo 앱 |
-| `mobile_v2_expo/` | Expo 재작성 시도 |
-| `Briefly_design/` | 디자인 산출물 |
+- [DEPRECATED 목록과 복구 방법](docs/DEPRECATED.md)
+- [문서·설계·실험 자료 안내](docs/README.md)
+- [디자인 원본과 화면 기록](docs/design/README.md)
+- [클러스터링 실험 및 튜닝 기록](docs/research/README.md)
+- [과거 설계·전환 의사결정](docs/history/README.md)
+
+옛 구현과 정리 전 미커밋 소스는 `archive/pre-cleanup-2026-10-23` 태그에 보존했습니다.
+독립 브랜치의 고유 커밋은 별도 보존 태그에 남겼습니다. 태그 목록과 범위는 DEPRECATED 문서를 참고하세요.
+대본 검증에 사용하는 뉴스 샘플은 `backend_v2_supabase/test/fixtures/`에 있습니다.
 
 ---
 

@@ -10,7 +10,7 @@ import '../../shared/widgets/cat_badge.dart';
 import 'data/search_repository.dart';
 
 /// 검색 화면 — pg_trgm 기반 부분일치 뉴스 검색.
-/// 디자인: Briefly_design/screens/search.jsx 의 initial / results 두 상태.
+/// 디자인: docs/design/prototype/screens/search.jsx 의 initial / results 두 상태.
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 

@@ -49,5 +49,10 @@ data_backup/
 # ML 모델 가중치 (재다운로드 가능)
 *.onnx
 *.safetensors
-backend/test/models/
 .mcp.json
+
+# Local agent state and development dependencies
+.omc/
+.tmp/
+node_modules/
+.expo/

@@ -38,17 +38,22 @@ Flutter 앱은 **Supabase 를 직접 호출합니다.** 중간에 REST API 서�
 | `backend_v2_supabase/` | 배치 파이프라인 (유일한 백엔드) |
 | `flutter/` | 모바일 앱 (유일한 클라이언트) |
 
-**히스토리 — 보존용, 수정하지 않습니다**
-| 경로 | 무엇이었나 |
-|---|---|
-| `backend/` | v1. FastAPI + AWS Lambda + DynamoDB + BigKinds + ElevenLabs |
-| `backend_v2/` | v2 초기. 파이프라인은 현재와 유사하나 저장이 DynamoDB/S3 |
-| `frontend/` | v1 웹 (Next.js 14) |
-| `mobile/` | React Native + Expo 앱 |
-| `mobile_v2_expo/` | Expo 재작성 시도 |
-| `Briefly_design/` | 디자인 산출물 |
+**종료된 구현과 보존 자료**
 
-과거 버전의 코드·문서를 현재 동작의 근거로 삼지 마세요. BigKinds, ElevenLabs, DynamoDB, Kakao OAuth, Union-Find 클러스터링은 **전부 v1 유물이며 현재 파이프라인에 없습니다.**
+`backend/`, `backend_v2/`, `frontend/`, `mobile/`, `mobile_v2_expo/`는
+2026-10-23에 DEPRECATED로 지정하고 master에서 제거했습니다.
+보존 태그·복구 방법은 [docs/DEPRECATED.md](docs/DEPRECATED.md)를 따르세요.
+
+| 경로 | 역할 |
+|---|---|
+| `docs/design/` | Flutter 설계 원본과 화면 기록 |
+| `docs/research/` | 과거 실험·평가·튜닝 기록 |
+| `docs/history/` | 이전 아키텍처와 전환 의사결정 |
+| `backend_v2_supabase/test/fixtures/` | 현행 대본 검증용 오프라인 뉴스 샘플 |
+
+과거 자료의 코드·명령·지표는 작성 당시의 기록이며 현재 동작의 근거로 삼지 마세요.
+BigKinds, ElevenLabs, DynamoDB, FastAPI의 직접 JWT 발급, Union-Find 클러스터링은
+종료된 구현에 속합니다. 현행 Flutter의 Kakao 로그인은 Supabase OAuth를 사용합니다.
 
 ## 개발 명령어
 
@@ -234,7 +239,7 @@ LLM 호출은 `app/services/engines/` 로 추상화되어 있습니다 (`ScriptE
 - 로그에 이모지 접두사: ✅ 성공 / ⚠️ 경고 / ❌ 실패
 - 로그에 컨텍스트 포함: 카테고리, 기사 수, 소요 시간
 - 커밋 메시지는 한국어
-- 현재 브랜치는 `backend_v3_rework` 이지만 **백엔드는 "v2" 로 부릅니다** (브랜치명만 v3)
+- 기준 브랜치는 `master`이며 현행 백엔드 경로는 `backend_v2_supabase/`입니다.
 - master 에 force push 금지
 
 ## 환경 변수

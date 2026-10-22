@@ -2,7 +2,7 @@
 data/embedding_cache/
 data/hf_cache/
 
-# ── 파이프라인 출력물 (S3/DynamoDB에 저장됨) ──
+# ── 파이프라인 로컬 출력물 (Git에 포함하지 않음) ──
 outputs/
 
 # ── 실험 결과 (재현 가능, 용량 큼) ──

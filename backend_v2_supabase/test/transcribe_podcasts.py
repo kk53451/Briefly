@@ -4,7 +4,7 @@
 A/B/C 방식으로 생성된 팟캐스트의 실제 대본을 추출합니다.
 
 사용법:
-    cd backend_v2
+    cd backend_v2_supabase
     python -m test.transcribe_podcasts
 """
 
