@@ -9,11 +9,16 @@
 | `regenerate_audio.py` | 기존 대본의 오디오 재생성 | Supabase 기사 조회 및 NotebookLM 호출 |
 | `test_supabase_storage_smoke.py` | DB·Storage 저장 경로 확인 | Supabase에 실제 데이터 쓰기 |
 | `test_metrics_loki_smoke.py` | 파이프라인 계측 전송 확인 | 설정된 Loki로 메트릭 전송 |
-| `transcribe_podcasts.py` | 옛 A/B/C 실험 오디오 전사·평가 | 로컬 Whisper 모델과 LLM 평가 호출 |
 | `transcribe_and_evaluate.py` | 통합 브리핑 전사 및 품질 평가 | 로컬 Whisper 모델, Supabase 조회, LLM 평가 호출 |
 
 외부 서비스·모델 실행이 필요한 스크립트입니다. 전체 파일을 단순한 오프라인 단위 테스트로 일괄 실행하지 마세요.
 각 스크립트의 CLI 인자와 환경변수 설명을 확인한 뒤 실행합니다.
+
+전사 도구는 기본 배치 의존성 외에 `faster-whisper`가 필요합니다.
+`regenerate_audio.py`의 오디오 길이 측정에는 실행 경로에 `ffprobe`가 있어야 합니다.
+
+구 A/B/C 실험 전용 `transcribe_podcasts.py`는 통합 브리핑 도구로 대체되어 제거했습니다.
+옛 스크립트는 [보존 태그 안내](../../docs/DEPRECATED.md)에서 확인할 수 있습니다.
 
 ## 대본 검증 샘플
 

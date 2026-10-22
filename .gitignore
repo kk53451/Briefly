@@ -17,11 +17,6 @@ ENV/
 .env.development
 .env.production
 
-# AWS SAM
-.aws-sam/
-samconfig.toml
-backend/template.yaml
-
 # Logs
 *.log
 logs/
@@ -42,7 +37,7 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
-*.temp 
+*.temp
 # Data backup
 data_backup/
 

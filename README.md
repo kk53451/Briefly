@@ -170,7 +170,7 @@ Supabase Auth 사용. Kakao(OAuth web flow) + Google(네이티브 Sign-In → `s
 - **오디오**: `just_audio` + `just_audio_background` (백그라운드 재생)
 - **백엔드**: `supabase_flutter` — DB 직접 조회, 중간 API 없음
 - **인증**: `google_sign_in` + Supabase OAuth (Kakao), `app_links` (딥링크 콜백)
-- **화면**: 오늘의 브리핑 / 홈 / 팟캐스트 / 에피소드 / 검색 / 북마크 / 프로필 / 설정
+- **화면**: 오늘의 브리핑 / 홈 / 팟캐스트 / 에피소드 / 검색 / 프로필 / 설정
 
 ### 외부 서비스
 | 서비스 | 용도 | 비용 |
@@ -217,10 +217,8 @@ Briefly/
 │   │   │   ├── today/            # 오늘의 브리핑 (AM/PM)
 │   │   │   ├── home/             # 카테고리별 뉴스 카드
 │   │   │   ├── frequency/        # 팟캐스트 플레이어 + 에피소드 목록
-│   │   │   ├── headlines/        # 헤드라인 카드
 │   │   │   ├── news_detail/      # 기사 상세
 │   │   │   ├── search/           # 검색
-│   │   │   ├── bookmarks/        # 북마크
 │   │   │   ├── auth/             # Kakao / Google 로그인
 │   │   │   ├── profile/          # 프로필
 │   │   │   ├── settings/         # 폰트 설정
@@ -308,6 +306,9 @@ flutter pub get
 flutter run
 flutter build apk --release
 ```
+
+환경변수 준비와 플랫폼 설정은 [Flutter 실행 안내](flutter/README.md)를 참고하세요.
+저장소에 포함된 플랫폼은 Android와 iOS입니다.
 
 ### 환경 변수 (`backend_v2_supabase/.env`)
 

@@ -228,10 +228,12 @@ LLM 호출은 `app/services/engines/` 로 추상화되어 있습니다 (`ScriptE
 | `test_supabase_storage_smoke.py` | Supabase 쓰기 경로 스모크 |
 | `generate_integrated_briefing_dryrun.py` | 대본 생성만 드라이런 |
 | `regenerate_audio.py` | 기존 대본으로 오디오만 재생성 |
-| `transcribe_podcasts.py` | 생성된 오디오 전사 |
 | `transcribe_and_evaluate.py` | 전사 + 품질 평가 |
+| `test_metrics_loki_smoke.py` | Loki 계측 전송 스모크 |
 
-대본/전사본 품질 평가는 `.claude/skills/briefly-eval-v3` 스킬을 씁니다.
+전사본 품질 평가는 `test/transcribe_and_evaluate.py`를 사용합니다.
+선택 의존성과 실행 조건은 [검증 도구 안내](backend_v2_supabase/test/README.md)를 참고하세요.
+`.claude/skills/briefly-eval-v3`는 개인 로컬 도구이며 저장소에 포함되지 않습니다.
 
 ## 컨벤션
 

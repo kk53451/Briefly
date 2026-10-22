@@ -1,100 +1,77 @@
-# Briefly — Flutter app
+# Briefly — Flutter 앱
 
-AI-powered Korean news podcast app. Supabase 백엔드 (프로젝트 `esaktypcwhpcgmdvxvxq`).
+한국어 뉴스·통합 브리핑 팟캐스트 클라이언트입니다.
+Supabase에서 기사·헤드라인·팟캐스트를 직접 조회합니다.
+현재 저장소에는 **Android와 iOS** 프로젝트가 포함되어 있습니다.
 
-## Setup
+## 실행 준비
 
-1. **Install dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-2. **Environment variables**
-   - `.env.example` 을 `.env` 로 복사 (자동 생성 완료됨)
-   - Google client IDs 채워넣기
-   - `.env` 는 `flutter_dotenv`가 앱 시작 시 로드
-
-3. **iOS deep link** — `ios/Runner/Info.plist` 에 `briefly://` URL scheme 추가 (Kakao OAuth callback)
-   ```xml
-   <key>CFBundleURLTypes</key>
-   <array>
-     <dict>
-       <key>CFBundleURLSchemes</key>
-       <array><string>briefly</string></array>
-     </dict>
-   </array>
-   ```
-
-4. **Android deep link** — `android/app/src/main/AndroidManifest.xml` 의 `<activity>` 안에 intent-filter 추가
-   ```xml
-   <intent-filter android:autoVerify="false">
-     <action android:name="android.intent.action.VIEW" />
-     <category android:name="android.intent.category.DEFAULT" />
-     <category android:name="android.intent.category.BROWSABLE" />
-     <data android:scheme="briefly" android:host="auth-callback" />
-   </intent-filter>
-   ```
-
-5. **Audio background (Android)** — foreground service 권한/서비스 등록 (`just_audio_background` 문서 참고)
-
-6. **Supabase Dashboard** (수동 1회)
-   - Auth → Providers: Kakao, Google 활성화 + 키 입력
-   - Auth → URL Configuration → Additional Redirect URLs 에 `briefly://auth-callback` 추가
-   - Bucket `briefly-audio` 는 이미 생성됨 (public)
-
-## Run
+저장소 루트에서 `flutter/`로 이동한 뒤 의존성과 환경변수를 준비합니다.
 
 ```bash
-flutter run                    # 연결된 디바이스
-flutter run -d chrome          # 웹 (개발 편의용)
+cd flutter
+flutter pub get
 ```
 
-## 폴더 구조
+`.env.example`을 `.env`로 복사하고 사용할 프로젝트의 값을 입력하세요.
+PowerShell에서는 `Copy-Item .env.example .env`, macOS/Linux에서는 `cp .env.example .env`를 사용합니다.
+기존 `.env`가 있다면 복사하지 말고 설정을 확인하세요.
 
-```
-lib/
-├── main.dart               # 엔트리: dotenv + audio background + Supabase init
-├── app.dart                # MaterialApp.router + 테마 + 라우터 주입
-├── core/
-│   ├── config/
-│   │   ├── env.dart        # .env 파싱 유틸
-│   │   └── supabase.dart   # Supabase.initialize + client 접근자
-│   ├── theme/app_theme.dart
-│   ├── router/app_router.dart   # go_router + auth redirect
-│   └── constants/categories.dart
-├── features/
-│   ├── auth/
-│   │   ├── auth_repository.dart   # Kakao(web OAuth) + Google(native id_token)
-│   │   ├── auth_controller.dart   # Riverpod: session/auth state providers
-│   │   └── login_screen.dart
-│   ├── home/               # 홈 탭 (TBD)
-│   ├── today/              # 투데이 탭 (TBD)
-│   ├── frequency/          # 팟캐스트 (TBD)
-│   ├── headlines/          # 오늘의 브리핑 (TBD)
-│   ├── bookmarks/          # 북마크 (TBD)
-│   └── profile/            # 프로필/설정 (TBD)
-└── shared/
-    ├── models/             # 데이터 모델 (TBD)
-    └── widgets/            # 재사용 위젯 (TBD)
-```
+- `SUPABASE_URL`, `SUPABASE_ANON_KEY`: 앱이 사용할 프로젝트 URL과 공개 클라이언트 키
+- `SUPABASE_AUDIO_BUCKET`: 기본값 `briefly-audio`
+- `GOOGLE_WEB_CLIENT_ID`: Google 네이티브 로그인에 필요
+- `GOOGLE_IOS_CLIENT_ID`: iOS Google 로그인에 사용할 클라이언트 ID
 
-## Supabase 직접 조회 패턴
+`.env`는 `flutter_dotenv`가 시작 시 읽으며 앱 asset으로 빌드에 포함됩니다.
+백엔드의 서비스 역할 키는 이 파일에 넣지 마세요.
 
-```dart
-final rows = await supabase
-  .from('news_cards')
-  .select()
-  .eq('date', '2026-04-19')
-  .eq('slot', 'AM')
-  .order('rank');
+## 플랫폼과 인증 설정
 
-final url = supabase.storage
-  .from('briefly-audio')
-  .getPublicUrl(audioPath);
+다음 설정은 이미 소스에 들어 있습니다.
+
+- [AndroidManifest.xml](android/app/src/main/AndroidManifest.xml): `briefly://auth-callback` 딥링크, 오디오 백그라운드 서비스와 권한
+- [Info.plist](ios/Runner/Info.plist): `briefly` URL scheme, `audio` 백그라운드 모드
+
+사용할 Supabase 프로젝트의 Kakao·Google provider와 `briefly://auth-callback` redirect 설정은 별도로 확인하세요.
+Google 네이티브 로그인은 배포용 앱 식별자·인증서·플랫폼별 OAuth 설정도 일치해야 합니다.
+Storage와 데이터베이스의 초기 SQL은 [백엔드 마이그레이션](../backend_v2_supabase/app/db/migrations/)에 있습니다.
+로컬 파일만으로 원격 프로젝트의 설정 완료 여부를 알 수는 없습니다.
+
+## 실행과 빌드
+
+```bash
+flutter run                    # 연결된 Android/iOS 디바이스
+flutter build apk --release    # Android APK
 ```
 
-## Release blockers
+iOS 실행·빌드는 macOS와 Xcode가 필요합니다.
+웹 프로젝트(`web/`)는 저장소에 포함되어 있지 않습니다.
+Android release 설정은 현재 debug 서명을 사용하므로 배포 전에 서명 구성이 필요합니다.
 
-- **Apple Sign-in** — iOS 앱이 소셜 로그인 제공 시 필수 (Apple HIG). `sign_in_with_apple` 패키지 + Supabase Auth Apple provider 활성화.
-- **Kakao Biz App** — `account_email` scope 사용 시 필요.
-- **Bundle id** — 현재 `com.briefly.briefly`. 출시 전 `android/app/build.gradle`(applicationId) + `ios/Runner.xcodeproj`(PRODUCT_BUNDLE_IDENTIFIER) 를 `com.briefly.app` 으로 통일.
+## 소스 구조
+
+| 경로 | 역할 |
+|---|---|
+| `lib/main.dart` | 환경변수·날짜 형식·오디오·Supabase 초기화 |
+| `lib/app.dart` | 앱 테마와 라우터 연결 |
+| `lib/core/` | 설정, 라우터, 테마, 카테고리 상수 |
+| `lib/features/auth/` | Kakao OAuth, Google 네이티브 로그인, 게스트 모드 |
+| `lib/features/home/` | 카테고리별 뉴스 카드 |
+| `lib/features/today/` | 오늘의 브리핑·헤드라인 |
+| `lib/features/frequency/` | 팟캐스트 플레이어·에피소드 목록 |
+| `lib/features/news_detail/` | 기사 상세 |
+| `lib/features/search/` | 검색 |
+| `lib/features/profile/` | 프로필 |
+| `lib/features/settings/` | 글꼴 설정 |
+| `lib/features/onboarding/`, `shell/`, `splash/` | 온보딩, 탭 구성, 시작 화면 |
+| `lib/shared/` | 데이터 모델과 공통 위젯 |
+
+북마크 저장 기능과 프로필 활동 지표 연동은 아직 구현되지 않았습니다.
+별도 `headlines/`, `bookmarks/` 기능 폴더는 없습니다.
+디자인 원본은 [설계 자료](../docs/design/README.md)에 보존합니다.
+
+## 검증 상태
+
+정적 분석은 `flutter analyze`로 실행합니다.
+기존 산술 placeholder 테스트는 정리했으며, 앱 동작을 검증하는 Dart 자동 테스트는 아직 없습니다.
+로그인·오디오 재생·데이터 조회는 실제 환경에서 별도로 확인해야 합니다.

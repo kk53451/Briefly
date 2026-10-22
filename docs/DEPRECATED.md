@@ -15,13 +15,17 @@
 | `frontend/` | Next.js 웹 클라이언트 | `flutter/` | `archive/pre-cleanup-2026-10-23:frontend/` |
 | `mobile/` | 기존 React Native + Expo 앱 | `flutter/` | `archive/pre-cleanup-2026-10-23:mobile/` |
 | `mobile_v2_expo/` | Expo 재작성 실험 | `flutter/` | `archive/pre-cleanup-2026-10-23:mobile_v2_expo/` |
+| `backend_v2_supabase/test/transcribe_podcasts.py` | 구 A/B/C 오디오 전사 실험, 삭제된 `backend/test/data/`에 의존 | `backend_v2_supabase/test/transcribe_and_evaluate.py` | `archive/pre-cleanup-2026-10-23:backend_v2_supabase/test/transcribe_podcasts.py` |
+
+최종 점검에서 앱 동작을 검증하지 않는 `flutter/test/widget_test.dart`의
+산술 placeholder 테스트도 제거했습니다. 원본은 같은 보존 태그에 있습니다.
 
 ## 보존 태그
 
 | 태그 | 내용 |
 |---|---|
 | `archive/master-before-cleanup-2026-10-23` | 정리 전 master `9790cbd9` |
-| `archive/pre-cleanup-2026-10-23` | 미커밋 소스와 미추적 앱·자료를 포함한 스냅샷 `9c04ec691d14ce4dddfcb60266e7bc8bd9bdac6b` |
+| `archive/pre-cleanup-2026-10-23` | 미커밋 소스와 미추적 앱·자료를 포함한 스냅샷 커밋 `3debbafa` |
 | `archive/backend-v3-2026-10-23` | 독립 커밋 `4149d08a` |
 | `archive/frontend-v1-2026-10-23` | 독립 커밋 `28ae5e67` |
 | `archive/frontend-v2-2026-10-23` | 독립 커밋 `81890470`, `c509a1e1`을 포함한 브랜치 끝 |

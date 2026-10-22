@@ -1,4 +1,4 @@
-# Briefly Backend v3 (Supabase) - 로컬 파이프라인
+# Briefly backend_v2_supabase - 로컬 파이프라인
 # Python 3.12+
 
 # 뉴스 수집
@@ -16,6 +16,8 @@ scikit-learn>=1.5
 numpy>=1.26
 
 # 팟캐스트
+# 대본 생성과 품질 평가 엔진에서 직접 사용; 로컬 검증 버전
+openai==1.109.1
 notebooklm-py>=0.4.1
 playwright>=1.40
 # MP3 길이(초) 메타데이터 추출 — 순수 Python, MP3 헤더만 읽어 디코딩 없이 duration 뽑음

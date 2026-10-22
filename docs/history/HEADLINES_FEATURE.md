@@ -11,7 +11,7 @@ AI가 선정한 오늘의 주요 이슈를 보여주는 기능입니다.
 > | 헤드라인 생성 | GPT-4o-mini | **Ollama Gemma4 로컬** (`headline_service.py`) |
 > | 저장 | DynamoDB `Headlines` | **Supabase `headlines`** UNIQUE(category, date, slot) |
 > | 조회 | REST API (`/api/headlines`) | **Flutter 가 Supabase 직접 SELECT** — API 서버 없음 |
-> | 클라이언트 | React Native (`mobile/`) | **Flutter** (`flutter/lib/features/headlines`, `today`) |
+> | 클라이언트 | React Native (`mobile/`) | **Flutter** (`flutter/lib/features/today/`) |
 > | 토픽 수 | 카테고리별 6개 | **카테고리별 5개** (`scheduler.py` 의 `headline_topics`) |
 >
 > 본문은 설계 의도와 초기 구현 기록으로 남겨둡니다.

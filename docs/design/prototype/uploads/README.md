@@ -1,5 +1,9 @@
 # Briefly — AI 뉴스 팟캐스트 플랫폼
 
+> **과거 설계 입력 자료**: 프로토타입 제작 당시 업로드한 README 원본입니다.
+> 본문의 AWS·React Native 구성과 실행 명령은 종료된 구현을 설명합니다.
+> 현재 사용법은 [루트 README](../../../../README.md), 옛 소스는 [보존 태그](../../../DEPRECATED.md)를 참고하세요.
+
 **한국어 뉴스를 AI가 큐레이션하고, 대화형 팟캐스트로 만들어 하루 두 번(오전/오후) 전달하는 개인 프로젝트.**
 
 [![Python](https://img.shields.io/badge/Python-3.12-blue)](https://www.python.org/)
