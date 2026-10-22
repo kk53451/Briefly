@@ -379,7 +379,7 @@ export const HeadlineCard: React.FC<{ item: HeadlineItem }> = ({ item }) => {
 
 ## 관련 파일 (현행)
 
-### 배치 파이프라인 — `backend_v2_supabase/`
+### 배치 파이프라인 — `backend/`
 - `app/services/headline_service.py` - Ollama Gemma4 헤드라인/요약 생성
 - `app/services/clustering_service.py` - 클러스터링 + 가중 토픽 랭킹
 - `app/services/supabase_storage_service.py` - `save_headlines()` 저장
@@ -387,7 +387,7 @@ export const HeadlineCard: React.FC<{ item: HeadlineItem }> = ({ item }) => {
 
 ### 앱 — `flutter/`
 - `lib/features/today/` - 오늘의 브리핑 화면
-- `lib/features/headlines/` - 헤드라인 카드
+- `lib/features/today/data/headlines_repository.dart` - 헤드라인 조회
 - `lib/core/config/supabase.dart` - Supabase 클라이언트
 
 > v1 경로(`app/tasks/generate_headlines.py`, `app/services/openai_service.py`,
@@ -397,7 +397,7 @@ export const HeadlineCard: React.FC<{ item: HeadlineItem }> = ({ item }) => {
 ## 환경 변수
 
 ```bash
-# backend_v2_supabase/.env
+# backend/.env
 SUPABASE_URL=https://<project-ref>.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=...
 

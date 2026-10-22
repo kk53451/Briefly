@@ -2,6 +2,7 @@
 
 > **보존 기록 (2026-10-23 정리)**: 작성 당시의 설계·실험 문서입니다. 본문의 경로·설정·진행 상태는 당시 기준이며 현재 동작과 다를 수 있습니다.
 > 현행 구조는 [루트 README](../../README.md), 이전 코드의 복구는 [DEPRECATED 안내](../DEPRECATED.md)를 참고하세요.
+> 경로 표기는 2026-10-23 폴더 이름 변경에 맞춰 `backend/`로 갱신했습니다. 실험 내용·수치·행 번호는 당시 기록입니다.
 
 > 이 문서는 **작업 중간 인계용**. 다른 세션에서 이어 받을 때 배경·시도 이력·미결정 사항을 빠르게 파악하라고 작성.
 > 마지막 업데이트: 2026-04-21 04:15 KST
@@ -16,7 +17,7 @@
 - **현재(v3)**: **정치·경제·국제 3 하드뉴스를 엮은 통합 브리핑**, 하루 오전·오후 2회
   - 사회·문화·IT/과학 은 **피드용(Home/Today 탭)** 으로만 수집, 팟캐스트 미포함
 
-**활성 백엔드**: `backend_v2_supabase/` (AWS → Supabase 로 이전한 fork)
+**활성 백엔드**: `backend/` (AWS → Supabase 로 이전한 fork)
 
 **파이프라인 구조**:
 ```
@@ -60,7 +61,7 @@ Briefing Phase  (하루 1회, time_slot 당)
 - 분야별: "각 분야 **약 2~3분씩**"
 - 토픽별: "약 **40~50초 내외**"
 
-위치: [`notebooklm_service.py` L184-240 근처](../../backend_v2_supabase/app/services/notebooklm_service.py)
+위치: [`notebooklm_service.py` L184-240 근처](../../backend/app/services/notebooklm_service.py)
 
 ### A — Strict Source Contract
 "PRIMARY 대본 밖 내용 창작 금지" 를 instructions 최상단에 절대 원칙으로 명시. 실제 실패 사례(하메네이 사망·공영주차장 5부제 등)를 구체 예시로 포함.
@@ -78,7 +79,7 @@ Briefing Phase  (하루 1회, time_slot 당)
 - `REF = 36` 건 (27→36, 토픽 수 증가 비례)
 - `SYSTEM_PROMPT` 의 글자 목표 `7000-8500자`
 
-위치: [`scheduler.py`](../../backend_v2_supabase/app/tasks/scheduler.py) 상수 섹션
+위치: [`scheduler.py`](../../backend/app/tasks/scheduler.py) 상수 섹션
 
 ### 기타 부수 개선
 - **Fast-fail sniffer**: NotebookLM `RPC CREATE_ARTIFACT failed` 를 감지해 30분 헛대기 방지 → 1초 내 `RuntimeError`
@@ -224,7 +225,7 @@ G-Eval 3차가 지목한 구체 오류 (전사본 기준):
 
 ### 깨끗한 전체 파이프라인 (약 40~60분)
 ```bash
-cd backend_v2_supabase
+cd backend
 python -X utf8 -m app.tasks.scheduler \
     --time-slot afternoon \
     --categories politics economy international

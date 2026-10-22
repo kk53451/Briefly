@@ -1,6 +1,6 @@
 # 현행 파이프라인 검증 도구
 
-`backend_v2_supabase/test/`는 실행형 검증·튜닝 스크립트를 보관합니다.
+`backend/test/`는 실행형 검증·튜닝 스크립트를 보관합니다.
 이전 실험 설명은 [연구 기록](../../docs/research/pipeline-experiments.md)에 보존했습니다.
 
 | 파일 | 용도 | 실행 시 외부 영향 |
@@ -23,13 +23,13 @@
 ## 대본 검증 샘플
 
 기본 샘플은 [fixtures/news_2026-04-11.json](fixtures/news_2026-04-11.json)입니다.
-이전 `backend/test/data/`에서 내용 변경 없이 옮겼으며 출처는 [샘플 안내](fixtures/README.md)에 기록했습니다.
-기본 입력 경로는 스크립트 위치를 기준으로 계산하므로 옛 `backend/` 폴더에 의존하지 않습니다.
+보존 태그의 옛 `backend/test/data/`에서 내용 변경 없이 옮겼으며 출처는 [샘플 안내](fixtures/README.md)에 기록했습니다.
+기본 입력 경로는 스크립트 위치를 기준으로 `test/fixtures/`를 찾아 계산합니다.
 
 저장소 루트에서:
 
 ```bash
-cd backend_v2_supabase
+cd backend
 python -X utf8 -m test.generate_integrated_briefing_dryrun --time-slot morning
 ```
 

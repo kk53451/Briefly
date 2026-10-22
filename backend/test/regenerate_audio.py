@@ -16,7 +16,7 @@ Instructions 나 AudioLength 변경의 효과를 측정할 때 전체 파이프�
   4. ffprobe 로 duration 측정 출력
 
 사용:
-  cd backend_v2_supabase
+  cd backend
   # 최신 대본 자동 감지 + 동일 date/slot 로 재생성
   python -X utf8 -m test.regenerate_audio
 

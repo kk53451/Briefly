@@ -34,7 +34,7 @@ PowerShell에서는 `Copy-Item .env.example .env`, macOS/Linux에서는 `cp .env
 
 사용할 Supabase 프로젝트의 Kakao·Google provider와 `briefly://auth-callback` redirect 설정은 별도로 확인하세요.
 Google 네이티브 로그인은 배포용 앱 식별자·인증서·플랫폼별 OAuth 설정도 일치해야 합니다.
-Storage와 데이터베이스의 초기 SQL은 [백엔드 마이그레이션](../backend_v2_supabase/app/db/migrations/)에 있습니다.
+Storage와 데이터베이스의 초기 SQL은 [백엔드 마이그레이션](../backend/app/db/migrations/)에 있습니다.
 로컬 파일만으로 원격 프로젝트의 설정 완료 여부를 알 수는 없습니다.
 
 ## 실행과 빌드

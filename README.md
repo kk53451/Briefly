@@ -32,7 +32,7 @@
 
 ```mermaid
 graph TB
-    subgraph "로컬 배치 (backend_v2_supabase/)"
+    subgraph "로컬 배치 (backend/)"
         direction TB
         N1[뉴스 수집<br/>네이버 스크래핑]
         N2[KURE-v1 임베딩<br/>로컬, 1024d]
@@ -151,7 +151,7 @@ Supabase Auth 사용. Kakao(OAuth web flow) + Google(네이티브 Sign-In → `s
 
 ## 기술 스택
 
-### 배치 파이프라인 (`backend_v2_supabase/`)
+### 배치 파이프라인 (`backend/`)
 - **Python 3.12**, CLI 스케줄러 (웹 프레임워크 없음)
 - **수집**: `httpx` + `BeautifulSoup` (네이버 스크래핑)
 - **임베딩**: `sentence-transformers` + KURE-v1 (로컬)
@@ -189,7 +189,7 @@ Supabase Auth 사용. Kakao(OAuth web flow) + Google(네이티브 Sign-In → `s
 
 ```
 Briefly/
-├── backend_v2_supabase/          # ★ 현재 백엔드 — 배치 파이프라인
+├── backend/                      # ★ 현재 백엔드 — 배치 파이프라인
 │   ├── app/
 │   │   ├── services/
 │   │   │   ├── naver_news_service.py       # 1. 수집
@@ -236,7 +236,7 @@ Briefly/
 ### 종료된 구현과 보존 자료
 
 2026-10-23에 이전 구현을 **DEPRECATED**로 지정하고 master에서 제거했습니다.
-현행 실행 코드는 `backend_v2_supabase/`와 `flutter/`입니다.
+현행 실행 코드는 `backend/`와 `flutter/`입니다.
 
 - [DEPRECATED 목록과 복구 방법](docs/DEPRECATED.md)
 - [문서·설계·실험 자료 안내](docs/README.md)
@@ -246,7 +246,7 @@ Briefly/
 
 옛 구현과 정리 전 미커밋 소스는 `archive/pre-cleanup-2026-10-23` 태그에 보존했습니다.
 독립 브랜치의 고유 커밋은 별도 보존 태그에 남겼습니다. 태그 목록과 범위는 DEPRECATED 문서를 참고하세요.
-대본 검증에 사용하는 뉴스 샘플은 `backend_v2_supabase/test/fixtures/`에 있습니다.
+대본 검증에 사용하는 뉴스 샘플은 `backend/test/fixtures/`에 있습니다.
 
 ---
 
@@ -265,7 +265,7 @@ Briefly/
 ### 배치 파이프라인 실행
 
 ```bash
-cd backend_v2_supabase
+cd backend
 pip install -r requirements.txt
 
 # 전체 실행 (현재 KST 시각으로 오전/오후 자동 판정)
@@ -294,8 +294,8 @@ $env:PYTHONIOENCODING='utf-8'; python -m app.tasks.scheduler
 ### cron 등록 (Ubuntu)
 
 ```bash
-0 5  * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
-0 16 * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
+0 5  * * * cd ~/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
+0 16 * * * cd ~/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
 ```
 
 ### 모바일 앱
@@ -310,7 +310,7 @@ flutter build apk --release
 환경변수 준비와 플랫폼 설정은 [Flutter 실행 안내](flutter/README.md)를 참고하세요.
 저장소에 포함된 플랫폼은 Android와 iOS입니다.
 
-### 환경 변수 (`backend_v2_supabase/.env`)
+### 환경 변수 (`backend/.env`)
 
 ```bash
 # OpenAI

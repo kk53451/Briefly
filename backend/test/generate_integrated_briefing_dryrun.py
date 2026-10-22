@@ -27,7 +27,7 @@
 ===============================================================================
 
 사용:
-    cd backend_v2_supabase
+    cd backend
     python -X utf8 -m test.generate_integrated_briefing_dryrun
     python -X utf8 -m test.generate_integrated_briefing_dryrun --time-slot 오후 --target-length 6000
 

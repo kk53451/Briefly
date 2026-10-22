@@ -16,7 +16,7 @@ Grafana Loki 계측 스모크 테스트
 않습니다.
 
 실행:
-    cd backend_v2_supabase
+    cd backend
     python -m test.test_metrics_loki_smoke
 """
 

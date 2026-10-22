@@ -32,8 +32,8 @@ Ubuntu 노트북에서 cron으로 실행 (오전 05:00, 오후 16:00 KST 권장)
 
 cron 등록 (Ubuntu):
     crontab -e
-    0 5  * * * cd /home/user/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
-    0 16 * * * cd /home/user/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
+    0 5  * * * cd /home/user/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
+    0 16 * * * cd /home/user/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
 """
 
 import os

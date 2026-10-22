@@ -9,7 +9,7 @@
 **현재 아키텍처는 2계층입니다. API 서버 계층이 없습니다.**
 
 ```
-backend_v2_supabase/   로컬 배치 파이프라인 (cron, 하루 2회)
+backend/   로컬 배치 파이프라인 (cron, 하루 2회)
         ↓ 직접 쓰기
     Supabase           Postgres 3테이블 + Storage(오디오)
         ↑ 직접 읽기
@@ -35,13 +35,14 @@ Flutter 앱은 **Supabase 를 직접 호출합니다.** 중간에 REST API 서�
 **현재 활성 — 여기서 작업합니다**
 | 경로 | 역할 |
 |---|---|
-| `backend_v2_supabase/` | 배치 파이프라인 (유일한 백엔드) |
+| `backend/` | 배치 파이프라인 (유일한 백엔드) |
 | `flutter/` | 모바일 앱 (유일한 클라이언트) |
 
 **종료된 구현과 보존 자료**
 
-`backend/`, `backend_v2/`, `frontend/`, `mobile/`, `mobile_v2_expo/`는
+옛 `backend/`의 FastAPI 구현과 `backend_v2/`, `frontend/`, `mobile/`, `mobile_v2_expo/`는
 2026-10-23에 DEPRECATED로 지정하고 master에서 제거했습니다.
+현재 `backend/`는 이후 이름을 정리한 Supabase 배치 파이프라인입니다.
 보존 태그·복구 방법은 [docs/DEPRECATED.md](docs/DEPRECATED.md)를 따르세요.
 
 | 경로 | 역할 |
@@ -49,7 +50,7 @@ Flutter 앱은 **Supabase 를 직접 호출합니다.** 중간에 REST API 서�
 | `docs/design/` | Flutter 설계 원본과 화면 기록 |
 | `docs/research/` | 과거 실험·평가·튜닝 기록 |
 | `docs/history/` | 이전 아키텍처와 전환 의사결정 |
-| `backend_v2_supabase/test/fixtures/` | 현행 대본 검증용 오프라인 뉴스 샘플 |
+| `backend/test/fixtures/` | 현행 대본 검증용 오프라인 뉴스 샘플 |
 
 과거 자료의 코드·명령·지표는 작성 당시의 기록이며 현재 동작의 근거로 삼지 마세요.
 BigKinds, ElevenLabs, DynamoDB, FastAPI의 직접 JWT 발급, Union-Find 클러스터링은
@@ -60,7 +61,7 @@ BigKinds, ElevenLabs, DynamoDB, FastAPI의 직접 JWT 발급, Union-Find 클러�
 ### 배치 파이프라인
 
 ```bash
-cd backend_v2_supabase
+cd backend
 pip install -r requirements.txt
 
 # 전체 실행 (현재 KST 시각으로 오전/오후 자동 판정)
@@ -82,8 +83,8 @@ python -m app.tasks.scheduler --skip-script
 
 cron 등록 (Ubuntu):
 ```bash
-0 5  * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
-0 16 * * * cd ~/Briefly/backend_v2_supabase && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
+0 5  * * * cd ~/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot morning   >> /var/log/briefly.log 2>&1
+0 16 * * * cd ~/Briefly/backend && /usr/bin/python3 -m app.tasks.scheduler --time-slot afternoon >> /var/log/briefly.log 2>&1
 ```
 
 Windows 에서 테스트할 때는 콘솔이 cp949 라 이모지 로그가 `UnicodeEncodeError` 로 죽습니다:
@@ -221,7 +222,7 @@ LLM 호출은 `app/services/engines/` 로 추상화되어 있습니다 (`ScriptE
 
 ## 테스트
 
-`backend_v2_supabase/test/` — pytest 스위트가 아니라 **실행형 스크립트**입니다.
+`backend/test/` — pytest 스위트가 아니라 **실행형 스크립트**입니다.
 
 | 파일 | 용도 |
 |---|---|
@@ -232,7 +233,7 @@ LLM 호출은 `app/services/engines/` 로 추상화되어 있습니다 (`ScriptE
 | `test_metrics_loki_smoke.py` | Loki 계측 전송 스모크 |
 
 전사본 품질 평가는 `test/transcribe_and_evaluate.py`를 사용합니다.
-선택 의존성과 실행 조건은 [검증 도구 안내](backend_v2_supabase/test/README.md)를 참고하세요.
+선택 의존성과 실행 조건은 [검증 도구 안내](backend/test/README.md)를 참고하세요.
 `.claude/skills/briefly-eval-v3`는 개인 로컬 도구이며 저장소에 포함되지 않습니다.
 
 ## 컨벤션
@@ -241,12 +242,12 @@ LLM 호출은 `app/services/engines/` 로 추상화되어 있습니다 (`ScriptE
 - 로그에 이모지 접두사: ✅ 성공 / ⚠️ 경고 / ❌ 실패
 - 로그에 컨텍스트 포함: 카테고리, 기사 수, 소요 시간
 - 커밋 메시지는 한국어
-- 기준 브랜치는 `master`이며 현행 백엔드 경로는 `backend_v2_supabase/`입니다.
+- 기준 브랜치는 `master`이며 현행 백엔드 경로는 `backend/`입니다.
 - master 에 force push 금지
 
 ## 환경 변수
 
-`backend_v2_supabase/.env` (git 제외됨):
+`backend/.env` (git 제외됨):
 
 ```bash
 OPENAI_API_KEY=sk-proj-...

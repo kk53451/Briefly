@@ -12,7 +12,7 @@ Prometheus 가 아니라 Loki 를 쓰는 이유: 이 파이프라인은 cron 배
 
     avg_over_time({job="briefly"} | json | unwrap elapsed_sec [1d]) by (category)
 
-환경변수 (backend_v2_supabase/.env):
+환경변수 (backend/.env):
     GRAFANA_LOKI_URL    — https://logs-prod-XXX.grafana.net
     GRAFANA_LOKI_USER   — 숫자 user id
     GRAFANA_LOKI_TOKEN  — glc_ 로 시작하는 Cloud Access Policy 토큰

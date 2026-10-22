@@ -19,7 +19,7 @@ NotebookLM 이 우리 대본(PRIMARY)을 얼마나 충실히 살려서 오디오
 
 최근 팟캐스트 자동 감지 + 같은 시각에 만들어진 대본·소스 자동 결합:
 
-    cd backend_v2_supabase
+    cd backend
     python -X utf8 -m test.transcribe_and_evaluate
 
 명시적 지정:

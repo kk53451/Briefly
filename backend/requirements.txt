@@ -1,4 +1,4 @@
-# Briefly backend_v2_supabase - 로컬 파이프라인
+# Briefly backend - 로컬 파이프라인
 # Python 3.12+
 
 # 뉴스 수집

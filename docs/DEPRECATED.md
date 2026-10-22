@@ -2,20 +2,30 @@
 
 **정리일: 2026-10-23**
 
-현행 실행 코드는 `backend_v2_supabase/`와 `flutter/`입니다.
+현행 실행 코드는 `backend/`와 `flutter/`입니다.
 아래 구현은 개발·지원을 종료했으며 master 작업 트리에서 제거했습니다.
 옛 실행 환경의 동작은 보장하지 않습니다.
+
+## 현행 백엔드 경로 변경
+
+2026-10-23에 Supabase 배치 폴더를 `backend_v2_supabase/`에서 `backend/`로 변경했습니다.
+현재 `backend/`는 아래 표의 옛 FastAPI 서버와 별개의 구현입니다.
+실행 명령·문서 링크·cron 예시는 새 경로를 사용합니다.
+외부에 이미 등록한 cron이나 작업 스케줄러의 작업 디렉터리도 새 경로로 맞춰야 합니다.
+
+보존 태그는 이름 변경 전 스냅샷입니다. 태그 안의 `backend/`는 옛 FastAPI 서버이고,
+당시 Supabase 배치는 `backend_v2_supabase/`에 있습니다. 복구 경로는 당시 이름을 유지합니다.
 
 ## DEPRECATED 목록
 
 | 이전 경로 | 종료한 구현 | 대체 구현 | 보존 위치 |
 |---|---|---|---|
-| `backend/` | FastAPI + AWS Lambda + DynamoDB + BigKinds | `backend_v2_supabase/` | `archive/pre-cleanup-2026-10-23:backend/` |
-| `backend_v2/` | DynamoDB/S3 기반 초기 배치 파이프라인 | `backend_v2_supabase/` | `archive/pre-cleanup-2026-10-23:backend_v2/` |
+| 당시 `backend/` | FastAPI + AWS Lambda + DynamoDB + BigKinds | 현재 `backend/` (Supabase 배치) | `archive/pre-cleanup-2026-10-23:backend/` |
+| `backend_v2/` | DynamoDB/S3 기반 초기 배치 파이프라인 | `backend/` | `archive/pre-cleanup-2026-10-23:backend_v2/` |
 | `frontend/` | Next.js 웹 클라이언트 | `flutter/` | `archive/pre-cleanup-2026-10-23:frontend/` |
 | `mobile/` | 기존 React Native + Expo 앱 | `flutter/` | `archive/pre-cleanup-2026-10-23:mobile/` |
 | `mobile_v2_expo/` | Expo 재작성 실험 | `flutter/` | `archive/pre-cleanup-2026-10-23:mobile_v2_expo/` |
-| `backend_v2_supabase/test/transcribe_podcasts.py` | 구 A/B/C 오디오 전사 실험, 삭제된 `backend/test/data/`에 의존 | `backend_v2_supabase/test/transcribe_and_evaluate.py` | `archive/pre-cleanup-2026-10-23:backend_v2_supabase/test/transcribe_podcasts.py` |
+| 당시 `backend_v2_supabase/test/transcribe_podcasts.py` | 구 A/B/C 오디오 전사 실험, 삭제된 `backend/test/data/`에 의존 | `backend/test/transcribe_and_evaluate.py` | `archive/pre-cleanup-2026-10-23:backend_v2_supabase/test/transcribe_podcasts.py` |
 
 최종 점검에서 앱 동작을 검증하지 않는 `flutter/test/widget_test.dart`의
 산술 placeholder 테스트도 제거했습니다. 원본은 같은 보존 태그에 있습니다.
@@ -43,7 +53,7 @@
 
 | 이전 위치 | 현재 위치 |
 |---|---|
-| `backend/test/data/news_2026-04-11.json` | `backend_v2_supabase/test/fixtures/news_2026-04-11.json` |
+| 당시 `backend/test/data/news_2026-04-11.json` | `backend/test/fixtures/news_2026-04-11.json` |
 | `backend/test/results/`의 보고서·JSON·그림 | `docs/research/clustering/` (임베딩 캐시 제외) |
 | `Briefly_design/` | `docs/design/prototype/` |
 | `_screenshots/` | `docs/design/screenshots/` |

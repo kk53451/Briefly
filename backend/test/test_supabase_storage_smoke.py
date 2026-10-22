@@ -1,7 +1,7 @@
 """Supabase storage_service 단순 smoke test (ML 모델 없이).
 
 실행:
-    cd backend_v2_supabase
+    cd backend
     pip install supabase python-dotenv
     PYTHONIOENCODING=utf-8 python -m test.test_supabase_storage_smoke
 

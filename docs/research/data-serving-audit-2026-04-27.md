@@ -2,9 +2,10 @@
 
 > **보존 기록 (2026-10-23 정리)**: 작성 당시의 설계·실험 문서입니다. 본문의 경로·설정·진행 상태는 당시 기준이며 현재 동작과 다를 수 있습니다.
 > 현행 구조는 [루트 README](../../README.md), 이전 코드의 복구는 [DEPRECATED 안내](../DEPRECATED.md)를 참고하세요.
+> 경로 표기는 2026-10-23 폴더 이름 변경에 맞춰 `backend/`로 갱신했습니다. 감사 내용·수치·행 번호는 당시 기록입니다.
 
 **작성일**: 2026-04-27
-**범위**: `backend_v2_supabase` (파이프라인·DB) + `flutter` (클라이언트 화면)
+**범위**: `backend` (파이프라인·DB) + `flutter` (클라이언트 화면)
 **목적**: 사용자에게 노출되는 데이터의 **단위와 출처**를 명확히 정리해 구조 재점검의 기반으로 삼는다.
 
 ---
@@ -185,12 +186,12 @@ PodcastScreen  →  podcasts      →  에피소드
 ## 부록 — 핵심 파일 인덱스
 
 **Backend**
-- `backend_v2_supabase/app/db/migrations/0001_init_schema.sql` — news_cards/headlines/frequencies 스키마
-- `backend_v2_supabase/app/db/migrations/0002_rls_policies.sql` — RLS
-- `backend_v2_supabase/app/db/migrations/0005~0009_*.sql` — frequencies→podcasts 리네이밍, hero_image, title, covered_keywords, duration_sec
-- `backend_v2_supabase/app/services/clustering_service.py:644~664` — 토픽 객체 구조
-- `backend_v2_supabase/app/services/supabase_storage_service.py:216~302` — news_cards/headlines 저장 로직
-- `backend_v2_supabase/app/services/headline_service.py:1~200` — Gemma4 헤드라인/요약 생성
+- `backend/app/db/migrations/0001_init_schema.sql` — news_cards/headlines/frequencies 스키마
+- `backend/app/db/migrations/0002_rls_policies.sql` — RLS
+- `backend/app/db/migrations/0005~0009_*.sql` — frequencies→podcasts 리네이밍, hero_image, title, covered_keywords, duration_sec
+- `backend/app/services/clustering_service.py:644~664` — 토픽 객체 구조
+- `backend/app/services/supabase_storage_service.py:216~302` — news_cards/headlines 저장 로직
+- `backend/app/services/headline_service.py:1~200` — Gemma4 헤드라인/요약 생성
 - Supabase RPC: `search_news_cards(q text, lim int)` (이번 세션에 추가)
 
 **Flutter**
