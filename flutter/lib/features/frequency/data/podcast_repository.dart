@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/env.dart';
 import '../../../core/config/supabase.dart';
 import '../../../shared/models/episode.dart';
 
@@ -61,7 +62,7 @@ class PodcastRepository {
   /// Storage public URL 만들어 반환. audio_path 없으면 null.
   String? publicUrl(String? audioPath) {
     if (audioPath == null || audioPath.isEmpty) return null;
-    return supabase.storage.from('briefly-audio').getPublicUrl(audioPath);
+    return supabase.storage.from(Env.audioBucket).getPublicUrl(audioPath);
   }
 
   String _fmtDate(DateTime d) {

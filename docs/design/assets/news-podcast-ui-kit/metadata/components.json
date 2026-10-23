@@ -1,0 +1,6172 @@
+[
+  {
+    "id": "2089:2515",
+    "name": "Tab Bar",
+    "type": "COMPONENT_SET",
+    "width": 423,
+    "height": 190,
+    "path": [
+      "Tab Bar",
+      "Tab Bar"
+    ],
+    "key": "d2e617b755d2c156a9ae82d3e491bf76456dbd12",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Mobile",
+        "variantOptions": [
+          "Mobile"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1346:15590",
+    "name": "Property 1=Mobile",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 142,
+    "path": [
+      "Tab Bar",
+      "Tab Bar",
+      "Property 1=Mobile"
+    ],
+    "key": "6d468b52ec1e858c9466247ea5216b6b7e72d974",
+    "variantProperties": {
+      "Property 1": "Mobile"
+    }
+  },
+  {
+    "id": "1534:4552",
+    "name": "Premium Banner",
+    "type": "COMPONENT_SET",
+    "width": 415,
+    "height": 284,
+    "path": [
+      "Premium Bagde",
+      "Premium Banner"
+    ],
+    "key": "327168ebaf65049155bba26ac58b407a3ca4567f",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1460:24609",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 112,
+    "path": [
+      "Premium Bagde",
+      "Premium Banner",
+      "Property 1=Default"
+    ],
+    "key": "b50b27a38747615b6879ae1de4680379e916fb00",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "1534:4553",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 112,
+    "path": [
+      "Premium Bagde",
+      "Premium Banner",
+      "Property 1=Variant2"
+    ],
+    "key": "f99be0b18b7d7f93e205f22ec5114e8ece7f81e4",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "6209:51338",
+    "name": "Tool Bar / Base",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 142,
+    "path": [
+      "Tool Bar",
+      "Tool Bar / Base"
+    ],
+    "key": "73640a71d2a5b2ba2d6a4c2482c6821d512968ba",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1543:13602",
+    "name": "Tool Bar / Button",
+    "type": "COMPONENT_SET",
+    "width": 407,
+    "height": 232,
+    "path": [
+      "Tool Bar / Button",
+      "Tool Bar / Button"
+    ],
+    "key": "c401c8e64c550242b14dfc884312425a8df7a72c",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant3"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1543:13603",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 64,
+    "path": [
+      "Tool Bar / Button",
+      "Tool Bar / Button",
+      "Property 1=Default"
+    ],
+    "key": "3f6c87fdb7ea32763a6aa772b2c4e2b058c91319",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "1877:11408",
+    "name": "Property 1=Variant3",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 120,
+    "path": [
+      "Tool Bar / Button",
+      "Tool Bar / Button",
+      "Property 1=Variant3"
+    ],
+    "key": "98d2ff05bec671a825361e79ddd8a62e23b017c1",
+    "variantProperties": {
+      "Property 1": "Variant3"
+    }
+  },
+  {
+    "id": "2089:2720",
+    "name": "Segmented Control",
+    "type": "COMPONENT_SET",
+    "width": 423,
+    "height": 420,
+    "path": [
+      "Segmented Control",
+      "Segmented Control"
+    ],
+    "key": "76251d2112929f30fae87899e0b3e1b14ed207f8",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2",
+          "Variant3",
+          "Variant4",
+          "Variant5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1346:15261",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Segmented Control",
+      "Segmented Control",
+      "Property 1=Default"
+    ],
+    "key": "4faf03d936952e73ffed6de928ec47128e73e0f5",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "2089:2721",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Segmented Control",
+      "Segmented Control",
+      "Property 1=Variant2"
+    ],
+    "key": "f3b3fa5e5381601ce1fa5cf6a53ed3ad8c1ab023",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "2089:2773",
+    "name": "Property 1=Variant3",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Segmented Control",
+      "Segmented Control",
+      "Property 1=Variant3"
+    ],
+    "key": "4a3443e7a0c58be9874474fb7f33e90dbda115b8",
+    "variantProperties": {
+      "Property 1": "Variant3"
+    }
+  },
+  {
+    "id": "2089:2825",
+    "name": "Property 1=Variant4",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Segmented Control",
+      "Segmented Control",
+      "Property 1=Variant4"
+    ],
+    "key": "8e409fa2c5f7a57dae9f2f430e93a8b3e19945ac",
+    "variantProperties": {
+      "Property 1": "Variant4"
+    }
+  },
+  {
+    "id": "2089:2877",
+    "name": "Property 1=Variant5",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Segmented Control",
+      "Segmented Control",
+      "Property 1=Variant5"
+    ],
+    "key": "b08572b6bcacaafb6b436f0f62a6162014b1b08a",
+    "variantProperties": {
+      "Property 1": "Variant5"
+    }
+  },
+  {
+    "id": "2089:3075",
+    "name": "Pill Bar",
+    "type": "COMPONENT_SET",
+    "width": 423,
+    "height": 96,
+    "path": [
+      "Pill Bar",
+      "Pill Bar"
+    ],
+    "key": "8a1513172e72fb0ab2b507dc45c9c3190d3e497e",
+    "properties": {
+      "Show Tab 6#2089:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 5#2089:1": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 4#2089:2": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 8#2089:3": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 3#2089:4": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 7#2089:5": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 2#2089:6": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Tab 1#2089:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1346:14925",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 48,
+    "path": [
+      "Pill Bar",
+      "Pill Bar",
+      "Property 1=Default"
+    ],
+    "key": "0d09d3dc62649d3c1b3789fb81aa16182eb4a85a",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "1582:3224",
+    "name": "Pill Buttons",
+    "type": "COMPONENT_SET",
+    "width": 134,
+    "height": 76,
+    "path": [
+      "Tooltip",
+      "Pill Buttons"
+    ],
+    "key": "46988f22205e617bf717ae5838460010b92938ed",
+    "properties": {
+      "Label#3:41": {
+        "type": "TEXT",
+        "defaultValue": "Label"
+      },
+      "Selected": {
+        "type": "VARIANT",
+        "defaultValue": "True",
+        "variantOptions": [
+          "True",
+          "False"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1582:3225",
+    "name": "Selected=True",
+    "type": "COMPONENT",
+    "width": 37,
+    "height": 36,
+    "path": [
+      "Tooltip",
+      "Pill Buttons",
+      "Selected=True"
+    ],
+    "key": "e78b4959c6a12223d5ee73744c5cbad3a7e90a5e",
+    "variantProperties": {
+      "Selected": "True"
+    }
+  },
+  {
+    "id": "1582:3227",
+    "name": "Selected=False",
+    "type": "COMPONENT",
+    "width": 37,
+    "height": 36,
+    "path": [
+      "Tooltip",
+      "Pill Buttons",
+      "Selected=False"
+    ],
+    "key": "b5a02fc8ca5ffe03f6b43ba72dc774751a3f54f7",
+    "variantProperties": {
+      "Selected": "False"
+    }
+  },
+  {
+    "id": "1582:3174",
+    "name": "Tooltip",
+    "type": "COMPONENT_SET",
+    "width": 575,
+    "height": 484,
+    "path": [
+      "Tooltip",
+      "Tooltip"
+    ],
+    "key": "00f652a07f739d917a076c196b2436aa2a6e96cf",
+    "properties": {
+      "Tip#55617:10": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Title#55617:19": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Tip location": {
+        "type": "VARIANT",
+        "defaultValue": "Bottom left",
+        "variantOptions": [
+          "Bottom center",
+          "Bottom left",
+          "Bottom right",
+          "Left center",
+          "Right center",
+          "Top center",
+          "Top left",
+          "Top right"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1582:3175",
+    "name": "Tip location=Bottom left",
+    "type": "COMPONENT",
+    "width": 248,
+    "height": 91,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Bottom left"
+    ],
+    "key": "f59869d106a97207c694175ab30a3e654fb93264",
+    "variantProperties": {
+      "Tip location": "Bottom left"
+    }
+  },
+  {
+    "id": "1582:3181",
+    "name": "Tip location=Bottom center",
+    "type": "COMPONENT",
+    "width": 248,
+    "height": 91,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Bottom center"
+    ],
+    "key": "69f0c54360763bc14a65a6349e24be65beb58853",
+    "variantProperties": {
+      "Tip location": "Bottom center"
+    }
+  },
+  {
+    "id": "1582:3187",
+    "name": "Tip location=Bottom right",
+    "type": "COMPONENT",
+    "width": 248,
+    "height": 91,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Bottom right"
+    ],
+    "key": "6786559e8eafa748bd2b98e5056f4b95a0637c6f",
+    "variantProperties": {
+      "Tip location": "Bottom right"
+    }
+  },
+  {
+    "id": "1582:3193",
+    "name": "Tip location=Left center",
+    "type": "COMPONENT",
+    "width": 255,
+    "height": 84,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Left center"
+    ],
+    "key": "0d2e01fdfe25e64c3aaf6bd03bbda2514d3e3b81",
+    "variantProperties": {
+      "Tip location": "Left center"
+    }
+  },
+  {
+    "id": "1582:3199",
+    "name": "Tip location=Right center",
+    "type": "COMPONENT",
+    "width": 255,
+    "height": 84,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Right center"
+    ],
+    "key": "fdfb14d0be5f252670bc60966781f9d6b581738e",
+    "variantProperties": {
+      "Tip location": "Right center"
+    }
+  },
+  {
+    "id": "1582:3205",
+    "name": "Tip location=Top left",
+    "type": "COMPONENT",
+    "width": 248,
+    "height": 91,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Top left"
+    ],
+    "key": "c9f7d0e0e1b94b26ce17e187274e8d3bc0ce855c",
+    "variantProperties": {
+      "Tip location": "Top left"
+    }
+  },
+  {
+    "id": "1582:3211",
+    "name": "Tip location=Top center",
+    "type": "COMPONENT",
+    "width": 248,
+    "height": 91,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Top center"
+    ],
+    "key": "25071d5de5da3b3ad8b39f634cf1027c12091bd8",
+    "variantProperties": {
+      "Tip location": "Top center"
+    }
+  },
+  {
+    "id": "1582:3217",
+    "name": "Tip location=Top right",
+    "type": "COMPONENT",
+    "width": 248,
+    "height": 91,
+    "path": [
+      "Tooltip",
+      "Tooltip",
+      "Tip location=Top right"
+    ],
+    "key": "7121a91e74d4ab1c2987e3b0a69c25b0e16968c8",
+    "variantProperties": {
+      "Tip location": "Top right"
+    }
+  },
+  {
+    "id": "1318:14331",
+    "name": "Navigation",
+    "type": "COMPONENT_SET",
+    "width": 423,
+    "height": 500,
+    "path": [
+      "Navigation Bar",
+      "Navigation"
+    ],
+    "key": "0d6b999f4151174aa166bfdc8f2e169b3da5dddc",
+    "properties": {
+      "Type": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Pop",
+          "Medium"
+        ]
+      }
+    }
+  },
+  {
+    "id": "908:17754",
+    "name": "Type=Default",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 104,
+    "path": [
+      "Navigation Bar",
+      "Navigation",
+      "Type=Default"
+    ],
+    "key": "e30861d006bef02df59b1ed74380eb19c47a6bca",
+    "variantProperties": {
+      "Type": "Default"
+    }
+  },
+  {
+    "id": "1856:13000",
+    "name": "Type=Medium",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 152,
+    "path": [
+      "Navigation Bar",
+      "Navigation",
+      "Type=Medium"
+    ],
+    "key": "8d3e9c85f518ab287c0cc25eb094a4ee88c11172",
+    "variantProperties": {
+      "Type": "Medium"
+    }
+  },
+  {
+    "id": "1543:13242",
+    "name": "Type=Pop",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 148,
+    "path": [
+      "Navigation Bar",
+      "Navigation",
+      "Type=Pop"
+    ],
+    "key": "8efb9811c0db831098fc8bb513c19105e61f1b80",
+    "variantProperties": {
+      "Type": "Pop"
+    }
+  },
+  {
+    "id": "1871:4341",
+    "name": "Text Filed",
+    "type": "COMPONENT_SET",
+    "width": 415,
+    "height": 452,
+    "path": [
+      "Text Filed",
+      "Text Filed"
+    ],
+    "key": "30804ad2f253785e21ace51407b60ac19339c487",
+    "properties": {
+      "Right#1871:2": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Left#1871:3": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Label#1871:4": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Text#1871:10": {
+        "type": "TEXT",
+        "defaultValue": "Tybe something"
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Placeholder",
+        "variantOptions": [
+          "Placeholder",
+          "Type",
+          "Complete",
+          "Error",
+          "Focus"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1871:4260",
+    "name": "Property 1=Placeholder",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 64,
+    "path": [
+      "Text Filed",
+      "Text Filed",
+      "Property 1=Placeholder"
+    ],
+    "key": "9fa490ef9d975ffce495c666c2db286e506947d4",
+    "variantProperties": {
+      "Property 1": "Placeholder"
+    }
+  },
+  {
+    "id": "1871:4633",
+    "name": "Property 1=Focus",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 64,
+    "path": [
+      "Text Filed",
+      "Text Filed",
+      "Property 1=Focus"
+    ],
+    "key": "cc419a9d67ed079628c0d174ab136417ad574d2b",
+    "variantProperties": {
+      "Property 1": "Focus"
+    }
+  },
+  {
+    "id": "1871:4368",
+    "name": "Property 1=Type",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 64,
+    "path": [
+      "Text Filed",
+      "Text Filed",
+      "Property 1=Type"
+    ],
+    "key": "a7b7b468fe26cba60db39e2dc5f9830b9614175b",
+    "variantProperties": {
+      "Property 1": "Type"
+    }
+  },
+  {
+    "id": "1871:4394",
+    "name": "Property 1=Complete",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 64,
+    "path": [
+      "Text Filed",
+      "Text Filed",
+      "Property 1=Complete"
+    ],
+    "key": "2102908d591a5613d8a147bf239deb71874b825c",
+    "variantProperties": {
+      "Property 1": "Complete"
+    }
+  },
+  {
+    "id": "1871:4420",
+    "name": "Property 1=Error",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 92,
+    "path": [
+      "Text Filed",
+      "Text Filed",
+      "Property 1=Error"
+    ],
+    "key": "f2653b387ec295377ac43eb5a8caac4203a8c970",
+    "variantProperties": {
+      "Property 1": "Error"
+    }
+  },
+  {
+    "id": "1346:14857",
+    "name": "Search Field",
+    "type": "COMPONENT_SET",
+    "width": 423,
+    "height": 328,
+    "path": [
+      "Search Field",
+      "Search Field"
+    ],
+    "key": "f0c4212ee27e0c34e7a41b1ddd2a1a2f297a6dd7",
+    "properties": {
+      "Right#1859:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Style": {
+        "type": "VARIANT",
+        "defaultValue": "Placeholder",
+        "variantOptions": [
+          "Placeholder",
+          "Focused",
+          "Typing",
+          "Complete"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1346:14856",
+    "name": "Style=Placeholder",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Search Field",
+      "Search Field",
+      "Style=Placeholder"
+    ],
+    "key": "34f84db41821f0b491cde84a1905cd8298010007",
+    "variantProperties": {
+      "Style": "Placeholder"
+    }
+  },
+  {
+    "id": "1346:14858",
+    "name": "Style=Focused",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Search Field",
+      "Search Field",
+      "Style=Focused"
+    ],
+    "key": "8f52a956b39701e1dd2ff464ff80b5d8d6e10adf",
+    "variantProperties": {
+      "Style": "Focused"
+    }
+  },
+  {
+    "id": "1346:14871",
+    "name": "Style=Typing",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Search Field",
+      "Search Field",
+      "Style=Typing"
+    ],
+    "key": "22d51faad1880120b437330a74e502a1bfbbdb12",
+    "variantProperties": {
+      "Style": "Typing"
+    }
+  },
+  {
+    "id": "1515:9918",
+    "name": "Style=Complete",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Search Field",
+      "Search Field",
+      "Style=Complete"
+    ],
+    "key": "a17c9f2f8bc0ab51881daf9a3d30170ca2944002",
+    "variantProperties": {
+      "Style": "Complete"
+    }
+  },
+  {
+    "id": "1515:9370",
+    "name": "Tool Bar / Text Filed",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 56,
+    "path": [
+      "Tool Bar / Text Filed",
+      "Tool Bar / Text Filed"
+    ],
+    "key": "1c8ffd6aae6f85ec044356f46f33b5216f9cbbd6",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1876:2070",
+    "name": "Tool Bar / Input",
+    "type": "COMPONENT_SET",
+    "width": 407,
+    "height": 208,
+    "path": [
+      "Tool Bar / Text Filed",
+      "Tool Bar / Input"
+    ],
+    "key": "0fc381d37da937a20fd17a7d72fd332940a1fd4c",
+    "properties": {
+      "Right#1871:2": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Left#1871:3": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Label#1871:4": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Text#1871:10": {
+        "type": "TEXT",
+        "defaultValue": "Tybe something"
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Placeholder",
+        "variantOptions": [
+          "Placeholder",
+          "Variant2",
+          "Variant3"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1876:2071",
+    "name": "Property 1=Placeholder",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 48,
+    "path": [
+      "Tool Bar / Text Filed",
+      "Tool Bar / Input",
+      "Property 1=Placeholder"
+    ],
+    "key": "3a2ff6d74c1f7ceeefd9b5cbd893d602dcbd716f",
+    "variantProperties": {
+      "Property 1": "Placeholder"
+    }
+  },
+  {
+    "id": "1877:11324",
+    "name": "Property 1=Variant3",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 48,
+    "path": [
+      "Tool Bar / Text Filed",
+      "Tool Bar / Input",
+      "Property 1=Variant3"
+    ],
+    "key": "0b406be1396f8a347edc64c1cab90094fe6b74ba",
+    "variantProperties": {
+      "Property 1": "Variant3"
+    }
+  },
+  {
+    "id": "1877:11306",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 48,
+    "path": [
+      "Tool Bar / Text Filed",
+      "Tool Bar / Input",
+      "Property 1=Variant2"
+    ],
+    "key": "fe858872229ebd30b546eefb2291fa51d3aa58d7",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "1877:2176",
+    "name": "Permission Dialog",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 347,
+    "path": [
+      "Permission Dialog",
+      "Permission Dialog"
+    ],
+    "key": "00f5f0de8b739da05c5da4d0f0dcf4de5b94ad17",
+    "properties": {
+      "Show Cancel Button#1535:16": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 1#1550:4": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 2#1550:5": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 3#1550:6": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 4#1550:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 6#1550:8": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 5#1550:9": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      }
+    },
+    "variantProperties": null
+  },
+  {
+    "id": "1892:2077",
+    "name": "Menu",
+    "type": "COMPONENT",
+    "width": 255,
+    "height": 294,
+    "path": [
+      "Menu",
+      "Menu"
+    ],
+    "key": "3b59b58b4a7af4c1195156ede0cf1a5d18530b83",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1908:2508",
+    "name": "Slider",
+    "type": "COMPONENT_SET",
+    "width": 352,
+    "height": 156,
+    "path": [
+      "Slider",
+      "Slider"
+    ],
+    "key": "e786abcdfbf9619da1598a7a74dba3cfbbdec443",
+    "properties": {
+      "Progress": {
+        "type": "VARIANT",
+        "defaultValue": "0%",
+        "variantOptions": [
+          "0%",
+          "25%",
+          "50%",
+          "75%",
+          "100%"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1908:2507",
+    "name": "Progress=0%",
+    "type": "COMPONENT",
+    "width": 320,
+    "height": 12,
+    "path": [
+      "Slider",
+      "Slider",
+      "Progress=0%"
+    ],
+    "key": "46862780177461ede66db6d8ea90a52b74675a37",
+    "variantProperties": {
+      "Progress": "0%"
+    }
+  },
+  {
+    "id": "1908:2530",
+    "name": "Progress=25%",
+    "type": "COMPONENT",
+    "width": 320,
+    "height": 12,
+    "path": [
+      "Slider",
+      "Slider",
+      "Progress=25%"
+    ],
+    "key": "efafbc06079593cb3c1ca512f29e92c4c3a6241a",
+    "variantProperties": {
+      "Progress": "25%"
+    }
+  },
+  {
+    "id": "1908:2535",
+    "name": "Progress=50%",
+    "type": "COMPONENT",
+    "width": 320,
+    "height": 12,
+    "path": [
+      "Slider",
+      "Slider",
+      "Progress=50%"
+    ],
+    "key": "57a097f5f339cbfe93f4099dd1a73ab2e9eeeb6d",
+    "variantProperties": {
+      "Progress": "50%"
+    }
+  },
+  {
+    "id": "1908:2540",
+    "name": "Progress=75%",
+    "type": "COMPONENT",
+    "width": 320,
+    "height": 12,
+    "path": [
+      "Slider",
+      "Slider",
+      "Progress=75%"
+    ],
+    "key": "b4471a4e3ea7c917651d0bd1d07f4566861a632c",
+    "variantProperties": {
+      "Progress": "75%"
+    }
+  },
+  {
+    "id": "1908:2545",
+    "name": "Progress=100%",
+    "type": "COMPONENT",
+    "width": 320,
+    "height": 12,
+    "path": [
+      "Slider",
+      "Slider",
+      "Progress=100%"
+    ],
+    "key": "0b96c675ca94897ec6700390bddaec67cabfd878",
+    "variantProperties": {
+      "Progress": "100%"
+    }
+  },
+  {
+    "id": "1897:11779",
+    "name": "Progress Indicator",
+    "type": "COMPONENT_SET",
+    "width": 370,
+    "height": 170,
+    "path": [
+      "Progress Indicator",
+      "Progress Indicator"
+    ],
+    "key": "23bba387fc096dd0f44d4c8ecadc6b32e61beb7b",
+    "properties": {
+      "Progress": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2",
+          "Variant3",
+          "Variant4",
+          "Variant5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1897:11780",
+    "name": "Progress=Default",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 10,
+    "path": [
+      "Progress Indicator",
+      "Progress Indicator",
+      "Progress=Default"
+    ],
+    "key": "3ccfe8c00cca4f8f9cef63ee150a4fe8a99e1260",
+    "variantProperties": {
+      "Progress": "Default"
+    }
+  },
+  {
+    "id": "1905:2473",
+    "name": "Progress=Variant2",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 10,
+    "path": [
+      "Progress Indicator",
+      "Progress Indicator",
+      "Progress=Variant2"
+    ],
+    "key": "a062ef2b0de7daf96558b7f5c0cbe2fccf4d9241",
+    "variantProperties": {
+      "Progress": "Variant2"
+    }
+  },
+  {
+    "id": "1905:2479",
+    "name": "Progress=Variant3",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 10,
+    "path": [
+      "Progress Indicator",
+      "Progress Indicator",
+      "Progress=Variant3"
+    ],
+    "key": "f4245a46249e722ec891d217a46424f684f6aed0",
+    "variantProperties": {
+      "Progress": "Variant3"
+    }
+  },
+  {
+    "id": "1905:2485",
+    "name": "Progress=Variant4",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 10,
+    "path": [
+      "Progress Indicator",
+      "Progress Indicator",
+      "Progress=Variant4"
+    ],
+    "key": "7f6b43f8e333b100380fc52859e64a24dfc347a5",
+    "variantProperties": {
+      "Progress": "Variant4"
+    }
+  },
+  {
+    "id": "1905:2491",
+    "name": "Progress=Variant5",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 10,
+    "path": [
+      "Progress Indicator",
+      "Progress Indicator",
+      "Progress=Variant5"
+    ],
+    "key": "82dae99967371ae564b4d3c48198b5dd53558e90",
+    "variantProperties": {
+      "Progress": "Variant5"
+    }
+  },
+  {
+    "id": "2087:12334",
+    "name": "Date Picker",
+    "type": "COMPONENT_SET",
+    "width": 752,
+    "height": 393,
+    "path": [
+      "Date Picker",
+      "Date Picker"
+    ],
+    "key": "927fed1ccd2216944b1760c51c9a3252698ccaca",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1962:14087",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 340,
+    "height": 345,
+    "path": [
+      "Date Picker",
+      "Date Picker",
+      "Property 1=Default"
+    ],
+    "key": "d1af5a3d1b3298b8e0871a0d2e5f9f86aa3b1475",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "2087:12335",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 340,
+    "height": 345,
+    "path": [
+      "Date Picker",
+      "Date Picker",
+      "Property 1=Variant2"
+    ],
+    "key": "e49e320cfe293ca9222475eb4d71b858bf10b44e",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "2087:11994",
+    "name": "Picker",
+    "type": "COMPONENT_SET",
+    "width": 1116,
+    "height": 416,
+    "path": [
+      "Date Picker",
+      "Picker"
+    ],
+    "key": "278dd12041c168fdcc67c26ec943947c6eba3a84",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2",
+          "Variant3"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1962:14513",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 340,
+    "height": 368,
+    "path": [
+      "Date Picker",
+      "Picker",
+      "Property 1=Default"
+    ],
+    "key": "8daa081821c036a6acca7f3860a475a2d43cccc0",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "2087:11995",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 340,
+    "height": 368,
+    "path": [
+      "Date Picker",
+      "Picker",
+      "Property 1=Variant2"
+    ],
+    "key": "0bfdde7beb76505e7eaa91e3d96dc4cca7fc2ea3",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "2087:12138",
+    "name": "Property 1=Variant3",
+    "type": "COMPONENT",
+    "width": 340,
+    "height": 368,
+    "path": [
+      "Date Picker",
+      "Picker",
+      "Property 1=Variant3"
+    ],
+    "key": "b08515d97ccf4621f076ce67ace129c8d06ea462",
+    "variantProperties": {
+      "Property 1": "Variant3"
+    }
+  },
+  {
+    "id": "1895:6733",
+    "name": "Avatar",
+    "type": "COMPONENT_SET",
+    "width": 900,
+    "height": 900,
+    "path": [
+      "Avatar",
+      "Avatar"
+    ],
+    "key": "f8fc5761a0e0bad751987221251a93c70211fa37",
+    "properties": {
+      "Style": {
+        "type": "VARIANT",
+        "defaultValue": "Icon",
+        "variantOptions": [
+          "Icon",
+          "Image",
+          "Initials"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "defaultValue": "20px",
+        "variantOptions": [
+          "24px",
+          "20px",
+          "28px",
+          "32px",
+          "36px",
+          "40px",
+          "44px",
+          "48px",
+          "56px",
+          "64px",
+          "72px"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1895:6732",
+    "name": "Style=Icon, Size=20px",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=20px"
+    ],
+    "key": "902da3ae71ec94dcceca2291e7730df269583ab5",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "20px"
+    }
+  },
+  {
+    "id": "1895:6713",
+    "name": "Style=Initials, Size=20px",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=20px"
+    ],
+    "key": "d5d899c1202c3e3de27100d6e45be67b2f452e1f",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "20px"
+    }
+  },
+  {
+    "id": "1895:6724",
+    "name": "Style=Initials, Size=24px",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=24px"
+    ],
+    "key": "7fcb421fdd6a950edc1ce6089775c84cc16fa46f",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "24px"
+    }
+  },
+  {
+    "id": "1895:6729",
+    "name": "Style=Icon, Size=24px",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=24px"
+    ],
+    "key": "4bfdcd09744acbd01ce00adc69a967630f702966",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "24px"
+    }
+  },
+  {
+    "id": "1895:6727",
+    "name": "Style=Initials, Size=28px",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=28px"
+    ],
+    "key": "62d18d9cd2f846a9dd35f95611aafd10dd004824",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "28px"
+    }
+  },
+  {
+    "id": "1895:6726",
+    "name": "Style=Initials, Size=32px",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=32px"
+    ],
+    "key": "3d9a5d840cfd8f51bb2c1a5ce69b06a22b4c7c72",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "32px"
+    }
+  },
+  {
+    "id": "1895:6725",
+    "name": "Style=Icon, Size=28px",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=28px"
+    ],
+    "key": "691e4e104c9f7abd08004b8fe582059d93e5d3f3",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "28px"
+    }
+  },
+  {
+    "id": "1895:6723",
+    "name": "Style=Initials, Size=36px",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=36px"
+    ],
+    "key": "2ec62327339360bf4e7f181ea7c4e320869a6f34",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "36px"
+    }
+  },
+  {
+    "id": "1895:6721",
+    "name": "Style=Initials, Size=40px",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=40px"
+    ],
+    "key": "94bf76123a1d42d909b0dc0d48eb03eb7c6ea2b5",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "40px"
+    }
+  },
+  {
+    "id": "1895:6707",
+    "name": "Style=Icon, Size=32px",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=32px"
+    ],
+    "key": "a807709ec99400d843ec981bc7f108b0687716ac",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "32px"
+    }
+  },
+  {
+    "id": "1895:6720",
+    "name": "Style=Initials, Size=44px",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=44px"
+    ],
+    "key": "cd675989cdad1796d3a13840276ca81163e34739",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "44px"
+    }
+  },
+  {
+    "id": "1895:6730",
+    "name": "Style=Initials, Size=48px",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=48px"
+    ],
+    "key": "bbdee69e1ed9f8b7fcfff06bbf3931b380294e48",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "48px"
+    }
+  },
+  {
+    "id": "1895:6716",
+    "name": "Style=Icon, Size=36px",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=36px"
+    ],
+    "key": "1cfa30882c1dfb8e2607d0fd1708fcd57145fd3e",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "36px"
+    }
+  },
+  {
+    "id": "1895:6719",
+    "name": "Style=Initials, Size=56px",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=56px"
+    ],
+    "key": "d78354b260e87646e74474c886b492eac0250c0c",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "56px"
+    }
+  },
+  {
+    "id": "1895:6718",
+    "name": "Style=Initials, Size=64px",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=64px"
+    ],
+    "key": "404889550e4ba0f3c4f55a82bde63117564bae2a",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "64px"
+    }
+  },
+  {
+    "id": "1895:6714",
+    "name": "Style=Icon, Size=40px",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=40px"
+    ],
+    "key": "c4cc214a592aea988420c794a7f31ccc77dfdc20",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "40px"
+    }
+  },
+  {
+    "id": "1895:6711",
+    "name": "Style=Initials, Size=72px",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Initials, Size=72px"
+    ],
+    "key": "e0d7516b0c94fabd47bc0cad289b821b5c9b3298",
+    "variantProperties": {
+      "Style": "Initials",
+      "Size": "72px"
+    }
+  },
+  {
+    "id": "1895:6709",
+    "name": "Style=Icon, Size=44px",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=44px"
+    ],
+    "key": "db1db1502d4569bb4f0f34f865cbf5adf7ef7c72",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "44px"
+    }
+  },
+  {
+    "id": "1895:6722",
+    "name": "Style=Icon, Size=48px",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=48px"
+    ],
+    "key": "3ef835400e107ba0b7b3af11c34fb5b15d15fdd5",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "48px"
+    }
+  },
+  {
+    "id": "1895:6706",
+    "name": "Style=Icon, Size=56px",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=56px"
+    ],
+    "key": "c8aff80558a6f03a4ad297ecd1d84244bbaa8807",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "56px"
+    }
+  },
+  {
+    "id": "1895:6710",
+    "name": "Style=Icon, Size=64px",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=64px"
+    ],
+    "key": "43d640f970d983abcbb14101dbfb4662f514e67b",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "64px"
+    }
+  },
+  {
+    "id": "1895:6717",
+    "name": "Style=Icon, Size=72px",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Icon, Size=72px"
+    ],
+    "key": "bc0eae753461d8a9055d990d66f87402f5d9fcad",
+    "variantProperties": {
+      "Style": "Icon",
+      "Size": "72px"
+    }
+  },
+  {
+    "id": "1895:6708",
+    "name": "Style=Image, Size=20px",
+    "type": "COMPONENT",
+    "width": 20.000001907348633,
+    "height": 20.000001907348633,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=20px"
+    ],
+    "key": "8f736f192f79baf95c8c1149c7dcf054b6c37c96",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "20px"
+    }
+  },
+  {
+    "id": "1895:6705",
+    "name": "Style=Image, Size=24px",
+    "type": "COMPONENT",
+    "width": 24.000001907348633,
+    "height": 24.000001907348633,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=24px"
+    ],
+    "key": "e0c2e9ff2318e1ca50d9a94e0a4680a401d1966d",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "24px"
+    }
+  },
+  {
+    "id": "1895:6731",
+    "name": "Style=Image, Size=28px",
+    "type": "COMPONENT",
+    "width": 28.000001907348633,
+    "height": 28.000001907348633,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=28px"
+    ],
+    "key": "5f1218eec0f720d116ee378fc88d8e0ad580a07e",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "28px"
+    }
+  },
+  {
+    "id": "1895:6704",
+    "name": "Style=Image, Size=32px",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=32px"
+    ],
+    "key": "6c4563564ea775ce777b384582e41d40f5d0e26b",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "32px"
+    }
+  },
+  {
+    "id": "1895:6703",
+    "name": "Style=Image, Size=36px",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=36px"
+    ],
+    "key": "99deb64e8ea937c0c9f53e642a7490412e13cc45",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "36px"
+    }
+  },
+  {
+    "id": "1895:6715",
+    "name": "Style=Image, Size=40px",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=40px"
+    ],
+    "key": "a72ef1c57ff2ca4d63554fb6b7ac1066d135bdf9",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "40px"
+    }
+  },
+  {
+    "id": "1895:6702",
+    "name": "Style=Image, Size=44px",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=44px"
+    ],
+    "key": "adc0dda1e98b6c8544049ebc56efc4a9449b54d9",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "44px"
+    }
+  },
+  {
+    "id": "1895:6728",
+    "name": "Style=Image, Size=48px",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=48px"
+    ],
+    "key": "8c20a0c071ae1cf1e6027ae5bf4e97a726681a43",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "48px"
+    }
+  },
+  {
+    "id": "1895:6701",
+    "name": "Style=Image, Size=56px",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=56px"
+    ],
+    "key": "39ed4bf36165490e42f27cec19766ccb83ae56c2",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "56px"
+    }
+  },
+  {
+    "id": "1895:6700",
+    "name": "Style=Image, Size=64px",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=64px"
+    ],
+    "key": "f36b13597045864a23f7a1673691b4a6791ee5de",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "64px"
+    }
+  },
+  {
+    "id": "1895:6712",
+    "name": "Style=Image, Size=72px",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Avatar",
+      "Avatar",
+      "Style=Image, Size=72px"
+    ],
+    "key": "cc4b30627761ba4a106bf76700962a5975d68ec3",
+    "variantProperties": {
+      "Style": "Image",
+      "Size": "72px"
+    }
+  },
+  {
+    "id": "1897:11775",
+    "name": "Stepper",
+    "type": "COMPONENT",
+    "width": 140,
+    "height": 44,
+    "path": [
+      "Stepper",
+      "Stepper"
+    ],
+    "key": "3d942c1edfd61cb2eb64f8c3d33a2e7c82589196",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1895:4962",
+    "name": "Tag",
+    "type": "COMPONENT_SET",
+    "width": 900,
+    "height": 900,
+    "path": [
+      "Tags",
+      "Tag"
+    ],
+    "key": "3a59158d75927d17c248527af94fcf412589aed0",
+    "properties": {
+      "Tag#1895:9": {
+        "type": "TEXT",
+        "defaultValue": "Tag"
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant9",
+          "Variant3"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1895:4961",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 88,
+    "height": 32,
+    "path": [
+      "Tags",
+      "Tag",
+      "Property 1=Default"
+    ],
+    "key": "31e89b84e16b6f11f11c2127bb24421b50063167",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "1895:5028",
+    "name": "Property 1=Variant9",
+    "type": "COMPONENT",
+    "width": 88,
+    "height": 32,
+    "path": [
+      "Tags",
+      "Tag",
+      "Property 1=Variant9"
+    ],
+    "key": "a5f169c83c43622f62650dc80c9abc9759b1029c",
+    "variantProperties": {
+      "Property 1": "Variant9"
+    }
+  },
+  {
+    "id": "1897:2528",
+    "name": "Property 1=Variant3",
+    "type": "COMPONENT",
+    "width": 88,
+    "height": 32,
+    "path": [
+      "Tags",
+      "Tag",
+      "Property 1=Variant3"
+    ],
+    "key": "228664e858ac8d31bcabe40bc8a5556eead31807",
+    "variantProperties": {
+      "Property 1": "Variant3"
+    }
+  },
+  {
+    "id": "1871:13676",
+    "name": "Button Icon",
+    "type": "COMPONENT_SET",
+    "width": 900,
+    "height": 900,
+    "path": [
+      "Button Icon",
+      "Button Icon"
+    ],
+    "key": "a67a446d642cc9ac3950b2f15a7d255e04c675fa",
+    "properties": {
+      "Size": {
+        "type": "VARIANT",
+        "defaultValue": "20px",
+        "variantOptions": [
+          "20px",
+          "24px",
+          "28px",
+          "32px",
+          "36px",
+          "40px",
+          "44px",
+          "48px",
+          "56px",
+          "64px",
+          "Dynamic"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Filled",
+        "variantOptions": [
+          "Outline",
+          "Ghost",
+          "Filled",
+          "Opacity"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1871:13675",
+    "name": "Size=20px, State=Filled",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=20px, State=Filled"
+    ],
+    "key": "1df593ac81ff20ec3918e83465498bc89625e09a",
+    "variantProperties": {
+      "Size": "20px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2872",
+    "name": "Size=20px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=20px, State=Opacity"
+    ],
+    "key": "e2d3aae19a7937645c66eaa13827d889851e8061",
+    "variantProperties": {
+      "Size": "20px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13899",
+    "name": "Size=20px, State=Outline",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=20px, State=Outline"
+    ],
+    "key": "6ebaca857945fba15deed4a7b5dfd948ee1d8614",
+    "variantProperties": {
+      "Size": "20px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14039",
+    "name": "Size=20px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=20px, State=Ghost"
+    ],
+    "key": "7e00b4c254d2934fcb04beb49a8849713ce9ccc3",
+    "variantProperties": {
+      "Size": "20px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13672",
+    "name": "Size=24px, State=Filled",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=24px, State=Filled"
+    ],
+    "key": "646a97aad77349a4b1564a4bb3ab83b5cae78096",
+    "variantProperties": {
+      "Size": "24px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2874",
+    "name": "Size=24px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=24px, State=Opacity"
+    ],
+    "key": "83160b22192937eb3e6f2e08887bc7e9ea387f15",
+    "variantProperties": {
+      "Size": "24px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13901",
+    "name": "Size=24px, State=Outline",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=24px, State=Outline"
+    ],
+    "key": "43561fa5ee7645b8686c16339587965e1860436e",
+    "variantProperties": {
+      "Size": "24px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14041",
+    "name": "Size=24px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=24px, State=Ghost"
+    ],
+    "key": "d40756ef8363db34624e72476c7e6e86198402c1",
+    "variantProperties": {
+      "Size": "24px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13670",
+    "name": "Size=28px, State=Filled",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=28px, State=Filled"
+    ],
+    "key": "6fdf6b479aa605823e54eed388628878d1ddcf02",
+    "variantProperties": {
+      "Size": "28px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2876",
+    "name": "Size=28px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=28px, State=Opacity"
+    ],
+    "key": "0550fc8c2bd060cc74aadc5caf9d30db37471a52",
+    "variantProperties": {
+      "Size": "28px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13903",
+    "name": "Size=28px, State=Outline",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=28px, State=Outline"
+    ],
+    "key": "e15b7ee620a55be2a486dcf2c2a4aa5f4bbec184",
+    "variantProperties": {
+      "Size": "28px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14043",
+    "name": "Size=28px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=28px, State=Ghost"
+    ],
+    "key": "d5fe0c2726d27d65b0c3882a2ee19b436e029310",
+    "variantProperties": {
+      "Size": "28px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13677",
+    "name": "Size=32px, State=Filled",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=32px, State=Filled"
+    ],
+    "key": "a45d982dae571fe9910b8fe998e957ead1882de5",
+    "variantProperties": {
+      "Size": "32px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2878",
+    "name": "Size=32px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=32px, State=Opacity"
+    ],
+    "key": "76a9e232d8ed64fbc63b668391a25be6a5010ff9",
+    "variantProperties": {
+      "Size": "32px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13905",
+    "name": "Size=32px, State=Outline",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=32px, State=Outline"
+    ],
+    "key": "603507e0294624d5152317f1ad781673623828a9",
+    "variantProperties": {
+      "Size": "32px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14045",
+    "name": "Size=32px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=32px, State=Ghost"
+    ],
+    "key": "f2de1cfa7160d3c946b66712f7b34cfbb9bfc782",
+    "variantProperties": {
+      "Size": "32px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13669",
+    "name": "Size=36px, State=Filled",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=36px, State=Filled"
+    ],
+    "key": "4226742e4c1059eb7c3000c4052e604a846a6751",
+    "variantProperties": {
+      "Size": "36px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2880",
+    "name": "Size=36px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=36px, State=Opacity"
+    ],
+    "key": "c4540d5f11c8025468fd7cfb072715852ce9f5a5",
+    "variantProperties": {
+      "Size": "36px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13907",
+    "name": "Size=36px, State=Outline",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=36px, State=Outline"
+    ],
+    "key": "0c5bffcb4512dda6a48a62adbdda33820e897db0",
+    "variantProperties": {
+      "Size": "36px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14047",
+    "name": "Size=36px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=36px, State=Ghost"
+    ],
+    "key": "c830b07d4167029470db944f3ca66379c2611241",
+    "variantProperties": {
+      "Size": "36px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13674",
+    "name": "Size=40px, State=Filled",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=40px, State=Filled"
+    ],
+    "key": "dc984fb8e950c29aa633e2ba75d9b2e9278d3968",
+    "variantProperties": {
+      "Size": "40px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2882",
+    "name": "Size=40px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=40px, State=Opacity"
+    ],
+    "key": "cf71182feb73d6d8804a37abdc5fc96a36df59ee",
+    "variantProperties": {
+      "Size": "40px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13909",
+    "name": "Size=40px, State=Outline",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=40px, State=Outline"
+    ],
+    "key": "16330ed6334054ca46f14f7edc1273a1310ea3ad",
+    "variantProperties": {
+      "Size": "40px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14049",
+    "name": "Size=40px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=40px, State=Ghost"
+    ],
+    "key": "ca26a09c0ac074bde622566c76539b69b778cfc7",
+    "variantProperties": {
+      "Size": "40px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13671",
+    "name": "Size=44px, State=Filled",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=44px, State=Filled"
+    ],
+    "key": "4891b63c3739cb0167a1a4641447e7bac0213a21",
+    "variantProperties": {
+      "Size": "44px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2884",
+    "name": "Size=44px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=44px, State=Opacity"
+    ],
+    "key": "3c14d8355582794347e8da08b420fde1533a1ad9",
+    "variantProperties": {
+      "Size": "44px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13911",
+    "name": "Size=44px, State=Outline",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=44px, State=Outline"
+    ],
+    "key": "0f8ffcb3e55d4fb3c95f9b04c242ed998fbaa01c",
+    "variantProperties": {
+      "Size": "44px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14051",
+    "name": "Size=44px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=44px, State=Ghost"
+    ],
+    "key": "d9113c549adf12644e4593dee6d68ae825b50995",
+    "variantProperties": {
+      "Size": "44px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13673",
+    "name": "Size=48px, State=Filled",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=48px, State=Filled"
+    ],
+    "key": "9e454fe5d0b76b8d9545a9f3add90b658dc749d3",
+    "variantProperties": {
+      "Size": "48px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2886",
+    "name": "Size=48px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=48px, State=Opacity"
+    ],
+    "key": "440a558549b0cd87470cdb061a0a0441baf42669",
+    "variantProperties": {
+      "Size": "48px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13913",
+    "name": "Size=48px, State=Outline",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=48px, State=Outline"
+    ],
+    "key": "503f2d9fcde409172702e60f1fd1c20333dbd4c3",
+    "variantProperties": {
+      "Size": "48px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14053",
+    "name": "Size=48px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=48px, State=Ghost"
+    ],
+    "key": "a29a4eb56b39439157476f42802f1c64c424c2cc",
+    "variantProperties": {
+      "Size": "48px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13668",
+    "name": "Size=56px, State=Filled",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=56px, State=Filled"
+    ],
+    "key": "8004be0a75e9fdd559205952c71896f81b232f5a",
+    "variantProperties": {
+      "Size": "56px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2888",
+    "name": "Size=56px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=56px, State=Opacity"
+    ],
+    "key": "708e0f497b1e3e9a74529e47f532e607d9b747da",
+    "variantProperties": {
+      "Size": "56px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13915",
+    "name": "Size=56px, State=Outline",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=56px, State=Outline"
+    ],
+    "key": "98e70223f08d5b49b6f7b2166dac4f00a8160903",
+    "variantProperties": {
+      "Size": "56px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14055",
+    "name": "Size=56px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=56px, State=Ghost"
+    ],
+    "key": "60a1e24c44e4c167375a8521480009c413cc5f37",
+    "variantProperties": {
+      "Size": "56px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1871:13667",
+    "name": "Size=64px, State=Filled",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=64px, State=Filled"
+    ],
+    "key": "d28ce9750d0314187c9dca303548115cad974534",
+    "variantProperties": {
+      "Size": "64px",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1895:2892",
+    "name": "Size=Dynamic, State=Filled",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=Dynamic, State=Filled"
+    ],
+    "key": "4199f79f6afbf688d735bbc3674ef3319b8d8f80",
+    "variantProperties": {
+      "Size": "Dynamic",
+      "State": "Filled"
+    }
+  },
+  {
+    "id": "1885:2890",
+    "name": "Size=64px, State=Opacity",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=64px, State=Opacity"
+    ],
+    "key": "09b0ebdb0edf3f8dc4f68bff8851d2b00a8109b7",
+    "variantProperties": {
+      "Size": "64px",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1895:2894",
+    "name": "Size=Dynamic, State=Opacity",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=Dynamic, State=Opacity"
+    ],
+    "key": "bdfa54370f92bf8fb4b90e8a9b52866710e998a2",
+    "variantProperties": {
+      "Size": "Dynamic",
+      "State": "Opacity"
+    }
+  },
+  {
+    "id": "1871:13917",
+    "name": "Size=64px, State=Outline",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=64px, State=Outline"
+    ],
+    "key": "52c1bdd2f2686dbd0ae8e92b01e7fea569901d72",
+    "variantProperties": {
+      "Size": "64px",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1895:2897",
+    "name": "Size=Dynamic, State=Outline",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=Dynamic, State=Outline"
+    ],
+    "key": "cc31fbb5fd29ec15de4ef10f537ab72f8068b510",
+    "variantProperties": {
+      "Size": "Dynamic",
+      "State": "Outline"
+    }
+  },
+  {
+    "id": "1871:14057",
+    "name": "Size=64px, State=Ghost",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=64px, State=Ghost"
+    ],
+    "key": "81466f1aeb10ed1d470b5469cff4dd1356d5ed3d",
+    "variantProperties": {
+      "Size": "64px",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1895:2899",
+    "name": "Size=Dynamic, State=Ghost",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Button Icon",
+      "Button Icon",
+      "Size=Dynamic, State=Ghost"
+    ],
+    "key": "6e2ae874e75c4c16cd11b1609b52be724e2d6173",
+    "variantProperties": {
+      "Size": "Dynamic",
+      "State": "Ghost"
+    }
+  },
+  {
+    "id": "1612:16408",
+    "name": "Emoji",
+    "type": "COMPONENT_SET",
+    "width": 324,
+    "height": 252,
+    "path": [
+      "Emoji",
+      "Emoji"
+    ],
+    "key": "baa319c89b686563ea092f1e97d608fbf99c8966",
+    "properties": {
+      "Emoji#1612:7": {
+        "type": "TEXT",
+        "defaultValue": "😶"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "defaultValue": "16px",
+        "variantOptions": [
+          "16px",
+          "20px",
+          "24px",
+          "28px",
+          "32px",
+          "36px",
+          "40px",
+          "48px",
+          "56px",
+          "64px",
+          "44px"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1612:16407",
+    "name": "Size=16px",
+    "type": "COMPONENT",
+    "width": 16,
+    "height": 16,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=16px"
+    ],
+    "key": "1f1c66c44229671f6e83751aa60bdf4752e581d4",
+    "variantProperties": {
+      "Size": "16px"
+    }
+  },
+  {
+    "id": "1612:16425",
+    "name": "Size=20px",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=20px"
+    ],
+    "key": "93758da856133cf5c03533908124a9bd21cdb696",
+    "variantProperties": {
+      "Size": "20px"
+    }
+  },
+  {
+    "id": "1612:16423",
+    "name": "Size=24px",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=24px"
+    ],
+    "key": "c2ab8e28bae20af6ea9dfe330756061103028757",
+    "variantProperties": {
+      "Size": "24px"
+    }
+  },
+  {
+    "id": "1612:16409",
+    "name": "Size=28px",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=28px"
+    ],
+    "key": "6d07b383bc37b68ebdbd0196f3a13ca4f93f1462",
+    "variantProperties": {
+      "Size": "28px"
+    }
+  },
+  {
+    "id": "1612:16411",
+    "name": "Size=32px",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=32px"
+    ],
+    "key": "1b2598dd1e66fbd65b05b4d90317c521ec63a10f",
+    "variantProperties": {
+      "Size": "32px"
+    }
+  },
+  {
+    "id": "1612:16421",
+    "name": "Size=36px",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=36px"
+    ],
+    "key": "9daa242626cd9cd196b70f9191846f965f20a5d7",
+    "variantProperties": {
+      "Size": "36px"
+    }
+  },
+  {
+    "id": "1612:16427",
+    "name": "Size=40px",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=40px"
+    ],
+    "key": "f2f2b961123c9da7f8c85a05406974ddb0547265",
+    "variantProperties": {
+      "Size": "40px"
+    }
+  },
+  {
+    "id": "1858:2560",
+    "name": "Size=44px",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=44px"
+    ],
+    "key": "26b6226260b29e11e66e74fb8a0c4434e219fcd8",
+    "variantProperties": {
+      "Size": "44px"
+    }
+  },
+  {
+    "id": "1858:2552",
+    "name": "Size=48px",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=48px"
+    ],
+    "key": "93debc89c272b8ae9927a77e3a9f56baf80b9eef",
+    "variantProperties": {
+      "Size": "48px"
+    }
+  },
+  {
+    "id": "1858:2554",
+    "name": "Size=56px",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=56px"
+    ],
+    "key": "4f99f52d4eab6c771b20ba40f5b13bfee375ff9a",
+    "variantProperties": {
+      "Size": "56px"
+    }
+  },
+  {
+    "id": "1858:2556",
+    "name": "Size=64px",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Emoji",
+      "Emoji",
+      "Size=64px"
+    ],
+    "key": "c2b2baeaf22593b53e486382147bf5a48c20998b",
+    "variantProperties": {
+      "Size": "64px"
+    }
+  },
+  {
+    "id": "1342:15432",
+    "name": "Checkbox",
+    "type": "COMPONENT_SET",
+    "width": 116,
+    "height": 116,
+    "path": [
+      "Checkbox",
+      "Checkbox"
+    ],
+    "key": "f2e1be1b6a635b3bd31296897da56bacdbcb3184",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Enabled",
+        "variantOptions": [
+          "Disabled",
+          "Enabled"
+        ]
+      },
+      "Check": {
+        "type": "VARIANT",
+        "defaultValue": "Off",
+        "variantOptions": [
+          "On",
+          "Off"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1342:15431",
+    "name": "State=Enabled, Check=Off",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Checkbox",
+      "Checkbox",
+      "State=Enabled, Check=Off"
+    ],
+    "key": "ce3be1297c201e0f4ce5ec60afb9ebcd00de0a10",
+    "variantProperties": {
+      "State": "Enabled",
+      "Check": "Off"
+    }
+  },
+  {
+    "id": "1342:15429",
+    "name": "State=Enabled, Check=On",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Checkbox",
+      "Checkbox",
+      "State=Enabled, Check=On"
+    ],
+    "key": "09f0f6fe5e2d9ae66c6082dba8619d4f0fc04478",
+    "variantProperties": {
+      "State": "Enabled",
+      "Check": "On"
+    }
+  },
+  {
+    "id": "1897:2712",
+    "name": "State=Disabled, Check=Off",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Checkbox",
+      "Checkbox",
+      "State=Disabled, Check=Off"
+    ],
+    "key": "4415975345cb2df29f324c975cb5061a6adc6ae9",
+    "variantProperties": {
+      "State": "Disabled",
+      "Check": "Off"
+    }
+  },
+  {
+    "id": "1897:2714",
+    "name": "State=Disabled, Check=On",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Checkbox",
+      "Checkbox",
+      "State=Disabled, Check=On"
+    ],
+    "key": "e8d5e1458eabe977ade1120673250a53f2933774",
+    "variantProperties": {
+      "State": "Disabled",
+      "Check": "On"
+    }
+  },
+  {
+    "id": "1585:11565",
+    "name": "Radio Button",
+    "type": "COMPONENT_SET",
+    "width": 128,
+    "height": 128,
+    "path": [
+      "Radio",
+      "Radio Button"
+    ],
+    "key": "19306c52ead5c325d60486f0445b4700635e600c",
+    "properties": {
+      "Selected": {
+        "type": "VARIANT",
+        "defaultValue": "Off",
+        "variantOptions": [
+          "Off",
+          "On"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Enabled",
+        "variantOptions": [
+          "Disabled",
+          "Enabled"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1585:11566",
+    "name": "Selected=Off, State=Enabled",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Radio",
+      "Radio Button",
+      "Selected=Off, State=Enabled"
+    ],
+    "key": "cac14ed30f864a4aae6dd7cdf8d7185b819192d6",
+    "variantProperties": {
+      "Selected": "Off",
+      "State": "Enabled"
+    }
+  },
+  {
+    "id": "1585:11572",
+    "name": "Selected=On, State=Enabled",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Radio",
+      "Radio Button",
+      "Selected=On, State=Enabled"
+    ],
+    "key": "161df9fa88ea33a4b3b25377d9bae8386c2a22fc",
+    "variantProperties": {
+      "Selected": "On",
+      "State": "Enabled"
+    }
+  },
+  {
+    "id": "1869:1468",
+    "name": "Selected=Off, State=Disabled",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Radio",
+      "Radio Button",
+      "Selected=Off, State=Disabled"
+    ],
+    "key": "c362f2da261d1f48ab801511e8e81b1b053e7c63",
+    "variantProperties": {
+      "Selected": "Off",
+      "State": "Disabled"
+    }
+  },
+  {
+    "id": "1869:1452",
+    "name": "Selected=On, State=Disabled",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Radio",
+      "Radio Button",
+      "Selected=On, State=Disabled"
+    ],
+    "key": "50229e7ec2265a587f1ced3b9e1eb488a7a90ed5",
+    "variantProperties": {
+      "Selected": "On",
+      "State": "Disabled"
+    }
+  },
+  {
+    "id": "1370:15834",
+    "name": "Switch",
+    "type": "COMPONENT_SET",
+    "width": 168,
+    "height": 120,
+    "path": [
+      "Toggle",
+      "Switch"
+    ],
+    "key": "50f54bc8a15cc8f463babab9a1e6abe5dfb0b735",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Off",
+        "variantOptions": [
+          "On",
+          "Off"
+        ]
+      },
+      "Switch": {
+        "type": "VARIANT",
+        "defaultValue": "Enabled",
+        "variantOptions": [
+          "Enabled",
+          "Disabled"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1370:15835",
+    "name": "State=Off, Switch=Enabled",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 24,
+    "path": [
+      "Toggle",
+      "Switch",
+      "State=Off, Switch=Enabled"
+    ],
+    "key": "a87811ae79d81aa25667c43f7133b822d421da47",
+    "variantProperties": {
+      "State": "Off",
+      "Switch": "Enabled"
+    }
+  },
+  {
+    "id": "1370:15833",
+    "name": "State=On, Switch=Enabled",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 24,
+    "path": [
+      "Toggle",
+      "Switch",
+      "State=On, Switch=Enabled"
+    ],
+    "key": "7297234d3197e133c30bc5ef60ca1efe6eed308f",
+    "variantProperties": {
+      "State": "On",
+      "Switch": "Enabled"
+    }
+  },
+  {
+    "id": "1897:2697",
+    "name": "State=Off, Switch=Disabled",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 24,
+    "path": [
+      "Toggle",
+      "Switch",
+      "State=Off, Switch=Disabled"
+    ],
+    "key": "4fc1fe463c05ba8b74f0de31797e4ea8d4e3bd1a",
+    "variantProperties": {
+      "State": "Off",
+      "Switch": "Disabled"
+    }
+  },
+  {
+    "id": "1897:2699",
+    "name": "State=On, Switch=Disabled",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 24,
+    "path": [
+      "Toggle",
+      "Switch",
+      "State=On, Switch=Disabled"
+    ],
+    "key": "313a5c9ea6b1400fbbca4bf5ffd661b749051837",
+    "variantProperties": {
+      "State": "On",
+      "Switch": "Disabled"
+    }
+  },
+  {
+    "id": "1387:15917",
+    "name": "Dot",
+    "type": "COMPONENT_SET",
+    "width": 84,
+    "height": 52,
+    "path": [
+      "Page Dot",
+      "Dot"
+    ],
+    "key": "80f2b00d7b9c6aaac8b5410949e26e7fecffa1b7",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "On",
+        "variantOptions": [
+          "On",
+          "Off"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1387:15916",
+    "name": "State=On",
+    "type": "COMPONENT",
+    "width": 12,
+    "height": 12,
+    "path": [
+      "Page Dot",
+      "Dot",
+      "State=On"
+    ],
+    "key": "3c3bd34897b2de6dd402715b7686fa58ac1cb730",
+    "variantProperties": {
+      "State": "On"
+    }
+  },
+  {
+    "id": "1387:15918",
+    "name": "State=Off",
+    "type": "COMPONENT",
+    "width": 12,
+    "height": 12,
+    "path": [
+      "Page Dot",
+      "Dot",
+      "State=Off"
+    ],
+    "key": "db0260ac497709103fd1b63788ccc185dad3b404",
+    "variantProperties": {
+      "State": "Off"
+    }
+  },
+  {
+    "id": "1860:2870",
+    "name": "Page Dot",
+    "type": "COMPONENT_SET",
+    "width": 148,
+    "height": 284,
+    "path": [
+      "Page Dot",
+      "Page Dot"
+    ],
+    "key": "441429951287045f79d0e9d538b6ffa1d549f552",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2",
+          "Variant3",
+          "Variant4",
+          "Variant5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1387:15935",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 100,
+    "height": 28,
+    "path": [
+      "Page Dot",
+      "Page Dot",
+      "Property 1=Default"
+    ],
+    "key": "0fe9748d71f7a4fccd1de775a60cd611f455f74d",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "1897:10895",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 100,
+    "height": 28,
+    "path": [
+      "Page Dot",
+      "Page Dot",
+      "Property 1=Variant2"
+    ],
+    "key": "21c7c158ad6037ad4b15fc09394277fb7356642a",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "1897:10906",
+    "name": "Property 1=Variant3",
+    "type": "COMPONENT",
+    "width": 100,
+    "height": 28,
+    "path": [
+      "Page Dot",
+      "Page Dot",
+      "Property 1=Variant3"
+    ],
+    "key": "9f1b566925aa2359b0508ed2d43d6520a7644ee2",
+    "variantProperties": {
+      "Property 1": "Variant3"
+    }
+  },
+  {
+    "id": "1897:10917",
+    "name": "Property 1=Variant4",
+    "type": "COMPONENT",
+    "width": 100,
+    "height": 28,
+    "path": [
+      "Page Dot",
+      "Page Dot",
+      "Property 1=Variant4"
+    ],
+    "key": "f7404d27506e4d565afb9a0f2fdcd35dc41de788",
+    "variantProperties": {
+      "Property 1": "Variant4"
+    }
+  },
+  {
+    "id": "1897:10928",
+    "name": "Property 1=Variant5",
+    "type": "COMPONENT",
+    "width": 100,
+    "height": 28,
+    "path": [
+      "Page Dot",
+      "Page Dot",
+      "Property 1=Variant5"
+    ],
+    "key": "3ff755d9a017b41fbc94494a3eaaa5db6e8a0eab",
+    "variantProperties": {
+      "Property 1": "Variant5"
+    }
+  },
+  {
+    "id": "1555:3897",
+    "name": "Button",
+    "type": "COMPONENT_SET",
+    "width": 336,
+    "height": 212,
+    "path": [
+      "Diaglog",
+      "Button"
+    ],
+    "key": "4d4e0047ef3da3d4ebc3d452a97da75d0914083e",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Landscape",
+        "variantOptions": [
+          "Landscape",
+          "Potrairt"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1555:3880",
+    "name": "Property 1=Landscape",
+    "type": "COMPONENT",
+    "width": 296,
+    "height": 44,
+    "path": [
+      "Diaglog",
+      "Button",
+      "Property 1=Landscape"
+    ],
+    "key": "93ea3dcf144dc4f2f45e4b62024511e218418387",
+    "variantProperties": {
+      "Property 1": "Landscape"
+    }
+  },
+  {
+    "id": "1555:3898",
+    "name": "Property 1=Potrairt",
+    "type": "COMPONENT",
+    "width": 296,
+    "height": 100,
+    "path": [
+      "Diaglog",
+      "Button",
+      "Property 1=Potrairt"
+    ],
+    "key": "9b1bde72a54d58f0611fbd9b593a914aebed7eb4",
+    "variantProperties": {
+      "Property 1": "Potrairt"
+    }
+  },
+  {
+    "id": "2087:12454",
+    "name": "Diaglog",
+    "type": "COMPONENT_SET",
+    "width": 378,
+    "height": 673,
+    "path": [
+      "Diaglog",
+      "Diaglog"
+    ],
+    "key": "6680f5f8a458db2941763dcc533b4145b7b6f955",
+    "properties": {
+      "Text Filed#2087:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Large Icon#2087:1": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1392:15309",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 276,
+    "path": [
+      "Diaglog",
+      "Diaglog",
+      "Property 1=Default"
+    ],
+    "key": "850e846fba9890736d3909f4386952e839cb4f3c",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "1892:2477",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 330,
+    "height": 325,
+    "path": [
+      "Diaglog",
+      "Diaglog",
+      "Property 1=Variant2"
+    ],
+    "key": "038411ee386090a01b3f397277d62fc3b0740a55",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "341:5412",
+    "name": "System / Keyboards",
+    "type": "COMPONENT_SET",
+    "width": 810,
+    "height": 646,
+    "path": [
+      "System",
+      "System / Keyboards"
+    ],
+    "key": "86d1b37817c706e90a37c1da785a9a8f3c396d10",
+    "properties": {
+      "Type": {
+        "type": "VARIANT",
+        "defaultValue": "Alphabet",
+        "variantOptions": [
+          "Alphabet",
+          "Number"
+        ]
+      },
+      "Mode": {
+        "type": "VARIANT",
+        "defaultValue": "Light",
+        "variantOptions": [
+          "Light",
+          "Dark"
+        ]
+      }
+    }
+  },
+  {
+    "id": "341:4292",
+    "name": "Type=Alphabet, Mode=Light",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 293,
+    "path": [
+      "System",
+      "System / Keyboards",
+      "Type=Alphabet, Mode=Light"
+    ],
+    "key": "6244f6261ec92516f5b1b6a685dcf4bc845c1bfc",
+    "variantProperties": {
+      "Type": "Alphabet",
+      "Mode": "Light"
+    }
+  },
+  {
+    "id": "341:4269",
+    "name": "Type=Number, Mode=Light",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 291,
+    "path": [
+      "System",
+      "System / Keyboards",
+      "Type=Number, Mode=Light"
+    ],
+    "key": "ff9619e55b893048633d9f1f5eaa815ebefe97e2",
+    "variantProperties": {
+      "Type": "Number",
+      "Mode": "Light"
+    }
+  },
+  {
+    "id": "341:4457",
+    "name": "Type=Alphabet, Mode=Dark",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 293,
+    "path": [
+      "System",
+      "System / Keyboards",
+      "Type=Alphabet, Mode=Dark"
+    ],
+    "key": "b85e1f549fa1fb25b1b12062991fee9f541b20c5",
+    "variantProperties": {
+      "Type": "Alphabet",
+      "Mode": "Dark"
+    }
+  },
+  {
+    "id": "341:4243",
+    "name": "Type=Number, Mode=Dark",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 291,
+    "path": [
+      "System",
+      "System / Keyboards",
+      "Type=Number, Mode=Dark"
+    ],
+    "key": "a264a56f971deb3a62337eb09ba89154a300eea1",
+    "variantProperties": {
+      "Type": "Number",
+      "Mode": "Dark"
+    }
+  },
+  {
+    "id": "1303:17244",
+    "name": "System / Footer",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 34,
+    "path": [
+      "System",
+      "System / Footer"
+    ],
+    "key": "eda11d4cd99e2becfc4897e83a755570110cad07",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1582:3370",
+    "name": "Status bar",
+    "type": "COMPONENT_SET",
+    "width": 874,
+    "height": 195.52671813964844,
+    "path": [
+      "System",
+      "Status bar"
+    ],
+    "key": "1b22109e6f0b033e75115285b96570033cca6da1",
+    "properties": {
+      "Notch#20499:3": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Dynamic Island#26182:1": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Device": {
+        "type": "VARIANT",
+        "defaultValue": "iPhone (Dynamic Island)",
+        "variantOptions": [
+          "iPhone (Notch)",
+          "iPad",
+          "iPhone (Dynamic Island)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1582:3459",
+    "name": "Device=iPhone (Dynamic Island)",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 51.52671813964844,
+    "path": [
+      "System",
+      "Status bar",
+      "Device=iPhone (Dynamic Island)"
+    ],
+    "key": "aca81cd4843e608f2e7d489896a2c8a67dd4e84f",
+    "variantProperties": {
+      "Device": "iPhone (Dynamic Island)"
+    }
+  },
+  {
+    "id": "1582:3371",
+    "name": "Device=iPhone (Notch)",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 44,
+    "path": [
+      "System",
+      "Status bar",
+      "Device=iPhone (Notch)"
+    ],
+    "key": "4f0a4467763c4e7a5743bada87f23944abbdddcc",
+    "variantProperties": {
+      "Device": "iPhone (Notch)"
+    }
+  },
+  {
+    "id": "1582:3417",
+    "name": "Device=iPad",
+    "type": "COMPONENT",
+    "width": 834,
+    "height": 24,
+    "path": [
+      "System",
+      "Status bar",
+      "Device=iPad"
+    ],
+    "key": "a394d520013d125cc273452f84b85b48b8d6e331",
+    "variantProperties": {
+      "Device": "iPad"
+    }
+  },
+  {
+    "id": "1460:24460",
+    "name": "Action Sheets",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 417,
+    "path": [
+      "Action Sheets",
+      "Action Sheets"
+    ],
+    "key": "1c8ee9a89b1648f3db747248e03c25d581a06d12",
+    "properties": {
+      "Show Cancel Button#1535:16": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 1#1550:4": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 2#1550:5": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 3#1550:6": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 4#1550:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 6#1550:8": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Button 5#1550:9": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      }
+    },
+    "variantProperties": null
+  },
+  {
+    "id": "2129:8526",
+    "name": "List",
+    "type": "COMPONENT_SET",
+    "width": 407,
+    "height": 184,
+    "path": [
+      "Listing",
+      "List"
+    ],
+    "key": "2478ce1b2425da97d722d1c8763cdebd92255e89",
+    "properties": {
+      "Divider#2129:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Left#2129:1": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Right#2129:2": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Variant2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1616:6146",
+    "name": "Property 1=Default",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Listing",
+      "List",
+      "Property 1=Default"
+    ],
+    "key": "4720671b74881cd0a9c434227617eaa22f2f0abc",
+    "variantProperties": {
+      "Property 1": "Default"
+    }
+  },
+  {
+    "id": "2129:8527",
+    "name": "Property 1=Variant2",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Listing",
+      "List",
+      "Property 1=Variant2"
+    ],
+    "key": "e24fc9cb92c67786ccb6294d3a49beafca2fd58b",
+    "variantProperties": {
+      "Property 1": "Variant2"
+    }
+  },
+  {
+    "id": "1895:4532",
+    "name": "Card",
+    "type": "COMPONENT",
+    "width": 343,
+    "height": 262,
+    "path": [
+      "Card",
+      "Card"
+    ],
+    "key": "473280c008622260297be169b5e8524d21b5ac7b",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1895:2722",
+    "name": "Item",
+    "type": "COMPONENT",
+    "width": 61,
+    "height": 80,
+    "path": [
+      "Item",
+      "Item"
+    ],
+    "key": "57014596c8c7a50163615083e8ebecad7ea16452",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1467:9769",
+    "name": "Images",
+    "type": "COMPONENT_SET",
+    "width": 350,
+    "height": 272,
+    "path": [
+      "Image",
+      "Images"
+    ],
+    "key": "c94bc32eebb2aa072a71978d645ec21682cddad1",
+    "properties": {
+      "Size": {
+        "type": "VARIANT",
+        "defaultValue": "16px",
+        "variantOptions": [
+          "16px",
+          "20px",
+          "24px",
+          "28px",
+          "32px",
+          "36px",
+          "40px",
+          "44px",
+          "48px",
+          "56px",
+          "64px",
+          "72px",
+          "80px",
+          "88px",
+          "Freesize"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1467:9759",
+    "name": "Size=16px",
+    "type": "COMPONENT",
+    "width": 16.000001907348633,
+    "height": 16.000001907348633,
+    "path": [
+      "Image",
+      "Images",
+      "Size=16px"
+    ],
+    "key": "3e57712145ff52c74e34960a70a4809c5ad7bc71",
+    "variantProperties": {
+      "Size": "16px"
+    }
+  },
+  {
+    "id": "1467:9807",
+    "name": "Size=20px",
+    "type": "COMPONENT",
+    "width": 20.000001907348633,
+    "height": 20.000001907348633,
+    "path": [
+      "Image",
+      "Images",
+      "Size=20px"
+    ],
+    "key": "97108e8b2e681d4393064e54e240fb15acfd9fdf",
+    "variantProperties": {
+      "Size": "20px"
+    }
+  },
+  {
+    "id": "1467:9770",
+    "name": "Size=24px",
+    "type": "COMPONENT",
+    "width": 24.000001907348633,
+    "height": 24.000001907348633,
+    "path": [
+      "Image",
+      "Images",
+      "Size=24px"
+    ],
+    "key": "c3d9e88f1fba7624961691dc5ff7da4b8cc256af",
+    "variantProperties": {
+      "Size": "24px"
+    }
+  },
+  {
+    "id": "1467:9772",
+    "name": "Size=28px",
+    "type": "COMPONENT",
+    "width": 28.000001907348633,
+    "height": 28.000001907348633,
+    "path": [
+      "Image",
+      "Images",
+      "Size=28px"
+    ],
+    "key": "67ee80ae560da86a1b994099867a63555f703a20",
+    "variantProperties": {
+      "Size": "28px"
+    }
+  },
+  {
+    "id": "1467:9791",
+    "name": "Size=32px",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Image",
+      "Images",
+      "Size=32px"
+    ],
+    "key": "5be1e2e4933893762559a31aff96a5eaec226b74",
+    "variantProperties": {
+      "Size": "32px"
+    }
+  },
+  {
+    "id": "1467:9789",
+    "name": "Size=36px",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Image",
+      "Images",
+      "Size=36px"
+    ],
+    "key": "59d6e15debb1b0df3bc8e97d239334052161d00c",
+    "variantProperties": {
+      "Size": "36px"
+    }
+  },
+  {
+    "id": "1467:9781",
+    "name": "Size=40px",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Image",
+      "Images",
+      "Size=40px"
+    ],
+    "key": "35e37c51a82805d94bc73cdaa1a519200f527486",
+    "variantProperties": {
+      "Size": "40px"
+    }
+  },
+  {
+    "id": "1467:9793",
+    "name": "Size=44px",
+    "type": "COMPONENT",
+    "width": 44,
+    "height": 44,
+    "path": [
+      "Image",
+      "Images",
+      "Size=44px"
+    ],
+    "key": "8a52e96a8c075486a6f86fe4d9977e2b0d3e6959",
+    "variantProperties": {
+      "Size": "44px"
+    }
+  },
+  {
+    "id": "1467:9785",
+    "name": "Size=48px",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Image",
+      "Images",
+      "Size=48px"
+    ],
+    "key": "6c1554ac75284b1e98e04897bea175ad092e69e7",
+    "variantProperties": {
+      "Size": "48px"
+    }
+  },
+  {
+    "id": "1467:9787",
+    "name": "Size=56px",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Image",
+      "Images",
+      "Size=56px"
+    ],
+    "key": "6c6e497953bf751652fe709d73a5b5c029269f4e",
+    "variantProperties": {
+      "Size": "56px"
+    }
+  },
+  {
+    "id": "1467:9795",
+    "name": "Size=64px",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Image",
+      "Images",
+      "Size=64px"
+    ],
+    "key": "63db7a4bd36e7a10b2ffb0fc0b6873786a81fa23",
+    "variantProperties": {
+      "Size": "64px"
+    }
+  },
+  {
+    "id": "1467:9797",
+    "name": "Size=72px",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Image",
+      "Images",
+      "Size=72px"
+    ],
+    "key": "038d59aba29ac2ab645e74ad30b95e0712584366",
+    "variantProperties": {
+      "Size": "72px"
+    }
+  },
+  {
+    "id": "1467:9799",
+    "name": "Size=80px",
+    "type": "COMPONENT",
+    "width": 80,
+    "height": 80,
+    "path": [
+      "Image",
+      "Images",
+      "Size=80px"
+    ],
+    "key": "e3ae0b54d9755b02fc077c7bac7ec8976f73f19e",
+    "variantProperties": {
+      "Size": "80px"
+    }
+  },
+  {
+    "id": "1467:9801",
+    "name": "Size=88px",
+    "type": "COMPONENT",
+    "width": 88,
+    "height": 88,
+    "path": [
+      "Image",
+      "Images",
+      "Size=88px"
+    ],
+    "key": "db4948eab6c3f7c16780821d207f153e448a925a",
+    "variantProperties": {
+      "Size": "88px"
+    }
+  },
+  {
+    "id": "1467:9803",
+    "name": "Size=Freesize",
+    "type": "COMPONENT",
+    "width": 96,
+    "height": 96,
+    "path": [
+      "Image",
+      "Images",
+      "Size=Freesize"
+    ],
+    "key": "6a8f71592be5753b12633fa4f72865bfecef2eaa",
+    "variantProperties": {
+      "Size": "Freesize"
+    }
+  },
+  {
+    "id": "1460:24453",
+    "name": "Action / Buttons",
+    "type": "COMPONENT_SET",
+    "width": 442,
+    "height": 80,
+    "path": [
+      "Component",
+      "Action / Buttons"
+    ],
+    "key": "15e5ffd5095c228383950c439470efe0f62ceb28",
+    "properties": {
+      "Label#495:113": {
+        "type": "TEXT",
+        "defaultValue": "Action"
+      },
+      "Left#1892:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Type": {
+        "type": "VARIANT",
+        "defaultValue": "Default",
+        "variantOptions": [
+          "Default",
+          "Destructive",
+          "Disabled"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1460:24454",
+    "name": "Type=Default",
+    "type": "COMPONENT",
+    "width": 126,
+    "height": 48,
+    "path": [
+      "Component",
+      "Action / Buttons",
+      "Type=Default"
+    ],
+    "key": "338c414bf71346359c17c4ace3604f340276887b",
+    "variantProperties": {
+      "Type": "Default"
+    }
+  },
+  {
+    "id": "1460:24456",
+    "name": "Type=Disabled",
+    "type": "COMPONENT",
+    "width": 126,
+    "height": 48,
+    "path": [
+      "Component",
+      "Action / Buttons",
+      "Type=Disabled"
+    ],
+    "key": "2b916a0d8ea2af4036e53b8bc90d3b4557337588",
+    "variantProperties": {
+      "Type": "Disabled"
+    }
+  },
+  {
+    "id": "1460:24458",
+    "name": "Type=Destructive",
+    "type": "COMPONENT",
+    "width": 126,
+    "height": 48,
+    "path": [
+      "Component",
+      "Action / Buttons",
+      "Type=Destructive"
+    ],
+    "key": "ffc431eeb6cbadf0e5649a592347764e00e9f316",
+    "variantProperties": {
+      "Type": "Destructive"
+    }
+  },
+  {
+    "id": "1361:15447",
+    "name": "Elements",
+    "type": "COMPONENT_SET",
+    "width": 216,
+    "height": 216,
+    "path": [
+      "Component",
+      "Elements"
+    ],
+    "key": "0db90700d7aaa4799a41f9a4f68a1b0c93318a14",
+    "properties": {
+      "Element 1#1857:9": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1370:18028",
+        "preferredValues": [
+          {
+            "type": "COMPONENT_SET",
+            "key": "b393efe829c4119b85f232fdc778d8ea6dbaa399"
+          }
+        ]
+      },
+      "Element 2#1857:15": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1370:18028",
+        "preferredValues": [
+          {
+            "type": "COMPONENT_SET",
+            "key": "b393efe829c4119b85f232fdc778d8ea6dbaa399"
+          }
+        ]
+      },
+      "Element 3#1857:21": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1370:18028",
+        "preferredValues": [
+          {
+            "type": "COMPONENT_SET",
+            "key": "b393efe829c4119b85f232fdc778d8ea6dbaa399"
+          }
+        ]
+      },
+      "Element 4#1857:27": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1370:18028",
+        "preferredValues": [
+          {
+            "type": "COMPONENT_SET",
+            "key": "b393efe829c4119b85f232fdc778d8ea6dbaa399"
+          }
+        ]
+      },
+      "Element 5#1857:33": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1370:18028",
+        "preferredValues": [
+          {
+            "type": "COMPONENT_SET",
+            "key": "b393efe829c4119b85f232fdc778d8ea6dbaa399"
+          }
+        ]
+      },
+      "Elements": {
+        "type": "VARIANT",
+        "defaultValue": "1",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1361:15466",
+    "name": "Elements=1",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Component",
+      "Elements",
+      "Elements=1"
+    ],
+    "key": "f4fc64b717e6b139839667009921b59c2d064566",
+    "variantProperties": {
+      "Elements": "1"
+    }
+  },
+  {
+    "id": "1361:15463",
+    "name": "Elements=2",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 24,
+    "path": [
+      "Component",
+      "Elements",
+      "Elements=2"
+    ],
+    "key": "61ccd11191c5bd5c6b5c1fe61d8cfa434a8efc34",
+    "variantProperties": {
+      "Elements": "2"
+    }
+  },
+  {
+    "id": "1361:15459",
+    "name": "Elements=3",
+    "type": "COMPONENT",
+    "width": 104,
+    "height": 24,
+    "path": [
+      "Component",
+      "Elements",
+      "Elements=3"
+    ],
+    "key": "c5d36922558afab4aa9e53194ed4ee19c1463f15",
+    "variantProperties": {
+      "Elements": "3"
+    }
+  },
+  {
+    "id": "1361:15454",
+    "name": "Elements=4",
+    "type": "COMPONENT",
+    "width": 144,
+    "height": 24,
+    "path": [
+      "Component",
+      "Elements",
+      "Elements=4"
+    ],
+    "key": "7656019e26330bbb483c61eb1d389f77b816ac8a",
+    "variantProperties": {
+      "Elements": "4"
+    }
+  },
+  {
+    "id": "1361:15448",
+    "name": "Elements=5",
+    "type": "COMPONENT",
+    "width": 184,
+    "height": 24,
+    "path": [
+      "Component",
+      "Elements",
+      "Elements=5"
+    ],
+    "key": "c56ef138e4bfe0784d349b2cced69ff6f67f781c",
+    "variantProperties": {
+      "Elements": "5"
+    }
+  },
+  {
+    "id": "1871:14345",
+    "name": "Title",
+    "type": "COMPONENT",
+    "width": 133,
+    "height": 44,
+    "path": [
+      "Component",
+      "Title"
+    ],
+    "key": "806e5de65155ee8fadfe7ad7496a772cd1549634",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "2100:4893",
+    "name": "Text",
+    "type": "COMPONENT",
+    "width": 53,
+    "height": 44,
+    "path": [
+      "Component",
+      "Text"
+    ],
+    "key": "1ae0e9e7fb81966cd86a8f1191de1babac734af1",
+    "properties": {
+      "Show Title#2167:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show Subtile#2167:1": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      }
+    },
+    "variantProperties": null
+  },
+  {
+    "id": "1303:17871",
+    "name": "_Button/Vertical Stack",
+    "type": "COMPONENT_SET",
+    "width": 364,
+    "height": 88,
+    "path": [
+      "Component",
+      "_Button/Vertical Stack"
+    ],
+    "key": "089b2cdd527256a157ce964aa09260862e538543",
+    "properties": {
+      "Label#3:41": {
+        "type": "TEXT",
+        "defaultValue": "Label"
+      },
+      "Icon#1303:20": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1314:17322",
+        "preferredValues": [
+          {
+            "type": "COMPONENT",
+            "key": "9668d2425c164b46dc06bffb363e354dd1c2a448"
+          }
+        ]
+      },
+      "Selected": {
+        "type": "VARIANT",
+        "defaultValue": "True",
+        "variantOptions": [
+          "True",
+          "False"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Potrairt",
+        "variantOptions": [
+          "Landscape",
+          "Potrairt"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1303:17875",
+    "name": "Selected=True, State=Potrairt",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 48,
+    "path": [
+      "Component",
+      "_Button/Vertical Stack",
+      "Selected=True, State=Potrairt"
+    ],
+    "key": "f43b8f929bc502c985412bc64086468ea1d4ecdd",
+    "variantProperties": {
+      "Selected": "True",
+      "State": "Potrairt"
+    }
+  },
+  {
+    "id": "1303:17872",
+    "name": "Selected=False, State=Potrairt",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 48,
+    "path": [
+      "Component",
+      "_Button/Vertical Stack",
+      "Selected=False, State=Potrairt"
+    ],
+    "key": "0f82f3f2c6ec03e583536f0c45911395f08b2552",
+    "variantProperties": {
+      "Selected": "False",
+      "State": "Potrairt"
+    }
+  },
+  {
+    "id": "1962:13259",
+    "name": "Selected=True, State=Landscape",
+    "type": "COMPONENT",
+    "width": 68,
+    "height": 48,
+    "path": [
+      "Component",
+      "_Button/Vertical Stack",
+      "Selected=True, State=Landscape"
+    ],
+    "key": "ccdabb0728c2efc1c3b4f0bba451c8376247fdd5",
+    "variantProperties": {
+      "Selected": "True",
+      "State": "Landscape"
+    }
+  },
+  {
+    "id": "1962:13262",
+    "name": "Selected=False, State=Landscape",
+    "type": "COMPONENT",
+    "width": 68,
+    "height": 48,
+    "path": [
+      "Component",
+      "_Button/Vertical Stack",
+      "Selected=False, State=Landscape"
+    ],
+    "key": "497ac88f0818bb0050d0420dbeef8b883b57cf38",
+    "variantProperties": {
+      "Selected": "False",
+      "State": "Landscape"
+    }
+  },
+  {
+    "id": "1878:4978",
+    "name": "Nav title",
+    "type": "COMPONENT_SET",
+    "width": 415,
+    "height": 164,
+    "path": [
+      "Component",
+      "Nav title"
+    ],
+    "key": "c3e1774f644d2b6a0e19874c2e80fed7c902f991",
+    "properties": {
+      "Left#1878:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Center#1878:9": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Right#1878:12": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Auto Snap": {
+        "type": "VARIANT",
+        "defaultValue": "On",
+        "variantOptions": [
+          "On",
+          "Off"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1878:4576",
+    "name": "Auto Snap=On",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Component",
+      "Nav title",
+      "Auto Snap=On"
+    ],
+    "key": "81d4b2cdaa83e1e8b1224c7175a73b9ec2cd4604",
+    "variantProperties": {
+      "Auto Snap": "On"
+    }
+  },
+  {
+    "id": "1878:4979",
+    "name": "Auto Snap=Off",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Component",
+      "Nav title",
+      "Auto Snap=Off"
+    ],
+    "key": "250d56a9877e2cdeb07550873622e6294eec57f1",
+    "variantProperties": {
+      "Auto Snap": "Off"
+    }
+  },
+  {
+    "id": "1303:20479",
+    "name": "Segmented Control",
+    "type": "COMPONENT_SET",
+    "width": 194,
+    "height": 76,
+    "path": [
+      "Component",
+      "Segmented Control"
+    ],
+    "key": "d2637561824662919f7d68b81ca3d15d80612c73",
+    "properties": {
+      "Label#3:41": {
+        "type": "TEXT",
+        "defaultValue": "Label"
+      },
+      "Symbol#1352:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Text#1599:25": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Image#1599:28": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Selected": {
+        "type": "VARIANT",
+        "defaultValue": "True",
+        "variantOptions": [
+          "True",
+          "False"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1303:20480",
+    "name": "Selected=True",
+    "type": "COMPONENT",
+    "width": 67,
+    "height": 36,
+    "path": [
+      "Component",
+      "Segmented Control",
+      "Selected=True"
+    ],
+    "key": "d00e4375e36ee9cf110a5e6997c9128908df950a",
+    "variantProperties": {
+      "Selected": "True"
+    }
+  },
+  {
+    "id": "1303:20483",
+    "name": "Selected=False",
+    "type": "COMPONENT",
+    "width": 67,
+    "height": 36,
+    "path": [
+      "Component",
+      "Segmented Control",
+      "Selected=False"
+    ],
+    "key": "5ee8fc136e64e689807b0e6ee6c6b495ace9ffcc",
+    "variantProperties": {
+      "Selected": "False"
+    }
+  },
+  {
+    "id": "1336:15140",
+    "name": "Pill Buttons",
+    "type": "COMPONENT_SET",
+    "width": 176,
+    "height": 72,
+    "path": [
+      "Component",
+      "Pill Buttons"
+    ],
+    "key": "8f202657f585a893babf51a2d1feed8552792d2f",
+    "properties": {
+      "Label#3:41": {
+        "type": "TEXT",
+        "defaultValue": "Label"
+      },
+      "Selected": {
+        "type": "VARIANT",
+        "defaultValue": "True",
+        "variantOptions": [
+          "True",
+          "False"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1336:15141",
+    "name": "Selected=True",
+    "type": "COMPONENT",
+    "width": 73,
+    "height": 32,
+    "path": [
+      "Component",
+      "Pill Buttons",
+      "Selected=True"
+    ],
+    "key": "1d04dbeebe95eb28c45537b5b73cad175c7b5fd9",
+    "variantProperties": {
+      "Selected": "True"
+    }
+  },
+  {
+    "id": "1336:15144",
+    "name": "Selected=False",
+    "type": "COMPONENT",
+    "width": 43,
+    "height": 32,
+    "path": [
+      "Component",
+      "Pill Buttons",
+      "Selected=False"
+    ],
+    "key": "70fa01faf9b5719391bf96e8ec171c57fed666e5",
+    "variantProperties": {
+      "Selected": "False"
+    }
+  },
+  {
+    "id": "1963:3533",
+    "name": "Cursor",
+    "type": "COMPONENT",
+    "width": 2,
+    "height": 24,
+    "path": [
+      "Component",
+      "Cursor"
+    ],
+    "key": "35a0d26dbb9239f4a6ab6743f88064cf52cee341",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "2167:9465",
+    "name": "Gapper",
+    "type": "COMPONENT",
+    "width": 374,
+    "height": 20,
+    "path": [
+      "Component",
+      "Gapper"
+    ],
+    "key": "a8f1c12f2c9b922a891e83141e72fe6d40d5dace",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "4220:25404",
+    "name": "Component 1",
+    "type": "COMPONENT_SET",
+    "width": 130,
+    "height": 88,
+    "path": [
+      "Component",
+      "Component 1"
+    ],
+    "key": "cf4a049ef03407b35f7917300d9203c36b15ba02",
+    "properties": {
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "Off",
+        "variantOptions": [
+          "Off",
+          "On"
+        ]
+      }
+    }
+  },
+  {
+    "id": "4220:25398",
+    "name": "Property 1=Off",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 56,
+    "path": [
+      "Component",
+      "Component 1",
+      "Property 1=Off"
+    ],
+    "key": "2c72d01a0430a95bb32b7308e06bbe7456838b92",
+    "variantProperties": {
+      "Property 1": "Off"
+    }
+  },
+  {
+    "id": "4220:25403",
+    "name": "Property 1=On",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 56,
+    "path": [
+      "Component",
+      "Component 1",
+      "Property 1=On"
+    ],
+    "key": "cd0d5cc38f44ef716e0fe3d517c155d817e17808",
+    "variantProperties": {
+      "Property 1": "On"
+    }
+  },
+  {
+    "id": "6277:12352",
+    "name": "Brand/ GG",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Component",
+      "Brand/ GG"
+    ],
+    "key": "b42fad8d0aca34d1863cf46f45ea45cc9d6fa66d",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "6277:12351",
+    "name": "Brand/ FB",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Component",
+      "Brand/ FB"
+    ],
+    "key": "0a8bbd26dc84f99056a84bf595934ab7f309f908",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "6277:12350",
+    "name": "Brand/ APL",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Component",
+      "Brand/ APL"
+    ],
+    "key": "09b6d239c825919bc675f9fb0ffb69cf3c9ffcdf",
+    "properties": {},
+    "variantProperties": null
+  },
+  {
+    "id": "1535:5434",
+    "name": "Toast",
+    "type": "COMPONENT_SET",
+    "width": 415,
+    "height": 336,
+    "path": [
+      "Toast",
+      "Toast"
+    ],
+    "key": "275ec22b6c802ee9d076be6d23a98ec1b24ad939",
+    "properties": {
+      "Type": {
+        "type": "VARIANT",
+        "defaultValue": "Informative",
+        "variantOptions": [
+          "Informative",
+          "Warning",
+          "Error",
+          "Sucess"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1535:5433",
+    "name": "Type=Informative",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Toast",
+      "Toast",
+      "Type=Informative"
+    ],
+    "key": "08d0a17c10a1b9d0fc8f202abc6c0c719f320fb8",
+    "variantProperties": {
+      "Type": "Informative"
+    }
+  },
+  {
+    "id": "1535:5578",
+    "name": "Type=Sucess",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Toast",
+      "Toast",
+      "Type=Sucess"
+    ],
+    "key": "c3052163c21b3b709b4aae8ffe65d178e0201b6a",
+    "variantProperties": {
+      "Type": "Sucess"
+    }
+  },
+  {
+    "id": "1535:5455",
+    "name": "Type=Warning",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Toast",
+      "Toast",
+      "Type=Warning"
+    ],
+    "key": "337290ef8e3a2e83f76068f2af04119d8451782c",
+    "variantProperties": {
+      "Type": "Warning"
+    }
+  },
+  {
+    "id": "1535:5558",
+    "name": "Type=Error",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 68,
+    "path": [
+      "Toast",
+      "Toast",
+      "Type=Error"
+    ],
+    "key": "77faf4e2e1954e9db15522a81be7550b5a2bc0ac",
+    "variantProperties": {
+      "Type": "Error"
+    }
+  },
+  {
+    "id": "1370:18027",
+    "name": "icons",
+    "type": "COMPONENT_SET",
+    "width": 360,
+    "height": 360,
+    "path": [
+      "Icons",
+      "icons"
+    ],
+    "key": "750123956f457c8796540f595d20621e6a4e5fb1",
+    "properties": {
+      "Symbols#1370:19": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "1314:17322",
+        "preferredValues": [
+          {
+            "type": "COMPONENT",
+            "key": "8ae7944de96302d265fb90aa47f19c5b6602dd07"
+          }
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "defaultValue": "12px",
+        "variantOptions": [
+          "12px",
+          "16px",
+          "20px",
+          "24px",
+          "28px",
+          "32px",
+          "36px",
+          "40px",
+          "48px",
+          "56px",
+          "64px",
+          "72px",
+          "80px",
+          "88px"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1515:8817",
+    "name": "Size=12px",
+    "type": "COMPONENT",
+    "width": 12,
+    "height": 12,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=12px"
+    ],
+    "key": "2892658e0ff4f61eca1b558cc1b39f2aeafba36b",
+    "variantProperties": {
+      "Size": "12px"
+    }
+  },
+  {
+    "id": "1370:18046",
+    "name": "Size=16px",
+    "type": "COMPONENT",
+    "width": 16,
+    "height": 16,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=16px"
+    ],
+    "key": "65e02b2ce1cd9878c4d0f5d0514bbaa711e2dd03",
+    "variantProperties": {
+      "Size": "16px"
+    }
+  },
+  {
+    "id": "1370:18040",
+    "name": "Size=20px",
+    "type": "COMPONENT",
+    "width": 20,
+    "height": 20,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=20px"
+    ],
+    "key": "3b62976c484ac7b4b08bb4b63c525c66405a169b",
+    "variantProperties": {
+      "Size": "20px"
+    }
+  },
+  {
+    "id": "1370:18028",
+    "name": "Size=24px",
+    "type": "COMPONENT",
+    "width": 24,
+    "height": 24,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=24px"
+    ],
+    "key": "13b6accc4a7a7f9fa56ef20d23f36af134f80815",
+    "variantProperties": {
+      "Size": "24px"
+    }
+  },
+  {
+    "id": "1467:14683",
+    "name": "Size=28px",
+    "type": "COMPONENT",
+    "width": 28,
+    "height": 28,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=28px"
+    ],
+    "key": "2a2c46341f4fb6665266edce8bd01ea70bc99d1d",
+    "variantProperties": {
+      "Size": "28px"
+    }
+  },
+  {
+    "id": "1370:18034",
+    "name": "Size=32px",
+    "type": "COMPONENT",
+    "width": 32,
+    "height": 32,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=32px"
+    ],
+    "key": "36f38c47cb2ea7d042585c98a06192eb7c893742",
+    "variantProperties": {
+      "Size": "32px"
+    }
+  },
+  {
+    "id": "1370:18052",
+    "name": "Size=36px",
+    "type": "COMPONENT",
+    "width": 36,
+    "height": 36,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=36px"
+    ],
+    "key": "620ce3f438ae2acab4282771c6518c7b0b5e67cb",
+    "variantProperties": {
+      "Size": "36px"
+    }
+  },
+  {
+    "id": "1370:18058",
+    "name": "Size=40px",
+    "type": "COMPONENT",
+    "width": 40,
+    "height": 40,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=40px"
+    ],
+    "key": "1a4f803cfad4bf9c7314ac2a7e7f0a679203f655",
+    "variantProperties": {
+      "Size": "40px"
+    }
+  },
+  {
+    "id": "1370:18026",
+    "name": "Size=48px",
+    "type": "COMPONENT",
+    "width": 48,
+    "height": 48,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=48px"
+    ],
+    "key": "9c7a99f8db8ae57f065727cd4c25d85ea54a3acd",
+    "variantProperties": {
+      "Size": "48px"
+    }
+  },
+  {
+    "id": "1442:12105",
+    "name": "Size=56px",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 56,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=56px"
+    ],
+    "key": "1667b44693b3ca2d1929625237ff7b4fc9a9cfc4",
+    "variantProperties": {
+      "Size": "56px"
+    }
+  },
+  {
+    "id": "1442:12246",
+    "name": "Size=64px",
+    "type": "COMPONENT",
+    "width": 64,
+    "height": 64,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=64px"
+    ],
+    "key": "ba5bdae5d055914d4fc13c5af6d78c98ec47c5e4",
+    "variantProperties": {
+      "Size": "64px"
+    }
+  },
+  {
+    "id": "1454:23814",
+    "name": "Size=72px",
+    "type": "COMPONENT",
+    "width": 72,
+    "height": 72,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=72px"
+    ],
+    "key": "c11378e82884215ed8c15a077134aa0890c02490",
+    "variantProperties": {
+      "Size": "72px"
+    }
+  },
+  {
+    "id": "1454:23820",
+    "name": "Size=80px",
+    "type": "COMPONENT",
+    "width": 80,
+    "height": 80,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=80px"
+    ],
+    "key": "57ca3ee3cb22df3d2ca0568213889b51097381b9",
+    "variantProperties": {
+      "Size": "80px"
+    }
+  },
+  {
+    "id": "1467:14671",
+    "name": "Size=88px",
+    "type": "COMPONENT",
+    "width": 88,
+    "height": 88,
+    "path": [
+      "Icons",
+      "icons",
+      "Size=88px"
+    ],
+    "key": "03f15b8751f7940e9a3e3b4d54c6c1bfc50c1a67",
+    "variantProperties": {
+      "Size": "88px"
+    }
+  },
+  {
+    "id": "1521:12937",
+    "name": "Pricing",
+    "type": "COMPONENT_SET",
+    "width": 375,
+    "height": 188,
+    "path": [
+      "Pricing",
+      "Pricing"
+    ],
+    "key": "a3155dbd28574ad85bdc4527f3da60e35fadef3d",
+    "properties": {
+      "Sale#2:1": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Text#9:4": {
+        "type": "TEXT",
+        "defaultValue": "3-day Free Trial"
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "On",
+        "variantOptions": [
+          "Off",
+          "On"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1521:12938",
+    "name": "Property 1=On",
+    "type": "COMPONENT",
+    "width": 335,
+    "height": 64,
+    "path": [
+      "Pricing",
+      "Pricing",
+      "Property 1=On"
+    ],
+    "key": "ceaf811787c39864bbb0a9dface0b9f32eaedff9",
+    "variantProperties": {
+      "Property 1": "On"
+    }
+  },
+  {
+    "id": "1521:12943",
+    "name": "Property 1=Off",
+    "type": "COMPONENT",
+    "width": 335,
+    "height": 64,
+    "path": [
+      "Pricing",
+      "Pricing",
+      "Property 1=Off"
+    ],
+    "key": "08f2d60354b1303154ec34103eb106fd564f23f9",
+    "variantProperties": {
+      "Property 1": "Off"
+    }
+  },
+  {
+    "id": "1895:3104",
+    "name": "Button",
+    "type": "COMPONENT_SET",
+    "width": 2000,
+    "height": 900,
+    "path": [
+      "Button",
+      "Button"
+    ],
+    "key": "7d7f57973a30cec6acb63f07e8fd3dd4ef8ce0c1",
+    "properties": {
+      "Left#1895:6": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Right#1895:7": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Label#1895:8": {
+        "type": "TEXT",
+        "defaultValue": "Button"
+      },
+      "Property 1": {
+        "type": "VARIANT",
+        "defaultValue": "24px",
+        "variantOptions": [
+          "24px",
+          "28px",
+          "32px",
+          "36px",
+          "40px",
+          "48px",
+          "56px",
+          "64px",
+          "44px",
+          "Dynamic"
+        ]
+      },
+      "Property 2": {
+        "type": "VARIANT",
+        "defaultValue": "Filled",
+        "variantOptions": [
+          "Filled",
+          "Ghost",
+          "Opacity",
+          "Outline"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1313:14599",
+    "name": "Property 1=24px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 49,
+    "height": 24,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=24px, Property 2=Filled"
+    ],
+    "key": "02cc4efb387b9d7c4d07716f82c2535833be8ff3",
+    "variantProperties": {
+      "Property 1": "24px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1454:24199",
+    "name": "Property 1=28px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 28,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=28px, Property 2=Filled"
+    ],
+    "key": "c9773df606c1bcde028d4ff2bac6f4bafa3f94a1",
+    "variantProperties": {
+      "Property 1": "28px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1313:14595",
+    "name": "Property 1=32px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 66,
+    "height": 32,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=32px, Property 2=Filled"
+    ],
+    "key": "5db3fe93e0f33a0684373a6b0547a1c6038970ff",
+    "variantProperties": {
+      "Property 1": "32px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1342:15685",
+    "name": "Property 1=36px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 70,
+    "height": 36,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=36px, Property 2=Filled"
+    ],
+    "key": "9a84f1ee15c0c813887ef89a5a799f7500de98e4",
+    "variantProperties": {
+      "Property 1": "36px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1336:18265",
+    "name": "Property 1=40px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 77,
+    "height": 40,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=40px, Property 2=Filled"
+    ],
+    "key": "064a5df1aaf356c159ca01e132e36f502a6dfc3d",
+    "variantProperties": {
+      "Property 1": "40px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1869:16769",
+    "name": "Property 1=44px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 44,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=44px, Property 2=Filled"
+    ],
+    "key": "cfb90466d971071659f135953892bd06a77b395f",
+    "variantProperties": {
+      "Property 1": "44px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1313:14587",
+    "name": "Property 1=48px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 48,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=48px, Property 2=Filled"
+    ],
+    "key": "7c58ce18f5028aff2f7b077170e8ac4fbc0eb249",
+    "variantProperties": {
+      "Property 1": "48px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1336:18036",
+    "name": "Property 1=56px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 92,
+    "height": 56,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=56px, Property 2=Filled"
+    ],
+    "key": "072bd1ba342d8bc2eb8ee6f09db2c564a12a151c",
+    "variantProperties": {
+      "Property 1": "56px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1336:18293",
+    "name": "Property 1=64px, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 102,
+    "height": 64,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=64px, Property 2=Filled"
+    ],
+    "key": "f9053e58161aab3ac0e3b9a9fb81eb315acc7f0c",
+    "variantProperties": {
+      "Property 1": "64px",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1895:3338",
+    "name": "Property 1=Dynamic, Property 2=Filled",
+    "type": "COMPONENT",
+    "width": 114,
+    "height": 72,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=Dynamic, Property 2=Filled"
+    ],
+    "key": "56ebeee55bf3a7679923ba68678c202b58e03b52",
+    "variantProperties": {
+      "Property 1": "Dynamic",
+      "Property 2": "Filled"
+    }
+  },
+  {
+    "id": "1877:11889",
+    "name": "Property 1=24px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 49,
+    "height": 24,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=24px, Property 2=Opacity"
+    ],
+    "key": "e1a6fefb159300c967558e59e2128fa8e4659ae5",
+    "variantProperties": {
+      "Property 1": "24px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11893",
+    "name": "Property 1=28px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 28,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=28px, Property 2=Opacity"
+    ],
+    "key": "73d8fb9a4190dc0ca88659690152f936234340bf",
+    "variantProperties": {
+      "Property 1": "28px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11897",
+    "name": "Property 1=32px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 66,
+    "height": 32,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=32px, Property 2=Opacity"
+    ],
+    "key": "fe15dbe76130d3140ab07eedb498ee53c69d071e",
+    "variantProperties": {
+      "Property 1": "32px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11901",
+    "name": "Property 1=36px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 70,
+    "height": 36,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=36px, Property 2=Opacity"
+    ],
+    "key": "1e25cee0abc056361b136e70c672a74368bed6cc",
+    "variantProperties": {
+      "Property 1": "36px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11905",
+    "name": "Property 1=40px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 77,
+    "height": 40,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=40px, Property 2=Opacity"
+    ],
+    "key": "f2b615b08fa12998c5123d0daf6c55a9fba9e61e",
+    "variantProperties": {
+      "Property 1": "40px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11909",
+    "name": "Property 1=44px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 44,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=44px, Property 2=Opacity"
+    ],
+    "key": "8d8d22906094a4c9581f334b2e6a9df885bf887a",
+    "variantProperties": {
+      "Property 1": "44px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11913",
+    "name": "Property 1=48px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 48,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=48px, Property 2=Opacity"
+    ],
+    "key": "af769df38ed945d7a1965d95e6e645b4f193f1ee",
+    "variantProperties": {
+      "Property 1": "48px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11917",
+    "name": "Property 1=56px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 92,
+    "height": 56,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=56px, Property 2=Opacity"
+    ],
+    "key": "50c3e43128250a593e910b23e535fb661ee13010",
+    "variantProperties": {
+      "Property 1": "56px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1877:11921",
+    "name": "Property 1=64px, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 102,
+    "height": 64,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=64px, Property 2=Opacity"
+    ],
+    "key": "362c2b8fdde9c38ef2f0ce2a19d428e86c485a03",
+    "variantProperties": {
+      "Property 1": "64px",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1895:3346",
+    "name": "Property 1=Dynamic, Property 2=Opacity",
+    "type": "COMPONENT",
+    "width": 114,
+    "height": 72,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=Dynamic, Property 2=Opacity"
+    ],
+    "key": "1f65e90e86a5d8289fbd109a0f7631ceeaec96eb",
+    "variantProperties": {
+      "Property 1": "Dynamic",
+      "Property 2": "Opacity"
+    }
+  },
+  {
+    "id": "1871:16102",
+    "name": "Property 1=24px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 49,
+    "height": 24,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=24px, Property 2=Outline"
+    ],
+    "key": "6ef699fa983d0f54d1bd5bf063d4a6ff1ba1b98c",
+    "variantProperties": {
+      "Property 1": "24px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16106",
+    "name": "Property 1=28px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 28,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=28px, Property 2=Outline"
+    ],
+    "key": "077c794dfc949916b3c0fce8264966a571a53c1e",
+    "variantProperties": {
+      "Property 1": "28px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16110",
+    "name": "Property 1=32px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 66,
+    "height": 32,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=32px, Property 2=Outline"
+    ],
+    "key": "b346ecf89dffc86083932c51b423f7908fcd68de",
+    "variantProperties": {
+      "Property 1": "32px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16114",
+    "name": "Property 1=36px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 70,
+    "height": 36,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=36px, Property 2=Outline"
+    ],
+    "key": "d49a1a8ee31b42b3c262d7f82a92a9f1bf36dc25",
+    "variantProperties": {
+      "Property 1": "36px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16118",
+    "name": "Property 1=40px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 77,
+    "height": 40,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=40px, Property 2=Outline"
+    ],
+    "key": "3e867c8625707ab967024a33ae30ce51c8b9bad4",
+    "variantProperties": {
+      "Property 1": "40px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16122",
+    "name": "Property 1=44px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 44,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=44px, Property 2=Outline"
+    ],
+    "key": "976cb420061cc10516995918988bf0eab6f82e0f",
+    "variantProperties": {
+      "Property 1": "44px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16126",
+    "name": "Property 1=48px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 48,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=48px, Property 2=Outline"
+    ],
+    "key": "b98810571450652a89aeb78119a3819bede458e9",
+    "variantProperties": {
+      "Property 1": "48px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16130",
+    "name": "Property 1=56px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 92,
+    "height": 56,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=56px, Property 2=Outline"
+    ],
+    "key": "e6f3fd0150932ab626793d220f200b206b6b6cff",
+    "variantProperties": {
+      "Property 1": "56px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16134",
+    "name": "Property 1=64px, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 102,
+    "height": 64,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=64px, Property 2=Outline"
+    ],
+    "key": "087b3b8889127b153cb1328b8af1445caa1e9fd3",
+    "variantProperties": {
+      "Property 1": "64px",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1895:3351",
+    "name": "Property 1=Dynamic, Property 2=Outline",
+    "type": "COMPONENT",
+    "width": 114,
+    "height": 72,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=Dynamic, Property 2=Outline"
+    ],
+    "key": "d0ae227ebc03737a276e2faa8e06cd217ec06956",
+    "variantProperties": {
+      "Property 1": "Dynamic",
+      "Property 2": "Outline"
+    }
+  },
+  {
+    "id": "1871:16352",
+    "name": "Property 1=24px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 49,
+    "height": 24,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=24px, Property 2=Ghost"
+    ],
+    "key": "d8e4643eeccabae54503e16706e5635477206127",
+    "variantProperties": {
+      "Property 1": "24px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16356",
+    "name": "Property 1=28px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 56,
+    "height": 28,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=28px, Property 2=Ghost"
+    ],
+    "key": "37d1865109ed466bf67a036b03afff04156614ce",
+    "variantProperties": {
+      "Property 1": "28px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16360",
+    "name": "Property 1=32px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 66,
+    "height": 32,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=32px, Property 2=Ghost"
+    ],
+    "key": "f7b621b5e0472fb95a058661db473a8602712cd1",
+    "variantProperties": {
+      "Property 1": "32px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16364",
+    "name": "Property 1=36px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 70,
+    "height": 36,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=36px, Property 2=Ghost"
+    ],
+    "key": "4b38241902c17c0f99e283d6ff4a8b2483614c3f",
+    "variantProperties": {
+      "Property 1": "36px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16368",
+    "name": "Property 1=40px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 77,
+    "height": 40,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=40px, Property 2=Ghost"
+    ],
+    "key": "4e90dcba2552846b8b1bc7a4ea72c5df2c57ea07",
+    "variantProperties": {
+      "Property 1": "40px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16372",
+    "name": "Property 1=44px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 44,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=44px, Property 2=Ghost"
+    ],
+    "key": "d0d5fd4bff203ffe047136653af60208afd132c8",
+    "variantProperties": {
+      "Property 1": "44px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16376",
+    "name": "Property 1=48px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 85,
+    "height": 48,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=48px, Property 2=Ghost"
+    ],
+    "key": "c3bfeadcb69a493ecb8aca8ea03c3b30c17a8761",
+    "variantProperties": {
+      "Property 1": "48px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16380",
+    "name": "Property 1=56px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 92,
+    "height": 56,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=56px, Property 2=Ghost"
+    ],
+    "key": "92a4566d9fc5ea78cea70d920bdbffd10f7b5a30",
+    "variantProperties": {
+      "Property 1": "56px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1871:16384",
+    "name": "Property 1=64px, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 102,
+    "height": 64,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=64px, Property 2=Ghost"
+    ],
+    "key": "4b711ae8a3c75eecc841595f792671cd90270ee0",
+    "variantProperties": {
+      "Property 1": "64px",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1895:3355",
+    "name": "Property 1=Dynamic, Property 2=Ghost",
+    "type": "COMPONENT",
+    "width": 114,
+    "height": 72,
+    "path": [
+      "Button",
+      "Button",
+      "Property 1=Dynamic, Property 2=Ghost"
+    ],
+    "key": "d709989fe2f025bd2dceffdd792a49550bf30cfe",
+    "variantProperties": {
+      "Property 1": "Dynamic",
+      "Property 2": "Ghost"
+    }
+  },
+  {
+    "id": "1860:2408",
+    "name": "Section Header",
+    "type": "COMPONENT_SET",
+    "width": 423,
+    "height": 420,
+    "path": [
+      "Header",
+      "Section Header"
+    ],
+    "key": "dd2635103e8656ea631c94628dd33b23f19796ca",
+    "properties": {
+      "Right#1860:5": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Left#1860:9": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Label#1860:13": {
+        "type": "TEXT",
+        "defaultValue": "Title"
+      },
+      "Sub#1860:17": {
+        "type": "TEXT",
+        "defaultValue": "Subtitle"
+      },
+      "Subtitle#2027:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Header": {
+        "type": "VARIANT",
+        "defaultValue": "Heading 1",
+        "variantOptions": [
+          "Heading 1",
+          "Heading 2",
+          "Heading 3",
+          "Heading 5",
+          "Heading 4"
+        ]
+      }
+    }
+  },
+  {
+    "id": "1860:2407",
+    "name": "Header=Heading 1",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 64,
+    "path": [
+      "Header",
+      "Section Header",
+      "Header=Heading 1"
+    ],
+    "key": "eb9fe94fc74a061f4d5737b99893220dedf3883c",
+    "variantProperties": {
+      "Header": "Heading 1"
+    }
+  },
+  {
+    "id": "1897:11124",
+    "name": "Header=Heading 2",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 60,
+    "path": [
+      "Header",
+      "Section Header",
+      "Header=Heading 2"
+    ],
+    "key": "a494f7dc067c7da94915ff3841729c172384e9af",
+    "variantProperties": {
+      "Header": "Heading 2"
+    }
+  },
+  {
+    "id": "1860:2409",
+    "name": "Header=Heading 3",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 56,
+    "path": [
+      "Header",
+      "Section Header",
+      "Header=Heading 3"
+    ],
+    "key": "e621e3a6d18bdcc1ca9cb26e43939a1b6af75393",
+    "variantProperties": {
+      "Header": "Heading 3"
+    }
+  },
+  {
+    "id": "1860:2425",
+    "name": "Header=Heading 4",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 52,
+    "path": [
+      "Header",
+      "Section Header",
+      "Header=Heading 4"
+    ],
+    "key": "df03c6c5c0f0297e7da38d96bea00cd462434e99",
+    "variantProperties": {
+      "Header": "Heading 4"
+    }
+  },
+  {
+    "id": "1897:11179",
+    "name": "Header=Heading 5",
+    "type": "COMPONENT",
+    "width": 375,
+    "height": 44,
+    "path": [
+      "Header",
+      "Section Header",
+      "Header=Heading 5"
+    ],
+    "key": "4edce73dce2d551a0f630a88c7cec8a95e9f53a1",
+    "variantProperties": {
+      "Header": "Heading 5"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.922 12.1491C20.5253 14.773 20.9935 17.1487 19.9012 18.2411C18.2713 19.871 13.7841 18.0265 9.8789 14.1212C5.97365 10.216 4.12913 5.72884 5.75904 4.09893C6.8514 3.00657 9.22714 3.47481 11.851 5.07808" stroke="white" stroke-width="1.5"/>
+<path opacity="0.5" d="M11.4848 5.44423C13.3314 3.59753 16.3255 3.59753 18.1722 5.44423L18.5558 5.82781C20.4025 7.67451 20.4025 10.6686 18.5558 12.5153C18.4305 12.6406 18.2697 12.7248 18.0953 12.6934C17.5988 12.6043 16.3769 12.1342 14.1214 9.87866C11.8658 7.6231 11.3958 6.40126 11.3066 5.9048C11.2753 5.73033 11.3594 5.56956 11.4848 5.44423Z" stroke="white" stroke-width="1.5"/>
+<circle opacity="0.5" cx="12" cy="12" r="1" transform="rotate(45 12 12)" fill="white"/>
+<circle cx="9.17163" cy="7.75735" r="1" transform="rotate(45 9.17163 7.75735)" fill="white"/>
+<circle cx="16.2427" cy="14.8284" r="1" transform="rotate(45 16.2427 14.8284)" fill="white"/>
+<path d="M3.636 20.3639L7.75732 16.2426" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+<path opacity="0.5" d="M10 22.0005L12.7072 19.7782" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+<path opacity="0.5" d="M2 13.9999L4.22192 11.2929" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

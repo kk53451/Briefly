@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F6F1E7">
+  <title>Briefly. — 데일리 저널</title>
+  <meta name="description" content="오늘을 이해하는 세 가지 이야기. Briefly 데일리 저널 BI·UX 시안.">
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="journal.css">
+  <script src="common.js" defer></script>
+</head>
+<body class="journal">
+  <a class="skip-link" href="#journal-main">본문으로 이동</a>
+  <div class="journal-page">
+    <header class="journal-header">
+      <button class="journal-brand" data-action="home" aria-label="Briefly 오늘의 브리핑">
+        <svg class="journal-symbol" viewBox="0 0 28 34" aria-hidden="true"><path d="M3 2h14l8 8v22H3z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M17 2v9h8M8 17h12M8 22h12M8 27h7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+        <span>Briefly<span class="brand-dot">.</span></span>
+      </button>
+      <p class="journal-signature">A LITTLE CONTEXT.<br>A CLEARER DAY.</p>
+      <nav class="journal-desktop-nav" aria-label="주요 메뉴">
+        <button class="is-current" data-action="home" aria-current="page">오늘</button>
+        <button data-action="archive">지난 브리핑</button>
+        <button data-action="saved">저장한 이야기 <span aria-hidden="true">↗</span></button>
+      </nav>
+      <button class="journal-mobile-saved" data-action="saved" aria-label="저장한 이야기 보기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4V4Z"/></svg></button>
+    </header>
+
+    <div class="edition-line">
+      <p><span class="edition-dot" aria-hidden="true"></span>2026.10.23 <span class="weekday">금요일</span></p>
+      <p class="edition-name">THE MORNING EDITION</p>
+      <p>오전 브리핑 <span class="edition-number">/ 001</span></p>
+    </div>
+
+    <main id="journal-main">
+      <section class="journal-intro" aria-labelledby="journal-title">
+        <div class="intro-title">
+          <span class="journal-eyebrow">오늘의 브리핑</span>
+          <h1 id="journal-title">오늘을 이해하는<br>세 가지 이야기<span class="title-period">.</span></h1>
+        </div>
+        <div class="intro-actions">
+          <p class="intro-note">분주한 하루에도, 놓치고 싶지 않은 맥락.<br>읽고, 듣고, 나의 속도로.</p>
+          <div class="journal-action-row">
+            <button class="journal-primary" data-action="read" data-topic="0"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h6a2 2 0 0 1 2 2v11a3 3 0 0 0-3-2H3V4Zm14 0h-4a2 2 0 0 0-2 2v11a3 3 0 0 1 3-2h3V4Z"/></svg><span>2분 읽기</span><span aria-hidden="true">↗</span></button>
+            <button class="journal-listen" data-action="listen"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6V4Z" fill="currentColor" stroke="none"/></svg><span>전체 듣기</span><span class="action-time">5:12</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lead-story" aria-labelledby="lead-title">
+        <div class="lead-copy">
+          <div class="story-kicker"><span class="topic-index">01</span><span>경제</span><span class="kicker-rule" aria-hidden="true"></span><span class="story-note">오늘의 첫 이야기</span></div>
+          <h2 id="lead-title"><button data-action="read" data-topic="0">기준금리 동결,<br>우리 생활에<br class="desktop-break"> 남는 변화</button></h2>
+          <p class="lead-summary">숫자는 그대로여도, 생활의 무게는 달라집니다.<br class="desktop-break">대출과 저축, 소비의 관점에서 짚어봅니다.</p>
+          <div class="lead-links">
+            <button class="source-link" data-action="sources" data-topic="0">출처 살펴보기 <span aria-hidden="true">↗</span></button>
+            <button class="story-listen" data-action="listen" data-topic="0"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 11V9a7 7 0 0 1 14 0v2M3 10h3v7H3v-7Zm11 0h3v7h-3v-7Z"/></svg>이 이야기 듣기 <span>1:44</span></button>
+          </div>
+        </div>
+        <figure class="lead-image">
+          <img src="assets/city-editorial.png" alt="아침빛 아래 펼쳐진 가상의 도시 풍경. AI 생성 브랜드 이미지.">
+          <figcaption><span>EVERYDAY, IN PERSPECTIVE</span><span aria-hidden="true">01 / 03</span></figcaption>
+          <span class="image-corner" aria-hidden="true"></span>
+        </figure>
+      </section>
+
+      <section class="more-stories" aria-label="이어서 읽을 이야기">
+        <article class="compact-story">
+          <span class="compact-index" aria-hidden="true">02</span>
+          <div class="compact-copy"><p class="compact-category">사회 <span>·</span> 1:43 듣기</p><h2><button data-action="read" data-topic="1">도심의 이동,<br>자동차보다 사람에게 가까이</button></h2></div>
+          <button class="compact-play" data-action="listen" data-topic="1" aria-label="두 번째 이야기 듣기"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6V4Z" fill="currentColor"/></svg></button>
+        </article>
+        <article class="compact-story">
+          <span class="compact-index" aria-hidden="true">03</span>
+          <div class="compact-copy"><p class="compact-category">IT·과학 <span>·</span> 1:45 듣기</p><h2><button data-action="read" data-topic="2">AI가 만든 콘텐츠,<br>이제 표시가 기준이 됩니다</button></h2></div>
+          <button class="compact-play" data-action="listen" data-topic="2" aria-label="세 번째 이야기 듣기"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6V4Z" fill="currentColor"/></svg></button>
+        </article>
+      </section>
+      <footer class="journal-footer"><p>좋은 하루는, 조금 더 이해하는 데서.</p><span>CURATED FOR YOUR EVERYDAY.</span></footer>
+    </main>
+  </div>
+
+  <nav class="journal-bottom-nav" aria-label="모바일 주요 메뉴">
+    <button class="is-current" data-action="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/></svg><span>오늘</span></button>
+    <button data-action="archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v13H4zM3 4h18M8 11h8"/></svg><span>지난 브리핑</span></button>
+    <button data-action="saved"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4V4Z"/></svg><span>저장</span></button>
+  </nav>
+</body>
+</html>

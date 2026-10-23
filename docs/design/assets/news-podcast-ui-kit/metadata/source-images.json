@@ -1,0 +1,2873 @@
+[
+  {
+    "hash": "9125994ee4e609489cee1890a22524af31901828",
+    "nodes": [
+      {
+        "id": "I8201:28162;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "8201:27152",
+        "name": "Size=48px",
+        "type": "INSTANCE",
+        "width": 48,
+        "height": 48,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=48px"
+        ]
+      },
+      {
+        "id": "I8201:26907;6275:11069",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 104,
+        "height": 104,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Frame 4636",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 6,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "e5adc3eff00f3d664902a53491a769f9e600ff99",
+    "nodes": [
+      {
+        "id": "I8201:28163;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "I8201:26908;6275:11069",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 104,
+        "height": 104,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Frame 4636",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:26315",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 120,
+        "height": 120,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "3cdb986c01fea7f0ce24ecf8ea883c8b18a3357d",
+    "nodes": [
+      {
+        "id": "I8201:28164;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "8201:26256",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      },
+      {
+        "id": "I8201:26909;6275:11069",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 104,
+        "height": 104,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Frame 4636",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 5,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "f8e875761f76d557e0dab560390103cc09fbf68a",
+    "nodes": [
+      {
+        "id": "I8201:28165;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "I8201:28304;1878:4577;1878:4555;1891:10152",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Type=Default",
+          "Auto Snap=On",
+          "Center",
+          "Center",
+          "Images"
+        ]
+      },
+      {
+        "id": "I8201:28304;1878:4577;1878:4555;1891:10152;1467:9757",
+        "name": "Rectangle 73",
+        "type": "RECTANGLE",
+        "width": 9.999999974752427e-07,
+        "height": 9.999999974752427e-07,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Type=Default",
+          "Auto Snap=On",
+          "Center",
+          "Center",
+          "Images",
+          "Rectangle 73"
+        ]
+      }
+    ],
+    "uses": 19,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "091a7f9091e4d266d6c1603ad3af1563820591c2",
+    "nodes": [
+      {
+        "id": "I8201:28166;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "8201:26246",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      },
+      {
+        "id": "I8201:26246;1467:9808",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 9.999999974752427e-07,
+        "height": 9.999999974752427e-07,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 10,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "6ae42fb25633a2300d69a8d1281565520e735930",
+    "nodes": [
+      {
+        "id": "I8201:28167;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "I8201:27142;1467:9786",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 9.999999974752427e-07,
+        "height": 9.999999974752427e-07,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=48px",
+          "Image"
+        ]
+      },
+      {
+        "id": "I8201:26912;6275:11069",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 104,
+        "height": 104,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Frame 4636",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 6,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "6452b9aa123180179cc0691af8fbdd992eafaf6a",
+    "nodes": [
+      {
+        "id": "I8201:28168;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "I8201:28946;6244:13203",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      },
+      {
+        "id": "I8201:28949;6244:13203",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      }
+    ],
+    "uses": 27,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "434f84aa7bd55d3df82efde9892631322ff21607",
+    "nodes": [
+      {
+        "id": "I8201:28169;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "I8201:26914;6275:11069",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 104,
+        "height": 104,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Frame 4636",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "6cd3d2d82de39ff11b61460f715a23288d0e0b9d",
+    "nodes": [
+      {
+        "id": "I8201:28170;1857:3094",
+        "name": "Size=32px",
+        "type": "INSTANCE",
+        "width": 32,
+        "height": 32,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=32px"
+        ]
+      },
+      {
+        "id": "8201:26271",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      },
+      {
+        "id": "8201:26281",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      }
+    ],
+    "uses": 8,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "9d89f309d8349f545788c40f3a50b05f8a9d5094",
+    "nodes": [
+      {
+        "id": "I1346:15474;1303:18822",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Tab Bar",
+          "Tab Bar",
+          "Property 1=Mobile",
+          "Tab",
+          "_Button/Vertical Stack",
+          "Images"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "105:2"
+  },
+  {
+    "hash": "72ba13596a954598f0c75a26014146d324940278",
+    "nodes": [
+      {
+        "id": "8201:29509",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 16,
+        "height": 16,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:29932",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 16,
+        "height": 16,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 19",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "2a6560460bc39c059f12196d9a91ae506d574c51",
+    "nodes": [
+      {
+        "id": "8201:28953",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 375,
+        "height": 94,
+        "path": [
+          "Dark",
+          "Frame",
+          "Frame",
+          "Group",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:28958",
+        "name": "Size=44px",
+        "type": "INSTANCE",
+        "width": 44,
+        "height": 44,
+        "path": [
+          "Dark",
+          "Frame",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=44px"
+        ]
+      },
+      {
+        "id": "I8201:28946;6244:13211",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame 4557",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 67,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "76054512a4b0f2eb3f7abe237ae3baa8350bb884",
+    "nodes": [
+      {
+        "id": "8201:28934",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28722",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28594",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 12",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "91ecba552375a34f0510975937b9d6af57157f38",
+    "nodes": [
+      {
+        "id": "8201:28935",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28723",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28595",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 12",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "6cf245327d26650f1cc88c8dac6d67903cda191e",
+    "nodes": [
+      {
+        "id": "8201:28936",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28724",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28596",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 12",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "8639a704f91c962419cb8d880007a94a8ecfd3d3",
+    "nodes": [
+      {
+        "id": "8201:28937",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "I8201:28949;6244:13211",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame 4557",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:29216",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 8,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "e97beb902875b4296621acf5e3965abd27b50d87",
+    "nodes": [
+      {
+        "id": "8201:28938",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28726",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:28598",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 12",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "e59c33efb4f185af983d60cb48d36ccbb4aea3b2",
+    "nodes": [
+      {
+        "id": "8201:28944",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 343,
+        "height": 204,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame",
+          "Group",
+          "Image"
+        ]
+      },
+      {
+        "id": "I8201:28946;6244:13211",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame 4557",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:29143",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 375,
+        "height": 812,
+        "path": [
+          "Dark",
+          "Frame",
+          "Group",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 20,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "55917cd57a96dcff78090684379214dba5c620bf",
+    "nodes": [
+      {
+        "id": "8201:29222",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:29062",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 13",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "4c5195d7969c6cf6063595dba3100d529b1f5d76",
+    "nodes": [
+      {
+        "id": "8201:29225",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:29065",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 13",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "4f47e259e9d5147bedd6a4a731a7ef4190f11160",
+    "nodes": [
+      {
+        "id": "8201:29228",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:29068",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 164,
+        "height": 164,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 13",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "aa4a982a47f7baf3423199894e58126b2138a825",
+    "nodes": [
+      {
+        "id": "8201:25775",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 230,
+        "height": 140,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:27048",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 287,
+        "height": 176,
+        "path": [
+          "Dark",
+          "Frame",
+          "Group",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "I8201:27201;6209:49613;6203:48611",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 295,
+        "height": 156,
+        "path": [
+          "Dark",
+          "Frame",
+          "iPhone 13 mini - 4",
+          "Auto Layout Vertical",
+          "Frame 4576",
+          "Frame 4535",
+          "image 4"
+        ]
+      }
+    ],
+    "uses": 7,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "db3a19401220ddb6d87b9f40b1e976d4b9d20769",
+    "nodes": [
+      {
+        "id": "8201:25785",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 287,
+        "height": 176,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8203:6403",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 287,
+        "height": 176,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 11",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "c5989308b10cb046a5494ea9cdd213a292a06db8",
+    "nodes": [
+      {
+        "id": "8201:25795",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 319,
+        "height": 195,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8203:6413",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 319,
+        "height": 195,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 11",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "00d4b961ae4d4c99e11209b9976df1035ffa3850",
+    "nodes": [
+      {
+        "id": "8201:27058",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 319,
+        "height": 195,
+        "path": [
+          "Dark",
+          "Frame",
+          "Group",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8203:6436",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 319,
+        "height": 195,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 10",
+          "Group",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "7b41a64703d6090906cde19e267b9551e84d55a1",
+    "nodes": [
+      {
+        "id": "8201:28300",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 375,
+        "height": 812,
+        "path": [
+          "Dark",
+          "Frame",
+          "Group",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:28306",
+        "name": "Rectangle",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 54,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Rectangle"
+        ]
+      },
+      {
+        "id": "8201:25673",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 375,
+        "height": 217,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 6,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "535efd910127da882df962886eb01f2209ecc67a",
+    "nodes": [
+      {
+        "id": "8201:28375",
+        "name": "Size=36px",
+        "type": "INSTANCE",
+        "width": 36,
+        "height": 36,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=36px"
+        ]
+      },
+      {
+        "id": "8201:28414",
+        "name": "Size=36px",
+        "type": "INSTANCE",
+        "width": 36,
+        "height": 36,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=36px"
+        ]
+      },
+      {
+        "id": "8201:28482",
+        "name": "Size=36px",
+        "type": "INSTANCE",
+        "width": 36,
+        "height": 36,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=36px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "ea9a0431e25a0156dd5fac2f14acd5076b98af3b",
+    "nodes": [
+      {
+        "id": "8201:28398",
+        "name": "Size=36px",
+        "type": "INSTANCE",
+        "width": 36,
+        "height": 36,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=36px"
+        ]
+      },
+      {
+        "id": "8201:28505",
+        "name": "Size=36px",
+        "type": "INSTANCE",
+        "width": 36,
+        "height": 36,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=36px"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "f185f40eb00f7ca9894254c05f48168bd47fa3f4",
+    "nodes": [
+      {
+        "id": "8201:25686",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:27944",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 9",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "e2362e5841b91112268c57477bb141425d908ab9",
+    "nodes": [
+      {
+        "id": "8201:25691",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:27949",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 9",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "480089d5d9036e3b6482acaed965b8de76c865d3",
+    "nodes": [
+      {
+        "id": "8201:25696",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      },
+      {
+        "id": "8201:27954",
+        "name": "Size=72px",
+        "type": "INSTANCE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 9",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=72px"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "5681fde4c806eecb09d61f264ef41d5a21376c6e",
+    "nodes": [
+      {
+        "id": "I8201:27850;6203:48611",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 233,
+        "height": 156,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Frame 7",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "c87da0634d21d2a142104bc40d505ddcbff4c655",
+    "nodes": [
+      {
+        "id": "I8201:27851;6203:48611",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 233,
+        "height": 156,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Frame 7",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "d158b21839f78f753b411ce59cad369902707d0a",
+    "nodes": [
+      {
+        "id": "I8201:27811;1895:2702",
+        "name": "Size=44px",
+        "type": "INSTANCE",
+        "width": 44,
+        "height": 44,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Item",
+          "Size=44px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "dc055c77a6b16a25c298d2b5bd31f5b622f6bde9",
+    "nodes": [
+      {
+        "id": "I8201:27812;1895:2702",
+        "name": "Size=44px",
+        "type": "INSTANCE",
+        "width": 44,
+        "height": 44,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Item",
+          "Size=44px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "625078c209868453ca9fd9028178ce803e17d43e",
+    "nodes": [
+      {
+        "id": "I8201:27813;1895:2702",
+        "name": "Size=44px",
+        "type": "INSTANCE",
+        "width": 44,
+        "height": 44,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Item",
+          "Size=44px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "4dc3099cf406e032551b7d141d011c691e681440",
+    "nodes": [
+      {
+        "id": "I8201:27814;1895:2702",
+        "name": "Size=44px",
+        "type": "INSTANCE",
+        "width": 44,
+        "height": 44,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Item",
+          "Size=44px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "f5e22a75ec48eacb26795d5437b9fcf2548e1cbf",
+    "nodes": [
+      {
+        "id": "8201:27820",
+        "name": "Size=16px",
+        "type": "INSTANCE",
+        "width": 16.000001907348633,
+        "height": 16.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=16px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "27b359b4cf3a4fec5b58c25711fe76984c32bd5c",
+    "nodes": [
+      {
+        "id": "8201:27823",
+        "name": "Size=16px",
+        "type": "INSTANCE",
+        "width": 16.000001907348633,
+        "height": 16.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=16px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "6951d6985d3fbefb1cd901f3ff9533cf24024de5",
+    "nodes": [
+      {
+        "id": "8201:27829",
+        "name": "Size=16px",
+        "type": "INSTANCE",
+        "width": 16.000001907348633,
+        "height": 16.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=16px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "016b063dced629d4faebec1756f80e66a36f3d9c",
+    "nodes": [
+      {
+        "id": "8201:27832",
+        "name": "Size=16px",
+        "type": "INSTANCE",
+        "width": 16.000001907348633,
+        "height": 16.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=16px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "2cdb5dfa464bd78311fe540341331471d4e014d4",
+    "nodes": [
+      {
+        "id": "8201:27838",
+        "name": "Size=16px",
+        "type": "INSTANCE",
+        "width": 16.000001907348633,
+        "height": 16.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=16px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "17f647131a035b4eab6c6292e701d144ad08c5ce",
+    "nodes": [
+      {
+        "id": "8201:27841",
+        "name": "Size=16px",
+        "type": "INSTANCE",
+        "width": 16.000001907348633,
+        "height": 16.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Size=16px"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "e3dfa3b15e5d3a11ac6521d3a32e6f8f4a8ba2bd",
+    "nodes": [
+      {
+        "id": "I8201:27845;1346:14915;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Selected=True",
+          "Images"
+        ]
+      },
+      {
+        "id": "I8201:25895;1346:14915;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Property 1=Default",
+          "Selected=True",
+          "Images"
+        ]
+      },
+      {
+        "id": "I8201:27201;6239:10427;1346:14915;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "iPhone 13 mini - 4",
+          "Auto Layout Vertical",
+          "Frame 4581",
+          "Pill Bar",
+          "Pill Buttons",
+          "Images"
+        ]
+      }
+    ],
+    "uses": 6,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "f3e927ce3ca5dee5c1ba9fdf313f0cc46304162c",
+    "nodes": [
+      {
+        "id": "I8201:27845;1346:14918;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Selected=True",
+          "Images"
+        ]
+      },
+      {
+        "id": "I8201:27665;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26724;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 5,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "66f36aaead1240ca1cd85f160d841753bb4fb729",
+    "nodes": [
+      {
+        "id": "8201:26581",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 343,
+        "height": 156,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:25843",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 343,
+        "height": 156,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 7",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "76eea1ef88caa850d5f2a11246905a0fc65533ae",
+    "nodes": [
+      {
+        "id": "I8201:26588;1346:14917;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Property 1=Default",
+          "Selected=True",
+          "Images"
+        ]
+      },
+      {
+        "id": "I8201:25850;1346:14917;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 7",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Property 1=Default",
+          "Selected=True",
+          "Images"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "fbc9779b5ede639db5dfbba30aaebec151aa17e1",
+    "nodes": [
+      {
+        "id": "8201:26261",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 62,
+        "height": 62,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "7f361fce5a15655b90173b34923c79c3eef19691",
+    "nodes": [
+      {
+        "id": "8201:26262",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 62,
+        "height": 62,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "6c24347906c2b10ea1b9e8a461a189ea02c0a29f",
+    "nodes": [
+      {
+        "id": "8201:26263",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 62,
+        "height": 62,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "8c9f01c98e42069497ef22b9b9aea490568664d5",
+    "nodes": [
+      {
+        "id": "8201:26264",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 62,
+        "height": 62,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "67923f88e88c1c01ecd290eb9662bed8b2c78db6",
+    "nodes": [
+      {
+        "id": "8201:26265",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 62,
+        "height": 62,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "1896b6c9e18e1c9612c303981d2d808bc0bc93cc",
+    "nodes": [
+      {
+        "id": "I8201:26292;1346:14916;6239:9423",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Property 1=Default",
+          "Selected=True",
+          "Images"
+        ]
+      }
+    ],
+    "uses": 1,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "680d4577ce4ddfeeaeaf2f363681f279078995f0",
+    "nodes": [
+      {
+        "id": "I8201:27663;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26722;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27464;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "a3b149e9c1c185fc8bd5e7f8d15b1dc599ee2509",
+    "nodes": [
+      {
+        "id": "I8201:27664;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26723;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27465;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "1a8884303f3e731996d80cbd9e3167afac63ceea",
+    "nodes": [
+      {
+        "id": "I8201:27666;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27670;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26725;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 8,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "176c053f1f3886abf44e623ffbe9fd761e989a5c",
+    "nodes": [
+      {
+        "id": "I8201:27667;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26726;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27468;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "67ce88972253c9f3a4c7bc3246a3389339547ab9",
+    "nodes": [
+      {
+        "id": "I8201:27668;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26727;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27469;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "7ae7ff42f4392c15fbdd01159c9de9ea504f4991",
+    "nodes": [
+      {
+        "id": "I8201:27669;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26728;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27470;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "a77ce35bd5d7411126fd7562eb94f072ad1cce0d",
+    "nodes": [
+      {
+        "id": "I8201:27671;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26730;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27472;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "2b06ae802ed96742737470415f74e8be0c02fb2e",
+    "nodes": [
+      {
+        "id": "I8201:27672;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:26731;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      },
+      {
+        "id": "I8201:27473;1857:3094",
+        "name": "Size=24px",
+        "type": "INSTANCE",
+        "width": 24,
+        "height": 24,
+        "path": [
+          "Light",
+          "iPhone 13 mini - 21",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Property 1=Default",
+          "Size=24px"
+        ]
+      }
+    ],
+    "uses": 4,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "53e10c7dcf2d30c16b832c3e035d781344dbdf98",
+    "nodes": [
+      {
+        "id": "I8201:25865;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Frame 791",
+          "Auto Layout Horizontal",
+          "image 4"
+        ]
+      },
+      {
+        "id": "I8201:27078;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ６",
+          "Auto Layout Vertical",
+          "Frame 791",
+          "Auto Layout Horizontal",
+          "image 4"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "07f07856af0b1f947c338ae3a3391b6272dc2afb",
+    "nodes": [
+      {
+        "id": "8201:25874",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 140,
+        "height": 106,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:27087",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 140,
+        "height": 106,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ６",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "dc5cf89efbab892f55eb2a8615675abe2f34facc",
+    "nodes": [
+      {
+        "id": "8201:25885",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 140,
+        "height": 106,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      },
+      {
+        "id": "8201:27098",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 140,
+        "height": 106,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ６",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "cf69b0e2a9f92de1ad176b9773543486f59270cf",
+    "nodes": [
+      {
+        "id": "I8201:25889;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Frame 791",
+          "Auto Layout Horizontal",
+          "image 4"
+        ]
+      },
+      {
+        "id": "I8201:27102;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ６",
+          "Auto Layout Vertical",
+          "Frame 791",
+          "Auto Layout Horizontal",
+          "image 4"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "9208f2e69dd379afbd98de852307c34e8977aed5",
+    "nodes": [
+      {
+        "id": "I8201:27201;6209:49598;6203:48611",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 295,
+        "height": 156,
+        "path": [
+          "Dark",
+          "Frame",
+          "iPhone 13 mini - 4",
+          "Auto Layout Vertical",
+          "Frame 4576",
+          "Frame 7",
+          "image 4"
+        ]
+      },
+      {
+        "id": "I8201:26060;6203:48611",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 295,
+        "height": 156,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Frame 7",
+          "Image"
+        ]
+      },
+      {
+        "id": "I8201:25545;6203:48611",
+        "name": "Image",
+        "type": "RECTANGLE",
+        "width": 295,
+        "height": 156,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ５",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Frame 7",
+          "Image"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "afca01377ec2bf4c771f6d6d933b53bd5d7d1343",
+    "nodes": [
+      {
+        "id": "I8201:27201;6209:49613;6203:48615",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "iPhone 13 mini - 4",
+          "Auto Layout Vertical",
+          "Frame 4576",
+          "Frame 4535",
+          "Frame 788",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      },
+      {
+        "id": "I8201:26061;6203:48615",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Frame 7",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      },
+      {
+        "id": "I8201:25546;6203:48615",
+        "name": "Size=20px",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ５",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Frame 7",
+          "Auto Layout Vertical",
+          "Auto Layout Horizontal",
+          "Auto Layout Horizontal",
+          "Size=20px"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "0875ea8304dfd1b08e6f41b602947ec6015ba551",
+    "nodes": [
+      {
+        "id": "I8201:27201;6203:48657;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "iPhone 13 mini - 4",
+          "Auto Layout Vertical",
+          "Frame 4581",
+          "Frame 792",
+          "Frame 7",
+          "image 4"
+        ]
+      },
+      {
+        "id": "I8201:26063;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Dark",
+          "Frame",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame 791",
+          "Auto Layout Horizontal",
+          "image 4"
+        ]
+      },
+      {
+        "id": "I8201:25548;6203:48543",
+        "name": "image 4",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Light",
+          "iPhone 13 mini - ５",
+          "Auto Layout Vertical",
+          "Auto Layout Vertical",
+          "Frame 791",
+          "Auto Layout Horizontal",
+          "image 4"
+        ]
+      }
+    ],
+    "uses": 3,
+    "pageId": "379:15944"
+  },
+  {
+    "hash": "40da8e13484c785314aa18c16db2932d01584001",
+    "nodes": [
+      {
+        "id": "1532:4559",
+        "name": "image 1",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Premium Bagde",
+          "Premium Banner",
+          "Property 1=Default",
+          "Frame 760",
+          "Frame 748",
+          "image 1"
+        ]
+      },
+      {
+        "id": "1547:11798",
+        "name": "image 1",
+        "type": "RECTANGLE",
+        "width": 72,
+        "height": 72,
+        "path": [
+          "Premium Bagde",
+          "Premium Banner",
+          "Property 1=Variant2",
+          "Frame 760",
+          "Frame 748",
+          "image 1"
+        ]
+      }
+    ],
+    "uses": 2,
+    "pageId": "105:2"
+  },
+  {
+    "hash": "eae313a48883a46e7a2a60ee806e73a8052191be",
+    "nodes": [
+      {
+        "id": "1895:6659",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 20.000001907348633,
+        "height": 20.000001907348633,
+        "path": [
+          "Avatar",
+          "Avatar",
+          "Style=Image, Size=20px",
+          "Images"
+        ]
+      },
+      {
+        "id": "1895:6660",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 24.000001907348633,
+        "height": 24.000001907348633,
+        "path": [
+          "Avatar",
+          "Avatar",
+          "Style=Image, Size=24px",
+          "Images"
+        ]
+      },
+      {
+        "id": "1895:6661",
+        "name": "Images",
+        "type": "INSTANCE",
+        "width": 28.000001907348633,
+        "height": 28.000001907348633,
+        "path": [
+          "Avatar",
+          "Avatar",
+          "Style=Image, Size=28px",
+          "Images"
+        ]
+      }
+    ],
+    "uses": 29,
+    "pageId": "105:2"
+  }
+]

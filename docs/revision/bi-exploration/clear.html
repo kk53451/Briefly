@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#163F35">
+  <title>BRIEFLY — Clear Brief</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="clear.css">
+  <script src="common.js" defer></script>
+</head>
+<body class="clear-concept">
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="c-mark" viewBox="0 0 40 40"><path d="M5 8h29v6H5zm0 10h16v6H5zm0 10h16v6H5z" fill="currentColor"/><path d="m25 18 11 8-11 8z" fill="currentColor"/></symbol>
+    <symbol id="c-grid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="c-archive" viewBox="0 0 24 24"><path d="M5 9h14v11H5zM3 4h18v5H3zm6 9h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="c-bookmark" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="c-play" viewBox="0 0 24 24"><path d="m8 5 12 7-12 7z" fill="currentColor"/></symbol>
+    <symbol id="c-headphones" viewBox="0 0 24 24"><path d="M4 14v-3a8 8 0 0 1 16 0v3M4 12h3v8H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Zm16 0h-3v8h3a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="c-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="c-source" viewBox="0 0 24 24"><path d="m10 14 4-4M8 16l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 10a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-1 1" transform="translate(1 -1) scale(.9)" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="c-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <div class="clear-shell">
+    <aside class="clear-sidebar" aria-label="주요 메뉴">
+      <button class="clear-brand" data-action="home" aria-label="Briefly 오늘의 브리핑">
+        <svg class="clear-brand-mark" aria-hidden="true"><use href="#c-mark"/></svg>
+        <span>briefly<span class="wordmark-period">.</span></span>
+      </button>
+      <nav class="clear-nav">
+        <button class="nav-item is-current" data-action="home" aria-current="page"><svg aria-hidden="true"><use href="#c-grid"/></svg><span>오늘의 브리핑</span><span class="nav-dot"></span></button>
+        <button class="nav-item" data-action="archive"><svg aria-hidden="true"><use href="#c-archive"/></svg><span>지난 브리핑</span></button>
+        <button class="nav-item" data-action="saved"><svg aria-hidden="true"><use href="#c-bookmark"/></svg><span>저장한 이야기</span></button>
+      </nav>
+      <div class="sidebar-note"><span class="little-rule"></span><p>많이 아는 것보다,<br>분명하게 이해하는 것.</p><span class="sidebar-signature">LESS NOISE.<br>MORE CONTEXT.</span></div>
+      <div class="mobile-shortcuts">
+        <button data-action="archive" aria-label="지난 브리핑"><svg aria-hidden="true"><use href="#c-archive"/></svg></button>
+        <button data-action="saved" aria-label="저장한 이야기"><svg aria-hidden="true"><use href="#c-bookmark"/></svg></button>
+      </div>
+    </aside>
+
+    <main class="clear-main" id="main-content">
+      <header class="edition-header">
+        <div class="edition-meta"><span>2026.10.23 금요일</span><span class="edition-time"><i aria-hidden="true"></i>오전 브리핑</span></div>
+        <div class="headline-row"><h1>오늘, 이 세 가지만<span>.</span></h1><span class="edition-serial">BRIEF / 023</span></div>
+        <p class="edition-intro">핵심을 읽고, 맥락을 듣는 짧은 시간.</p>
+        <div class="edition-actions">
+          <button class="action-read" data-action="read" data-topic="0"><span>2분 읽기</span><svg aria-hidden="true"><use href="#c-arrow"/></svg></button>
+          <button class="action-listen" data-action="listen"><svg aria-hidden="true"><use href="#c-headphones"/></svg><span>전체 듣기</span><span class="duration">5:12</span></button>
+        </div>
+      </header>
+
+      <section class="issue-section" aria-labelledby="issue-heading">
+        <div class="section-label"><h2 id="issue-heading">오늘의 핵심</h2><span>03 STORIES</span></div>
+        <article class="clear-issue is-featured">
+          <span class="issue-index">01</span>
+          <div class="issue-content">
+            <div class="issue-eyebrow"><span>경제</span><span class="issue-tag">생활에 가까운 변화</span></div>
+            <button class="issue-title" data-action="read" data-topic="0"><h3>기준금리 동결,<br class="desktop-break"> 우리 생활에 남는 변화</h3></button>
+            <p>금리는 그대로여도 체감은 다릅니다.<br class="desktop-break"> 대출과 예금, 일상의 선택에 남는 영향을 짚습니다.</p>
+            <div class="issue-bottom"><button class="source-link" data-action="sources" data-topic="0"><svg aria-hidden="true"><use href="#c-source"/></svg>출처 보기</button><button class="segment-link" data-action="listen" data-topic="0"><svg aria-hidden="true"><use href="#c-play"/></svg>이 이야기 듣기<span>1:44</span></button></div>
+          </div>
+          <button class="save-issue" data-action="save" data-topic="0" aria-label="첫 번째 이야기 저장" aria-pressed="false"><svg aria-hidden="true"><use href="#c-bookmark"/></svg></button>
+        </article>
+
+        <article class="clear-issue">
+          <span class="issue-index">02</span>
+          <div class="issue-content">
+            <div class="issue-eyebrow"><span>사회</span><span class="issue-tag">도시의 다음 모습</span></div>
+            <button class="issue-title" data-action="read" data-topic="1"><h3>도심의 이동,<br class="desktop-break"> 자동차보다 사람에게 가까이</h3></button>
+            <p>차가 지나던 길에 사람이 머무는 공간이 생깁니다. 이동의 편의와 도시의 여유를 함께 살펴봅니다.</p>
+            <div class="issue-bottom"><button class="source-link" data-action="sources" data-topic="1"><svg aria-hidden="true"><use href="#c-source"/></svg>출처 보기</button><button class="segment-link" data-action="listen" data-topic="1"><svg aria-hidden="true"><use href="#c-play"/></svg>이 이야기 듣기<span>1:43</span></button></div>
+          </div>
+          <button class="save-issue" data-action="save" data-topic="1" aria-label="두 번째 이야기 저장" aria-pressed="false"><svg aria-hidden="true"><use href="#c-bookmark"/></svg></button>
+        </article>
+
+        <article class="clear-issue">
+          <span class="issue-index">03</span>
+          <div class="issue-content">
+            <div class="issue-eyebrow"><span>IT·과학</span><span class="issue-tag">기술과 신뢰 사이</span></div>
+            <button class="issue-title" data-action="read" data-topic="2"><h3>AI가 만든 콘텐츠,<br class="desktop-break"> 이제 표시가 기준이 됩니다</h3></button>
+            <p>무엇을 만들었는지 만큼 어떻게 만들었는지도 중요해집니다. 콘텐츠를 읽는 새로운 기준입니다.</p>
+            <div class="issue-bottom"><button class="source-link" data-action="sources" data-topic="2"><svg aria-hidden="true"><use href="#c-source"/></svg>출처 보기</button><button class="segment-link" data-action="listen" data-topic="2"><svg aria-hidden="true"><use href="#c-play"/></svg>이 이야기 듣기<span>1:45</span></button></div>
+          </div>
+          <button class="save-issue" data-action="save" data-topic="2" aria-label="세 번째 이야기 저장" aria-pressed="false"><svg aria-hidden="true"><use href="#c-bookmark"/></svg></button>
+        </article>
+      </section>
+      <footer class="clear-main-footer"><span>여기까지, 오늘을 이해하는 짧은 시간.</span><button data-action="archive">지난 브리핑 보기<svg aria-hidden="true"><use href="#c-arrow"/></svg></button></footer>
+    </main>
+
+    <aside class="edition-rail" aria-label="이번 브리핑 듣기">
+      <div class="rail-heading"><span>이번 브리핑</span><span class="rail-am">AM</span></div>
+      <div class="edition-cover" aria-hidden="true">
+        <div class="cover-top"><span>BRIEFLY<br>DAILY EDITION</span><svg><use href="#c-mark"/></svg></div>
+        <div class="cover-number">03<span>THINGS<br>TO KNOW.</span></div>
+        <div class="cover-bottom"><span>OCT 23</span><span>READ + LISTEN</span></div>
+      </div>
+      <div class="rail-episode"><p>오늘의 핵심,<br>한 번에.</p><button class="rail-play" data-action="listen" aria-label="이번 브리핑 전체 듣기"><svg aria-hidden="true"><use href="#c-play"/></svg></button></div>
+      <div class="rail-time"><span>3개의 이야기</span><span>05:12</span></div>
+      <div class="rail-track" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="rail-storylist"><button data-action="listen" data-topic="0"><span>01</span>금리와 생활<svg aria-hidden="true"><use href="#c-play"/></svg></button><button data-action="listen" data-topic="1"><span>02</span>도시의 이동<svg aria-hidden="true"><use href="#c-play"/></svg></button><button data-action="listen" data-topic="2"><span>03</span>AI와 신뢰<svg aria-hidden="true"><use href="#c-play"/></svg></button></div>
+      <div class="provenance-note"><svg aria-hidden="true"><use href="#c-check"/></svg><div><strong>짧게 전해도, 출처는 남깁니다.</strong><p>궁금한 이야기에서<br>근거를 함께 확인하세요.</p></div></div>
+      <span class="rail-footer">A LITTLE TIME. A CLEARER DAY.</span>
+    </aside>
+  </div>
+</body>
+</html>

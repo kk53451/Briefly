@@ -13,6 +13,10 @@ cd flutter
 flutter pub get
 ```
 
+Android 빌드에는 JDK 17을 사용하세요. 현재 Gradle 8.14는 Java 25에서 실행되지 않습니다.
+`flutter doctor -v`의 실제 Java 경로를 확인하고, 필요하면 `flutter config --jdk-dir="<JDK-17-설치-경로>"`로 지정합니다.
+이 명령은 사용자 전체 Flutter 설정을 변경합니다. SDK 라이선스 미승인 경고는 `flutter doctor --android-licenses`로 직접 확인·동의하세요.
+
 `.env.example`을 `.env`로 복사하고 사용할 프로젝트의 값을 입력하세요.
 PowerShell에서는 `Copy-Item .env.example .env`, macOS/Linux에서는 `cp .env.example .env`를 사용합니다.
 기존 `.env`가 있다면 복사하지 말고 설정을 확인하세요.
@@ -34,6 +38,27 @@ PowerShell에서는 `Copy-Item .env.example .env`, macOS/Linux에서는 `cp .env
 
 사용할 Supabase 프로젝트의 Kakao·Google provider와 `briefly://auth-callback` redirect 설정은 별도로 확인하세요.
 Google 네이티브 로그인은 배포용 앱 식별자·인증서·플랫폼별 OAuth 설정도 일치해야 합니다.
+Android에서는 Google Cloud의 Android OAuth 클라이언트에 패키지명과 실제 빌드 서명 SHA-1을 등록하고, `.env`에는 **Web 클라이언트 ID**를 넣습니다.
+
+**iOS Google 로그인 추가 설정**
+
+`.env`의 `GOOGLE_IOS_CLIENT_ID`는 Google Cloud의 iOS OAuth 클라이언트 값입니다.
+앱은 Dart에서 `clientId`와 `serverClientId`를 전달하므로 `GIDClientID`·`GIDServerClientID`를 중복 설정할 필요는 없습니다.
+하지만 [Google Sign-In iOS 설정](https://pub.dev/packages/google_sign_in_ios)의 `REVERSED_CLIENT_ID` URL scheme은 여전히 필요합니다.
+`ios/Runner/Info.plist`의 기존 `CFBundleURLTypes` 배열 안에 다음 dict를 추가하고, 예시를 본인의 값으로 바꾸세요. Kakao용 `briefly` 항목은 유지합니다.
+
+```xml
+<dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+        <string>com.googleusercontent.apps.YOUR_IOS_CLIENT_ID</string>
+    </array>
+</dict>
+```
+
+현재 저장소의 `Info.plist`에는 이 Google 전용 값이 없습니다. 각자의 OAuth 프로젝트에 맞게 등록해야 합니다.
 Storage와 데이터베이스의 초기 SQL은 [백엔드 마이그레이션](../backend/app/db/migrations/)에 있습니다.
 로컬 파일만으로 원격 프로젝트의 설정 완료 여부를 알 수는 없습니다.
 
@@ -75,3 +100,4 @@ Android release 설정은 현재 debug 서명을 사용하므로 배포 전에 �
 정적 분석은 `flutter analyze`로 실행합니다.
 기존 산술 placeholder 테스트는 정리했으며, 앱 동작을 검증하는 Dart 자동 테스트는 아직 없습니다.
 로그인·오디오 재생·데이터 조회는 실제 환경에서 별도로 확인해야 합니다.
+최근 설치·빌드 검증 결과는 [설치 검증 기록](../docs/setup-validation.md)을 참고하세요.

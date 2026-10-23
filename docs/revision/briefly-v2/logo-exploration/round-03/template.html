@@ -1,0 +1,17 @@
+<!doctype html>
+<!-- Layout adapted from logo-generator/assets/showcase_template.html: header,
+     six-concept grid, rationale, refinement, downloads. Uses local JS/CSS. -->
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>BRIEFLY — Symbol studies 03</title><link rel="stylesheet" href="style.css"></head>
+<body data-tone="blue" data-mask="square">
+<a class="skip" href="#concepts">심벌 시안으로 이동</a>
+<div class="shell">
+  <header><a href="../../index.html" aria-label="BRIEFLY 디자인 가이드">{{WORDMARK}}</a><span class="edition">IDENTITY STUDIES<br><b>CHAPTER 03 / SYMBOL</b></span></header>
+  <section class="intro"><div><span class="eyebrow">A LITTLE FORM. A BIGGER IDEA.</span><h1>짧은 브리핑,<br>오래 남는 표식.</h1></div><div class="intro-note"><p>B 워드마크는 그대로.<br>브리플리의 읽기와 듣기를<br>여섯 가지 새로운 형태로 탐색합니다.</p><a href="../b-symbol-options.png">선택한 Fold 기준안 보기 ↗</a></div></section>
+  <nav class="toolbar" aria-label="시안 비교 설정"><div class="toolbar-left"><span class="eyebrow">06 CONCEPTS</span><div class="segmented" aria-label="색상"><button data-tone="blue" aria-pressed="true">블루</button><button data-tone="mono" aria-pressed="false">흑백</button></div><div class="segmented" aria-label="아이콘 마스크"><button data-mask="square" aria-pressed="true">사각</button><button data-mask="circle" aria-pressed="false">원형</button></div></div><button id="filter" aria-pressed="false" disabled>담은 시안만 보기 <span id="count">0</span></button></nav>
+  <main id="concepts" class="logo-grid">{{CARDS}}</main>
+  <footer><p>시안을 누르면 B 워드마크와의 조합을 볼 수 있습니다.<br>비교에 담기는 이 브라우저에만 저장되며 최종 선택을 확정하지 않습니다.</p><a href="comparison.png" download>전체 비교 보드 ↓</a><span>BRIEFLY / 2026</span></footer>
+</div>
+<dialog id="detail" aria-labelledby="detail-title"><div class="detail-inner"><div class="detail-top"><span class="eyebrow">WORDMARK + SYMBOL</span><button id="close-detail" aria-label="상세 보기 닫기">닫기 ×</button></div><div class="detail-lockup"><div class="detail-symbol"></div>{{WORDMARK}}</div><h2 id="detail-title"></h2><p id="detail-description"></p><div class="detail-sizes" aria-label="다양한 크기에서 보기"></div><div class="detail-downloads"><a id="download-symbol" download>심벌 SVG ↓</a><a id="download-icon" download>앱 아이콘 SVG ↓</a><a id="download-png" download>1024px PNG ↓</a></div><p class="detail-footnote">B 워드마크는 선택 원본, 앱 심벌은 편집 가능한 SVG입니다.<br>다운로드하는 앱 아이콘은 블루·사각 버전입니다.</p></div></dialog>
+<script id="concept-data" type="application/json">{{CONCEPT_DATA}}</script><script src="script.js"></script>
+</body></html>

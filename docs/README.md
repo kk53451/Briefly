@@ -5,6 +5,7 @@
 
 | 문서 | 용도 |
 |---|---|
+| [설치 검증 기록](setup-validation.md) | 현재 README 절차의 실제 검증 결과와 남은 실행 조건 |
 | [DEPRECATED](DEPRECATED.md) | 종료한 구현, 보존 태그, 복구 방법 |
 | [디자인](design/README.md) | 와이어프레임 원본, 디자인 결정, 화면 기록 |
 | [연구·평가](research/README.md) | 클러스터링 실험, 데이터 감사, 팟캐스트 튜닝 |

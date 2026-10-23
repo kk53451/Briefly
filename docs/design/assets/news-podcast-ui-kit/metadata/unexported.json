@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1440:55681",
+    "name": "Linear / Notes / Clipboard Heart",
+    "error": "Error: Failed to export node. This node may not have any visible layers."
+  },
+  {
+    "id": "1582:3225",
+    "name": "Pill Buttons / Selected=True",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  },
+  {
+    "id": "1582:3227",
+    "name": "Pill Buttons / Selected=False",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  },
+  {
+    "id": "1515:9370",
+    "name": "Tool Bar / Text Filed",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  },
+  {
+    "id": "1387:15916",
+    "name": "Dot / State=On",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  },
+  {
+    "id": "1387:15918",
+    "name": "Dot / State=Off",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  },
+  {
+    "id": "1555:3880",
+    "name": "Button / Property 1=Landscape",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  },
+  {
+    "id": "1555:3898",
+    "name": "Button / Property 1=Potrairt",
+    "category": "components",
+    "reason": "Hidden in original Figma; export contains no visible pixels.",
+    "source": "metadata/hidden-components-source.json"
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "exportDate": "2026-10-23",
+  "assetFiles": 6647,
+  "verifiedSha256Files": 6647,
+  "verifiedOriginalImageSha1": 70,
+  "originalIconNodes": 6240,
+  "successfulIconSvg": 6239,
+  "unexportedIconNodes": [
+    "1440:55681"
+  ],
+  "uiComponentPng": 283,
+  "hiddenComponentDefinitions": 7,
+  "componentSets": 42,
+  "screens": 50,
+  "variables": 267,
+  "catalogChecks": [
+    "offline file loading",
+    "category switching",
+    "name search",
+    "icon style filtering",
+    "component group filtering",
+    "pagination",
+    "preview dialog",
+    "original image loading",
+    "mobile overflow check",
+    "no browser JavaScript errors"
+  ],
+  "sourceDesignModified": false
+}

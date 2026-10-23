@@ -68,9 +68,9 @@ Briefly/
 | 공통 | Git, 본인 소유의 Supabase 프로젝트 |
 | 배치 | Python 3.12, Ollama, 모델을 저장할 디스크 공간. GPU 사용 권장 |
 | 대본 생성 | OpenAI API 키와 모델 사용 권한 |
-| 오디오 생성 | NotebookLM을 사용할 Google 계정과 브라우저 로그인 |
+| 오디오 생성 | NotebookLM을 사용할 Google 계정과 브라우저 로그인. 정확한 재생 길이 추출을 위해 FFmpeg의 `ffprobe` 권장 |
 | 앱 | [Flutter SDK](https://docs.flutter.dev/install), Dart `>=3.11.5 <4.0.0`을 만족하는 버전 |
-| Android | Android SDK와 에뮬레이터 또는 실제 기기. `flutter doctor`로 도구 확인 |
+| Android | JDK 17, Android SDK와 에뮬레이터 또는 실제 기기. `flutter doctor -v`로 도구 확인 |
 | iOS | macOS, Xcode, 시뮬레이터 또는 실제 기기 |
 
 이미 콘텐츠가 있는 Supabase에 앱만 연결하려면 Python·Ollama·생성용 API 키 없이 Flutter 설정부터 진행할 수 있습니다.
@@ -126,7 +126,8 @@ grant select, insert, delete on public.bookmarks to authenticated;
 | `bookmarks` | 북마크용 테이블. 앱 저장 기능 연결은 미완성 |
 | `briefly-audio` | 공개 오디오 버킷. `{date}/briefing_AM.mp3` 또는 `briefing_PM.mp3` 저장 |
 
-앱은 `audio_path`로 Storage 공개 URL을 만듭니다. 버킷 이름은 현재 앱 코드와 맞춰 `briefly-audio`를 사용하세요.
+앱은 `audio_path`로 Storage 공개 URL을 만듭니다. 기본 버킷은 `briefly-audio`입니다.
+다른 이름을 사용하려면 버킷·Storage 정책을 준비하고 backend와 Flutter의 `SUPABASE_AUDIO_BUCKET`을 같은 값으로 지정하세요.
 
 로그인 기능을 사용하려면 다음도 설정합니다.
 
@@ -161,11 +162,14 @@ CUDA를 사용할 경우 [PyTorch 설치 안내](https://pytorch.org/get-started
 
 ```bash
 python -m pip install --upgrade pip
-python -m pip install -r requirements.txt "notebooklm-py==0.4.1"
+python -m pip install -r requirements.txt
+python -m pip check
 ```
 
-이 안내는 현재 코드가 사용하는 `DEFAULT_STORAGE_PATH` 등을 확인한 `notebooklm-py 0.4.1`을 지정합니다.
-`requirements.txt`는 여러 패키지에 최소 버전만 지정하므로 전체 환경이 고정된 lockfile은 아닙니다.
+`requirements.txt`에서 현재 코드와 호환되는 `notebooklm-py==0.4.1`, `openai==1.109.1`, `supabase==2.33.0`을 지정합니다.
+Windows·Python 3.12·CPU 환경의 검증 버전을 그대로 설치하려면
+`python -m pip install -r requirements-windows-cpu.lock.txt`를 사용하세요.
+이 lockfile은 CUDA·다른 OS용이 아닙니다. 해당 환경에서는 위의 `requirements.txt`와 하드웨어에 맞는 PyTorch를 사용하세요.
 
 [backend/.env.example](backend/.env.example)을 참고해 `backend/.env`에 값을 입력합니다.
 
@@ -173,11 +177,13 @@ python -m pip install -r requirements.txt "notebooklm-py==0.4.1"
 |---|---|
 | `SUPABASE_URL` | 사용할 프로젝트의 `https://<project-ref>.supabase.co` 주소 |
 | `SUPABASE_SERVICE_ROLE_KEY` | 배치 쓰기용 **legacy `service_role` JWT 키** |
-| `SUPABASE_AUDIO_BUCKET` | `briefly-audio` 유지 |
+| `SUPABASE_AUDIO_BUCKET` | 기본 `briefly-audio`. Flutter와 같은 버킷 |
+| `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | 기본 `http://localhost:11434`, `gemma4:e4b-it-q4_K_M`. 피드 생성에도 필요 |
 | `OPENAI_API_KEY` | 대본 생성·평가에 사용하는 키 |
 | `OPENAI_MODEL`, `OPENAI_JUDGE_MODEL` | 기본 예시 `gpt-5.4`. 계정에서 사용할 모델로 설정 |
 | `DISCORD_WEBHOOK_URL`, `DISCORD_PIPELINE_WEBHOOK_URL` | 선택: 오류·진행 알림. 미설정 시 알림 생략 |
-| `GRAFANA_LOKI_URL`, `GRAFANA_LOKI_USER`, `GRAFANA_LOKI_TOKEN` | 선택: Loki 계측. 사용할 때 `.env`에 추가 |
+| `GRAFANA_LOKI_URL`, `GRAFANA_LOKI_USER`, `GRAFANA_LOKI_TOKEN` | 선택: 세 값이 모두 있을 때 Loki 계측 활성화. URL은 `/loki/api/v1/push`를 뺀 호스트 주소 |
+| `GRAFANA_LOKI_ENV` | 선택: Loki 환경 라벨. 기본 `prod`, 검증 환경은 `smoke` 등으로 지정 |
 
 현재 [백엔드 키 검증](backend/app/utils/supabase_client.py)은 JWT 형식만 받습니다.
 따라서 이 코드에서는 `sb_secret_...` 대신 legacy `service_role` 키를 사용합니다. 키 종류는 [Supabase API 키 안내](https://supabase.com/docs/guides/getting-started/api-keys)를 참고하세요.
@@ -193,8 +199,9 @@ ollama list
 ```
 
 Ollama 서버가 실행 중이 아니라면 별도 터미널에서 `ollama serve`를 실행합니다.
-현재 주소와 모델명은 [headline_service.py](backend/app/services/headline_service.py)의 `OLLAMA_BASE_URL`, `OLLAMA_MODEL` 상수입니다.
+주소와 모델명은 `backend/.env`의 `OLLAMA_BASE_URL`, `OLLAMA_MODEL`로 바꿀 수 있습니다.
 KURE-v1 임베딩 모델은 첫 사용 시 내려받으며, CUDA 사용 여부는 `python -c "import torch; print(torch.cuda.is_available())"`로 확인할 수 있습니다.
+`konlpy`와 JVM은 Python 배치의 필수 의존성이 아닙니다. Okt를 설치하지 않으면 정규식 토크나이저로 동작합니다.
 
 **오디오 생성용 로그인**
 
@@ -207,6 +214,7 @@ notebooklm login
 배치를 실행할 OS 사용자 계정에서 진행하세요. Linux에서 브라우저 시스템 라이브러리가 부족하면 `python -m playwright install-deps chromium`이 추가로 필요할 수 있습니다.
 `notebooklm-py`는 비공식 클라이언트이며, 인증이 만료되면 다시 로그인해야 합니다. [프로젝트 설치 안내](https://github.com/teng-lin/notebooklm-py/blob/main/docs/installation.md)
 오디오를 생략하는 `--skip-podcast` 또는 `--skip-script` 실행에는 이 로그인 단계가 필요하지 않습니다.
+오디오 길이 추출에 사용할 `ffprobe -version`도 확인하세요. 없으면 `mutagen`으로 대체하지만 일부 NotebookLM 오디오의 길이를 읽지 못할 수 있습니다.
 
 ### 4. Flutter 준비
 
@@ -214,22 +222,39 @@ notebooklm login
 
 ```bash
 cd flutter
-flutter doctor
+flutter doctor -v
 flutter pub get
 ```
 
+**Android Java와 SDK 확인**
+
+현재 Gradle 8.14 / Android Gradle Plugin 8.11.1 조합에서는 **JDK 17**을 사용하세요.
+Flutter는 Android Studio 내장 Java를 먼저 선택할 수 있으므로 `java -version`뿐 아니라 `flutter doctor -v`의 Java 경로를 확인합니다.
+Java 25는 현재 wrapper와 호환되지 않습니다. [Gradle Java 호환 표](https://docs.gradle.org/current/userguide/compatibility.html)
+
+```bash
+# 설치한 JDK 17의 실제 경로로 교체. 이 설정은 해당 사용자의 모든 Flutter 프로젝트에 적용됨
+flutter config --jdk-dir="<JDK-17-설치-경로>"
+flutter doctor --android-licenses
+flutter doctor -v
+```
+
+Android 라이선스는 표시된 내용을 확인하고 직접 동의합니다. SDK Command-line Tools가 없으면 Android Studio의 SDK Manager에서 먼저 설치하세요.
+
 `flutter/.env.example`을 `flutter/.env`로 복사합니다. PowerShell은 `Copy-Item .env.example .env`, macOS/Linux는 `cp .env.example .env`를 사용합니다.
-기존 `.env`가 있으면 덮어쓰지 말고 확인하세요. 템플릿에 프로젝트 값이 들어 있어도 **본인의 Supabase 값으로 교체**합니다.
+기존 `.env`가 있으면 덮어쓰지 말고 확인하세요. 템플릿의 placeholder는 **본인의 Supabase 값으로 교체**합니다.
 
 | 변수 | 용도 |
 |---|---|
 | `SUPABASE_URL` | 백엔드와 같은 프로젝트 URL |
 | `SUPABASE_ANON_KEY` | 앱용 publishable 키 또는 legacy anon 키 |
+| `SUPABASE_AUDIO_BUCKET` | 기본 `briefly-audio`. 백엔드와 같은 버킷 |
 | `GOOGLE_WEB_CLIENT_ID` | Google 로그인용 Web 클라이언트 ID |
 | `GOOGLE_IOS_CLIENT_ID` | iOS Google 로그인용 클라이언트 ID. Android만 개발할 때는 생략 가능 |
 
 `.env`는 앱 asset에 포함됩니다. 서버 비밀 키를 넣으면 앱에 함께 배포됩니다.
 Kakao 딥링크와 오디오 백그라운드 설정은 이미 플랫폼 파일에 있으며, 자세한 위치는 [Flutter 안내](flutter/README.md)에 있습니다.
+iOS Google 로그인에는 `.env` 외에 `Info.plist`의 **Google `REVERSED_CLIENT_ID` URL scheme**도 등록해야 합니다. 현재 저장소에는 Kakao용 `briefly` scheme만 들어 있습니다.
 
 ## 실행
 
@@ -294,10 +319,13 @@ Windows 작업 스케줄러에서는 프로그램을 `backend\venv\Scripts\pytho
 처음에는 `backend/`에서 도움말로 실행 환경을 확인하세요.
 
 ```bash
+python -m pip check
 python -X utf8 -m app.tasks.scheduler --help
 python -X utf8 -m test.generate_integrated_briefing_dryrun --help
 python -X utf8 -m test.transcribe_and_evaluate --help
 ```
+
+외부 호출 없이 대본 검증 CLI의 실패 처리를 확인하는 회귀 테스트는 `python -X utf8 -m unittest test.test_dryrun_exit`로 실행합니다.
 
 저장된 뉴스 샘플로 대본만 생성하려면 다음을 실행합니다. 로컬 임베딩과 OpenAI 호출이 발생하고 결과는 `test/results/`에 저장됩니다.
 
@@ -308,6 +336,8 @@ python -X utf8 -m test.generate_integrated_briefing_dryrun --time-slot morning
 오디오 재생성·전사·DB 쓰기 스모크 테스트의 영향과 추가 의존성(`faster-whisper`, `ffprobe`)은 [검증 도구 안내](backend/test/README.md)에 정리했습니다.
 앱 정적 분석은 `flutter/`에서 `flutter analyze`로 실행합니다. 앱 동작을 검증하는 Dart 자동 테스트는 아직 없습니다.
 
+이번 설치·실행 점검의 환경, 성공한 항목과 외부 연결 차단 사항은 [설치 검증 기록](docs/setup-validation.md)에 정리했습니다.
+
 ## 문제 해결
 
 | 증상 | 확인할 것 |
@@ -316,9 +346,13 @@ python -X utf8 -m test.generate_integrated_briefing_dryrun --time-slot morning
 | `SUPABASE_SERVICE_ROLE_KEY` 형식 오류 | backend에 legacy JWT 키를 넣었는지 확인. 현재 검증기는 `sb_secret_...`를 받지 않음 |
 | DB에서 `permission denied` / `42501` | Data API 노출과 테이블 GRANT, RLS 정책 확인 |
 | 앱에 기사가 없음 | 앱·배치가 같은 프로젝트를 사용하는지, 오늘 KST 날짜의 `news_cards`·`headlines`가 있는지 확인 |
-| Ollama 연결 실패 또는 모델 없음 | 서버 실행 여부, `ollama list`, 코드의 모델 상수 확인 |
+| Ollama 연결 실패 또는 모델 없음 | 서버 실행 여부, `ollama list`, `.env`의 `OLLAMA_BASE_URL`·`OLLAMA_MODEL` 확인 |
+| Supabase `ConnectError` / 호스트를 찾을 수 없음 | `.env`의 프로젝트 URL과 프로젝트 가동 상태를 확인. 주소가 DNS에서 조회되지 않으면 DB 권한 점검 전에 복구 필요 |
+| Android 빌드가 `25.0.2` / Java 버전 오류로 실패 | `flutter doctor -v`로 선택된 JDK 확인 후 JDK 17 지정 |
+| `Some Android licenses not accepted` | `flutter doctor --android-licenses`로 내용 확인 후 직접 동의 |
 | 임베딩이 매우 느림 | PyTorch CUDA 사용 여부와 첫 모델 다운로드 상태 확인 |
 | 대본만 있고 오디오가 없음 | `--skip-podcast` 사용 여부, NotebookLM 재로그인, 생성·업로드 오류 로그 확인 |
+| OpenAI `429` / `credit_balance_exhausted` | API 프로젝트의 크레딧·사용 한도 확인. 모델 조회 성공만으로 생성 가능 여부를 판단할 수 없음 |
 | 모델 교체 후 임베딩 차원 오류 | 현재 캐시 키에 모델명이 포함되지 않으므로 기존 임베딩 캐시를 별도로 보관한 뒤 새로 생성 |
 | 로그인 후 앱으로 돌아오지 않음 | Supabase redirect URL과 플랫폼 OAuth 설정, Google 클라이언트 ID 확인 |
 

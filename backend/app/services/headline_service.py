@@ -14,6 +14,7 @@ Gemma4 로컬 모델로 캐치한 헤드라인(15~25자)과 친근체 요약(80~
 
 import json
 import logging
+import os
 import re
 import time
 from typing import Dict, List, Optional, Tuple
@@ -22,8 +23,8 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-OLLAMA_BASE_URL = "http://localhost:11434"
-OLLAMA_MODEL = "gemma4:e4b-it-q4_K_M"
+OLLAMA_BASE_URL = (os.getenv("OLLAMA_BASE_URL") or "http://localhost:11434").rstrip("/")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL") or "gemma4:e4b-it-q4_K_M"
 
 HEADLINE_PROMPT_TEMPLATE = """\
 다음은 같은 주제로 묶인 {count}개의 뉴스 기사 제목들입니다.

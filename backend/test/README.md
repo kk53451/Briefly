@@ -1,6 +1,6 @@
 # 현행 파이프라인 검증 도구
 
-`backend/test/`는 실행형 검증·튜닝 스크립트를 보관합니다.
+`backend/test/`는 실행형 검증·튜닝 스크립트와 작은 회귀 테스트를 보관합니다.
 이전 실험 설명은 [연구 기록](../../docs/research/pipeline-experiments.md)에 보존했습니다.
 
 | 파일 | 용도 | 실행 시 외부 영향 |
@@ -10,12 +10,28 @@
 | `test_supabase_storage_smoke.py` | DB·Storage 저장 경로 확인 | Supabase에 실제 데이터 쓰기 |
 | `test_metrics_loki_smoke.py` | 파이프라인 계측 전송 확인 | 설정된 Loki로 메트릭 전송 |
 | `transcribe_and_evaluate.py` | 통합 브리핑 전사 및 품질 평가 | 로컬 Whisper 모델, Supabase 조회, LLM 평가 호출 |
+| `test_dryrun_exit.py` | 대본 검증 CLI의 실패·성공 종료 코드 회귀 검사 | 외부 호출 없음 |
 
-외부 서비스·모델 실행이 필요한 스크립트입니다. 전체 파일을 단순한 오프라인 단위 테스트로 일괄 실행하지 마세요.
+대부분 외부 서비스·모델 실행이 필요한 스크립트입니다. 전체 파일을 단순한 오프라인 단위 테스트로 일괄 실행하지 마세요.
 각 스크립트의 CLI 인자와 환경변수 설명을 확인한 뒤 실행합니다.
+
+종료 코드 회귀 검사만 실행하려면 `backend/`에서 `python -X utf8 -m unittest test.test_dryrun_exit`를 사용합니다.
+대본 dry-run은 샘플·분석·대본 생성 실패 시 종료 코드 1을 반환합니다. API 키가 유효하더라도 크레딧 부족으로 생성이 실패할 수 있습니다.
 
 전사 도구는 기본 배치 의존성 외에 `faster-whisper`가 필요합니다.
 `regenerate_audio.py`의 오디오 길이 측정에는 실행 경로에 `ffprobe`가 있어야 합니다.
+
+`backend/`의 가상환경에서 선택 의존성을 설치합니다.
+
+```bash
+python -m pip install -r requirements-eval.txt
+python -m pip check
+ffprobe -version
+```
+
+FFmpeg의 `ffprobe`는 pip 패키지가 아닌 별도 실행 파일이며 PATH에 등록해야 합니다.
+기본 오디오 생성도 `ffprobe`를 우선 사용하고, 없으면 `mutagen`으로 길이 추출을 시도합니다.
+`konlpy`는 선택 사항으로, 없으면 클러스터링의 키워드 추출은 정규식 토크나이저를 사용합니다.
 
 구 A/B/C 실험 전용 `transcribe_podcasts.py`는 통합 브리핑 도구로 대체되어 제거했습니다.
 옛 스크립트는 [보존 태그 안내](../../docs/DEPRECATED.md)에서 확인할 수 있습니다.

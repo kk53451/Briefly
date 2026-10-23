@@ -1,0 +1,3 @@
+# 전사·품질 평가 도구용 추가 의존성
+-r requirements.txt
+faster-whisper==1.2.1

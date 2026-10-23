@@ -1,0 +1,20 @@
+{{HEAD}}
+<body class="product">{{DEFS}}
+<a class="skip" href="#main">본문으로 이동</a>
+<div class="review-bar"><span>가상 뉴스 · 음원 없는 미리보기</span><a href="index.html">디자인 가이드</a></div>
+<header class="app-header">{{BRAND}}<nav class="app-nav" aria-label="주요 메뉴"><button data-action="home" aria-current="page">오늘</button><button data-action="saved">보관함</button><button data-action="archive">지난 회차</button></nav><span class="header-message">복잡한 하루에, 짧고 선명한 맥락.</span><button class="icon-btn mobile-history" data-action="archive" aria-label="지난 회차 열기">{{CLOCK}}</button></header>
+<main class="app-main" id="main">
+<section class="greeting"><div><div class="date">{{SUN}}<time datetime="2026-10-23">10월 23일 금요일</time><span>오전판</span></div><h1>오늘의 브리핑</h1></div><p>읽거나 듣거나, 나의 속도로.</p></section>
+<div class="app-layout"><aside class="edition-panel" aria-label="오늘의 회차">
+<div class="edition-cover"><div class="edition-top"><span>오늘을 연결하는 세 가지 맥락</span><time datetime="2026-10-23T07:00:00+09:00">07:00 발행</time></div><h2>금리는 멈추고,<br>일상은 움직인다.</h2><p>경제·사회·기술을 잇는 오늘의 맥락.</p><div class="chapter-heading"><span>이야기 순서대로 듣기</span>{{HEADPHONES}}</div><div class="chapter-nav" role="group" aria-label="이야기별 듣기">{{CHAPTERS}}</div></div>
+<div class="edition-actions"><button class="btn primary listen-main" data-action="listen"><span data-listen-icon>{{PLAY}}</span><span><b data-listen-label>전체 듣기</b><small data-listen-time>5분 12초</small></span></button><button class="btn secondary read-main" data-action="resume">{{BOOK}}<span><b data-read-label>읽기 시작</b><small data-read-time>약 2분</small></span></button></div>
+<div class="edition-progress"><div><span data-progress-label>읽은 이야기</span><b data-progress-count>0 / 3</b></div><div class="reading-track" role="progressbar" aria-label="읽은 이야기" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><i></i><i></i><i></i></div></div>
+<div class="edition-context"><h3>짧게 읽고, 깊게 연결하기.</h3><p>같은 이야기를 글과 목소리로 만납니다.<br>더 궁금한 내용은 이야기마다 연결된 출처에서.</p><a href="brand.html">Briefly의 브랜드 이야기</a></div>
+</aside>
+<section class="stories" aria-label="오늘의 세 이야기"><div class="stories-heading"><h2>이야기별로 살펴보기</h2><span>세 가지 시선</span></div>{{STORIES}}<div class="finish-note"><span>{{CHECK}}</span><p data-finish-label>오늘은 여기까지.<br>세 이야기를 읽으면 하루의 맥락이 이어져요.</p></div></section>
+</div></main>
+<footer class="prototype-note"><p>가상 콘텐츠로 구성한 디자인 미리보기입니다.</p><a href="index.html#screens">디자인 시스템과 화면 보기</a></footer>
+<nav class="bottom-nav" aria-label="모바일 주요 메뉴"><button data-action="home" aria-current="page">{{HOME}}<span>오늘</span></button><button data-action="saved">{{SAVE}}<span>보관함</span></button><button data-action="archive">{{CLOCK}}<span>지난 회차</span></button></nav>
+<dialog class="reader" aria-label="브리핑 읽기"></dialog>
+<section class="player" hidden aria-label="오디오 흐름 미리보기"><div class="player-info"><div class="player-title"></div><div class="player-note">음원 없는 재생 미리보기</div></div><div class="player-buttons"><button class="player-toggle" data-player="toggle" aria-label="일시정지">{{PAUSE}}</button><button class="text-link" data-player="read">읽기</button><button class="icon-btn" data-player="close" aria-label="플레이어 닫기">{{CLOSE}}</button></div><div class="player-progress"><time data-current>0:00</time><input type="range" min="0" max="312" value="0" aria-label="재생 위치"><time>5:12</time></div></section>
+<div class="toast" role="status" hidden></div></body></html>

@@ -149,7 +149,7 @@ def build_category_data(
     }
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description="통합 브리핑 대본 dry-run")
     parser.add_argument(
         "--time-slot",
@@ -188,7 +188,7 @@ def main():
     data_path = Path(args.data_path)
     if not data_path.exists():
         logger.error(f"❌ 샘플 데이터 없음: {data_path}")
-        return
+        return 1
 
     with open(data_path, encoding="utf-8") as f:
         data = json.load(f)
@@ -204,7 +204,7 @@ def main():
             categories_data.append(cd)
         except Exception as e:
             logger.error(f"❌ [{cat['ko']}] feed phase 실패: {e}")
-            return
+            return 1
 
     # 임베딩 모델 메모리 해제 (GPT 호출 전)
     try:
@@ -256,7 +256,7 @@ def main():
 
     if not script:
         logger.error("❌ 대본 생성 실패 (빈 결과)")
-        return
+        return 1
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     out_path = OUTPUT_DIR / f"briefing_dryrun_{time_slot_ko}_{ts}.txt"
@@ -284,6 +284,8 @@ def main():
         else:
             logger.info(f"  {cat['ko']}: 첫 등장 offset {idx} / {len(script)}")
 
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -1,5 +1,5 @@
 # Briefly backend - 로컬 파이프라인
-# Python 3.12+
+# Python 3.12 (검증 기준)
 
 # 뉴스 수집
 httpx>=0.27
@@ -18,7 +18,8 @@ numpy>=1.26
 # 팟캐스트
 # 대본 생성과 품질 평가 엔진에서 직접 사용; 로컬 검증 버전
 openai==1.109.1
-notebooklm-py>=0.4.1
+# DEFAULT_STORAGE_PATH를 사용하는 현재 코드와 호환되는 버전
+notebooklm-py==0.4.1
 playwright>=1.40
 # MP3 길이(초) 메타데이터 추출 — 순수 Python, MP3 헤더만 읽어 디코딩 없이 duration 뽑음
 mutagen>=1.47
@@ -28,4 +29,4 @@ python-dotenv>=1.0
 pytz>=2024.1
 
 # Supabase (DB + Storage + Auth)
-supabase>=2.5
+supabase==2.33.0
